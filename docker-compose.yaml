@@ -1,0 +1,11 @@
+version: '1'
+services:
+  mongodbusercredentials:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    container_name: reel-rating-mongo-user-credentials
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_CRED_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_CRED_PASSWORD}
+    ports:
+      - "127.0.0.1:${MONGO_CRED_PORT}:27017"
