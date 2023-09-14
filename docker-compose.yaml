@@ -1,11 +1,20 @@
-version: '1'
+version: '3.8'
 services:
+    
   mongodbusercredentials:
     image: mongodb/mongodb-community-server:6.0-ubi8
     container_name: reel-rating-mongo-user-credentials
     restart: unless-stopped
+
+  reel-rating-auth-service:
+    build:
+      context: ./backend/reel-rating-auth-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-auth-service
+    restart: unless-stopped
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_CRED_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_CRED_PASSWORD}
+      - MONGO_CRED_URL=mongodb://mongodbusercredentials:27017
+      - MONGO_CRED_DATABASE_NAME=${MONGO_CRED_DATABASE_NAME}
     ports:
-      - "127.0.0.1:${MONGO_CRED_PORT}:27017"
+      - "127.0.0.1:30500:30500"
+    
