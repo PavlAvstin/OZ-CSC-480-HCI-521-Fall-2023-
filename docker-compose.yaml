@@ -17,4 +17,16 @@ services:
       - MONGO_CRED_DATABASE_NAME=${MONGO_CRED_DATABASE_NAME}
     ports:
       - "127.0.0.1:30500:30500"
+
+  reel-rating-display-service:
+    build:
+      context: ./frontend/reel-rating-display-service
+      dockerfile: Dockerfile
+    container_name: reel-rating-display-service
+    restart: unless-stopped
+    environment:
+      - DISPLAY_SERVICE_PORT=${DISPLAY_SERVICE_PORT}
+      - JWK_URI=${JWK_URI}
+    ports:
+      - "127.0.0.1:30400:30400"
     
