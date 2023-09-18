@@ -1,9 +1,5 @@
-FROM icr.io/appcafe/open-liberty:kernel-slim-java17-openj9-ubi
+FROM maven:3.8.3-openjdk-17
+COPY . .
 
-COPY --chown=1001:0 /src/main/liberty/config /config
-
-RUN features.sh
-
-COPY --chown=1001:0 target/*.war /config/apps
-
-RUN configure.sh
+RUN mvn package
+CMD ["mvn", "liberty:run"]
