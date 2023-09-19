@@ -18,14 +18,13 @@ public class DatabaseController {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
-  //This asssumes that the databae has the collection already.
-  public void createUser(String username, String password, String saltHash, String sessionId, String dateTime) {
+
+  public void createUser(String username, String password, String sessionId, String dateTime) {
       var database = getUserCredentialsDatabase();
       var users = database.getCollection("users");
       var userDocument = new Document();
       userDocument.put("username", username);
       userDocument.put("password", password);
-      userDocument.put("saltHash", saltHash);
       userDocument.put("sessionId", sessionId);
       userDocument.put("dateTime", dateTime);
       users.insertOne(userDocument);
