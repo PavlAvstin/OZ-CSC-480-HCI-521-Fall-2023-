@@ -18,7 +18,7 @@ public class DatabaseController {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
-
+//something
   public void createUser(String username, String password, String sessionId, String dateTime) {
       var database = getUserCredentialsDatabase();
       var users = database.getCollection("users");
