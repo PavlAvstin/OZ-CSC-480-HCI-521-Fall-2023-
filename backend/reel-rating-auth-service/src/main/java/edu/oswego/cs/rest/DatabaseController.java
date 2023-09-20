@@ -20,9 +20,12 @@ public class DatabaseController {
       return mongoClient.getDatabase(mongoDatabaseName);
   }
 
+  public MongoCollection<Document> getUserCollection() {
+    return getUserCredentialsDatabase().getCollection("users");
+  }
+
   public void createUser(String username, String password, String sessionId, String dateTime) {
-      var database = getUserCredentialsDatabase();
-      var users = database.getCollection("users");
+      var users = getUserCollection();
       var userDocument = new Document();
       userDocument.put("username", username);
       userDocument.put("password", password);
@@ -32,29 +35,25 @@ public class DatabaseController {
   }
 
   public boolean checkIfUserExists(String username) {
-      MongoDatabase database = getUserCredentialsDatabase();
-      MongoCollection<Document> users = database.getCollection("users");
+      MongoCollection<Document> users = getUserCollection();
       return null != users.find(Filters.eq("username", username)).first();
   }
 
   public void setUserSessionId(String username, String sessionId) {
-      MongoDatabase database = getUserCredentialsDatabase();
-      MongoCollection<Document> users = database.getCollection("users");
+      MongoCollection<Document> users = getUserCollection();
       Bson filter = Filters.eq("username", username);
       Bson updateOperation = Updates.set("sessionId", sessionId);
       users.updateOne(filter, updateOperation);
   }
 
   public String getUsername(String sessionId) {
-      MongoDatabase database = getUserCredentialsDatabase();
-      MongoCollection<Document> users = database.getCollection("users");
+      MongoCollection<Document> users = getUserCollection();
       Bson filter = Filters.eq("sessionId", sessionId);
       return users.find(filter).first().getString("username");
   }
 
   public String getPassword(String username) {
-      MongoDatabase database = getUserCredentialsDatabase();
-      MongoCollection<Document> users = database.getCollection("users");
+      MongoCollection<Document> users = getUserCollection();
       Bson filter = Filters.eq("username", username);
       return users.find(filter).first().getString("password");
   }
