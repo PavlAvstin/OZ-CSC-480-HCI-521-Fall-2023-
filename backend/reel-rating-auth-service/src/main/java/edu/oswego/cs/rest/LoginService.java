@@ -23,7 +23,7 @@ public class LoginService {
   public Response login(@Context HttpServletRequest request, User user) throws NoSuchAlgorithmException {
     DatabaseController db = new DatabaseController();
     if (db.checkIfUserExists(user.getUsername())) {
-      if (SecurityUtils.validatePassword(user.getUsername(), db.getPassword(user.getUsername()))) {
+      if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(user.getUsername()))) {
         String sessionId = request.getSession().getId();
         db.setUserSessionId(user.getUsername(), sessionId);
         String stateMessage = "logged in";
