@@ -35,14 +35,15 @@
     <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
     <httpEndpoint id="defaultHttpEndpoint"
                   host="*"
-                  httpPort="${DISPLAY_SERVICE_PORT}"
+                  httpPort="9080"
                   httpsPort="9443" />
+                  <!-- ${DISPLAY_SERVICE_PORT} -->
 
     <!-- Automatically expand WAR files and EAR files -->
     <applicationManager autoExpand="true"/>
 
     <!-- Configures the application on a specified context root -->
-    <webApplication contextRoot="/reel-rating-display-service" location="reel-rating-display-service.war" />
+    <webApplication contextRoot="/" location="reel-rating-display-service.war" />
 
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
