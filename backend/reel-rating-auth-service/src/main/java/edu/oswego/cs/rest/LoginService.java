@@ -1,9 +1,7 @@
 package edu.oswego.cs.rest;
 
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -20,7 +18,7 @@ public class LoginService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/login")
   public Response login(@Context HttpServletRequest request, @QueryParam("username") String username, @QueryParam("password") String password) {
-    
+    String sessionId = request.getSession().getId();
     String stateMessage = "logged in";
     return Response.ok(stateMessage).build();
   }
