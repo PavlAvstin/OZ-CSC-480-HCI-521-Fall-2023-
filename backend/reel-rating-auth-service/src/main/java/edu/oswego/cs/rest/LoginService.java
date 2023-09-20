@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -21,12 +20,12 @@ public class LoginService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/login")
-  public Response login(@Context HttpServletRequest request, @QueryParam("username") String username, @QueryParam("password") String password) throws NoSuchAlgorithmException {
+  public Response login(@Context HttpServletRequest request, User user) throws NoSuchAlgorithmException {
     DatabaseController db = new DatabaseController();
-    if (db.checkIfUserExists(username)) {
-      if (SecurityUtils.validatePassword(password, db.getPassword(username))) {
+    if (db.checkIfUserExists(user.getUsername())) {
+      if (SecurityUtils.validatePassword(user.getUsername(), db.getPassword(user.getUsername()))) {
         String sessionId = request.getSession().getId();
-        db.setUserSessionId(username, sessionId);
+        db.setUserSessionId(user.getUsername(), sessionId);
         String stateMessage = "logged in";
         return Response.ok(stateMessage).build();
       }
@@ -37,13 +36,13 @@ public class LoginService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/register")
-  public Response registerUser(@Context HttpServletRequest request, @QueryParam("username") String username, @QueryParam("password") String password) throws NoSuchAlgorithmException {
+  public Response registerUser(@Context HttpServletRequest request, User user) throws NoSuchAlgorithmException {
     DatabaseController db = new DatabaseController();
-    if (!db.checkIfUserExists(username)) {
-      String encryptedPassword = SecurityUtils.generatePassword(password);
+    if (!db.checkIfUserExists(user.getUsername())) {
+      String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
       String sessionId = request.getSession().getId();
       String dateTime = LocalDateTime.now().toString();
-      db.createUser(username, encryptedPassword, sessionId, dateTime);
+      db.createUser(user.getUsername(), encryptedPassword, sessionId, dateTime);
       String stateMessage = "Registered";
       return Response.ok(stateMessage).build();
     }
