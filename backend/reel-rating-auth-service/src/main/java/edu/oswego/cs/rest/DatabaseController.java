@@ -5,8 +5,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 public class DatabaseController {
   
@@ -18,7 +20,7 @@ public class DatabaseController {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
-//something
+
   public void createUser(String username, String password, String sessionId, String dateTime) {
       var database = getUserCredentialsDatabase();
       var users = database.getCollection("users");
@@ -34,5 +36,13 @@ public class DatabaseController {
       MongoDatabase database = getUserCredentialsDatabase();
       MongoCollection<Document> users = database.getCollection("users");
       return null != users.find(Filters.eq("username", username)).first();
+  }
+
+  public void setUserSessionId(String username, String sessionId) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      Bson filter = Filters.eq("username", username);
+      Bson updateOperation = Updates.set("sessionId", sessionId);
+      users.updateOne(filter, updateOperation);
   }
 }
