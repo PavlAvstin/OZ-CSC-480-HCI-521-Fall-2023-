@@ -9,6 +9,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 @RequestScoped
 @Path("/auth")
@@ -18,8 +19,13 @@ public class LoginService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/login")
   public Response login(@Context HttpServletRequest request, @QueryParam("username") String username, @QueryParam("password") String password) {
-    String sessionId = request.getSession().getId();
-    String stateMessage = "logged in";
-    return Response.ok(stateMessage).build();
+    DatabaseController db = new DatabaseController();
+    if (db.checkIfUserExists(username)) {
+      String sessionId = request.getSession().getId();
+      String stateMessage = "logged in";
+      return Response.ok(stateMessage).build();
+    } else {
+      return Response.status(Status.UNAUTHORIZED).build();
+    }
   }
 }
