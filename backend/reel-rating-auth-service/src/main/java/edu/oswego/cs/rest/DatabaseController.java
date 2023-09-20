@@ -16,10 +16,9 @@ public class DatabaseController {
   String mongoURL = System.getenv("MONGO_CRED_URL");
 
   public MongoDatabase getUserCredentialsDatabase() {
-    MongoClient mongoClient = MongoClients.create(mongoURL);
-    return mongoClient.getDatabase(mongoDatabaseName);
+      MongoClient mongoClient = MongoClients.create(mongoURL);
+      return mongoClient.getDatabase(mongoDatabaseName);
   }
-
 
   public void createUser(String username, String password, String sessionId, String dateTime) {
       var database = getUserCredentialsDatabase();
@@ -44,5 +43,12 @@ public class DatabaseController {
       Bson filter = Filters.eq("username", username);
       Bson updateOperation = Updates.set("sessionId", sessionId);
       users.updateOne(filter, updateOperation);
+  }
+
+  public String getUsername(String sessionId) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      Bson filter = Filters.eq("sessionId", sessionId);
+      return users.find(filter).first().getString("username");
   }
 }
