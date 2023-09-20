@@ -2,11 +2,11 @@ package edu.oswego.cs.rest;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+import com.mongodb.client.model.Filters;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import org.bson.Document;
 
 public class DatabaseController {
   
@@ -28,5 +28,11 @@ public class DatabaseController {
       userDocument.put("sessionId", sessionId);
       userDocument.put("dateTime", dateTime);
       users.insertOne(userDocument);
+  }
+
+  public boolean checkIfUserExists(String username) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      return null != users.find(Filters.eq("username", username)).first();
   }
 }
