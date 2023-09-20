@@ -2,11 +2,13 @@ package edu.oswego.cs.rest;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 
 public class DatabaseController {
   
@@ -14,11 +16,10 @@ public class DatabaseController {
   String mongoURL = System.getenv("MONGO_CRED_URL");
 
   public MongoDatabase getUserCredentialsDatabase() {
-    MongoClient mongoClient = MongoClients.create(mongoURL);
-    return mongoClient.getDatabase(mongoDatabaseName);
+      MongoClient mongoClient = MongoClients.create(mongoURL);
+      return mongoClient.getDatabase(mongoDatabaseName);
   }
 
-//something
   public void createUser(String username, String password, String sessionId, String dateTime) {
       var database = getUserCredentialsDatabase();
       var users = database.getCollection("users");
@@ -29,4 +30,33 @@ public class DatabaseController {
       userDocument.put("dateTime", dateTime);
       users.insertOne(userDocument);
   }
+
+  public boolean checkIfUserExists(String username) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      return null != users.find(Filters.eq("username", username)).first();
+  }
+
+  public void setUserSessionId(String username, String sessionId) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      Bson filter = Filters.eq("username", username);
+      Bson updateOperation = Updates.set("sessionId", sessionId);
+      users.updateOne(filter, updateOperation);
+  }
+
+  public String getUsername(String sessionId) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      Bson filter = Filters.eq("sessionId", sessionId);
+      return users.find(filter).first().getString("username");
+  }
+
+  public String getPassword(String username) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      Bson filter = Filters.eq("username", username);
+      return users.find(filter).first().getString("password");
+  }
+
 }
