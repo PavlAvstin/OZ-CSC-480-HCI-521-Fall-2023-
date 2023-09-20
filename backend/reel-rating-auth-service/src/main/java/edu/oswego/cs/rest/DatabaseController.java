@@ -51,4 +51,12 @@ public class DatabaseController {
       Bson filter = Filters.eq("sessionId", sessionId);
       return users.find(filter).first().getString("username");
   }
+
+  public String getPassword(String username) {
+      MongoDatabase database = getUserCredentialsDatabase();
+      MongoCollection<Document> users = database.getCollection("users");
+      Bson filter = Filters.eq("username", username);
+      return users.find(filter).first().getString("password");
+  }
+
 }
