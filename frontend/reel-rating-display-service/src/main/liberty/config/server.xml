@@ -17,8 +17,10 @@
     <keyStore password=""/> 
     -->
 
-    <mpJwt id="reel_rating_token" tokenHeader="Authorization" issuer="reel-rating" audiences="reel-rating" SignatureAlgorithm="RS512"
-        jwksUri="${JWK_URI}"/>
+    <mpJwt 
+        id="reel_rating_token" tokenHeader="Authorization" issuer="reel-rating" 
+        audiences="reel-rating" SignatureAlgorithm="RS512" jwksUri="${JWK_URI}"
+    />
 
     <!--For a user registry configuration, configure your user registry. For example, configure a basic user registry using the
         basicRegistry element. Specify your own user name below in the name attribute of the user element. For the password,
@@ -33,10 +35,10 @@
     
 
     <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
-    <httpEndpoint id="defaultHttpEndpoint"
-                  host="*"
-                  httpPort="9080"
-                  httpsPort="9443" />
+    <httpEndpoint 
+        id="defaultHttpEndpoint" host="*"
+        httpPort="${DISPLAY_SERVICE_PORT}" httpsPort="9443" 
+    />
                   <!-- ${DISPLAY_SERVICE_PORT} -->
 
     <!-- Automatically expand WAR files and EAR files -->
