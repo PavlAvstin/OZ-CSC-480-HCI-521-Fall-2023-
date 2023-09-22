@@ -2,6 +2,8 @@ package edu.oswego.cs.rest;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,10 +24,11 @@ public class LoginService {
   @Path("/login")
   public Response login(@Context HttpServletRequest request, User user) throws NoSuchAlgorithmException {
     DatabaseController db = new DatabaseController();
-    if (db.checkIfUserExists(user.getUsername())) {
-      if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(user.getUsername()))) {
+    String username = user.getUsername().toLowerCase();
+    if (db.checkIfUserExists(username)) {
+      if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(username))) {
         String sessionId = request.getSession().getId();
-        db.setUserSessionId(user.getUsername(), sessionId);
+        db.setUserSessionId(username, sessionId);
         String stateMessage = "logged in";
         return Response.ok(stateMessage).build();
       }
@@ -38,13 +41,34 @@ public class LoginService {
   @Path("/register")
   public Response registerUser(@Context HttpServletRequest request, User user) throws NoSuchAlgorithmException {
     DatabaseController db = new DatabaseController();
-    if (!db.checkIfUserExists(user.getUsername())) {
-      String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
-      String sessionId = request.getSession().getId();
-      String dateTime = LocalDateTime.now().toString();
-      db.createUser(user.getUsername(), encryptedPassword, sessionId, dateTime);
-      String stateMessage = "Registered";
-      return Response.ok(stateMessage).build();
+    String username = user.getUsername().toLowerCase();
+    String password = user.getPassword();
+
+    Pattern usernameLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{2,15}");
+    Matcher usernameMatcher = usernameLength.matcher(username);
+
+    Pattern passwordLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{8,}");
+    Matcher passwordLengthMatcher = passwordLength.matcher(password);
+
+    Pattern passwordSpecialCharacter = Pattern.compile(".*[!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{1,}.*");
+    Matcher passwordSpecialMatcher = passwordSpecialCharacter.matcher(password);
+
+    Pattern passwordNumberRequirement = Pattern.compile(".*\\d{1,}.*");
+    Matcher passwordNumberMatcher = passwordNumberRequirement.matcher(password);
+
+    // Confirm the username meets our requirements
+    if (usernameMatcher.matches()) {
+      // Confirm the password meets the requirements
+      if (passwordLengthMatcher.matches() && passwordSpecialMatcher.matches() && passwordNumberMatcher.matches()) {
+        if (!db.checkIfUserExists(username)) {
+          String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
+          String sessionId = request.getSession().getId();
+          String dateTime = LocalDateTime.now().toString();
+          db.createUser(username, encryptedPassword, sessionId, dateTime);
+          String stateMessage = "Registered";
+          return Response.ok(stateMessage).build();
+        }
+      }
     }
     return Response.status(Status.UNAUTHORIZED).build();
   }

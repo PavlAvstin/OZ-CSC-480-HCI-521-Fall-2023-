@@ -22,7 +22,7 @@ window.onload = ()=>{
         if(errors === false && passwordMatch === true){
             jsonData = formatFetchData(currentAccountData, ["username","password"]);
             fetchPost(
-                "http://localhost:30400/reel-rating-auth-service/auth/login", 
+                "http://localhost:30500/reel-rating-auth-service/auth/login", 
                 jsonData
             );
         }
@@ -99,11 +99,10 @@ function toggleCreateAccount(){
 
 function fetchPost(url, jsonData){
     fetch(url,{
-        mode : "no-cors",
+        mode : "cors",
         method : "post",
         headers:{
             "Content-Type" : "application/json",
-            // "Access-Control-Allow-Origin" : "http://localhost:30400",
         },
         body : jsonData
     })
@@ -114,17 +113,17 @@ function fetchPost(url, jsonData){
 
 
 function formatFetchData(arrayData, arrayKeys){
-    jsonString = "";
+    jsonString = "{";
     for(x=0; x < arrayData.length; x++){
         if((x+1) !== arrayData.length){
-            jsonString += `"${arrayKeys[x]}":"${arrayData[x]}",`;
+            jsonString += `"${arrayKeys[x]}":"${arrayData[x].value}",`;
         }
         else{
-            jsonString += `"${arrayKeys[x]}":"${arrayData[x]}"`;
+            jsonString += `"${arrayKeys[x]}":"${arrayData[x].value}"`;
         }
     }
-    jsonData = JSON.stringify(`{${jsonString}}`);
-    return jsonData;
+    jsonString+="}";
+    return jsonString;
 }
 
 function clearErrors(errorsArray){
