@@ -10,8 +10,8 @@ export const formatJSONData = (arrayData, arrayKeys)=>{
             jsonString += `"${arrayKeys[x]}":"${arrayData[x].value}"`;
         }
     }
-    jsonString += `{${jsonString}}`; //Add the wrapping {} to complete the json object
-    return jsonString;
+     
+    return `{${jsonString}}`; //Add the wrapping {} to complete the json object and return it
 }
 
 export const clearErrors = (errorsArray)=>{
