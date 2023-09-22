@@ -5,39 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <!-- Add Bootstrap CSS link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- Link to CSS file -->
-    <link rel="stylesheet" href="./css/index.css">
+    <!-- All imports are local routing or cdns -->
+    <link 
+        rel="stylesheet"
+        crossorigin="anonymous"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    /> <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="./css/index.css"><!-- Link to CSS file -->
 </head>
 
 <body id="backgroundGrad">
     <div class="row">
-        <div class="col-10 offset-1 col-lg-6 mtLG">
-            <div class="row">
-                <div class="col-12">
+        <div class="col-10 offset-1 col-lg-6"> <!-- Div to control the primary container -->
+            <div class="row vcToWindow">
+                <div class="col-12"> <!-- Logo and App Name Container -->
                     <div class="row">
                         <div class="col-2 offset-2"><!-- Logo -->
                             <img src="./images/logo.png" alt="Reel-Ratings Logo" class="img-fluid" id="mainLogo">
                         </div>
-                        <div class="textCenter mb-4 col-6"> <!-- Company Name -->
+                        <div class="textCenter mb-4 col-6"> <!-- App Name -->
                             <h1 class="xlFont fontWhite">Reel-Ratings</h1>
                         </div>
                     </div>
                 </div>
-                <div class="mb-3 col-12"><!-- User Name -->
+                <div class="mb-3 col-12"><!-- User Name Container -->
                     <label for="username" class="lgFont fontWhite">Username</label>
                     <input type="text" id="username" placeholder="your username" class="fullWidth ptXSM pbXSM brAll"/>
                     <div class="fontWhite textCenter bgColor brBottom hidden error" id="userNameError">Please enter a user name</div>
                 </div>
-                <div class="mb-3 col-12"> <!-- Password -->
+                <div class="mb-3 col-12"> <!-- Password Container-->
                     <label for="password" class="lgFont fontWhite">Password</label>
                     <input type="password" id="password" placeholder="your password" class="fullWidth ptXSM pbXSM brAll"/>
                     <div class="bgColor fontWhite textCenter hidden error passwordErrorEmpty">Please enter your password</div>
                     <div class="bgColor fontWhite textCenter brBottom hidden error passwordErrorNoMatch">Password doesn't match</div>
                 </div>
-                <div class="mb-3 col-12 hidden" id="passwordMatchContainer"> <!-- Password Match -->
+                <div class="mb-3 col-12 hidden" id="passwordMatchContainer"> <!-- Password Match Container -->
                     <label for="password" class="lgFont fontWhite">Password Match</label>
                     <input type="password" id="passwordMatch" placeholder="your password" class="fullWidth ptXSM pbXSM brAll"/>
                     <div class="bgColor fontWhite textCenter brBottom error passwordErrorEmpty hidden">Please enter your password</div>
@@ -55,18 +58,22 @@
                             newAccount="false"
                         >
                             Sign In
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        </div> <!-- End of submit button -->
+                    </div> <!-- End of row -->
+                </div> <!-- End of button container -->
+            </div> <!-- End of content row-->
+        </div> <!-- End of content container -->
+    </div> <!-- End of primary row -->
     <footer>
-        <!-- Add Bootstrap JS and jQuery scripts -->
-        <script src="./js/index.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- JS imports-->
+        <script src="./js/controller.mjs" type="module"></script>
+        <scirpt src="./js/jsStyles.mjs" type="module"></scirpt>
+        <scirpt src="./js/login.mjs" type="module"></scirpt>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+            crossorigin="anonymous">
+        </script> <!-- Bootstrap 5 bundle -->
     </footer>
 </body>
 
