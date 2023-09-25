@@ -1,8 +1,8 @@
 "use strict";
-import * as JSStyles from "./jsStyles.mjs"
-import * as NetworkReq from "./networkReq.mjs"
-import * as Login from "./login.mjs"
-import * as Tools from "./tools.mjs"
+import * as JSStyles from "./jsStyles.js"
+import * as NetworkReq from "./networkReq.js"
+import * as Login from "./login.js"
+import * as Tools from "./tools.js"
 
 window.onload = ()=>{
     var submitButton = document.getElementById("submit");
