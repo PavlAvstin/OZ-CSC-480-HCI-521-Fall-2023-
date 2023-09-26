@@ -39,6 +39,8 @@ public class LoginService {
       if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(username))) {
         String sessionId = request.getSession().getId();
         db.setUserSessionId(username, sessionId);
+        String dateTime = LocalDateTime.now().toString();
+        db.setUserDateTime(username, dateTime);
         String stateMessage = "logged in";
         return Response.ok(stateMessage).build();
       }
