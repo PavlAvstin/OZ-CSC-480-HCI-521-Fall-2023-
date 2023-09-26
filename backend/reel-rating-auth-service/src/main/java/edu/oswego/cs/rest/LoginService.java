@@ -19,6 +19,16 @@ import jakarta.ws.rs.core.Response.Status;
 @Path("/auth")
 public class LoginService {
   
+  /**
+   * Provides a way for the user to login into our system(Opening a window of time for their
+   * session to generate JWTs). A User Json with a provided username and password is consumed.
+   * If the username exists and the password is validated an Ok reponse is returned.
+   * Otherwise an Unauthorized Response is returned.
+   * @param request Contains the needed session id of the user.
+   * @param user A Json Containing a String username and String password.
+   * @return Either an Ok Reponse or Unauthorized Response.
+   * @throws NoSuchAlgorithmException
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/login")
@@ -29,6 +39,8 @@ public class LoginService {
       if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(username))) {
         String sessionId = request.getSession().getId();
         db.setUserSessionId(username, sessionId);
+        String dateTime = LocalDateTime.now().toString();
+        db.setUserDateTime(username, dateTime);
         String stateMessage = "logged in";
         return Response.ok(stateMessage).build();
       }
@@ -36,6 +48,15 @@ public class LoginService {
     return Response.status(Status.UNAUTHORIZED).build();
   }
 
+  /**
+   * Provides a way for a new user to be registered. A User Json with an associated username and password
+   * is consumed. If the username and password meet our specifications an Ok Reponse is returned. Otherwise
+   * an Unauthorized Response is returned.
+   * @param request An HttpServletRequest that contains the new users current session id.
+   * @param user A Json containing a String username and String password.
+   * @return Response (Either Ok or Unauthorized)
+   * @throws NoSuchAlgorithmException
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/register")
