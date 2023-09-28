@@ -6,6 +6,11 @@ services:
     container_name: reel-rating-mongo-user-credentials
     restart: unless-stopped
 
+  mongodb-movie:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    container_name: reel-rating-mongo-movie
+    restart: unless-stopped
+
   reel-rating-auth-service:
     build:
       context: ./backend/reel-rating-auth-service/
