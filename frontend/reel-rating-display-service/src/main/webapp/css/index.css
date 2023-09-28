@@ -5,7 +5,7 @@
     --transDur : .3s;
     --mainColor : #3D37BF;
     --secondaryColor : #6864CA;
-    --neutralColor : #e5e5e5;
+    --neutralColor : #E5E5E5;
     
     --radius : 15px; /* border radius amount */
 
@@ -46,7 +46,7 @@ body{
 .fontWhite{ color : white; }
 .textCenter{ text-align : center; }
 .fullWidth{ width : 100% };
-.bgPrimary{ background-color: var(--mainColor)}
+.bgPrimary{ background-color: var(--mainColor);}
 .bgPrimary:hover{background-color: var(--secondaryColor); transition: var(--transDur);}
 .bgNeutral{ background-color: var(--neutralColor);}
 .bgNeutral:hover{background-color: var(--secondaryColor); transition: var(--transDur); color:white;}
