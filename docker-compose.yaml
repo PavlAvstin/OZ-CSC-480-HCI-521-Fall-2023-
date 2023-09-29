@@ -23,6 +23,18 @@ services:
     ports:
       - "127.0.0.1:30500:30500"
 
+  reel-rating-movie-data-service:
+    build:
+      context: ./backend/reel-rating-movie-data-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-movie-data-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+    ports:
+      - "127.0.0.1:30501:30501" 
+
   reel-rating-display-service:
     build:
       context: ./frontend/reel-rating-display-service
