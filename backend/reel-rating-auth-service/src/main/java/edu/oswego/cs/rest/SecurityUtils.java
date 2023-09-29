@@ -1,11 +1,28 @@
-/*
- * Class to hold methods relating to security for the user login microservice
+package edu.oswego.cs.rest;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+/**
+ * This class holds methods relating to security for the user login microservice.
  *
- * Salting and Hashing Passwords
- *      Passwords will be salted hashed and converted into a string using this format. To start we are using
- *          SHA 512 hashing and a 64 byte password unique salt (See below).
- *          [ 64 bytes 			        	| 64 bytes 		       ]
- * 	        [ Salted and hashed password	| Password unique salt ]
+ * <p>The main purpose is to generate salted and hashed passwords for the database to store along
+ * with validating user passwords upon login attempts. The plain text passwords are transformed into
+ * a Base64 encoded String of form <code>[salted and hashed password | password unique salt]</code>.
+ * Doing so allows us to store and retrieve the password and its salt easily without losing any
+ * security.</p>
+ *
+ * <p>Typical callers of SecurityUtils can would invoke the generatePassword() or validatePassword()
+ * methods: </p>
+ *
+ * <blockquote><pre>
+ * String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
+ * if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(username)))
+ * </blockquote>
  *
  *      Full list of methods
  *      - String generatePassword(String password)
@@ -24,23 +41,21 @@
  *          methods. You should not need to call them.
  */
 
-package edu.oswego.cs.rest;
-
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Base64;
-
 public class SecurityUtils {
 
     /*
      * Salting and hashing functions
      */
 
-    // generatePassword() returns a salted and hashed version of the password to be stored in form
-    //      [saltedHashedPassword][salt] in the form of a String
+    /**
+     * Creates and returns a new salted and hashed password from a users plaintext password.
+     * To accomplish this a password unique salt is also created. This password is then stored
+     * and later used to validate the user when logging in.
+     *
+     * @param password the users plaintext password
+     * @return      Base64 encoded string version of the salt appended to the salted and hashed password
+     * @throws NoSuchAlgorithmException
+     */
     static public String generatePassword(String password) throws NoSuchAlgorithmException {
         // generate a password unique 64 byte salt
         byte[] salt = getSalt();
@@ -49,7 +64,16 @@ public class SecurityUtils {
         return hashPassword(password, salt);
     }
 
-    // validatePassword
+    /**
+     * Encrypts via Salting and hashing a plaintext password and compares to the given salted and hashed password.
+     * @param proposedPassword plaintext password
+     * @param expectedHashedPassword Base64 encoded String version of the password unique salt appended
+     *                               to the salted and hashed correct password
+     * @return <code>true</code> if the salted and hashed version of the <code>proposedPassword</code>
+     *      is equal to the <code>expectedHashedPassword</code>;
+     *      <code>false</code> otherwise.
+     * @throws NoSuchAlgorithmException
+     */
     static public boolean validatePassword(String proposedPassword, String expectedHashedPassword) throws NoSuchAlgorithmException {
         // extract password unique hash from expectedHashedPassword
         byte[] salt = extractSalt(expectedHashedPassword);
@@ -66,9 +90,15 @@ public class SecurityUtils {
     /*
      * Salting and hashing helper functions
      */
-
-    // hashPassword() - takes in a plaintext password and a salt. Combines and hashes them returning the new
-    //      salted and hashed password
+    /**
+     * Converts plaintext password to a base64 encoded String representation of the password unique salt
+     * appended to the salted and hashed password. The passwords are hashed using the SHA-512 algorithmn
+     * implemented via the MessageDigest from java.security.
+     * @param password plaintext password
+     * @param salt size 64 array of random bytes
+     * @return base64 encoded String to be stored for future login attempts
+     * @throws NoSuchAlgorithmException when the algorithm param for MessageDigest does not exist
+     */
     static String hashPassword(String password, byte[] salt) throws NoSuchAlgorithmException{
         // create string to return
         String hashedPassword = null;
@@ -95,7 +125,12 @@ public class SecurityUtils {
         return hashedPassword;
     }
 
-    // getSalt() generates a new secure pseudorandom salt to be used in hashing
+    /**
+     * Generates a new size 64 array filled with securely pseudorandom bits referred to as salt.
+     * This salt is then used to help introduce randomness into password to protect against precalculated
+     * dictionary attacks also known as rainbow table attacks
+     * @return array of random bytes
+     */
     static byte[] getSalt(){
         // use Java.SecureRandom to get a secure pseudorandom
         SecureRandom secureRandom = new SecureRandom();
@@ -106,7 +141,13 @@ public class SecurityUtils {
         return salt;
     }
 
-    // extractSalt() returns byte[64] of the salt taken from a previously stored password
+    /**
+     * Splits stored password into salt and salted and hashed password. The seperated salt is used
+     * to validate passwords during login.
+     * @param expectedHashedPassword Base64 encoded String version of salt appended to salted
+     *                               and hashed password
+     * @return size 64 byte array of password unique salt
+     */
     static byte[] extractSalt(String expectedHashedPassword){
         // turn String back into as size 128 byte array
         ByteBuffer expectedPasswordBuffer = ByteBuffer.wrap(Base64.getDecoder().decode(expectedHashedPassword));
