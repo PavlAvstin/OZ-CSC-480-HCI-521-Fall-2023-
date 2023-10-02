@@ -45,7 +45,7 @@ body{
 
 .fontWhite{ color : white; }
 .textCenter{ text-align : center; }
-.fullWidth{ width : 100% };
+.fullWidth{ width : 100%; }
 .bgPrimary{ background-color: var(--mainColor);}
 .bgPrimary:hover{background-color: var(--secondaryColor); transition: var(--transDur);}
 .bgNeutral{ background-color: var(--neutralColor);}
