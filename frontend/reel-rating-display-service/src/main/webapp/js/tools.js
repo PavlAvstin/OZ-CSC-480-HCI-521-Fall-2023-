@@ -14,8 +14,9 @@ export const formatJSONData = (arrayData, arrayKeys)=>{
     return `{${jsonString}}`; //Add the wrapping {} to complete the json object and return it
 }
 
-export const clearErrors = (errorsArray)=>{
-    for(var x=0; x < errorsArray.length; x++){
-        errorsArray[x].classList.add("hidden");
+export const clearErrors = ()=>{
+    var allErrors = document.getElementsByClassName("error");
+    for(var x=0; x < allErrors.length; x++){
+        allErrors[x].classList.add("hidden");
     }
 }

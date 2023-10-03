@@ -1,50 +1,63 @@
 "using strict";
 
+
 export const getAccountData = (newAccount)=>{
-    var accountData = [];
     if(newAccount === "false"){
-        accountData.push(document.getElementById("username"));
-        accountData.push(document.getElementById("password"));
+        var username = document.getElementById("username");
+        var password = document.getElementById("password");
+        return { username, password };
     } 
     else if(newAccount === "true"){
-        accountData.push(document.getElementById("username"));
-        accountData.push(document.getElementById("password"));
-        accountData.push(document.getElementById("passwordMatch"));
+        var username = document.getElementById("username");
+        var password = document.getElementById("password");
+        var passwordMatch = document.getElementById("passwordMatch");
+        return { username, password, passwordMatch };
     }
-    return accountData;
 }
 
 
 export const getEmptyErrorMessages = (newAccount)=>{
-    var errorMessages = [];
     if(newAccount === "false"){
-        errorMessages.push(document.getElementById("userNameError"));
-        errorMessages.push(document.getElementsByClassName("passwordErrorEmpty")[0]);
+        var usernameError = document.getElementById("userNameError");
+        var passwordEmptyError = document.getElementsByClassName("passwordErrorEmpty")[0];
+        return { usernameError, passwordEmptyError };
     } 
     else if(newAccount === "true"){
-        errorMessages.push(document.getElementById("userNameError"));
-        errorMessages.push(document.getElementsByClassName("passwordErrorEmpty")[0]);
-        errorMessages.push(document.getElementsByClassName("passwordErrorEmpty")[1]);
+        var usernameError = document.getElementById("userNameError");
+        var passwordEmptyError = document.getElementsByClassName("passwordErrorEmpty")[0];
+        var passwordMatchEmptyError = document.getElementsByClassName("passwordErrorEmpty")[1];
+        return { usernameError, passwordEmptyError, passwordMatchEmptyError };
     }
-    return errorMessages;
 }
 
-export const checkForEmptyInputs = (currentInputs, currentErrorMessages)=>{
+
+export const checkForEmptyInputs = (currentInputs, currentErrorMessages, newAccount)=>{
     var emptyInput = false;
-    for(var x=0; x < currentInputs.length; x++){
-        if(currentInputs[x].value === ""){
-            emptyInput = true
-            currentErrorMessages[x].classList.remove("hidden");
+    if(currentInputs.username.value === ""){
+        emptyInput = true; //Set empty input to make sure no data is sent to the server
+        currentErrorMessages.usernameError.classList.remove("hidden");
+    }
+
+    if(currentInputs.password.value === ""){
+        emptyInput = true;
+        currentErrorMessages.passwordEmptyError.classList.remove("hidden");
+    }
+
+    if(newAccount === true){
+        if(currentInputs.passwordMatch.value === ""){
+            emptyInput = true;
+            currentErrorMessages.passwordMatchEmptyError.classList.remove("hidden");
         }
     }
+    
     return emptyInput;
 }
 
 
 export const checkForPasswordMatch = (currentInputs, currentMatchErrors)=>{
     var passwordMatch = true;
-    if(currentInputs[1].value !== currentInputs[2].value){
-        passwordMatch = false;
+    if(currentInputs.password.value !== currentInputs.passwordMatch.value){
+        passwordMatch = false; //Return false to make sure data is not sent to the server
         currentMatchErrors[0].classList.remove("hidden");
         currentMatchErrors[1].classList.remove("hidden");
     }
@@ -64,4 +77,26 @@ export const toggleCreateAccount = (submitButton)=>{
         submitButton.setAttribute("newAccount","false");
         submitButton.innerText = "Sign in";
     }
+}
+
+
+export const checkVaildPassword = (password)=>{
+    var passwordNotVaildContainer = document.getElementById("passwordNotValid");
+    var error = false;
+    var errorHtml = "";
+
+    //At the moment we are only checking for one condidition
+    //However in the future there will be more
+    //When this happens append a new div to the string
+    if(password.length < 8){
+        errorHtml += "<div>Password length must be 8 or more</div>";
+        error = true;
+    }
+
+    if (error === true){
+        passwordNotVaildContainer.innerHTML = errorHtml;
+        passwordNotVaildContainer.classList.remove("hidden");
+    }
+
+    return error;
 }
