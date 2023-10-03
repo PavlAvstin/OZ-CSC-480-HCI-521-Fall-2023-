@@ -13,15 +13,14 @@ window.onload = ()=>{
         var currentAccountData = Login.getAccountData(newAccount);
         var currentEmptyErrorMessages = Login.getEmptyErrorMessages(newAccount);
         var currentMatchErrors = document.getElementsByClassName("passwordErrorNoMatch");
-        Tools.clearErrors(currentEmptyErrorMessages);
-        Tools.clearErrors(currentMatchErrors);
-
+        Tools.clearErrors();
 
         if(newAccount === "false"){
-            errors = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages);
+            errors = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, false);
         }
         else if(newAccount === "true"){
-            errors = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages);
+            errors = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, true);
+            errors = Login.checkVaildPassword(currentAccountData.password.value);
             passwordMatch = Login.checkForPasswordMatch(currentAccountData, currentMatchErrors);
         }
 
@@ -34,10 +33,12 @@ window.onload = ()=>{
         }
     });
 
+
     var newAccountButton = document.getElementById("newAccount");
     newAccountButton.addEventListener("click", ()=>{
         Login.toggleCreateAccount(submitButton);
     });
+
 
     //Vertical Center Elms that need it
     var vertCenterElms = document.getElementsByClassName("vcToWindow");
