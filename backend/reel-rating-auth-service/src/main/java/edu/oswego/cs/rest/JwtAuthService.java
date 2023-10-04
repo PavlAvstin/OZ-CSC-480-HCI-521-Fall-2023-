@@ -8,17 +8,20 @@ import com.ibm.websphere.security.jwt.JwtBuilder;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 @RequestScoped
 @Path("/jwt")
 public class JwtAuthService {
   
-  @GET
-  @Path("/generate")
-  public Response generateToken() throws Exception {
+  String AUTH_SERVICE_URL = System.getenv("AUTH_SERVICE_URL");
 
-    String username = "Temporary";
+  @GET
+  @Path("/generate/{id}")
+  public Response generateToken(@PathParam("id") String id) throws Exception {
+
+    String username = "id";
     
     Set<String> roles = new HashSet<>();
     roles.add("user");
@@ -28,7 +31,7 @@ public class JwtAuthService {
       .claim("upn", username)
       .claim("groups", roles)
       .claim("aud", "reel-rating")
-      .claim("iss", "reel-rating")
+      .claim("iss", AUTH_SERVICE_URL)
       .buildJwt().compact();
 
       return Response.ok(jwt).build();
