@@ -1,5 +1,6 @@
 package edu.oswego.cs.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -11,6 +12,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+
+import edu.oswego.cs.rest.JsonClasses.Actor;
+import edu.oswego.cs.rest.JsonClasses.Movie;
+import edu.oswego.cs.rest.JsonClasses.Rating;
+import edu.oswego.cs.rest.JsonClasses.Review;
 
 public class DatabaseController {
   String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
@@ -371,5 +377,119 @@ public class DatabaseController {
               .append("releaseDate", releaseDate).append("Runtime", runtime).append("plotSummary", plotSummary);
       movieCollection.insertOne(newMovie);
     }
+  }
+
+    private static ArrayList<Movie> getMoviesWithFilter(MongoCollection<Document> moviesCollection, Bson filter) {
+    var movies = moviesCollection.find(filter).map(document -> {
+      var m = new Movie();
+      m.setDirector(document.getString("director"));
+      m.setRuntime(document.getString("runtime"));
+      m.setSummary(document.getString("summary"));
+      m.setTitle(document.getString("title"));
+      m.setWriters(document.getString("writers"));
+      m.setReleaseDate(document.getString("releaseDate"));
+      return m;
+    });
+    var list = new ArrayList<Movie>();
+    movies.forEach(list::add);
+    return list;
+  }
+
+  private static ArrayList<Actor> getActorsWithFilter(MongoCollection<Document> actorsCollection, Bson filter) {
+    var actors = actorsCollection.find(filter).map(document -> {
+      var a = new Actor();
+      a.setName(document.getString("name"));
+      a.setDateOfBirth(document.getString("dateOfBirth"));
+
+      return a;
+    });
+    var list = new ArrayList<Actor>();
+    actors.forEach(list::add);
+    return list;
+  }
+
+  private static ArrayList<Review> getReviewsWithFilter(MongoCollection<Document> reviewsCollection, Bson filter) {
+    var reviews = reviewsCollection.find(filter).map(document -> {
+      var re = new Review();
+      re.setReviewTitle(document.getString("reviewTitle"));
+      re.setReviewDescription(document.getString("reviewDescription"));
+      re.setMovieTitle(document.getString("movieTitle"));
+
+      return re;
+    });
+    var list = new ArrayList<Review>();
+    reviews.forEach(list::add);
+    return list;
+  }
+
+  private static ArrayList<Rating> getRatingsWithFilter(MongoCollection<Document> ratingsCollection, Bson filter) {
+    var ratings = ratingsCollection.find(filter).map(document -> {
+      var ra = new Rating();
+      ra.setRatingName(document.getString("ratingName"));
+      ra.setUserRating(document.getString("userRating"));
+      ra.setMovieTitle(document.getString("movieTitle"));
+
+
+      return ra;
+    });
+    var list = new ArrayList<Rating>();
+    ratings.forEach(list::add);
+    return list;
+  }
+
+
+
+  public List<Movie> getMoviesWithFlag(String flag) {
+    var moviesCollection = getMovieCollection();
+    var filter = Filters.eq("flagNames", flag);
+    return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public List<Movie> getMoviesWithRatingCategory(String ratingCategory) {
+    var moviesCollection = getMovieCollection();
+    var filter = Filters.eq("ratingCategoryNames", ratingCategory);
+    return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public List<Movie> getMoviesWithActor(String actor) {
+    var moviesCollection = getMovieCollection();
+    var filter = Filters.eq("actorNames", actor);
+    return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public List<Movie> getMoviesWithTitle(String title) {
+    var moviesCollection = getMovieCollection();
+    var filter = Filters.eq("title", title);
+    return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public List<Actor> getActorByName(String title) {
+    var actorsCollection = getActorCollection();
+    var filter = Filters.eq("title", title);
+    return getActorsWithFilter(actorsCollection, filter);
+  }
+
+  public List<Rating> getUserAssociatedRatings(String userName) {
+    var ratings = getRatingCollection();
+    var filter = Filters.eq("user", userName);
+    return getRatingsWithFilter(ratings, filter);
+  }
+
+  public List<Rating> getRatingsInRatingsCategory(String category) {
+    var ratings = getRatingCollection();
+    var filter = Filters.eq("category", category);
+    return getRatingsWithFilter(ratings, filter);
+  }
+
+  public List<Review> getReviewsByMovieName(String movieName) {
+    var reviews = getReviewCollection();
+    var filter = Filters.eq("movieName", movieName);
+    return getReviewsWithFilter(reviews, filter);
+  }
+
+  public List<Review> getReviewsByUser(String userName) {
+    var reviews = getReviewCollection();
+    var filter = Filters.eq("user", userName);
+    return getReviewsWithFilter(reviews, filter);
   }
 }
