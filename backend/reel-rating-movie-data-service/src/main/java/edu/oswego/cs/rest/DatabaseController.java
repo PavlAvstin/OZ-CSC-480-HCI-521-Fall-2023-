@@ -8,6 +8,7 @@ import org.bson.conversions.Bson;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -372,4 +373,108 @@ public class DatabaseController {
       movieCollection.insertOne(newMovie);
     }
   }
+
+
+
+  /**
+   * 
+   * @param flagName
+   * @param movieId
+   * @param movieTitle
+   */
+  //remove a flag from a specific movie 
+  public void deleteFlag(String flagName, String movieId, String movieTitle){
+    //get flags and movie collections
+    MongoCollection<Document> flagCollection = getFlagCollection();
+    MongoCollection<Document> movieCollection = getMovieCollection();
+
+    //filters movie with the input movie ID
+    Bson movieQuery = Filters.eq("id", movieId);
+    Document movieWithId = movieCollection.find(movieQuery).first();
+    if(movieWithId != null){
+    //remove flag from movie with the corresspond ID
+    Bson flagRemoveOp = Updates.pull("flagNames", flagName);
+    movieCollection.updateOne(movieWithId, flagRemoveOp);
+
+    //find the flag needed to be deleted
+    Bson titleQuery = Filters.eq("flagName", flagName);
+    Document existingFlag = flagCollection.find(titleQuery).first();
+    //remove movie title from the flag
+    Bson flagRemoveOP2 = Updates.pull("movieTitles", movieTitle);
+    flagCollection.updateOne(existingFlag, flagRemoveOP2);
+  }
+  else if(movieWithId == null){}
 }
+
+/**
+ * 
+ * @param flagName
+ */
+public void deleteFlags(String flagName){
+  //get flags and movie collection
+  MongoCollection<Document> flagCollection = getFlagCollection();
+  MongoCollection<Document> movieCollection = getMovieCollection();
+
+  //Filters movies with FlagName
+  Bson flagQuery = Filters.eq("flagNames", flagName);
+  MongoCursor<Document> movies = movieCollection.find(flagQuery).iterator();
+
+  //iterate through each filtered movie and remove the flag name
+  Bson flagRemoveOP = Updates.pull("flagNames", flagName);
+  movies.forEachRemaining(document -> {
+    flagCollection.updateOne(document, flagRemoveOP);
+  });
+
+//set movieTitles array into an emptied one
+Bson removeAll = Updates.set("movieTitles", "");
+Document flag = flagCollection.find(Filters.eq("flagName", flagName)).first();
+flagCollection.updateOne(flag, removeAll);
+}
+
+/**
+ * 
+ * @param movieTitle
+ * @param movieId
+ */
+public void deleteMovie(String movieTitle, String movieId){
+  //delete the movie's document
+  //get collections
+  MongoCollection<Document> movieCollection = getMovieCollection();
+  MongoCollection<Document> actorCollection = getActorCollection();
+  MongoCollection<Document> reviewCollection = getReviewCollection();
+  MongoCollection<Document> flagCollection = getFlagCollection();
+  //delete the movie's document
+  movieCollection.deleteOne(Filters.eq("id", movieId));
+  //filters all actors with the listed movie
+  MongoCursor<Document> actors = actorCollection.find(Filters.eq("movies", movieTitle)).iterator();
+  Bson movieRemoval = Updates.pull("movies", movieTitle);
+  actors.forEachRemaining(document -> {
+    // Delete each movie correspond with movieTitle in each qualified actor
+    actorCollection.updateOne(document, movieRemoval);
+  });
+  //delete movie within flags
+  MongoCursor<Document> flags = flagCollection.find(Filters.eq("movieTitles", movieTitle)).iterator();
+  Bson movieRemovalF = Updates.pull("movieTitles", movieTitle);
+  flags.forEachRemaining(document -> {
+    // Delete each movie correspond with movieTitle in each qualified actor
+    flagCollection.updateOne(document, movieRemovalF);
+  });
+
+  //delete all reviews related to the movie
+  reviewCollection.deleteMany(Filters.eq("movieTitle", movieTitle));
+}
+
+public void deleteActor(String id){
+  MongoCollection<Document> actorCollection = getActorCollection();
+  actorCollection.deleteOne(Filters.eq("id", id));
+}
+
+public void deleteReview(String title, String userName){
+  MongoCollection<Document> reviewCollection = getReviewCollection();
+  //get all reviews which has the required movie title and userName
+  Bson reviewFilter = Filters.and(Filters.eq("movieTitle", title), Filters.eq("userName", userName));
+  reviewCollection.deleteMany(reviewFilter);  
+}
+
+}
+
