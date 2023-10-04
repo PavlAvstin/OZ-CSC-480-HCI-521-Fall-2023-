@@ -32,19 +32,20 @@
                 <div class="mb-3 col-12"><!-- User Name Container -->
                     <label for="username" class="lgFont fontWhite">Username</label>
                     <input type="text" id="username" placeholder="your username" class="fullWidth ptXSM pbXSM brAll"/>
-                    <div class="fontWhite textCenter bgColor brBottom hidden error" id="userNameError">Please enter a user name</div>
+                    <div class="fontWhite textCenter bgPrimary brBottom hidden error" id="userNameError">Please enter a user name</div>
                 </div>
                 <div class="mb-3 col-12"> <!-- Password Container-->
                     <label for="password" class="lgFont fontWhite">Password</label>
                     <input type="password" id="password" placeholder="your password" class="fullWidth ptXSM pbXSM brAll"/>
-                    <div class="bgColor fontWhite textCenter hidden error passwordErrorEmpty">Please enter your password</div>
-                    <div class="bgColor fontWhite textCenter brBottom hidden error passwordErrorNoMatch">Password doesn't match</div>
+                    <div class="bgPrimary fontWhite textCenter brBottom hidden error passwordErrorEmpty">Please enter your password</div>
+                    <div class="bgPrimary fontWhite textCenter brBottom hidden error passwordErrorNoMatch">Password doesn't match</div>
+                    <div class="bgPrimary fontWhite textCenter brBottom hidden error" id="passwordNotValid"></div>
                 </div>
                 <div class="mb-3 col-12 hidden" id="passwordMatchContainer"> <!-- Password Match Container -->
                     <label for="password" class="lgFont fontWhite">Password Match</label>
                     <input type="password" id="passwordMatch" placeholder="your password" class="fullWidth ptXSM pbXSM brAll"/>
-                    <div class="bgColor fontWhite textCenter brBottom error passwordErrorEmpty hidden">Please enter your password</div>
-                    <div class="bgColor fontWhite textCenter brBottom error passwordErrorNoMatch hidden">Password doesn't match</div>
+                    <div class="bgPrimary fontWhite textCenter brBottom error passwordErrorEmpty hidden">Please enter your password</div>
+                    <div class="bgPrimary fontWhite textCenter brBottom error passwordErrorNoMatch hidden">Password doesn't match</div>
                 </div>
                 <div class="textCenter mb-3 col-12 mtSM mbSM hidden"><!-- Forgot Password Link -->
                     <a href="#" class="mdFont">Forgot Password?</a>
