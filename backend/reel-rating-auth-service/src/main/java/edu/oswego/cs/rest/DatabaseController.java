@@ -46,6 +46,13 @@ public class DatabaseController {
       users.updateOne(filter, updateOperation);
   }
 
+  public void setUserDateTime(String username, String dateTime) {
+      MongoCollection<Document> users = getUserCollection();
+      Bson filter = Filters.eq("username", username);
+      Bson updateOperation = Updates.set("dateTime", dateTime);
+      users.updateOne(filter, updateOperation);
+  }
+
   public String getUsername(String sessionId) {
       MongoCollection<Document> users = getUserCollection();
       Bson filter = Filters.eq("sessionId", sessionId);
