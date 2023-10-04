@@ -374,6 +374,12 @@ public class DatabaseController {
     }
   }
 
+  /**
+   * 
+   * @param flagName
+   * @param movieId
+   * @param movieTitle
+   */
   //remove a flag from a specific movie 
   public void deleteFlag(String flagName, String movieId, String movieTitle){
     //get flags and movie collections
@@ -398,6 +404,10 @@ public class DatabaseController {
   else if(movieWithId == null){}
 }
 
+/**
+ * 
+ * @param flagName
+ */
 public void deleteFlags(String flagName){
   //get flags and movie collection
   MongoCollection<Document> flagCollection = getFlagCollection();
@@ -419,6 +429,11 @@ Document flag = flagCollection.find(Filters.eq("flagName", flagName)).first();
 flagCollection.updateOne(flag, removeAll);
 }
 
+/**
+ * 
+ * @param movieTitle
+ * @param movieId
+ */
 public void deleteMovie(String movieTitle, String movieId){
   //delete the movie's document
   //get collections
@@ -458,7 +473,4 @@ public void deleteReview(String title, String userName){
   Bson reviewFilter = Filters.and(Filters.eq("movieTitle", title), Filters.eq("userName", userName));
   reviewCollection.deleteMany(reviewFilter);  
 }
-
-
-
 }
