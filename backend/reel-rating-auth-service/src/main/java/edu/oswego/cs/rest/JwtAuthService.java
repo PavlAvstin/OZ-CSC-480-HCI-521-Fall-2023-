@@ -21,7 +21,13 @@ public class JwtAuthService {
   @Path("/generate/{id}")
   public Response generateToken(@PathParam("id") String id) throws Exception {
 
-    String username = "id";
+    DatabaseController dbc = new DatabaseController();
+
+    String username = dbc.getUsername(id);
+
+    if (username == null) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
     
     Set<String> roles = new HashSet<>();
     roles.add("user");
