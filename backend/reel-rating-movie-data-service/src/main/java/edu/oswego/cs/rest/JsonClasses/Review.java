@@ -2,6 +2,7 @@ package edu.oswego.cs.rest.JsonClasses;
 
 public class Review {
   private String movieTitle;
+  private String movieId;
   private String reviewTitle;
   private String reviewDescription;
 
@@ -29,5 +30,13 @@ public class Review {
 
   public void setReviewDescription(String reviewDescription) {
     this.reviewDescription = reviewDescription;
+  }
+
+  public void setMovieId(String movieId) {
+    this.movieId = movieId;
+  }
+
+  public String getMovieId() {
+    return this.movieId;
   }
 }
