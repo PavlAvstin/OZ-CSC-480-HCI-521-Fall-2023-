@@ -66,49 +66,50 @@ public class MovieDataService {
     //   return Response.status(Response.Status.UNAUTHORIZED).build();
     // }
     DatabaseController db = new DatabaseController();
-    db.createMovie(movie.getTitle(), "", movie.getDirector(), "", movie.getReleaseDate(), movie.getRuntime(), movie.getWriters(), movie.getSummary());
+    db.createMovie(movie.getTitle(), movie.getDirector(), movie.getReleaseDate(), movie.getRuntime(), movie.getWriters(), movie.getSummary());
     return Response.ok().build();
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Path("/actor/create")
-  public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, Movie movie) throws Exception {
+  @Path("/actor/create/{movieTitle}")
+  public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, @PathParam("movieTitle") String movieTitle) throws Exception {
     // try {
     //   String username = getUsername(request);
     // } catch (Exception e) {
     //   return Response.status(Response.Status.UNAUTHORIZED).build();
     // }
     DatabaseController db = new DatabaseController();
-    db.createActor(actor.getName(), actor.getDateOfBirth(), movie.getTitle());
+    db.createActor(actor.getName(), actor.getDateOfBirth(), movieTitle);
     return Response.ok().build();
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Path("/flag/create")
-  public Response createFlagEndPoint(@Context HttpServletRequest request, Flag flag, Movie movie) throws Exception {
+  @Path("/flag/create/{movieId}")
+  public Response createFlagEndPoint(@Context HttpServletRequest request, Flag flag, @PathParam("movieId") String movieId) throws Exception {
     // try {
     //   String username = getUsername(request);
     // } catch (Exception e) {
     //   return Response.status(Response.Status.UNAUTHORIZED).build();
     // }
     DatabaseController db = new DatabaseController();
-    db.createFlag(flag.getFlagName(), movie.getTitle());
+    db.createFlag(flag.getFlagName(), movieId);
     return Response.ok().build();
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Path("/review/create")
-  public Response createReviewEndPoint(@Context HttpServletRequest request, Review review, Movie movie) throws Exception {
+  @Path("/review/create/{movieId}")
+  public Response createReviewEndPoint(@Context HttpServletRequest request, Review review, @PathParam("movieId") String movieId) throws Exception {
     // try {
     //   String username = getUsername(request);
     // } catch (Exception e) {
     //   return Response.status(Response.Status.UNAUTHORIZED).build();
     // }
     DatabaseController db = new DatabaseController();
-    db.createReview(movie.getTitle(), review.getReviewTitle(), review.getReviewDescription(), getUsername(request));
+    String tempUsername = "TempUsername";
+    db.createReview(movieId, review.getReviewTitle(), review.getReviewDescription(), tempUsername);
     return Response.ok().build();
   }
 
@@ -177,10 +178,10 @@ public class MovieDataService {
 
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/reviews/getByMovieName/{movieName}")
-  public List<Review> getReviewsByMovieName(@Context HttpServletRequest request, @PathParam("movieName") String movieName) throws Exception {
+  @Path("/reviews/getByMovieId/{movieId}")
+  public List<Review> getReviewsByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
     DatabaseController dbc = new DatabaseController();
-    List<Review> reviews = dbc.getReviewsByMovieName(movieName);
+    List<Review> reviews = dbc.getReviewsByMovieId(movieId);
     return reviews;
   }
 }
