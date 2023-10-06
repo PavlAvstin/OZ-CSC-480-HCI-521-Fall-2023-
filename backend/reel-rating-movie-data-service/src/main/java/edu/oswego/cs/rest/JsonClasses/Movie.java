@@ -1,6 +1,7 @@
 package edu.oswego.cs.rest.JsonClasses;
 
 public class Movie {
+  private String id;
   private String title;
   private String director;
   private String releaseDate;
@@ -9,6 +10,10 @@ public class Movie {
   private String summary;
 
   public Movie() {}
+
+  public String getId() { return id; }
+
+  public void setId(String id) { this.id = id; }
 
   public String getTitle() {
     return title;

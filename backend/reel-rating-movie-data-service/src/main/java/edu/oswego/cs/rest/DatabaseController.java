@@ -244,9 +244,8 @@ public class DatabaseController {
    *
    * @param flagName
    * @param movieTitleToAdd
-   * @param movieId
    */
-  public void createFlag(String flagName, String movieTitleToAdd, String movieId) {
+  public void createFlag(String flagName, String movieTitleToAdd) {
     // get the collections
     MongoCollection<Document> flagCollection = getFlagCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
@@ -260,7 +259,7 @@ public class DatabaseController {
 
     // if the flag exists and the movie is not flagged
     else if (null != existingFlag) {
-      Document movie = movieCollection.find(Filters.eq("id", movieId)).first();
+      Document movie = movieCollection.find(Filters.eq("title", movieTitleToAdd)).first();
       // if the movie exists
       if(null != movie) {
         // push the movieName to the flag list
@@ -275,7 +274,7 @@ public class DatabaseController {
     }
     // if the flag does not exist
     else {
-      Document movie = movieCollection.find(Filters.eq("id", movieId)).first();
+      Document movie = movieCollection.find(Filters.eq("title", movieTitleToAdd)).first();
       // if the movie exists
       if(null != movie) {
         // create the flag and add to the collection
@@ -297,18 +296,17 @@ public class DatabaseController {
   /**
    *
    * @param movieTitle
-   * @param movieId
    * @param reviewTitle
    * @param reviewDescription
    * @param userName
    */
-  public void createReview(String movieTitle, String movieId, String reviewTitle, String reviewDescription, String userName){
+  public void createReview(String movieTitle, String reviewTitle, String reviewDescription, String userName){
     // get collections
     MongoCollection<Document> reviewCollection = getReviewCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
     // get the movie object to make sure it exists
-    Document movie = movieCollection.find(Filters.eq("id", movieId)).first();
+    Document movie = movieCollection.find(Filters.eq("title", movieTitle)).first();
 
     // if the movie exists
     if(null != movie) {
@@ -324,16 +322,16 @@ public class DatabaseController {
   /**
    *
    * @param actorName
-   * @param actorId
    * @param dob
    * @param movieTitle
-   * @param movieId
    */
-  public void createActor(String actorName, String actorId, String dob, String movieTitle, String movieId){
+  public void createActor(String actorName, String dob, String movieTitle){
     // get collections
     MongoCollection<Document> actorCollection = getActorCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
+    // TODO verify the actor does not already exist
+    String actorId = "";
     // get the actor object to see if it exists
     Document actor = actorCollection.find(Filters.eq("id", actorId)).first();
 
@@ -343,7 +341,7 @@ public class DatabaseController {
     // if the actor does not exist
     else{
       // get the movie object to make sure it exists
-      Document movie = movieCollection.find(Filters.eq("id", movieId)).first();
+      Document movie = movieCollection.find(Filters.eq("title", movieTitle)).first();
       // if the movie exists
       if(null != movie) {
         // create a new actor
