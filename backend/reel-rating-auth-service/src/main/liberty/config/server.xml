@@ -18,7 +18,7 @@
     -->
     <mpJwt 
         id="reel_rating_token" tokenHeader="Authorization" 
-        issuer="reel-rating" audiences="reel-rating" 
+        issuer="${AUTH_SERVICE_URL}" audiences="reel-rating" 
         SignatureAlgorithm="RS512" jwksUri="${JWK_URI}"
     />
 
