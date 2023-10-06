@@ -367,15 +367,14 @@ public class DatabaseController {
 
     // get the movie object to see if it exists
     Document movie = movieCollection.find(Filters.eq("id", movieId)).first();
-
     // if the movie exists
     if (null != movie) { }
 
     // if the movie does not exist
     else{
       // create a new movie and add it to the movie collection
-      Document newMovie = new Document("id", movieId).append("Title", movieTitle).append("Director", director)
-              .append("releaseDate", releaseDate).append("Runtime", runtime).append("plotSummary", plotSummary);
+      Document newMovie = new Document("id", movieId).append("title", movieTitle).append("director", director)
+              .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary);
       movieCollection.insertOne(newMovie);
     }
   }
