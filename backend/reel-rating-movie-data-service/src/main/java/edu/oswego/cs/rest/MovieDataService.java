@@ -1,6 +1,10 @@
 package edu.oswego.cs.rest;
 
+import edu.oswego.cs.rest.JsonClasses.Actor;
+import edu.oswego.cs.rest.JsonClasses.Flag;
 import edu.oswego.cs.rest.JsonClasses.Movie;
+import edu.oswego.cs.rest.JsonClasses.Review;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
@@ -48,6 +52,10 @@ public class MovieDataService {
     return username;
   }
 
+  /**
+   * Create Endpoints
+   */
+
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/movie/create")
@@ -63,6 +71,51 @@ public class MovieDataService {
   }
 
   @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/actor/create")
+  public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, Movie movie) throws Exception {
+    // try {
+    //   String username = getUsername(request);
+    // } catch (Exception e) {
+    //   return Response.status(Response.Status.UNAUTHORIZED).build();
+    // }
+    DatabaseController db = new DatabaseController();
+    db.createActor(actor.getName(), actor.getDateOfBirth(), movie.getTitle());
+    return Response.ok().build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/flag/create")
+  public Response createFlagEndPoint(@Context HttpServletRequest request, Flag flag, Movie movie) throws Exception {
+    // try {
+    //   String username = getUsername(request);
+    // } catch (Exception e) {
+    //   return Response.status(Response.Status.UNAUTHORIZED).build();
+    // }
+    DatabaseController db = new DatabaseController();
+    db.createFlag(flag.getFlagName(), movie.getTitle());
+    return Response.ok().build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/review/create")
+  public Response createReviewEndPoint(@Context HttpServletRequest request, Review review, Movie movie) throws Exception {
+    // try {
+    //   String username = getUsername(request);
+    // } catch (Exception e) {
+    //   return Response.status(Response.Status.UNAUTHORIZED).build();
+    // }
+    DatabaseController db = new DatabaseController();
+    db.createReview(movie.getTitle(), review.getReviewTitle(), review.getReviewDescription(), getUsername(request));
+    return Response.ok().build();
+  }
+
+  /**
+   * get endpoints for movies
+   */
+  @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByTitle/{title}")
   public List<Movie> getMoviesWithTitleEndPoint(@Context HttpServletRequest request, @PathParam("title") String title) throws Exception {
@@ -71,5 +124,63 @@ public class MovieDataService {
     return movies;
   }
 
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getByFlagName/{flagName}")
+  public List<Movie> getMoviesWithFlagName(@Context HttpServletRequest request, @PathParam("flagName") String flagName) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithFlag(flagName);
+    return movies;
+  }
 
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getByRatingCategoryName/{ratingCategoryName}")
+  public List<Movie> getMoviesWithRatingCategoryName(@Context HttpServletRequest request, @PathParam("ratingCategoryName") String ratingCategoryName) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithRatingCategory(ratingCategoryName);
+    return movies;
+  }
+
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getByActor/{actor}")
+  public List<Movie> getMoviesWithActor(@Context HttpServletRequest request, @PathParam("actor") String actor) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithActor(actor);
+    return movies;
+  }
+
+  /**
+   * get endpoints for Actors
+   */
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/actor/getByName/{name}")
+  public List<Actor> getActorByName(@Context HttpServletRequest request, @PathParam("name") String name) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    List<Actor> actors = dbc.getActorByName(name);
+    return actors;
+  }
+
+  /**
+   * get endpoints for reviews
+   */
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/reviews/getByUser/{username}")
+  public List<Review> getReviewsByUser(@Context HttpServletRequest request, @PathParam("username") String username) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    List<Review> reviews = dbc.getReviewsByUser(username);
+    return reviews;
+  }
+
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/reviews/getByMovieName/{movieName}")
+  public List<Review> getReviewsByMovieName(@Context HttpServletRequest request, @PathParam("movieName") String movieName) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    List<Review> reviews = dbc.getReviewsByMovieName(movieName);
+    return reviews;
+  }
 }
