@@ -45,6 +45,10 @@ public class DatabaseController {
     return getMovieDatabase().getCollection("ratings");
   }
 
+  public MongoCollection<Document> getRatingCategoryCollection() {
+    return getMovieDatabase().getCollection("ratingCategories");
+  }
+
   public MongoCollection<Document> getUserAssociatedRatingCollection() {
     return getMovieDatabase().getCollection("userAssociatedRatings");
   }
@@ -65,7 +69,7 @@ public class DatabaseController {
     String oldMovieTitle = movies.find(idFilter).first().getString("title");
     Bson updateTitle = Updates.set("title", movieTitle);
     movies.updateOne(idFilter, updateTitle);
-    
+
     MongoCollection<Document> flags = getFlagCollection();
     Bson movieTitleFilter = Filters.eq("movieTitle", oldMovieTitle);
     Bson updateMovieTitle = Updates.set("movieTitle", movieTitle);
@@ -90,6 +94,12 @@ public class DatabaseController {
     Bson movieTitleFilterForReviews = Filters.eq("movieTitle", oldMovieTitle);
     Bson updateMovieTitleForReviews = Updates.set("movieTitle", movieTitle);
     reviews.updateMany(movieTitleFilterForReviews, updateMovieTitleForReviews);
+  }
+
+  public void updateMovieDocument(String movieTitle, Document movieDocument) {
+    var movieCollection = getMovieCollection();
+    var filter = Filters.eq("movieTitle", movieTitle);
+    movieCollection.updateOne(filter, movieDocument);
   }
 
   public void updateDirector(String id, String director) {
@@ -239,12 +249,9 @@ public class DatabaseController {
 
 
   /**
-   *
-   *
    * Users are not allowed to create a flag for a movie that does not already exist. If the movie does not exist
    *
    * @param flagName
-   * @param movieTitleToAdd
    */
   public void createFlag(String flagName, String movieIdHexString) {
     // get the collections
@@ -258,12 +265,13 @@ public class DatabaseController {
     Document existingFlag = flagCollection.find(Filters.eq("flagName", flagName)).first();
 
     // if the flag exists and the movie is already flagged
-    if (null != existsAndFlagged){ }
+    if (null != existsAndFlagged) {
 
+    }
     // if the flag exists and the movie is not flagged
     else if (null != existingFlag) {
       // if the movie exists
-      if(null != movie) {
+      if (null != movie) {
         // push the movieName to the flag list
         Bson flagUpdateOperation = Updates.push("movieTitles", movie.getString("title"));
         flagCollection.updateOne(existingFlag, flagUpdateOperation);
@@ -272,12 +280,13 @@ public class DatabaseController {
         movieCollection.updateOne(movie, movieUpdateOperation);
       }
       // if the movie does not exist
-      else{ }
+      else {
+      }
     }
     // if the flag does not exist
     else {
       // if the movie exists
-      if(null != movie) {
+      if (null != movie) {
         // create the flag and add to the collection
         Document newFlag = new Document("flagName", flagName).append("movieTitles", movie.getString("title"));
         flagCollection.insertOne(newFlag);
@@ -286,17 +295,69 @@ public class DatabaseController {
         movieCollection.updateOne(movie, movieUpdateOperation);
       }
       // if the movie does not exist
-      else{ }
+      else {
+      }
     }
   }
 
-  public void createRating(String ratingCategoryName){
+  public Document getRatingCategory(String categoryName) {
+    var ratingCategories = getRatingCategoryCollection();
+    var filter = Filters.eq("categoryName", categoryName);
+    return ratingCategories.find(filter).first();
+  }
 
+  public void createRating(
+          String ratingName,
+          String movieTitle,
+          String userName,
+          String userRating,
+          String lowerUpperBounds
+  ) {
+    MongoCollection<Document> ratingCollection = getRatingCollection();
+    List<Rating> ratings = getRatingsWithFilter(ratingCollection, Filters.eq("name", ratingName));
+    if (!ratings.isEmpty()) {
+      var movie = getMovieDocumentWithTitle(movieTitle);
+      if (movie != null) { // Movie exists
+        if (movie.containsKey("ratingCategoryNames") &&
+                movie.getList("ratingCategoryNames", String.class).contains(ratingName)) {
+          List<Document> userRatings = movie.getList("userRatings", Document.class, new ArrayList<>());
+          Document rating = new Document("userName", userName)
+                  .append("userRating", userRating)
+                  .append("lowerUpperBounds", lowerUpperBounds);
+          userRatings.add(rating);
+          movie.put("userRatings", userRatings);
+          updateMovieDocument(movieTitle, movie);
+        } else {
+          List<Document> userRatings = movie.getList("userRatings", Document.class, new ArrayList<>());
+          Document rating = new Document("userName", userName)
+                  .append("userRating", userRating)
+                  .append("lowerUpperBounds", lowerUpperBounds);
+          userRatings.add(rating);
+          List<String> ratingCategories = movie.getList("ratingCategoryNames", String.class, new ArrayList<>());
+          ratingCategories.add(ratingName);
+          movie.put("ratingCategoryNames", ratingCategories);
+          updateMovieDocument(movieTitle, movie);
+        }
+      } else {
+      }
+    } else {
+      var movie = getMovieDocumentWithTitle(movieTitle);
+      if (movie != null) { // Movie exists
+        List<Document> userRatings = movie.getList("userRatings", Document.class, new ArrayList<>());
+        Document rating = new Document("userName", userName)
+                .append("userRating", userRating)
+                .append("lowerUpperBounds", lowerUpperBounds);
+        userRatings.add(rating);
+        List<String> ratingCategories = movie.getList("ratingCategoryNames", String.class, new ArrayList<>());
+        ratingCategories.add(ratingName);
+        movie.put("ratingCategoryNames", ratingCategories);
+        updateMovieDocument(movieTitle, movie);
+      } else {
+      }
+    }
   }
 
   /**
-   *
-   * @param movieTitle
    * @param reviewTitle
    * @param reviewDescription
    * @param userName
@@ -362,12 +423,18 @@ public class DatabaseController {
 
   public void createMovie(String movieTitle, String director, String releaseDate,
                           String runtime, String writers, String plotSummary){
+
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
-      // create a new movie and add it to the movie collection
+    // Check if the movie already exists
+    List<Movie> existingMovies = getMoviesWithTitle(movieTitle);
+    if (existingMovies.isEmpty()) {
     Document newMovie = new Document().append("title", movieTitle).append("director", director)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary);
     movieCollection.insertOne(newMovie);
+    } else { // Movie already exists
+      // Do nothing
+    }
   }
 
     private static ArrayList<Movie> getMoviesWithFilter(MongoCollection<Document> moviesCollection, Bson filter) {
@@ -455,6 +522,12 @@ public class DatabaseController {
     return getMoviesWithFilter(moviesCollection, filter);
   }
 
+  public Document getMovieDocumentWithTitle(String title) {
+    var movieCollections = getMovieCollection();
+    var filter = Filters.eq("title", title);
+    return movieCollections.find(filter).first();
+  }
+
   public List<Actor> getActorByName(String title) {
     var actorsCollection = getActorCollection();
     var filter = Filters.eq("title", title);
@@ -486,12 +559,12 @@ public class DatabaseController {
   }
 
   /**
-   * 
+   *
    * @param flagName
    * @param movieId
    * @param movieTitle
    */
-  //remove a flag from a specific movie 
+  //remove a flag from a specific movie
   public void deleteFlag(String flagName, String movieId, String movieTitle){
     //get flags and movie collections
     MongoCollection<Document> flagCollection = getFlagCollection();
@@ -516,7 +589,7 @@ public class DatabaseController {
 }
 
 /**
- * 
+ *
  * @param flagName
  */
 public void deleteFlags(String flagName){
@@ -541,7 +614,7 @@ flagCollection.updateOne(flag, removeAll);
 }
 
 /**
- * 
+ *
  * @param movieTitle
  * @param movieId
  */
@@ -582,7 +655,7 @@ public void deleteReview(String title, String userName){
   MongoCollection<Document> reviewCollection = getReviewCollection();
   //get all reviews which has the required movie title and userName
   Bson reviewFilter = Filters.and(Filters.eq("movieTitle", title), Filters.eq("userName", userName));
-  reviewCollection.deleteMany(reviewFilter);  
+  reviewCollection.deleteMany(reviewFilter);
 }
 
 
