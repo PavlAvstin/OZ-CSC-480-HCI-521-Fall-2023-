@@ -8,6 +8,8 @@ public class Movie {
   private String runtime;
   private String writers;
   private String summary;
+  private String principleCast;
+
 
   public Movie() {}
 
@@ -62,4 +64,14 @@ public class Movie {
   public void setSummary(String summary) {
     this.summary = summary;
   }
+
+  public String getPrincipleCast() {
+    return principleCast;
+  }
+
+  public void setPrincipleCast(String principleCast) {
+    this.principleCast = principleCast;
+  }
+
+
 }
