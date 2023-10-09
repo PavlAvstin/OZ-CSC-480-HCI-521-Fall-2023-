@@ -45,10 +45,6 @@ public class DatabaseController {
     return getMovieDatabase().getCollection("ratings");
   }
 
-  public MongoCollection<Document> getRatingCategoryCollection() {
-    return getMovieDatabase().getCollection("ratingCategories");
-  }
-
   public MongoCollection<Document> getUserAssociatedRatingCollection() {
     return getMovieDatabase().getCollection("userAssociatedRatings");
   }
@@ -300,12 +296,6 @@ public class DatabaseController {
     }
   }
 
-  public Document getRatingCategory(String categoryName) {
-    var ratingCategories = getRatingCategoryCollection();
-    var filter = Filters.eq("categoryName", categoryName);
-    return ratingCategories.find(filter).first();
-  }
-
   public void createRating(
           String ratingName,
           String movieTitle,
@@ -423,18 +413,11 @@ public class DatabaseController {
 
   public void createMovie(String movieTitle, String director, String releaseDate,
                           String runtime, String writers, String plotSummary){
-
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
-    // Check if the movie already exists
-    List<Movie> existingMovies = getMoviesWithTitle(movieTitle);
-    if (existingMovies.isEmpty()) {
     Document newMovie = new Document().append("title", movieTitle).append("director", director)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary);
     movieCollection.insertOne(newMovie);
-    } else { // Movie already exists
-      // Do nothing
-    }
   }
 
     private static ArrayList<Movie> getMoviesWithFilter(MongoCollection<Document> moviesCollection, Bson filter) {
