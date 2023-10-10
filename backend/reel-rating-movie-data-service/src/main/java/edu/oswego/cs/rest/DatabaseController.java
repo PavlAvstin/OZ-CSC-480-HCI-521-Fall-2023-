@@ -585,5 +585,16 @@ public void deleteReview(String title, String userName){
   reviewCollection.deleteMany(reviewFilter);  
 }
 
+public void deleteUserRating(String ratingName, String upperBounds, String movieIdString){
+  //get rating colletions
+  MongoCollection<Document> ratingCollection = getRatingCollection();
+  MongoCollection<Document> userRatings = getUserAssociatedRatingCollection();
+  //Filters out all ratings with the corresponding name
+  Bson ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).first();
+  //check if the rating exist
+  if(ratingFilter != null){
+
+  }
+}
 
 }
