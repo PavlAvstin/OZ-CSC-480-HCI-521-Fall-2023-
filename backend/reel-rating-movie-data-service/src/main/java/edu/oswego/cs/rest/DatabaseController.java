@@ -3,6 +3,7 @@ package edu.oswego.cs.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.BsonDateTime;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -344,7 +345,9 @@ public class DatabaseController {
         // if the upper bound matches
         if (rating.get("upperbound").equals(upperbound)) {
           // create new rating for ratingCategory
-          Document newRating = new Document("userName", username).append("userRating", userRating).append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"));
+          Document newRating = new Document("userName", username).append("userRating", userRating)
+                  .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
+                  .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()));
           // add rating to the userRatings array within the rating
           Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
           ratingCollection.updateOne(rating, userRatingsUpdateOperation);
@@ -366,7 +369,9 @@ public class DatabaseController {
       // if the ratingCategory does not exist
       else {
         // create new rating for ratingCategory
-        Document newRating = new Document("userName", username).append("userRating", userRating).append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"));
+        Document newRating = new Document("userName", username).append("userRating", userRating)
+                .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
+                .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()));
         // add rating to the userRatings array within the rating
         Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
         ratingCollection.updateOne(rating, userRatingsUpdateOperation);
@@ -387,13 +392,12 @@ public class DatabaseController {
   /**
    * Creates and stores a review in the database. Reviews are the freeform text user generated data. Users are not
    * allowed to add a review for a movie that does not exist. Users are currently allowed to make multiple reviews
-   * for the same movie and can even have the same reviewTitle, this may need to be reevaluated.
+   * for the same movie.
    *
-   * @param reviewTitle Short description of the review. For example, "I have seen better" or "10 out of Ken!"
    * @param reviewDescription Freeform text from the user. No limits in size.
    * @param userName the user who created the review
    */
-  public void createReview(String movieIdString, String reviewTitle, String reviewDescription, String userName){
+  public void createReview(String movieIdString, String reviewDescription, String userName){
     // get collections
     MongoCollection<Document> reviewCollection = getReviewCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
@@ -404,9 +408,11 @@ public class DatabaseController {
 
     // if the movie exists
     if(null != movie) {
+      // get the current date time to attach to the new review
+      BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
-      Document newReview = new Document("movieId", movieIdString).append("reviewTitle", reviewTitle)
-              .append("reviewDescription", reviewDescription).append("userName", userName);
+      Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
+              .append("userName", userName).append("dateTimeCreated", dateTimeCreated);
       reviewCollection.insertOne(newReview);
     }
     // if the movie does not exist

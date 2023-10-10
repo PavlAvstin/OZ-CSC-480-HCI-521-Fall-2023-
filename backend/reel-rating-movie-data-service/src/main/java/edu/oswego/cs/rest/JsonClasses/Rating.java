@@ -4,7 +4,8 @@ public class Rating {
   private String movieTitle;
   private String ratingName;
   private String userRating;
-  String upperbound;
+  private String upperbound;
+  private String dateTimeCreated;
 
   public Rating() {}
 
@@ -35,4 +36,8 @@ public class Rating {
   public String getUpperbound() { return upperbound; }
 
   public void setUpperbound(String upperbound) { this.upperbound = upperbound; }
+
+  public String getDateTimeCreated() { return dateTimeCreated;  }
+
+  public void setDateTimeCreated(String dateTimeCreated) { this.dateTimeCreated = dateTimeCreated; }
 }
