@@ -32,6 +32,22 @@
                   httpPort="30501"
                   httpsPort="9443" />
 
+    <mpJwt 
+        id="reel_rating_token" tokenHeader="Authorization" 
+        issuer="${AUTH_SERVICE_URL}" audiences="reel-rating" 
+        SignatureAlgorithm="RS512" jwksUri="${JWK_URI}"
+    />
+
+    <jwtConsumer
+        id="reel_rating_token"
+        audiences="reel-rating"
+        SignatureAlgorithm="RS512"
+        issuer="${AUTH_SERVICE_URL}"
+        jwkEnabled="true"
+        jwkEndpointUrl="${JWK_URI}"
+    >
+    </jwtConsumer>
+
     <!-- Automatically expand WAR files and EAR files -->
     <applicationManager autoExpand="true"/>
 

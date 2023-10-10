@@ -4,6 +4,8 @@ public class Actor {
   private String name;
   private String dateOfBirth;
 
+  private String movies;
+
   public Actor() {}
 
   public String getName() {
