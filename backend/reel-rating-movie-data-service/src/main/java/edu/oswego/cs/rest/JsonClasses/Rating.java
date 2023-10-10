@@ -4,6 +4,7 @@ public class Rating {
   private String movieTitle;
   private String ratingName;
   private String userRating;
+  String upperbound;
 
   public Rating() {}
 
@@ -30,4 +31,8 @@ public class Rating {
   public void setUserRating(String userRating) {
     this.userRating = userRating;
   }
+
+  public String getUpperbound() { return upperbound; }
+
+  public void setUpperbound(String upperbound) { this.upperbound = upperbound; }
 }
