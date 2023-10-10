@@ -42,12 +42,14 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: rgb(30, 30, 3
 .bgPrimary{ background-color: var(--mainColor);}
 .bgPrimary:hover{background-color: var(--secondaryColor); transition: var(--transDur);}
 .bgNeutral{ background-color: var(--neutralColor);}
-.bgNeutral:hover{background-color: var(--secondaryColor); transition: var(--transDur); color:white;}
+.bgNeutral:hover{background-color: var(--successColor); transition: var(--transDur); color:white;}
 .hidden{ display : none; }
 .error{ width : 98%; margin-left: 1%; margin-right:1%; }
 .vDiv{ border-left: solid; border-left-color:white;}
 .ofVert{ overflow-y: scroll; }
 .modal-header.row > .modalClose{ margin-right : 10px; }
+.card-title{font-weight: bold; font-size: var(--medPX); }
+.card-text{font-size: var(--smPX);}
 
 
 /* Font Sizes */
