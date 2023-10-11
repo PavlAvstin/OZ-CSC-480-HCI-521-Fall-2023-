@@ -19,32 +19,30 @@
 </head>
 
 <body class="mbMD">
-
-    <header>
-        <div class="m-0">
-            <div class="row align-items-center bg-secondary p-1 ">
-    
-                <!-- Start Filter Menu -->
-                <!-- End Filter Menu -->
-    
-                <div class="col-auto">
-                    <img src="../images/logo.png" alt="Reel-Ratings Logo" class="rounded-circle" style="width: 50px; height: 50px;">
-                </div>
-    
-                <h2 class="text-white col-auto"> Reel-Ratings </h2>
-    
-                <!-- <div class="col-6 col-md-6 col-lg-3 ml-auto"> -->
-                <div class="d-flex col-lg-3  ml-auto ">    
-                    <div class="input-group ">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-success bg-success"  type="submit">
-                                <img src="../images/bsIconSearch.svg" alt="search bar logo" style="height: auto; width: 25px;">
-                            </button>
-                        </div>
+    <header class="row darkFG g-0">
+        <div class="col-3 offset-1">
+            <div class="row">
+                <div class="col-2"><img/></div> <!-- For the filter menu -->
+                <div class="col-2"><img src="../images/logo.png" alt="Reel-Ratings Logo" class="img-fluid iconWidth"></div>
+                <div class="col-8"><h2 class="text-white lgFont">Reel-Ratings</h2></div>
+            </div>
+        </div>
+        
+        <div class="col-3 offset-4">
+            <div class="row g-0">
+                <div class="input-group" id="searchContainer">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success bg-success"  type="submit">
+                            <img src="../images/bsIconSearch.svg" alt="search bar logo">
+                        </button>
                     </div>
-    
                 </div>
+                <div id="profileIconContainer" class="iconWidth">
+                    <img src="../images/bsIconPerson.png" alt="profile picture" class="img-fluid">
+                </div>
+            </div>
+        </div>
 
                  <!---
                     <div class="input-group">
@@ -58,13 +56,11 @@
                     </div>
                 -->
     
-                <div class="col-auto">
-                    <img src="../images/bsIconPerson.svg" alt="profile picture" class="rounded-circle" style="width: 50px; height: 50px;">
-                </div>
+                
 
                 
     
-            </div>
+            
             <div class=" pb-0 border-bottom border-2 mb-1" style="background-color: purple;" ></div> 
         </div>
     </header>
@@ -309,7 +305,6 @@
     </footer>
 
 </body>
-
 
 
 

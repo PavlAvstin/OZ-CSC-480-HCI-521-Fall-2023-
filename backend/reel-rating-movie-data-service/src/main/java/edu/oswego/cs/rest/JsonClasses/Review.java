@@ -3,8 +3,8 @@ package edu.oswego.cs.rest.JsonClasses;
 public class Review {
   private String movieTitle;
   private String movieId;
-  private String reviewTitle;
   private String reviewDescription;
+  private String dateTimeCreated;
 
   public Review() {}
 
@@ -14,14 +14,6 @@ public class Review {
 
   public void setMovieTitle(String movieTitle) {
     this.movieTitle = movieTitle;
-  }
-
-  public String getReviewTitle() {
-    return reviewTitle;
-  }
-
-  public void setReviewTitle(String reviewTitle) {
-    this.reviewTitle = reviewTitle;
   }
 
   public String getReviewDescription() {
@@ -39,4 +31,8 @@ public class Review {
   public String getMovieId() {
     return this.movieId;
   }
+
+  public String getDateTimeCreated() { return dateTimeCreated; }
+
+  public void setDateTimeCreated(String dateTimeCreated) { this.dateTimeCreated = dateTimeCreated;  }
 }
