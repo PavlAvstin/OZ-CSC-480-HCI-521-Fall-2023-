@@ -109,7 +109,7 @@ public class MovieDataService {
     // }
     DatabaseController db = new DatabaseController();
     String tempUsername = "TempUsername";
-    db.createReview(movieId, review.getReviewTitle(), review.getReviewDescription(), tempUsername);
+    db.createReview(movieId, review.getReviewDescription(), tempUsername);
     return Response.ok().build();
   }
 
