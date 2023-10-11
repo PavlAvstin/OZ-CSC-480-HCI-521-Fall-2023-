@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,40 +14,62 @@
     /> <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="../css/global.css"><!-- Link to CSS file -->
 
+
+
 </head>
 
 <body class="mbMD">
 
     <header>
         <div class="m-0">
-            <div class="row align-items-center bg-secondary p-2">
-
-                <div class="col-auto ">
+            <div class="row align-items-center bg-secondary p-1 ">
+    
+                <!-- Start Filter Menu -->
+                <!-- End Filter Menu -->
+    
+                <div class="col-auto">
                     <img src="../images/logo.png" alt="Reel-Ratings Logo" class="rounded-circle" style="width: 50px; height: 50px;">
                 </div>
+    
+                <h2 class="text-white col-auto"> Reel-Ratings </h2>
+    
+                <!-- <div class="col-6 col-md-6 col-lg-3 ml-auto"> -->
+                <div class="d-flex col-lg-3  ml-auto ">    
+                    <div class="input-group ">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-success bg-success"  type="submit">
+                                <img src="../images/bsIconSearch.svg" alt="search bar logo" style="height: auto; width: 25px;">
+                            </button>
+                        </div>
+                    </div>
+    
+                </div>
 
-                <h2 class="  text-white col-auto"> Reel-Ratings</h2>
-                <div class="col">
+                 <!---
                     <div class="input-group">
                         <input type="text" class=" form-control " placeholder="Search...">
-                        <div class="input-group-append">
+                        <div class="input-group-append fas fa-search">
                             <button class="btn btn-light border-dark brAll border-2 ptMD pbMD m-0" type="button">
+                                
                                 <img src="../images/bsIconSearch.svg" alt="serach bar logo" style="height: auto; width: 25px;" >
                             </button>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-auto ">
+                -->
+    
+                <div class="col-auto">
                     <img src="../images/bsIconPerson.svg" alt="profile picture" class="rounded-circle" style="width: 50px; height: 50px;">
                 </div>
+
                 
+    
             </div>
+            <div class=" pb-0 border-bottom border-2 mb-1" style="background-color: purple;" ></div> 
         </div>
-    </header>   
-
-
-    <body>
+    </header>
+    
+    <!--  **************************************Cards Start Here******************************************-->
         <div class="row"> <!-- Start of cards -->
             
             <div class="col-10 offset-1">
@@ -62,7 +85,7 @@
                 <div class="row"> <!-- Start of Recent Review  -->
 
 
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3 ">
 
                         <img src="../images/RecentReviews01.png" class="card-img-top" alt="A still from the 2023 'The Flash' movie.">
 
@@ -79,7 +102,7 @@
                     </div>
 
 
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3">
                         <img src="../images/RecentReviews02.png" class="card-img-top" alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat.">
                         <div class="card-body">
                             <div class="card-title">Barbie</div>
@@ -90,7 +113,7 @@
                     </div>
 
 
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3">
                         <img src="../images/RecentReviews03.png" class="card-img-top" alt="A close-up of Harrison Ford as Indiana Jones.">
                         <div class="card-body">
                             <div class="card-title">Indiana Jones and the Dial of Destiny</div>
@@ -101,7 +124,7 @@
 
 
 
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3">
                         <img src="../images/RecentReviews04.png" class="card-img-top" alt="A still image of actors from 1999 action/sci-fi movie 'The Matrix.'">
                         <div class="card-body">
                             <div class="card-title">The Matrix</div>
@@ -116,14 +139,14 @@
                 <!-- Start Most Review -->
 
                 <div class="row mb-2">
-                    <div class="col-md-3 pb-2 mdFont fontWhite mtXSM">Most Reviewed</div>
+                    <div class="col-md-3 pb-2 mdFont fontWhite mtXSM ">Most Reviewed</div>
 
                     <!--Border line -->
                     <div class="col-md-9 pb-2 border-bottom border-3 mb-4 "></div> 
                 </div>
 
                 <div class="row">  <!-- Start of Most Reviewed -->
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
                         <img src="../images/MostViewed01.png" class="card-img-top" alt="A still from the movie 'Oppenheimer.' The silhouette of a person against an explosive orange background.">
                         <div class="card-body">
                             <div class="card-title">Oppenheimer</div>
@@ -131,7 +154,7 @@
                             <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
                         </div>
                     </div>
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
                         <img src="../images/MostViewed02.png" class="card-img-top" alt="A still from the 2023 Gaurdians of the Galaxy movie.">
                         <div class="card-body">
                             <div class="card-title">Guardians of the Galaxy Vol. 3</div>
@@ -139,7 +162,7 @@
                             <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
                         </div>
                     </div>
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
                         <img src="../images/MostViewed03.png" class="card-img-top" alt="Poster for the 2022 Avatar movie.">
                         <div class="card-body">
                             <div class="card-title">Avatar: The Way of Water</div>
@@ -147,22 +170,25 @@
                             <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
                         </div>
                     </div>
-                    <div class="movieCard bgNeutral card col-3 ptXXSM">
+                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
                         <img src="../images/MostViewed04.png" class="card-img-top" alt="Poster for the 2015 Star Wars movie.">
                         <div class="card-body">
                             <div class="card-title">Star Wars: The Force Awakens</div>
-                            <div class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</div>
+                            <div class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. </div>
                             <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
                         </div>
                     </div>
                 </div> <!-- End of Most Reviewed -->
             </div> <!-- End of format Col -->
         </div>  <!-- End of cards -->
+
+        <!--****************************Show More **********************************-->
+
         <div class="modal" tabindex="-1" id="showMoreModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header row">
-                        <h5 class="modal-title col-4">"Movie Title"</h5>
+                        <h5 class="modal-title col-4">"Waawareey Filim"</h5>
                         <div id="rateToggle" class="offset-1 col-4">Rate "Movie Title"</div>
                         <button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -271,8 +297,7 @@
                 </div>
             </div>
         </div>
-    </body>
-
+    
     <footer>
         <!-- JS imports-->
         <script src="../js/controller.js" type="module"></script>
@@ -284,5 +309,8 @@
     </footer>
 
 </body>
+
+
+
 
 </html>
