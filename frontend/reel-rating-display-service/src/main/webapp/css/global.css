@@ -6,6 +6,8 @@
     --mainColor : #3D37BF;
     --secondaryColor : #6864CA;
     --neutralColor : #E5E5E5;
+    --backgroundColor : #1B1B1B;
+    --darkFG : #2B2B2B;
     
     --radius : 15px; /* border radius amount */
 
@@ -35,7 +37,13 @@
     )
 }
 
-body{ font-family: Arial, Helvetica, sans-serif; background-color: rgb(30, 30, 30); }
+/*  Over write bootstrap styles that conflict  */
+#searchContainer{
+    width : 90%;
+}
+
+body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgroundColor); }
+.darkFG{ background-color : var(--darkFG) }
 .fontWhite{ color : white; }
 .textCenter{ text-align : center; }
 .fullWidth{ width : 100%; }
@@ -48,7 +56,11 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: rgb(30, 30, 3
 .vDiv{ border-left: solid; border-left-color:white;}
 .ofVert{ overflow-y: scroll; }
 .modal-header.row > .modalClose{ margin-right : 10px; }
+<<<<<<< Updated upstream
 
+=======
+.iconWidth { width : var(--lgPX); }
+>>>>>>> Stashed changes
 
 /* Font Sizes */
 .xlFont{ font-size : var(--xlPX) }
@@ -147,6 +159,7 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: rgb(30, 30, 3
 
 #ratingsContainer{ height : 200px; }
 #generalContent{ height : 100px; }
+#profileIconContainer{ margin-left : 2%; }
 
 /* Tablet */
 
