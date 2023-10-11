@@ -50,17 +50,13 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .bgPrimary{ background-color: var(--mainColor);}
 .bgPrimary:hover{background-color: var(--secondaryColor); transition: var(--transDur);}
 .bgNeutral{ background-color: var(--neutralColor);}
-.bgNeutral:hover{background-color: var(--secondaryColor); transition: var(--transDur); color:white;}
+.bgNeutral:hover{background-color: var(--successColor); transition: var(--transDur); color:white;}
 .hidden{ display : none; }
 .error{ width : 98%; margin-left: 1%; margin-right:1%; }
 .vDiv{ border-left: solid; border-left-color:white;}
 .ofVert{ overflow-y: scroll; }
 .modal-header.row > .modalClose{ margin-right : 10px; }
-<<<<<<< Updated upstream
-
-=======
 .iconWidth { width : var(--lgPX); }
->>>>>>> Stashed changes
 
 /* Font Sizes */
 .xlFont{ font-size : var(--xlPX) }
