@@ -519,7 +519,6 @@ public class DatabaseController {
   private static ArrayList<Review> getReviewsWithFilter(MongoCollection<Document> reviewsCollection, Bson filter) {
     var reviews = reviewsCollection.find(filter).map(document -> {
       var re = new Review();
-      re.setReviewTitle(document.getString("reviewTitle"));
       re.setReviewDescription(document.getString("reviewDescription"));
       re.setMovieId(document.getString("movieId"));
 
