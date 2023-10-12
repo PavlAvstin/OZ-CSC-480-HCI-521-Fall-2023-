@@ -6,15 +6,25 @@
 ## Build Instructions for Linux/Mac
 **Step 1:** Open the project in command line <br>
 **Step 2:** Change directory to buildAutomation <br>
-```cd buildAutomation``` <br>
+```
+cd buildAutomation
+```
 **Step 3:** Call the startup script <br>
-```./startupEverything``` <br>
+```
+./startupEverything
+```
 **Step 4** When done shutdown all the containers <br>
-```./stopEverything``` <br>
+```
+./stopEverything
+```
 
 ## Build Instructions for Windows
 **Step 1:** Open the project in command line <br>
 **Step 2:** Run the docker compose up command <br>
-```docker compose up --build -d``` <br>
+```
+docker compose up --build -d
+```
 **Step 3:** When done shutdown shutdown all the containers <br>
-```docker compose down``` <br>
+```
+docker compose down
+```
