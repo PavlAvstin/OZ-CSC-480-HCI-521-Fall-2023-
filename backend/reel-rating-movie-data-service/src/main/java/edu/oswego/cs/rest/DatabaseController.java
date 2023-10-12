@@ -524,7 +524,7 @@ public class DatabaseController {
       var re = new Review();
       re.setReviewDescription(document.getString("reviewDescription"));
       re.setMovieId(document.getString("movieId"));
-      re.setDateTimeCreated(document.getString("dateTimeCreated"));
+      re.setDateTimeCreated(document.get("dateTimeCreated").toString());
       re.setPrivacy(document.getString("privacy"));
       return re;
     });
@@ -539,7 +539,7 @@ public class DatabaseController {
       ra.setRatingName(document.getString("ratingName"));
       ra.setUserRating(document.getString("userRating"));
       ra.setMovieTitle(document.getString("movieTitle"));
-      ra.setDateTimeCreated(document.getString("dateTimeCreated"));
+      ra.setDateTimeCreated(document.get("dateTimeCreated").toString());
       ra.setPrivacy(document.getString("privacy"));
       return ra;
     });
