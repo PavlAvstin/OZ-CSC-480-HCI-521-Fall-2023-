@@ -6,6 +6,7 @@ public class Rating {
   private String userRating;
   private String upperbound;
   private String dateTimeCreated;
+  private String privacy;
 
   public Rating() {}
 
@@ -40,4 +41,8 @@ public class Rating {
   public String getDateTimeCreated() { return dateTimeCreated;  }
 
   public void setDateTimeCreated(String dateTimeCreated) { this.dateTimeCreated = dateTimeCreated; }
+
+  public String getPrivacy() { return privacy; }
+
+  public void setPrivacy(String privacy) { this.privacy = privacy; }
 }

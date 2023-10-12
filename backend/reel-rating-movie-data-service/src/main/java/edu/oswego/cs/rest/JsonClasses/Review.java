@@ -5,6 +5,7 @@ public class Review {
   private String movieId;
   private String reviewDescription;
   private String dateTimeCreated;
+  private String privacy;
 
   public Review() {}
 
@@ -35,4 +36,10 @@ public class Review {
   public String getDateTimeCreated() { return dateTimeCreated; }
 
   public void setDateTimeCreated(String dateTimeCreated) { this.dateTimeCreated = dateTimeCreated;  }
+
+  public String getPrivacy() { return privacy; }
+
+  public void setPrivacy(String privacy) {
+    this.privacy = privacy;
+  }
 }

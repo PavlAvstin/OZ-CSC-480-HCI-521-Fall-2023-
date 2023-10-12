@@ -328,7 +328,7 @@ public class DatabaseController {
    * @param upperbound upperbound of the rating scale. 0 < upperbound < 11
    */
   public void createRating(String ratingName, String userRating, String upperbound, String username,
-                           String movieIdHexString, String filler){
+                           String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
     MongoCollection<Document> userAssociatedRatingCollection = getUserAssociatedRatingCollection();
@@ -347,7 +347,8 @@ public class DatabaseController {
           // create new rating for ratingCategory
           Document newRating = new Document("userName", username).append("userRating", userRating)
                   .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
-                  .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()));
+                  .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
+                  .append("privacy", privacy);
           // add rating to the userRatings array within the rating
           Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
           ratingCollection.updateOne(rating, userRatingsUpdateOperation);
@@ -371,7 +372,8 @@ public class DatabaseController {
         // create new rating for ratingCategory
         Document newRating = new Document("userName", username).append("userRating", userRating)
                 .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
-                .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()));
+                .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
+                .append("privacy", privacy);
         // add rating to the userRatings array within the rating
         Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
         ratingCollection.updateOne(rating, userRatingsUpdateOperation);
@@ -397,7 +399,7 @@ public class DatabaseController {
    * @param reviewDescription Freeform text from the user. No limits in size.
    * @param userName the user who created the review
    */
-  public void createReview(String movieIdString, String reviewDescription, String userName){
+  public void createReview(String movieIdString, String reviewDescription, String userName, String privacy){
     // get collections
     MongoCollection<Document> reviewCollection = getReviewCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
@@ -412,7 +414,8 @@ public class DatabaseController {
       BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
       Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
-              .append("userName", userName).append("dateTimeCreated", dateTimeCreated);
+              .append("userName", userName).append("dateTimeCreated", dateTimeCreated)
+              .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
     // if the movie does not exist
@@ -521,7 +524,8 @@ public class DatabaseController {
       var re = new Review();
       re.setReviewDescription(document.getString("reviewDescription"));
       re.setMovieId(document.getString("movieId"));
-
+      re.setDateTimeCreated(document.getString("dateTimeCreated"));
+      re.setPrivacy(document.getString("privacy"));
       return re;
     });
     var list = new ArrayList<Review>();
@@ -535,8 +539,8 @@ public class DatabaseController {
       ra.setRatingName(document.getString("ratingName"));
       ra.setUserRating(document.getString("userRating"));
       ra.setMovieTitle(document.getString("movieTitle"));
-
-
+      ra.setDateTimeCreated(document.getString("dateTimeCreated"));
+      ra.setPrivacy(document.getString("privacy"));
       return ra;
     });
     var list = new ArrayList<Rating>();
