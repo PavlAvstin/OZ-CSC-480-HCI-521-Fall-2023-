@@ -22,8 +22,6 @@ services:
       - MONGO_CRED_DATABASE_NAME=${MONGO_CRED_DATABASE_NAME}
       - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk
       - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
-    ports:
-      - "127.0.0.1:30500:30500"
 
   reel-rating-movie-data-service:
     build:
@@ -35,9 +33,7 @@ services:
       - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
       - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
       - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
-      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk
-    ports:
-      - "127.0.0.1:30501:30501" 
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
 
   reel-rating-display-service:
     build:
@@ -48,6 +44,15 @@ services:
     environment:
       - DISPLAY_SERVICE_PORT=${DISPLAY_SERVICE_PORT}
       - JWK_URI=${JWK_URI}
+
+  reel-rating-reverse-proxy:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
+    container_name: reel-rating-reverse-proxy
+    restart: unless-stopped
     ports:
       - "127.0.0.1:30400:30400"
+      - "127.0.0.1:30500:30500"
+      - "127.0.0.1:30501:30501"
     
