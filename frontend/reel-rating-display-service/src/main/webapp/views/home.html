@@ -1,17 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page - Reel Ratings</title>
     <!-- All imports are local routing or cdns -->
-    <link 
-        rel="stylesheet"
-        crossorigin="anonymous"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-    /> <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" crossorigin="anonymous"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="../css/global.css"><!-- Link to CSS file -->
 
 
@@ -19,23 +17,33 @@
 </head>
 
 <body class="mbMD">
-    <header class="row darkFG g-0">
+    <header class="row darkFG g-0 brBottom bcBottom pt-1 pb-1">
         <div class="col-3 offset-1">
             <div class="row">
-                <div class="col-2"><img/></div> <!-- For the filter menu -->
-                <div class="col-2"><img src="../images/logo.png" alt="Reel-Ratings Logo" class="img-fluid iconWidth"></div>
-                <div class="col-8"><h2 class="text-white lgFont">Reel-Ratings</h2></div>
+                <div class="col-2 iconWidth p-0">
+                    <img src="../images/list-white.png" class="img-fluid vcToParent" />
+                </div> 
+                <div class="col-2">
+                    <img 
+                        src="../images/Reel Rating Logo.png" 
+                        alt="Reel-Ratings Logo" 
+                        class="img-fluid vcToParent"
+                    >
+                </div>
+                <div class="col-8">
+                    <h2 class="text-white mdFont vcToParent">Reel-Ratings</h2>
+                </div>
             </div>
         </div>
-        
+
         <div class="col-3 offset-4">
-            <div class="row g-0">
+            <div class="row g-0 vcToParent customShadow">
                 <div class="input-group" id="searchContainer">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control brAll" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-success bg-success"  type="submit">
-                            <img src="../images/bsIconSearch.svg" alt="search bar logo">
-                        </button>
+                        <div class="btPrimaryStyle iconWidth pXL prXXL plXXL brRight" type="submit">
+                            <img src="../images/search-white.png" alt="search bar logo" class="img-fluid">
+                        </div>
                     </div>
                 </div>
                 <div id="profileIconContainer" class="iconWidth">
@@ -43,269 +51,1299 @@
                 </div>
             </div>
         </div>
-
-                 <!---
-                    <div class="input-group">
-                        <input type="text" class=" form-control " placeholder="Search...">
-                        <div class="input-group-append fas fa-search">
-                            <button class="btn btn-light border-dark brAll border-2 ptMD pbMD m-0" type="button">
-                                
-                                <img src="../images/bsIconSearch.svg" alt="serach bar logo" style="height: auto; width: 25px;" >
-                            </button>
-                        </div>
-                    </div>
-                -->
-    
-                
-
-                
-    
-            
-            <div class=" pb-0 border-bottom border-2 mb-1" style="background-color: purple;" ></div> 
-        </div>
     </header>
-    
+
     <!--  **************************************Cards Start Here******************************************-->
-        <div class="row"> <!-- Start of cards -->
-            
-            <div class="col-10 offset-1">
-
-                <div class="row mb-2">
-                    <div class="col-md-3 pb-2 mdFont fontWhite mtXSM">Recent Review</div>
-
-                    <!--Border line -->
-                    <div class="col-md-9 pb-2 border-bottom border-3 mb-4 "></div> 
-                </div>  
-
-
-                <div class="row"> <!-- Start of Recent Review  -->
-
-
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3 ">
-
-                        <img src="../images/RecentReviews01.png" class="card-img-top" alt="A still from the 2023 'The Flash' movie.">
-
-                        <div class="card-body">
-                            <div class="card-title">The Flash</div>
-
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                              </div>
-
-                            <div class="card-text">It does not live up to the positive buzz from the early screenings. But I did have a lot of fun with it. Overall, it was just an okay movie. Nothing special.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
+    <div class="row"> <!-- Start of cards -->
+        <div class="col-10 offset-1">
+            <div class="titleGridRow mtXSM">
+                <span class="gridTitle mdFont fontWhite mtXSM">Recent Review</span>
+                <span class="titleLine brAll vcToParent customShadow"></span>
+            </div>
+            <div class="carousel slide mtXXSM row" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3">
-                        <img src="../images/RecentReviews02.png" class="card-img-top" alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat.">
-                        <div class="card-body">
-                            <div class="card-title">Barbie</div>
-                            
-                            <div class="card-text">Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta Gerwig took Barbie, and made a movie that tackles some really tough social issues.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
+                    <div class="carousel-item">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3">
-                        <img src="../images/RecentReviews03.png" class="card-img-top" alt="A close-up of Harrison Ford as Indiana Jones.">
-                        <div class="card-body">
-                            <div class="card-title">Indiana Jones and the Dial of Destiny</div>
-                            <div class="card-text">"Raiders of the Lost Ark" is on my top 10 list of all-time favorites. "Dial of Destiny" gave a proper send off to the francise.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
+                    <div class="carousel-item">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
-
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1 mb-3">
-                        <img src="../images/RecentReviews04.png" class="card-img-top" alt="A still image of actors from 1999 action/sci-fi movie 'The Matrix.'">
-                        <div class="card-body">
-                            <div class="card-title">The Matrix</div>
-                            <div class="card-text">This movie is splendidly done. The mystery about what the Matrix is, unravels and you see a dystopian future unlike any we as a race would want.  I have watched this over and over and never tire of it.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
-                        </div>
-                    </div>
-
-                </div> <!-- End of Recent Review -->
-
-
-                <!-- Start Most Review -->
-
-                <div class="row mb-2">
-                    <div class="col-md-3 pb-2 mdFont fontWhite mtXSM ">Most Reviewed</div>
-
-                    <!--Border line -->
-                    <div class="col-md-9 pb-2 border-bottom border-3 mb-4 "></div> 
-                </div>
-
-                <div class="row">  <!-- Start of Most Reviewed -->
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
-                        <img src="../images/MostViewed01.png" class="card-img-top" alt="A still from the movie 'Oppenheimer.' The silhouette of a person against an explosive orange background.">
-                        <div class="card-body">
-                            <div class="card-title">Oppenheimer</div>
-                            <div class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
-                        </div>
-                    </div>
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
-                        <img src="../images/MostViewed02.png" class="card-img-top" alt="A still from the 2023 Gaurdians of the Galaxy movie.">
-                        <div class="card-body">
-                            <div class="card-title">Guardians of the Galaxy Vol. 3</div>
-                            <div class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
-                        </div>
-                    </div>
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
-                        <img src="../images/MostViewed03.png" class="card-img-top" alt="Poster for the 2022 Avatar movie.">
-                        <div class="card-body">
-                            <div class="card-title">Avatar: The Way of Water</div>
-                            <div class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
-                        </div>
-                    </div>
-                    <div class="movieCard bgNeutral card col-3 ptXXSM m-1 p-1">
-                        <img src="../images/MostViewed04.png" class="card-img-top" alt="Poster for the 2015 Star Wars movie.">
-                        <div class="card-body">
-                            <div class="card-title">Star Wars: The Force Awakens</div>
-                            <div class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. </div>
-                            <a  data-bs-toggle="modal" data-bs-target="#showMoreModal" class="btn bgPrimary fontWhite fullWidth">More</a>
-                        </div>
-                    </div>
-                </div> <!-- End of Most Reviewed -->
-            </div> <!-- End of format Col -->
-        </div>  <!-- End of cards -->
-
-        <!--****************************Show More **********************************-->
-
-        <div class="modal" tabindex="-1" id="showMoreModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header row">
-                        <h5 class="modal-title col-4">"Waawareey Filim"</h5>
-                        <div id="rateToggle" class="offset-1 col-4">Rate "Movie Title"</div>
-                        <button type="button" class="btn-close modalClose" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body row">
-                        <div class="col-6"><img src="../images/background.png" class="img-fluid"></div>
-                        <div class="col-6" id="generalContent">
-                            <div class="row">
-                                <div class="mdFont col-12">General</div>
-                                <div id="generalContent" class="ofVert">
-                                    <div>Actors</div>
-                                    <div id="actorsContainer"></div>
-                                    <div>Seasons</div>
-                                    <div id="seasonContainer"></div>
-                                    <div>Genres</div>
-                                    <div id="genresContainer"></div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>ESRB</div>
-                                    <div>BTJXKH</div>
-                                    <div id="esrbContainer"></div>
-                                </div> <!-- End of General Content -->
-                            </div><!-- End of General Container -->
-                        </div><!-- End of Row -->
-
-                        <div class="row ofVert mtSM" id="ratingsContainer">
-                            <div class="col-12">Ratings</div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
+                    <div class="carousel-item">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
-                            </div>
-                            <div class="tagGroup col-2 mbSM">
-                                <div class="tag">Tag 1</div>
-                                <div class=" tagScore brAll textCenter">4.5</div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+            <div class="titleGridRow mtXSM">
+                <span class="gridTitle mdFont fontWhite mtXSM">Most Reviewed</span>
+                <span class="titleLine brAll vcToParent customShadow"></span>
+            </div>
+            <div class="carousel slide mtXXSM row" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="2" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="1" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="6" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="5" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="carouselRow">
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        No Review
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke. Somehow, Greta
+                                        Gerwig took Barbie, and made a movie that tackles some really tough social issues.
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movieCard bgNeutral card">
+                                <img 
+                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
+                                />
+                                <div class="card-body">
+                                    <div class="row g-0">
+                                        <div class=" col-10 card-title mdFont">Barbie Movie</div>
+                                        <div class=" col-2 textRight mdFont">9.3</div>
+                                    </div>
+                                    <progress-bar 
+                                        scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                        lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                    </progress-bar>
+                                    <div class="row g-0 mtXSM mbXSM">
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 1</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                        <div class="brAll pXXSM col-4 textCenter fontWhite bgSecondary xsFont">Tag 2</div>
+                                    </div>
+                                    <div class="card-text">
+                                        <div class="fadeAwayNeutral fullWidth"></div>
+                                        Wow. I did not see this masterpiece coming. And that's not a joke.
+                                    </div>
+                                    <div 
+                                        data-bs-toggle="modal" data-bs-target="#showMoreModal"
+                                        class="bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow"
+                                    >
+                                        Show More
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
-    
+
+
+
+
+
+        
+
+    <!--****************************Show More **********************************-->
+
+    <div class="modal" tabindex="-1" id="showMoreModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header row">
+                    <h5 class="modal-title col-4">"Waawareey Filim"</h5>
+                    <div id="rateToggle" class="offset-1 col-4">Rate "Movie Title"</div>
+                    <button type="button" class="btn-close modalClose" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-6"><img src="../images/background.png" class="img-fluid"></div>
+                    <div class="col-6" id="generalContent">
+                        <div class="row">
+                            <div class="mdFont col-12">General</div>
+                            <div id="generalContent" class="ofVert">
+                                <div>Actors</div>
+                                <div id="actorsContainer"></div>
+                                <div>Seasons</div>
+                                <div id="seasonContainer"></div>
+                                <div>Genres</div>
+                                <div id="genresContainer"></div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>ESRB</div>
+                                <div>BTJXKH</div>
+                                <div id="esrbContainer"></div>
+                            </div> <!-- End of General Content -->
+                        </div><!-- End of General Container -->
+                    </div><!-- End of Row -->
+
+                    <div class="row ofVert mtSM" id="ratingsContainer">
+                        <div class="col-12">Ratings</div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                        <div class="tagGroup col-2 mbSM">
+                            <div class="tag">Tag 1</div>
+                            <div class=" tagScore brAll textCenter">4.5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <!-- JS imports-->
         <script src="../js/controller.js" type="module"></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-            crossorigin="anonymous">
-        </script> <!-- Bootstrap 5 bundle -->
+        <script src="../js/webComps/progress-bar.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+            </script> <!-- Bootstrap 5 bundle -->
     </footer>
 
 </body>
-
-
-
 </html>
