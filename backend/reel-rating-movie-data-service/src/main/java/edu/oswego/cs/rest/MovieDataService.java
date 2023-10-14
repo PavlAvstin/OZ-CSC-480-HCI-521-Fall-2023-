@@ -1,7 +1,7 @@
 package edu.oswego.cs.rest;
 
 import edu.oswego.cs.rest.JsonClasses.Actor;
-import edu.oswego.cs.rest.JsonClasses.Flag;
+import edu.oswego.cs.rest.JsonClasses.Tag;
 import edu.oswego.cs.rest.JsonClasses.Movie;
 import edu.oswego.cs.rest.JsonClasses.Review;
 
@@ -86,15 +86,15 @@ public class MovieDataService {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Path("/flag/create/{movieId}")
-  public Response createFlagEndPoint(@Context HttpServletRequest request, Flag flag, @PathParam("movieId") String movieId) throws Exception {
+  @Path("/tag/create/{movieId}")
+  public Response createTagEndPoint(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
     // try {
     //   String username = getUsername(request);
     // } catch (Exception e) {
     //   return Response.status(Response.Status.UNAUTHORIZED).build();
     // }
     DatabaseController db = new DatabaseController();
-    db.createFlag(flag.getFlagName(), movieId);
+    db.createTag(tag.getTagName(), movieId);
     return Response.ok().build();
   }
 
@@ -127,10 +127,10 @@ public class MovieDataService {
 
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByFlagName/{flagName}")
-  public List<Movie> getMoviesWithFlagName(@Context HttpServletRequest request, @PathParam("flagName") String flagName) throws Exception {
+  @Path("/movie/getByTagName/{TagName}")
+  public List<Movie> getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName) throws Exception {
     DatabaseController dbc = new DatabaseController();
-    List<Movie> movies = dbc.getMoviesWithFlag(flagName);
+    List<Movie> movies = dbc.getMoviesWithTag(tagName);
     return movies;
   }
 
@@ -183,5 +183,36 @@ public class MovieDataService {
     DatabaseController dbc = new DatabaseController();
     List<Review> reviews = dbc.getReviewsByMovieId(movieId);
     return reviews;
+  }
+
+  /**
+   * Image methods
+   */
+
+  /**
+   *
+   * @param request TODO describe what this is
+   * @param movieId unique MongoDB id for a movie
+   * @return stock image from the pre-populated database collection
+   * @throws Exception TODO not sure if that is needed
+   */
+  @GET
+  @Produces("image/jpg")
+  @Path("/movie/getMovieImage/{movieId}")
+  public byte[] getMovieImage(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    String imageId = dbc.getMovieImageId(movieId);
+    return dbc.getStockImage(imageId);
+  }
+
+  /**
+   * Populates the database on startup with pre-selected stock images. This must be run otherwise the createMovies
+   * functionality will not work.
+   */
+  @POST
+  @Path("/stockImages/generate")
+  public void generateStockImages() {
+    DatabaseController dbc = new DatabaseController();
+    dbc.storeStockImages();
   }
 }
