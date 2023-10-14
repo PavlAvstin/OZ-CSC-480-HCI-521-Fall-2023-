@@ -1,7 +1,12 @@
 package edu.oswego.cs.rest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.bson.BsonDateTime;
 import org.bson.Document;
@@ -13,6 +18,9 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.gridfs.GridFSBucket;
+import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.client.gridfs.GridFSDownloadStream;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
@@ -20,8 +28,6 @@ import edu.oswego.cs.rest.JsonClasses.Actor;
 import edu.oswego.cs.rest.JsonClasses.Movie;
 import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Review;
-
-import javax.print.Doc;
 
 public class DatabaseController {
   String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
@@ -58,6 +64,51 @@ public class DatabaseController {
 
   public MongoCollection<Document> getReviewCollection() {
     return getMovieDatabase().getCollection("reviews");
+  }
+
+  public GridFSBucket getStockImageBucket() {
+    return GridFSBuckets.create(getMovieDatabase(), "stockMovieImages");
+  }
+
+  public void storeStockImages() {
+    int numMovieImages = 3;
+    GridFSBucket gridFSBucket = getStockImageBucket();
+    for (int i = 1; i <= numMovieImages; i++) {
+      String movieFileName = "stockImage" + i + ".jpg";
+      String movieImagePath = "images/" + movieFileName;
+      try {
+        File file = new File(this.getClass().getClassLoader().getResource(movieImagePath).getFile());
+        InputStream image = new FileInputStream(file);
+        gridFSBucket.uploadFromStream(movieFileName, image);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public String getRandomImageId() {
+    int numMovieImages = 3;
+    ThreadLocalRandom random = ThreadLocalRandom.current();
+    // Acount for movieImages starting at an index of 1.
+    int movieNumber = random.nextInt(numMovieImages) + 1;
+    String movieFileName = "stockImage" + movieNumber + ".jpg";
+    GridFSBucket gridFSBucket = getStockImageBucket();
+    Bson query = Filters.eq("filename", movieFileName);
+    return gridFSBucket.find(query).first().getObjectId().toHexString();
+  }
+
+  public byte[] getStockImage(String hexId) {
+    ObjectId stockImageId = new ObjectId(hexId);
+    GridFSBucket gridFSBucket = getStockImageBucket();
+    GridFSDownloadStream downloadImageStream = gridFSBucket.openDownloadStream(stockImageId);
+    int fileLength = (int)downloadImageStream.getGridFSFile().getLength();
+    byte[] imageBytes = new byte[fileLength];
+    downloadImageStream.read(imageBytes);
+    return imageBytes;
+  }
+
+  public String getMovieImageId(String movieId) {
+    return getMovieDocumentWithHexId(movieId).getString("movieImageId");
   }
 
   /**
@@ -478,7 +529,8 @@ public class DatabaseController {
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
     Document newMovie = new Document().append("title", movieTitle).append("director", director)
-            .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary);
+            .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary)
+            .append("movieImageId", getRandomImageId());
     movieCollection.insertOne(newMovie);
   }
 

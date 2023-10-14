@@ -184,4 +184,20 @@ public class MovieDataService {
     List<Review> reviews = dbc.getReviewsByMovieId(movieId);
     return reviews;
   }
+
+  @GET
+  @Produces("image/jpg")
+  @Path("/movie/getMovieImage/{movieId}")
+  public byte[] getMovieImage(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    DatabaseController dbc = new DatabaseController();
+    String imageId = dbc.getMovieImageId(movieId);
+    return dbc.getStockImage(imageId);
+  }
+
+  @POST
+  @Path("/stockImages/generate")
+  public void generateStockImages() {
+    DatabaseController dbc = new DatabaseController();
+    dbc.storeStockImages();
+  }
 }
