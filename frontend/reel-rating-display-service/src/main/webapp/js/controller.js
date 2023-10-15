@@ -5,6 +5,14 @@ import * as Login from "./login.js"
 import * as Tools from "./tools.js"
 
 window.onload = ()=>{
+    //This will use the window or url object to determine what page the code is on. 
+    //For now we will just comment functions out to avoid it runninng
+    
+    //loginInit();
+    homeInit();
+}
+
+function loginInit(){
     var submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", ()=>{
         var errors = false;
@@ -41,8 +49,16 @@ window.onload = ()=>{
 
 
     //Vertical Center Elms that need it
-    var vertCenterElms = document.getElementsByClassName("vcToWindow");
+    var windowVertCenterElms = document.getElementsByClassName("vcToWindow");
     setInterval(()=>{
-        JSStyles.verticalCenterToWindowHeight(vertCenterElms);
+        JSStyles.verticalCenterToWindowHeight(windowVertCenterElms);
+    }, 350); //350 miliseconds, slightly higher than average reaction time
+}
+
+function homeInit(){
+    //Vertical Center Elms that need it
+    var parentVertCenterElms = document.getElementsByClassName("vcToParent");
+    setInterval(()=>{
+        JSStyles.verticalCenterToParentHeight(parentVertCenterElms);
     }, 350); //350 miliseconds, slightly higher than average reaction time
 }

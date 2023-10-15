@@ -1,17 +1,15 @@
 package edu.oswego.cs.rest.JsonClasses;
 
-public class Flag {
-    private String flagName;
+public class Tag {
+    private String tagName;
     private String movieTitles;
 
-    public Flag() {}
+    public Tag() {}
 
-    public String getFlagName() {
-        return flagName;
-    }
+    public String getTagName() { return tagName; }
 
-    public void setFlagName(String flagName) {
-        this.flagName = flagName;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     public String getMovieTitles() {
