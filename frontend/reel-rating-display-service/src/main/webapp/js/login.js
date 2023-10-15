@@ -100,3 +100,6 @@ export const checkVaildPassword = (password)=>{
 
     return error;
 }
+
+
+export const 

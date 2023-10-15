@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page - Reel Ratings</title>
     <!-- All imports are local routing or cdns -->
-    <link rel="stylesheet" crossorigin="anonymous"
+    <link 
+        rel="stylesheet" crossorigin="anonymous"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    />
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="../css/global.css"><!-- Link to CSS file -->
 
@@ -60,9 +62,9 @@
                 <span class="gridTitle mdFont fontWhite mtXSM">Recent Review</span>
                 <span class="titleLine brAll vcToParent customShadow"></span>
             </div>
-            <div class="carousel slide mtXXSM row" data-bs-ride="carousel">
+            <div class="carousel slide mtXXSM row" data-bs-ride="carousel" id="recentReviewCarousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <div class="carousel-item active"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -203,7 +205,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
+                    <div class="carousel-item"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -344,7 +346,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
+                    <div class="carousel-item"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -485,7 +487,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
+                    <div class="carousel-item"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -642,9 +644,9 @@
                 <span class="gridTitle mdFont fontWhite mtXSM">Most Reviewed</span>
                 <span class="titleLine brAll vcToParent customShadow"></span>
             </div>
-            <div class="carousel slide mtXXSM row" data-bs-ride="carousel">
+            <div class="carousel slide mtXXSM row" data-bs-ride="carousel" id="mostReviewedCarousel">
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <div class="carousel-item active"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -785,7 +787,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
+                    <div class="carousel-item"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -926,7 +928,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
+                    <div class="carousel-item"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -1067,7 +1069,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
+                    <div class="carousel-item"  data-bs-interval="15000">
                         <div class="carouselRow">
                             <div class="movieCard bgNeutral card">
                                 <img 
@@ -1113,7 +1115,7 @@
                             </div>
                             <div class="movieCard bgNeutral card">
                                 <img 
-                                    src="../images/Barbie.webp" class="card-img-top  pt-1"
+                                    src="../images/Barbie.webp" class="card-img-top pt-1"
                                     alt="Margot Robie as Barbie driving a pink car. Ryan Gosling as Ken in the backseat." 
                                 />
                                 <div class="card-body">
@@ -1210,7 +1212,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
 
 
