@@ -37,7 +37,7 @@ public class LoginService {
     String username = user.getUsername().toLowerCase();
     if (db.checkIfUserExists(username)) {
       if (SecurityUtils.validatePassword(user.getPassword(), db.getPassword(username))) {
-        String sessionId = request.getSession().getId();
+        String sessionId = request.getRequestedSessionId();
         db.setUserSessionId(username, sessionId);
         String dateTime = LocalDateTime.now().toString();
         db.setUserDateTime(username, dateTime);
