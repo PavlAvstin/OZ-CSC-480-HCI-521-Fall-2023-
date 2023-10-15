@@ -118,7 +118,7 @@ public class MovieDataService {
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByTagName/{TagName}")
-  public Response getMoviesWithFlagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName) throws Exception {
+  public Response getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
