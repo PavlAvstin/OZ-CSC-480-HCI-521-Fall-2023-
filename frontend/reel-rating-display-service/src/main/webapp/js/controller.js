@@ -5,11 +5,14 @@ import * as Login from "./login.js"
 import * as Tools from "./tools.js"
 
 window.onload = ()=>{
-    //This will use the window or url object to determine what page the code is on. 
-    //For now we will just comment functions out to avoid it runninng
     
-    //loginInit();
-    homeInit();
+    //Run the JS nessary for the page
+    var currentPage = Tools.getEndOfURL();
+    switch (currentPage){
+        case "": loginInit(); break;
+        case "index.html": loginInit(); break;
+        case "home.html": homeInit(); break;
+    }
 }
 
 function loginInit(){
@@ -36,7 +39,8 @@ function loginInit(){
             var jsonData = Tools.formatJSONData(currentAccountData, ["username", "password"]);
             NetworkReq.fetchPost(
                 "http://localhost:30500/reel-rating-auth-service/auth/login", 
-                jsonData
+                jsonData,
+                
             );
         }
     });

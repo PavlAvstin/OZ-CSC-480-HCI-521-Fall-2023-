@@ -24,7 +24,7 @@ cd buildAutomation
 ```
 docker compose up --build -d
 ```
-**Step 3:** When done shutdown shutdown all the containers <br>
+**Step 3:** When done shutdown all the containers <br>
 ```
 docker compose down
 ```
