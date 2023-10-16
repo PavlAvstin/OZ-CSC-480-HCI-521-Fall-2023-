@@ -854,12 +854,7 @@ public void deleteMovie(String movieTitle, String movieId){
     actorCollection.updateOne(document, movieRemoval);
   });
   //delete movie within tags
-  MongoCursor<Document> tags = tagCollection.find(Filters.eq("movieTitles", movieTitle)).iterator();
-  Bson movieRemovalF = Updates.pull("movieTitles", movieTitle);
-  tags.forEachRemaining(document -> {
-    // Delete each movie correspond with movieTitle in each qualified actor
-    tagCollection.updateOne(document, movieRemovalF);
-  });
+ 
 
   //delete all reviews related to the movie
   reviewCollection.deleteMany(Filters.eq("movieTitle", movieTitle));
@@ -877,5 +872,59 @@ public void deleteReview(String title, String userName){
   reviewCollection.deleteMany(reviewFilter);
 }
 
+/**
+ * delete user rating from User categories and user associated rating with user name and upperBounds created.
+ * Attemps to check if the ratings with that names exist then find the rating with the upperBounds specified.
+ * @param ratingName
+ * @param upperBounds
+ * @param movieIdString
+ */
+public void deleteUserRatingbyScore(String ratingName, String upperBounds, String movieIdString){
+  //get rating colletions
+  MongoCollection<Document> ratingCollection = getRatingCollection();
+  MongoCollection<Document> userAssociatedRating = getUserAssociatedRatingCollection();
+  //Filters out all ratings with the corresponding name
+  MongoCursor<Document> ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).iterator();
+  //check if the rating exist
+  Bson movieRemovalF = Updates.pull("ratingName", ratingName);
+  ratingFilter.forEachRemaining(document -> {
+    // Delete each movie correspond with movieTitle in each qualified actor
+    if(document.get("upperBound") == upperBounds){
+      ratingCollection.updateOne(document, movieRemovalF);
+      userAssociatedRating.updateOne(document, movieRemovalF);
+    }else{
+      //Do nothing for now
+    }
+  });
+  
+}
+/**
+ * delete user rating from User categories and user associated rating with user name and date time created.
+ * Attemps to check if the ratings with that names exist then find the rating with the date time specified.
+ * @param ratingName
+ * @param dateTimeCreated
+ * @param movieIdString
+ */
+public void deleteUserRatingbyTime(String ratingName, String dateTimeCreated, String movieIdString){
+  //get rating colletions
+  MongoCollection<Document> ratingCollection = getRatingCollection();
+  MongoCollection<Document> userAssociatedRating = getUserAssociatedRatingCollection();
+  //Filters out all ratings with the corresponding name
+  MongoCursor<Document> ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).iterator();
+  //check if the rating exist
+  Bson movieRemovalF = Updates.pull("ratingName", ratingName);
+  ratingFilter.forEachRemaining(document -> {
+    if(document.get("dateTimeCreated") == dateTimeCreated){
+      ratingCollection.updateOne(document, movieRemovalF);
+      userAssociatedRating.updateOne(document, movieRemovalF);
+    }else{
+      //Do nothing for now
+    }
+  });
+  
+}
+
+
 
 }
+ 
