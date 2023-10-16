@@ -148,6 +148,16 @@ public class MovieDataService {
     return Response.ok(movies).build();
   }
 
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getMoviesWithMostReviews")
+  public Response getMoviesWithMostReviews(@Context HttpServletRequest request) throws Exception {
+    String username = getUsername(request);
+    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithMostReviews();
+    return Response.ok(movies).build();
+  }
   /**
    * get endpoints for Actors
    */
