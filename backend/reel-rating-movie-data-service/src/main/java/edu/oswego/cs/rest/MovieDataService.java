@@ -155,7 +155,8 @@ public class MovieDataService {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    List<Movie> movies = dbc.getMoviesWithMostReviews();
+    int numMovies = 12;
+    List<Movie> movies = dbc.getMoviesWithMostReviews(numMovies);
     return Response.ok(movies).build();
   }
   /**
