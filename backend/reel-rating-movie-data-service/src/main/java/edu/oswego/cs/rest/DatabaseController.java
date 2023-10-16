@@ -408,59 +408,35 @@ public class DatabaseController {
                            String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
-    MongoCollection<Document> userAssociatedRatingCollection = getUserAssociatedRatingCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    // attempt to get the rating and the movie to see if they exist
-    Document rating = ratingCollection.find(Filters.eq("name", ratingName)).first();
+
+    // attempt to get the rating if the user has already created one for this category and upperbound
+    Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
+    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
+    Bson usernameFilter = Filters.eq("username", username);
+    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter)).first();
+    // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
-    // if the movie exists
-    if (movie != null) {
-      // if the ratingCategory exists
-      if (rating != null) {
-        // if the upper bound matches
-        if (rating.get("upperbound").equals(upperbound)) {
-          // create new rating for ratingCategory
-          Document newRating = new Document("userName", username).append("userRating", userRating)
-                  .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
+    // check to see if movie exists and rating is not already created by user
+    if (rating == null && movie != null) {
+      Document newRating = new Document("userName", username)
+                  .append("ratingName", ratingName)
+                  .append("userRating", userRating)
+                  .append("upperbound", upperbound)
+                  .append("movieTitle", movie.get("movieTitle"))
+                  .append("movieId", movieIdHexString)
                   .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
                   .append("privacy", privacy);
-          // add rating to the userRatings array within the rating
-          Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
-          ratingCollection.updateOne(rating, userRatingsUpdateOperation);
+      ratingCollection.insertOne(newRating);
 
-          // add rating to UserAssociatedRating
-          Document userAssocRating = userAssociatedRatingCollection.find(Filters.eq("username", username)).first();
-          Bson userAssociatedRatingsUpdateOperation = Updates.push("username", newRating);
-          userAssociatedRatingCollection.updateOne(userAssocRating, userAssociatedRatingsUpdateOperation);
-
-          // if the movie does not have the rating category attached
-          String ratingCategoryNames = (String) movie.get("ratingCategoryNames");
-          if(!ratingCategoryNames.contains(ratingName)){
-            // add the rating name to the rating category name within the movie
-            Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
-            movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
-          }
-        }
-      }
-      // if the ratingCategory does not exist
-      else {
-        // create new rating for ratingCategory
-        Document newRating = new Document("userName", username).append("userRating", userRating)
-                .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
-                .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-                .append("privacy", privacy);
-        // add rating to the userRatings array within the rating
-        Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
-        ratingCollection.updateOne(rating, userRatingsUpdateOperation);
-
-        // add rating to UserAssociatedRating
-        Document userAssocRating = userAssociatedRatingCollection.find(Filters.eq("username", username)).first();
-        Bson userAssociatedRatingsUpdateOperation = Updates.push("username", newRating);
-        userAssociatedRatingCollection.updateOne(userAssocRating, userAssociatedRatingsUpdateOperation);
-
-        // add rating category to ratingCategoryNames
+      Bson ratingCategoryMovieFilter = Filters.eq("ratingCategoryNames", ratingName);
+      ObjectId movieId = new ObjectId(movieIdHexString);
+      Bson movieIdFilter = Filters.eq("_id", movieId);
+      Document movieWithRatingCategory = movieCollection.find(Filters.and(ratingCategoryMovieFilter, movieIdFilter)).first();
+      // check to see if movie category needs to be pushed
+      if (movieWithRatingCategory == null) {
         Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
         movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
       }
