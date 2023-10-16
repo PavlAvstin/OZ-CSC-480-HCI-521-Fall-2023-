@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -18,10 +19,15 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 
 import edu.oswego.cs.rest.JsonClasses.Actor;
@@ -694,6 +700,31 @@ public class DatabaseController {
     var reviews = getReviewCollection();
     var filter = Filters.eq("userName", userName);
     return getReviewsWithFilter(reviews, filter);
+  }
+
+  public List<Movie> getMoviesWithMostReviews() {
+    MongoCollection<Document> reviews = getReviewCollection();
+    int numMovies = 10;
+    MongoIterable<Movie> reviewsAggregated = reviews.aggregate(
+      Arrays.asList(
+        Aggregates.group("$movieId", Accumulators.sum("count", 1)),
+        Aggregates.sort(Sorts.descending("count"))
+      )
+    ).map(doc -> {
+      Movie movie = new Movie();
+      movie.setId(doc.getString("_id"));
+      return movie;
+    }).batchSize(numMovies);
+    List<Movie> movies = new ArrayList<>();
+    reviewsAggregated.forEach(movies::add);
+    MongoCollection<Document> movieCollection = getMovieCollection();
+    movies.forEach(movie -> {
+      ObjectId id = new ObjectId(movie.getId());
+      Document doc = movieCollection.find(Filters.eq("_id", id)).first();
+      movie.setTitle(doc.getString("title"));
+      movie.setSummary(doc.getString("summary"));
+    });
+    return movies;
   }
 
   /**
