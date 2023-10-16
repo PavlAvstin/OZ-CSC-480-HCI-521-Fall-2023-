@@ -572,7 +572,7 @@ public class DatabaseController {
       var m = new Movie();
       m.setDirector(document.getString("director"));
       m.setRuntime(document.getString("runtime"));
-      m.setSummary(document.getString("summary"));
+      m.setSummary(document.getString("plotSummary"));
       m.setTitle(document.getString("title"));
       m.setWriters(document.getString("writers"));
       m.setReleaseDate(document.getString("releaseDate"));
@@ -702,9 +702,14 @@ public class DatabaseController {
     return getReviewsWithFilter(reviews, filter);
   }
 
-  public List<Movie> getMoviesWithMostReviews() {
+  /**
+   * Gets the first numMovies movies that have the most reviews from the database.
+   * @param numMovies the specified number of movies to be returned
+   * @return A list of movies in descending order of most reviewed.
+   */
+  public List<Movie> getMoviesWithMostReviews(int numMovies) {
     MongoCollection<Document> reviews = getReviewCollection();
-    int numMovies = 10;
+    MongoCollection<Document> movieCollection = getMovieCollection();
     MongoIterable<Movie> reviewsAggregated = reviews.aggregate(
       Arrays.asList(
         Aggregates.group("$movieId", Accumulators.sum("count", 1)),
@@ -713,17 +718,16 @@ public class DatabaseController {
     ).map(doc -> {
       Movie movie = new Movie();
       movie.setId(doc.getString("_id"));
+      ObjectId id = new ObjectId(movie.getId());
+      // get the movie that matches the movie id
+      Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
+      // set the neeeded information from movie
+      movie.setTitle(movieDoc.getString("title"));
+      movie.setSummary(movieDoc.getString("plotSummary"));
       return movie;
-    }).batchSize(numMovies);
+    }).batchSize(numMovies); // gets the specified number of movies
     List<Movie> movies = new ArrayList<>();
     reviewsAggregated.forEach(movies::add);
-    MongoCollection<Document> movieCollection = getMovieCollection();
-    movies.forEach(movie -> {
-      ObjectId id = new ObjectId(movie.getId());
-      Document doc = movieCollection.find(Filters.eq("_id", id)).first();
-      movie.setTitle(doc.getString("title"));
-      movie.setSummary(doc.getString("summary"));
-    });
     return movies;
   }
 
