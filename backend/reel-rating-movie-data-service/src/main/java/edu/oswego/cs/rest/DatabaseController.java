@@ -5,8 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.mongodb.client.model.Sorts.descending;
 
 import org.bson.BsonDateTime;
 import org.bson.Document;
@@ -18,10 +21,15 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 
 import edu.oswego.cs.rest.JsonClasses.Actor;
@@ -341,6 +349,7 @@ public class DatabaseController {
    * @param tagName String of the proposed tags name. For example, "Western" or "Grandpa Approved"
    * @param movieIdHexString movie unique MongoDB identifier
    */
+
   public void createTag(String tagName, String movieIdHexString) {
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
@@ -388,6 +397,28 @@ public class DatabaseController {
       else {    }
     }
   }
+
+
+
+  /* TODO rework to include users and privacy settings
+
+  public void createTag(String tagName, String movieIdHexString, String username, String privacy){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+    MongoCollection<Document> movieCollection = getMovieCollection();
+
+    // attempt to grab the movie using its unique MongoDB id
+    ObjectId movieId = new ObjectId(movieIdHexString);
+    Document movie = movieCollection.find(Filters.eq("_id", movieId)).first();
+
+    // if the movie does not exist move on
+    if (movie == null) { return; }
+
+
+  }
+
+   */
+
 
   /**
    * Creates and adds a rating object associated with a movie to the database. Employs a series
@@ -548,6 +579,7 @@ public class DatabaseController {
                           String runtime, String writers, String plotSummary){
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
+
     Document newMovie = new Document().append("title", movieTitle).append("director", director)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary)
             .append("movieImageId", getRandomImageId());
@@ -566,7 +598,7 @@ public class DatabaseController {
       var m = new Movie();
       m.setDirector(document.getString("director"));
       m.setRuntime(document.getString("runtime"));
-      m.setSummary(document.getString("summary"));
+      m.setSummary(document.getString("plotSummary"));
       m.setTitle(document.getString("title"));
       m.setWriters(document.getString("writers"));
       m.setReleaseDate(document.getString("releaseDate"));
@@ -656,6 +688,20 @@ public class DatabaseController {
   }
 
   /**
+   * returns to X most recent movies based on the year of their release. This is done by sorting the ordering the
+   * collection by date and returning the first X.
+   */
+  public List<Document> getRecentReleaseMovies() {
+    // get the movie collection
+    MongoCollection<Document> movieCollection = getMovieCollection();
+    int numberToReturn = 10; // how many movies we want to get, currently 10
+    // sort the entire collection
+    List<Document> sortedList = (List<Document>) movieCollection.find().sort(descending("releaseDate"));
+    // return the first numberToReturn movies
+    return sortedList.subList(0,numberToReturn-1);
+  }
+
+  /**
    * retrieves movie using MongoDB unique hex identifier. Creates a ObjectID object to return the movie Document.
    * @param hexID String representation of the hex id.
    * @return Document of the movie matching the id, null if id is not found
@@ -666,9 +712,9 @@ public class DatabaseController {
     return movieCollection.find(Filters.eq("_id", movieId)).first();
   }
 
-  public List<Actor> getActorByName(String title) {
+  public List<Actor> getActorByName(String name) {
     var actorsCollection = getActorCollection();
-    var filter = Filters.eq("title", title);
+    var filter = Filters.eq("name", name);
     return getActorsWithFilter(actorsCollection, filter);
   }
 
@@ -697,12 +743,38 @@ public class DatabaseController {
   }
 
   /**
-   * Delete methods are used to remove entities from the database. These are usually referenced using their unique
-   * MongoDB id. This helps prevent deleting movies that share names.
+   * Gets the first numMovies movies that have the most reviews from the database.
+   * @param numMovies the specified number of movies to be returned
+   * @return A list of movies in descending order of most reviewed.
    */
-
+  public List<Movie> getMoviesWithMostReviews(int numMovies) {
+    MongoCollection<Document> reviews = getReviewCollection();
+    MongoCollection<Document> movieCollection = getMovieCollection();
+    MongoIterable<Movie> reviewsAggregated = reviews.aggregate(
+      Arrays.asList(
+        Aggregates.group("$movieId", Accumulators.sum("count", 1)),
+        Aggregates.sort(Sorts.descending("count"))
+      )
+    ).map(doc -> {
+      Movie movie = new Movie();
+      movie.setId(doc.getString("_id"));
+      ObjectId id = new ObjectId(movie.getId());
+      // get the movie that matches the movie id
+      Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
+      // set the neeeded information from movie
+      movie.setTitle(movieDoc.getString("title"));
+      movie.setSummary(movieDoc.getString("plotSummary"));
+      return movie;
+    }).batchSize(numMovies); // gets the specified number of movies
+    List<Movie> movies = new ArrayList<>();
+    reviewsAggregated.forEach(movies::add);
+    return movies;
+  }
 
   /**
+   * <p>Delete methods are used to remove entities from the database. These are usually referenced using their unique
+   * MongoDB id. This helps prevent deleting movies that share names. </p> <p></p>
+   *
    * Deletes the given tag from the given movie
    *
    * @param tagName name of tag to delete
@@ -734,7 +806,7 @@ public class DatabaseController {
 }
 
 /**
- * Deletes every instance of a given tag
+ * Deletes every instance of the provided tags
  *
  * @param tagName name of tag to delete
  */

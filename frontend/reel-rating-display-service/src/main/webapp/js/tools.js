@@ -20,3 +20,15 @@ export const clearErrors = ()=>{
         allErrors[x].classList.add("hidden");
     }
 }
+
+
+export const getEndOfURL = ()=>{
+    var currentURL = window.location.pathname;
+    var pathSegs = currentURL.split("/");
+    return pathSegs[pathSegs.length - 1];
+}
+
+
+export const setJWT = ()=>{
+    
+}

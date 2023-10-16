@@ -4,6 +4,7 @@
 /* Global Style */
 :root{
     --transDur : .3s;
+    --sliderTrans : 4s ease-in-out;
     --mainColor : #3d37bf;
     --secondaryColor : #6864ca;
     --maxRatingColor : #00ff00;
@@ -71,6 +72,10 @@
     border-radius: var(--radius);
 }
 
+.carousel-item{ transition: var(--sliderTrans);}
+
+
+
 body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgroundColor); }
 .darkFG{ background-color : var(--darkFG) }
 .textCenter{ text-align : center; }
@@ -97,6 +102,7 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     height: var(--cardTextHeight);
     width:90%;
 }
+.pointerCursor{ cursor: pointer; }
 
 
 /* Font Sizes */
@@ -184,13 +190,13 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     grid-template-columns: repeat(24, 1fr);
 }
 .gridTitle{
-    grid-column: 1 / span 5;
+    grid-column: 1 / span 3;
 }
 .titleLine{
     height: var(--xxsPX);
     background: var(--purpleGrad);
     box-shadow: var(--shadow);
-    grid-column: 7 / span 22;
+    grid-column: 4 / span 22;
 }
 
 .carouselRow{
@@ -243,39 +249,3 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 
 /* Mobile */
 
-/* Humburger Filter ***/
-.main {
-    
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all 0.35s ease-in-out;
-    color: rgba(238, 239, 241, 0.5);
-    
-}
-
-.wrapper {
-    align-items: stretch;
-    display: flex;
-    width: 100%;
-}
-
-#sidebar {
-    max-width: 264px;
-    min-width: 264px;
-    transition: all 0.35s ease-in-out;
-    box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
-    z-index: 1111;
-}
-
-/* Sidebar collapse */
-#sidebar.collapsed 
-{
-    margin-left: -264px;
-}
-.sidebar-header
-{
-    padding: 1.15rem 1.5rem;
-    font-size: 1.2375rem;
-    color: #FFF;
-}

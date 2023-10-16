@@ -1,4 +1,4 @@
-export const fetchPost = (url, jsonData)=>{
+export const fetchPost = (url, jsonData, callbackFunc)=>{
     fetch(url,{
         mode : "cors",
         method : "post",
@@ -8,6 +8,6 @@ export const fetchPost = (url, jsonData)=>{
         body : jsonData
     })
     .then(async(serverData)=>{
-        alert(`Response from server at \n${serverData.url}`)
+        callbackFunc(serverData);
     });   
 }
