@@ -349,6 +349,7 @@ public class DatabaseController {
    * @param tagName String of the proposed tags name. For example, "Western" or "Grandpa Approved"
    * @param movieIdHexString movie unique MongoDB identifier
    */
+
   public void createTag(String tagName, String movieIdHexString) {
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
@@ -396,6 +397,28 @@ public class DatabaseController {
       else {    }
     }
   }
+
+
+
+  /* TODO rework to include users and privacy settings
+
+  public void createTag(String tagName, String movieIdHexString, String username, String privacy){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+    MongoCollection<Document> movieCollection = getMovieCollection();
+
+    // attempt to grab the movie using its unique MongoDB id
+    ObjectId movieId = new ObjectId(movieIdHexString);
+    Document movie = movieCollection.find(Filters.eq("_id", movieId)).first();
+
+    // if the movie does not exist move on
+    if (movie == null) { return; }
+
+
+  }
+
+   */
+
 
   /**
    * Creates and adds a rating object associated with a movie to the database. Employs a series
@@ -689,9 +712,9 @@ public class DatabaseController {
     return movieCollection.find(Filters.eq("_id", movieId)).first();
   }
 
-  public List<Actor> getActorByName(String title) {
+  public List<Actor> getActorByName(String name) {
     var actorsCollection = getActorCollection();
-    var filter = Filters.eq("title", title);
+    var filter = Filters.eq("name", name);
     return getActorsWithFilter(actorsCollection, filter);
   }
 
@@ -749,12 +772,9 @@ public class DatabaseController {
   }
 
   /**
-   * Delete methods are used to remove entities from the database. These are usually referenced using their unique
-   * MongoDB id. This helps prevent deleting movies that share names.
-   */
-
-
-  /**
+   * <p>Delete methods are used to remove entities from the database. These are usually referenced using their unique
+   * MongoDB id. This helps prevent deleting movies that share names. </p> <p></p>
+   *
    * Deletes the given tag from the given movie
    *
    * @param tagName name of tag to delete
@@ -786,7 +806,7 @@ public class DatabaseController {
 }
 
 /**
- * Deletes every instance of a given tag
+ * Deletes every instance of the provided tags
  *
  * @param tagName name of tag to delete
  */
