@@ -243,39 +243,3 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 
 /* Mobile */
 
-/* Humburger Filter ***/
-.main {
-    
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all 0.35s ease-in-out;
-    color: rgba(238, 239, 241, 0.5);
-    
-}
-
-.wrapper {
-    align-items: stretch;
-    display: flex;
-    width: 100%;
-}
-
-#sidebar {
-    max-width: 264px;
-    min-width: 264px;
-    transition: all 0.35s ease-in-out;
-    box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
-    z-index: 1111;
-}
-
-/* Sidebar collapse */
-#sidebar.collapsed 
-{
-    margin-left: -264px;
-}
-.sidebar-header
-{
-    padding: 1.15rem 1.5rem;
-    font-size: 1.2375rem;
-    color: #FFF;
-}
