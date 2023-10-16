@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.mongodb.client.model.Sorts.descending;
+
 import org.bson.BsonDateTime;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -548,6 +550,7 @@ public class DatabaseController {
                           String runtime, String writers, String plotSummary){
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
+
     Document newMovie = new Document().append("title", movieTitle).append("director", director)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary)
             .append("movieImageId", getRandomImageId());
@@ -653,6 +656,20 @@ public class DatabaseController {
     var movieCollections = getMovieCollection();
     var filter = Filters.eq("title", title);
     return movieCollections.find(filter).first();
+  }
+
+  /**
+   * returns to X most recent movies based on the year of their release. This is done by sorting the ordering the
+   * collection by date and returning the first X.
+   */
+  public List<Document> getRecentReleaseMovies() {
+    // get the movie collection
+    MongoCollection<Document> movieCollection = getMovieCollection();
+    int numberToReturn = 10; // how many movies we want to get, currently 10
+    // sort the entire collection
+    List<Document> sortedList = (List<Document>) movieCollection.find().sort(descending("releaseDate"));
+    // return the first numberToReturn movies
+    return sortedList.subList(0,numberToReturn-1);
   }
 
   /**
