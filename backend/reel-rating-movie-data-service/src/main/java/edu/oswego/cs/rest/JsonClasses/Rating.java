@@ -4,6 +4,9 @@ public class Rating {
   private String movieTitle;
   private String ratingName;
   private String userRating;
+  private String upperbound;
+  private String dateTimeCreated;
+  private String privacy;
 
   public Rating() {}
 
@@ -30,4 +33,16 @@ public class Rating {
   public void setUserRating(String userRating) {
     this.userRating = userRating;
   }
+
+  public String getUpperbound() { return upperbound; }
+
+  public void setUpperbound(String upperbound) { this.upperbound = upperbound; }
+
+  public String getDateTimeCreated() { return dateTimeCreated;  }
+
+  public void setDateTimeCreated(String dateTimeCreated) { this.dateTimeCreated = dateTimeCreated; }
+
+  public String getPrivacy() { return privacy; }
+
+  public void setPrivacy(String privacy) { this.privacy = privacy; }
 }
