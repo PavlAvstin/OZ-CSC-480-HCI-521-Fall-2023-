@@ -435,6 +435,9 @@ public class DatabaseController {
     MongoCollection<Document> ratingCollection = getRatingCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
+    // check if the user rating is between 1 and the upperbound
+    if (!(Integer.valueOf(userRating) <= Integer.valueOf(upperbound) && Integer.valueOf(userRating) >= 1))
+      return;
 
     // attempt to get the rating if the user has already created one for this category and upperbound
     Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
