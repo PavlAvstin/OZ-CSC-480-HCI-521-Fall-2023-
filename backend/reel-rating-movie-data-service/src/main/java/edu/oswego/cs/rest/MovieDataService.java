@@ -108,8 +108,7 @@ public class MovieDataService {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    String tempUsername = "TempUsername";
-    db.createReview(movieId, review.getReviewDescription(), tempUsername, review.getPrivacy());
+    db.createReview(movieId, review.getReviewDescription(), username, review.getPrivacy());
     return Response.ok().build();
   }
 

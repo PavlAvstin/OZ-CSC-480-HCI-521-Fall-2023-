@@ -455,9 +455,9 @@ public class DatabaseController {
    * for the same movie.
    *
    * @param reviewDescription Freeform text from the user. No limits in size.
-   * @param userName the user who created the review
+   * @param username the user who created the review
    */
-  public void createReview(String movieIdString, String reviewDescription, String userName, String privacy){
+  public void createReview(String movieIdString, String reviewDescription, String username, String privacy){
     // get collections
     MongoCollection<Document> reviewCollection = getReviewCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
@@ -472,7 +472,7 @@ public class DatabaseController {
       BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
       Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
-              .append("userName", userName).append("dateTimeCreated", dateTimeCreated)
+              .append("username", username).append("dateTimeCreated", dateTimeCreated)
               .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
@@ -582,6 +582,7 @@ public class DatabaseController {
   private static ArrayList<Review> getReviewsWithFilter(MongoCollection<Document> reviewsCollection, Bson filter) {
     var reviews = reviewsCollection.find(filter).map(document -> {
       var re = new Review();
+      re.setUsername(document.getString("username"));
       re.setReviewDescription(document.getString("reviewDescription"));
       re.setMovieId(document.getString("movieId"));
       re.setDateTimeCreated(document.get("dateTimeCreated").toString());
@@ -735,9 +736,9 @@ public class DatabaseController {
     return getReviewsWithFilter(reviews, filter);
   }
 
-  public List<Review> getReviewsByUser(String userName) {
+  public List<Review> getReviewsByUser(String username) {
     var reviews = getReviewCollection();
-    var filter = Filters.eq("userName", userName);
+    var filter = Filters.eq("username", username);
     return getReviewsWithFilter(reviews, filter);
   }
 
