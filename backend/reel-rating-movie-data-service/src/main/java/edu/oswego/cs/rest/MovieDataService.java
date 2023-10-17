@@ -3,8 +3,9 @@ package edu.oswego.cs.rest;
 import edu.oswego.cs.rest.JsonClasses.Actor;
 import edu.oswego.cs.rest.JsonClasses.Tag;
 import edu.oswego.cs.rest.JsonClasses.Movie;
+import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Review;
-
+import jakarta.ejb.PostActivate;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
@@ -227,5 +228,54 @@ public class MovieDataService {
   public void generateStockImages() {
     DatabaseController dbc = new DatabaseController();
     dbc.storeStockImages();
+  }
+
+  @POST
+  @Path("/rating/create")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createRating(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    dbc.createRating(rating.getRatingName(), rating.getUserRating(), rating.getUpperbound(), requesterUsername, rating.getMovieId(), rating.getPrivacy());
+    return Response.ok().build();
+  }
+
+  /**
+   * Takes a rating name and rating upperbound in order to find the rating category.
+   * @param request
+   * @param rating
+   * @return A list of ratings that are within the rating category.
+   * @throws Exception
+   */
+  @POST
+  @Path("/rating/getRatingsInRatingCategory")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getRatingsInRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Rating> ratings = dbc.getRatingsInRatingsCategory(rating.getRatingName(), rating.getUpperbound());
+    return Response.ok(ratings).build();
+  }
+
+  /**
+   * Takes a rating name and rating upperbound in order to find the rating category.
+   * @param request
+   * @param rating
+   * @return A list of movies that are within the rating category.
+   * @throws Exception
+   */
+  @POST
+  @Path("/movie/getByRatingCategory")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getMoviesByRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithRatingCategory(rating.getRatingName(), rating.getUpperbound());
+    return Response.ok(movies).build();
   }
 }

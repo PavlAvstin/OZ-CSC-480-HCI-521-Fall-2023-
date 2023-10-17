@@ -595,6 +595,8 @@ public class DatabaseController {
       ra.setMovieTitle(document.getString("movieTitle"));
       ra.setDateTimeCreated(document.get("dateTimeCreated").toString());
       ra.setPrivacy(document.getString("privacy"));
+      ra.setMovieId(document.getString("movieId"));
+      ra.setUpperbound(document.getString("upperbound"));
       return ra;
     });
     var list = new ArrayList<Rating>();
@@ -617,6 +619,31 @@ public class DatabaseController {
     var moviesCollection = getMovieCollection();
     var filter = Filters.eq("ratingCategoryNames", ratingCategory);
     return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public List<Movie> getMoviesWithRatingCategory(String ratingName, String upperbound) {
+    var ratingNameFilter = Filters.eq("ratingName", ratingName);
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    var filter = Filters.and(ratingNameFilter, upperboundFilter);
+    var ratings = getRatingCollection();
+    var movieCollection = getMovieCollection();
+    MongoIterable<Movie> movieIterable = ratings.distinct("movieId",filter, String.class)
+    .map(movieId -> {
+      ObjectId movieIdObject = new ObjectId(movieId);
+      Document document = movieCollection.find(Filters.eq("_id", movieIdObject)).first();
+      var m = new Movie();
+      m.setDirector(document.getString("director"));
+      m.setRuntime(document.getString("runtime"));
+      m.setSummary(document.getString("plotSummary"));
+      m.setTitle(document.getString("title"));
+      m.setWriters(document.getString("writers"));
+      m.setReleaseDate(document.getString("releaseDate"));
+      m.setId(document.getObjectId("_id").toHexString());
+      return m;
+    });
+    List<Movie> movies = new ArrayList<>();
+    movieIterable.forEach(movies::add);
+    return movies;
   }
 
   public List<Movie> getMoviesWithActor(String actor) {
@@ -660,9 +687,11 @@ public class DatabaseController {
     return getRatingsWithFilter(ratings, filter);
   }
 
-  public List<Rating> getRatingsInRatingsCategory(String category) {
+  public List<Rating> getRatingsInRatingsCategory(String ratingName, String upperbound) {
     var ratings = getRatingCollection();
-    var filter = Filters.eq("category", category);
+    var ratingNameFilter = Filters.eq("ratingName", ratingName);
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    var filter = Filters.and(ratingNameFilter, upperboundFilter);
     return getRatingsWithFilter(ratings, filter);
   }
 
