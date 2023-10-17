@@ -505,8 +505,9 @@ public class DatabaseController {
       Bson actorMovieUpdateOperation = Updates.push("movies", movieId);
       actorCollection.updateOne(newActor, actorMovieUpdateOperation);
 
+      String actorId = newActor.getObjectId("_id").toHexString();
       // add actor to movie cast
-      Bson movieUpdateOperation = Updates.push("principalCast", actorName);
+      Bson movieUpdateOperation = Updates.push("principalCast", actorId);
       movieCollection.updateOne(movie, movieUpdateOperation);
     }
     // if the movie does not exist
@@ -646,9 +647,9 @@ public class DatabaseController {
     return movies;
   }
 
-  public List<Movie> getMoviesWithActor(String actor) {
+  public List<Movie> getMoviesWithActor(String actorId) {
     var moviesCollection = getMovieCollection();
-    var filter = Filters.eq("actorNames", actor);
+    var filter = Filters.eq("principalCast", actorId);
     return getMoviesWithFilter(moviesCollection, filter);
   }
 

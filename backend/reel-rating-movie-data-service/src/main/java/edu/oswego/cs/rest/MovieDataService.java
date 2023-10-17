@@ -150,12 +150,12 @@ public class MovieDataService {
 
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByActor/{actor}")
-  public Response getMoviesWithActor(@Context HttpServletRequest request, @PathParam("actor") String actor) throws Exception {
+  @Path("/movie/getByActor/{actorId}")
+  public Response getMoviesWithActorId(@Context HttpServletRequest request, @PathParam("actorId") String actorId) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    List<Movie> movies = dbc.getMoviesWithActor(actor);
+    List<Movie> movies = dbc.getMoviesWithActor(actorId);
     return Response.ok(movies).build();
   }
 
