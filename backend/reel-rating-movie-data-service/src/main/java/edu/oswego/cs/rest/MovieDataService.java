@@ -278,4 +278,15 @@ public class MovieDataService {
     List<Movie> movies = dbc.getMoviesWithRatingCategory(rating.getRatingName(), rating.getUpperbound());
     return Response.ok(movies).build();
   }
+
+  @GET
+  @Path("/rating/getMostPopularAggregatedRatingForMovie/{movieId}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getMostPopularAggregatedRatingForMovie(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    Rating aggregatedRating = dbc.getMostPopularAggregatedRatingForMovie(movieId);
+    return Response.ok(aggregatedRating).build();
+  }
 }
