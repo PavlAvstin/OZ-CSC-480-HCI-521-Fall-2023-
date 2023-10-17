@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -141,6 +142,9 @@ public class DatabaseController {
   public String getMovieImageId(String movieId) {
     return getMovieDocumentWithHexId(movieId).getString("movieImageId");
   }
+
+
+  //DataBase Population for movies:
 
   /**
    * update operations are used to change individual fields within database entities. For example
@@ -657,6 +661,10 @@ public class DatabaseController {
     var moviesCollection = getMovieCollection();
     var filter = Filters.eq("title", title);
     return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public Optional<Movie> getMovieWithTitle(String title){
+    return getMoviesWithTitle(title).stream().findFirst();
   }
 
   public Document getMovieDocumentWithTitle(String title) {
