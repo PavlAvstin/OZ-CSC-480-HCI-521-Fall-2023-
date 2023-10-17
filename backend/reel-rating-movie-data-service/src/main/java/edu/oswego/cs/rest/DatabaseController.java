@@ -779,6 +779,30 @@ public class DatabaseController {
     return movies;
   }
 
+  public Rating getMostPopularAggregatedRatingForMovie(String movieId) {
+    MongoCollection<Document> ratingCollection = getRatingCollection();
+    Document ratingNameDoc = ratingCollection.aggregate(
+      Arrays.asList(
+        Aggregates.match(Filters.eq("movieId", movieId)),
+        Aggregates.group("$ratingName", Accumulators.sum("count", 1)),
+        Aggregates.sort(Sorts.descending("count"))
+      )
+    ).first();
+    String mostPopularCategoryName = ratingNameDoc.getString("_id");
+    Document ratingScaleDoc = ratingCollection.aggregate(
+      Arrays.asList(
+        Aggregates.match(Filters.and(Filters.eq("movieId", movieId), Filters.eq("ratingName", mostPopularCategoryName))),
+        Aggregates.group("$upperbound", Accumulators.sum("count", 1)),
+        Aggregates.sort(Sorts.descending("count"))
+      )
+    ).first();
+    String mostPopularCategoryUpperbound = ratingScaleDoc.getString("_id");
+    Rating rating = new Rating();
+    rating.setRatingName(mostPopularCategoryName);
+    rating.setUpperbound(mostPopularCategoryUpperbound);
+    return rating;
+  }
+
   /**
    * <p>Delete methods are used to remove entities from the database. These are usually referenced using their unique
    * MongoDB id. This helps prevent deleting movies that share names. </p> <p></p>
