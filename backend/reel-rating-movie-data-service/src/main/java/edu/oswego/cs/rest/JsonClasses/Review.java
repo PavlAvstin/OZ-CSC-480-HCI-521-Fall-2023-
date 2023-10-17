@@ -6,6 +6,7 @@ public class Review {
   private String reviewDescription;
   private String dateTimeCreated;
   private String privacy;
+  private String username;
 
   public Review() {}
 
@@ -41,5 +42,13 @@ public class Review {
 
   public void setPrivacy(String privacy) {
     this.privacy = privacy;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getUsername() {
+    return username;
   }
 }
