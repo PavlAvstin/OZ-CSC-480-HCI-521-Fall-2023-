@@ -7,6 +7,7 @@ public class Rating {
   private String upperbound;
   private String dateTimeCreated;
   private String privacy;
+  private String movieId;
 
   public Rating() {}
 
@@ -45,4 +46,8 @@ public class Rating {
   public String getPrivacy() { return privacy; }
 
   public void setPrivacy(String privacy) { this.privacy = privacy; }
+
+  public String getMovieId() { return movieId; }
+
+  public void setMovieId(String movieId) { this.movieId = movieId; }
 }
