@@ -207,7 +207,7 @@ public class MovieDataService {
     String requesterUsername = getUsername(request);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }      
     DatabaseController dbc = new DatabaseController();
-    List<Review> reviews = dbc.getReviewsByUser(username);
+    List<Review> reviews = dbc.getReviewsByUser(username.toLowerCase());
     return Response.ok(reviews).build();
   }
 
@@ -251,6 +251,13 @@ public class MovieDataService {
   public void generateStockImages() {
     DatabaseController dbc = new DatabaseController();
     dbc.storeStockImages();
+  }
+
+  @POST
+  @Path("/data/generate")
+  public void generateData() {
+    PopulationData data = new PopulationData();
+    data.populateDataBase();
   }
 
 
