@@ -488,37 +488,29 @@ public class DatabaseController {
    * @param dob the date of birth of the actor
    * @param movieTitle a movie that the actor appears in. More can be added later
    */
-  public void createActor(String actorName, String dob, String movieTitle){
+  public void createActor(String actorName, String dob, String movieId){
     // get collections
     MongoCollection<Document> actorCollection = getActorCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    // TODO verify the actor does not already exist
-    String actorId = "";
-    // get the actor object to see if it exists
-    Document actor = actorCollection.find(Filters.eq("id", actorId)).first();
+    ObjectId movieIdObject = new ObjectId(movieId);
+    // get the movie object to make sure it exists
+    Document movie = movieCollection.find(Filters.eq("_id", movieIdObject)).first();
+    // if the movie exists
+    if(null != movie) {
+      // create a new actor
+      Document newActor = new Document().append("name", actorName)
+                .append("dob", dob);
+      actorCollection.insertOne(newActor);
+      Bson actorMovieUpdateOperation = Updates.push("movies", movieId);
+      actorCollection.updateOne(newActor, actorMovieUpdateOperation);
 
-    // if the actor exists
-    if(null != actor) { }
-
-    // if the actor does not exist
-    else{
-      // get the movie object to make sure it exists
-      Document movie = movieCollection.find(Filters.eq("title", movieTitle)).first();
-      // if the movie exists
-      if(null != movie) {
-        // create a new actor
-        Document newReview = new Document("id", actorId).append("name", actorName)
-                .append("dob", dob).append("movies", movieTitle);
-        actorCollection.insertOne(newReview);
-
-        // add actor to movie cast
-        Bson movieUpdateOperation = Updates.push("principalCast", actorName);
-        movieCollection.updateOne(movie, movieUpdateOperation);
-      }
-      // if the movie does not exist
-      else{ }
+      // add actor to movie cast
+      Bson movieUpdateOperation = Updates.push("principalCast", actorName);
+      movieCollection.updateOne(movie, movieUpdateOperation);
     }
+    // if the movie does not exist
+    else{ }
   }
 
   /**
@@ -570,8 +562,9 @@ public class DatabaseController {
     var actors = actorsCollection.find(filter).map(document -> {
       var a = new Actor();
       a.setName(document.getString("name"));
-      a.setDateOfBirth(document.getString("dateOfBirth"));
-
+      a.setDateOfBirth(document.getString("dob"));
+      a.setId(document.getObjectId("_id").toHexString());
+      a.setMovies(document.getList("movies", String.class));
       return a;
     });
     var list = new ArrayList<Actor>();

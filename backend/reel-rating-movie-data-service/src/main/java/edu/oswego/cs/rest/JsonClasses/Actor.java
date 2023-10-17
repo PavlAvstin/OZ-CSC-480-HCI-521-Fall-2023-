@@ -1,10 +1,12 @@
 package edu.oswego.cs.rest.JsonClasses;
 
+import java.util.List;
+
 public class Actor {
   private String id;
   private String name;
   private String dateOfBirth;
-  private String movies;
+  private List<String> movies;
 
   public Actor() {}
 
@@ -16,19 +18,19 @@ public class Actor {
     this.name = name;
   }
 
-    public String getID() {
+    public String getId() {
         return id;
     }
 
-    public void setID(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-  public String getMovies() {
+  public List<String> getMovies() {
     return movies;
   }
 
-  public void setMovies(String movies) {
+  public void setMovies(List<String> movies) {
     this.movies = movies;
   }
 
