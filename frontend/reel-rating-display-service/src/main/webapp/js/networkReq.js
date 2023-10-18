@@ -11,3 +11,14 @@ export const fetchPost = (url, jsonData, callbackFunc)=>{
         callbackFunc(serverData);
     });   
 }
+
+
+export const fetchGet = (url, callbackFunc)=>{
+    fetch(url,{
+        mode : "cors",
+        method : "get"
+    })
+    .then(async(serverData)=>{
+        callbackFunc(serverData);
+    }); 
+}
