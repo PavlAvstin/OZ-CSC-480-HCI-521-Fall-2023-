@@ -683,20 +683,16 @@ public class DatabaseController {
     // get the movie collection
     MongoCollection<Document> movieCollection = getMovieCollection();
     // sort the entire collection
-    MongoIterable<Document> sortedList = movieCollection.find().sort(descending("releaseDate"));
+    MongoIterable<Document> sortedList = movieCollection.find().sort(descending("releaseDate")).limit(numMovies);
 
     // for each of the documents make a new movie and add to the ArrayList to return
-    for ( Document d : sortedList.batchSize(numMovies - 1)) {
+    for ( Document d : sortedList) {
       // create the new movie object
       Movie m = new Movie();
-      ObjectId id = new ObjectId(m.getId());
-      // get the movie that matches the movie id
-      Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
       // set the needed information from movie
-      // TODO This is a stripped down version of the movie, if we want this to be a full movie we should add a constructor to the Movie object
-      m.setId(d.getString("_id"));
-      m.setTitle(movieDoc.getString("title"));
-      m.setSummary(movieDoc.getString("plotSummary"));
+      m.setId(d.getObjectId("_id").toHexString());
+      m.setTitle(d.getString("title"));
+      m.setSummary(d.getString("plotSummary"));
 
       // add the movie to the list to return
       recentReleaseMovies.add(m);
@@ -759,7 +755,8 @@ public class DatabaseController {
     MongoIterable<Movie> reviewsAggregated = reviews.aggregate(
       Arrays.asList(
         Aggregates.group("$movieId", Accumulators.sum("count", 1)),
-        Aggregates.sort(Sorts.descending("count"))
+        Aggregates.sort(Sorts.descending("count")),
+        Aggregates.limit(numMovies)
       )
     ).map(doc -> {
       Movie movie = new Movie();
@@ -771,7 +768,7 @@ public class DatabaseController {
       movie.setTitle(movieDoc.getString("title"));
       movie.setSummary(movieDoc.getString("plotSummary"));
       return movie;
-    }).batchSize(numMovies); // gets the specified number of movies
+    });
     List<Movie> movies = new ArrayList<>();
     reviewsAggregated.forEach(movies::add);
     return movies;
