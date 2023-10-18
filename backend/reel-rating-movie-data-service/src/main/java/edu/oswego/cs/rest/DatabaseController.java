@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -141,6 +142,9 @@ public class DatabaseController {
   public String getMovieImageId(String movieId) {
     return getMovieDocumentWithHexId(movieId).getString("movieImageId");
   }
+
+
+  //DataBase Population for movies:
 
   /**
    * update operations are used to change individual fields within database entities. For example
@@ -343,65 +347,14 @@ public class DatabaseController {
    */
 
   /**
-   * Users are not allowed to create a tag for a movie that does not already exist. If the movie does not exist,
-   * nothing happens.
+   * Users are not allowed to create a tag for a movie that does not already exist, or the same tag for the same movie.
+   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues
    *
-   * @param tagName String of the proposed tags name. For example, "Western" or "Grandpa Approved"
-   * @param movieIdHexString movie unique MongoDB identifier
+   * @param tagName name of tag used to access and store the information
+   * @param movieIdHexString MongoDB unique identifier for the movie to attach the tag to
+   * @param username name of the user trying to create the tag
+   * @param privacy privacy setting of the tag whether it is private, friends-only, or public
    */
-
-  public void createTag(String tagName, String movieIdHexString) {
-    // get the collections
-    MongoCollection<Document> tagCollection = getTagCollection();
-    MongoCollection<Document> movieCollection = getMovieCollection();
-
-    // attempt to grab the movie using its unique MongoDB id
-    ObjectId movieId = new ObjectId(movieIdHexString);
-    Document movie = movieCollection.find(Filters.eq("_id", movieId)).first();
-
-    // if the movie does not exist do nothing
-    if (movie == null) { return; }
-    // grab the two possible iterations of the tag that could exist
-    // TODO Do we want these to be grabbed using movie titles
-    Document existsAndTagged = tagCollection.find(Filters.eq("movieTitles", movie.getString("title"))).first();
-    Document existingTag = tagCollection.find(Filters.eq("tagName", tagName)).first();
-
-    // if the tag exists and the movie is already tagged
-    if (null != existsAndTagged) {      }
-    // if the tag exists and the movie is not tagged
-    else if (null != existingTag) {
-      // if the movie exists
-      if (null != movie) {
-        // push the movieName to the tag list
-        Bson tagUpdateOperation = Updates.push("movieTitles", movie.getString("title"));
-        tagCollection.updateOne(existingTag, tagUpdateOperation);
-        // push the tagName to the movie list
-        Bson movieUpdateOperation = Updates.push("tagNames", tagName);
-        movieCollection.updateOne(movie, movieUpdateOperation);
-      }
-      // if the movie does not exist do nothing
-      else {    }
-    }
-    // if the tag does not exist
-    else {
-      // if the movie exists
-      if (null != movie) {
-        // create the tag and add to the collection
-        Document newTag = new Document("tagName", tagName).append("movieTitles", movie.getString("title"));
-        tagCollection.insertOne(newTag);
-        // push the tagName to the movie list
-        Bson movieUpdateOperation = Updates.push("tagName", tagName);
-        movieCollection.updateOne(movie, movieUpdateOperation);
-      }
-      // if the movie does not exist
-      else {    }
-    }
-  }
-
-
-
-  /* TODO rework to include users and privacy settings
-
   public void createTag(String tagName, String movieIdHexString, String username, String privacy){
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
@@ -414,11 +367,39 @@ public class DatabaseController {
     // if the movie does not exist move on
     if (movie == null) { return; }
 
+    // attempt to grab the tag in a few different types
+    Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
+    Bson usernameFilter = Filters.eq("username", username);
+    Bson tagNameFilter = Filters.eq("tagName", tagName);
+
+    Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
+
+    // if you have already tagged this movie this tag
+    if(taggedWithMovieByUser != null){
+
+    } // else the tag does not exist
+    else{
+      // create and add the tag
+      Document newTag = new Document("userName", username)
+              .append("tagName", tagName)
+              .append("movieTitle", movie.get("title"))
+              .append("movieId", movieIdHexString)
+              .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
+              .append("privacy", privacy);
+      // add to the database
+      tagCollection.insertOne(newTag);
+
+      Bson tagMovieFilter = Filters.eq("tagNames", tagName);
+      Bson movieIdFilter = Filters.eq("_id", movieId);
+      Document movieWithTag = movieCollection.find(Filters.and(tagMovieFilter, movieIdFilter)).first();
+      // check to see if movie category needs to be pushed
+      if (movieWithTag == null) {
+        Bson movieRatingCategoryUpdateOperation = Updates.push("tagNames", tagName);
+        movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
+      }
+    }
 
   }
-
-   */
-
 
   /**
    * Creates and adds a rating object associated with a movie to the database. Employs a series
@@ -433,59 +414,38 @@ public class DatabaseController {
                            String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
-    MongoCollection<Document> userAssociatedRatingCollection = getUserAssociatedRatingCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    // attempt to get the rating and the movie to see if they exist
-    Document rating = ratingCollection.find(Filters.eq("name", ratingName)).first();
+    // check if the user rating is between 1 and the upperbound
+    if (!(Integer.valueOf(userRating) <= Integer.valueOf(upperbound) && Integer.valueOf(userRating) >= 1))
+      return;
+
+    // attempt to get the rating if the user has already created one for this category and upperbound
+    Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
+    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
+    Bson usernameFilter = Filters.eq("username", username);
+    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter)).first();
+    // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
-    // if the movie exists
-    if (movie != null) {
-      // if the ratingCategory exists
-      if (rating != null) {
-        // if the upper bound matches
-        if (rating.get("upperbound").equals(upperbound)) {
-          // create new rating for ratingCategory
-          Document newRating = new Document("userName", username).append("userRating", userRating)
-                  .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
+    // check to see if movie exists and rating is not already created by user
+    if (rating == null && movie != null) {
+      Document newRating = new Document("userName", username)
+                  .append("ratingName", ratingName)
+                  .append("userRating", userRating)
+                  .append("upperbound", upperbound)
+                  .append("movieTitle", movie.get("title"))
+                  .append("movieId", movieIdHexString)
                   .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
                   .append("privacy", privacy);
-          // add rating to the userRatings array within the rating
-          Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
-          ratingCollection.updateOne(rating, userRatingsUpdateOperation);
+      ratingCollection.insertOne(newRating);
 
-          // add rating to UserAssociatedRating
-          Document userAssocRating = userAssociatedRatingCollection.find(Filters.eq("username", username)).first();
-          Bson userAssociatedRatingsUpdateOperation = Updates.push("username", newRating);
-          userAssociatedRatingCollection.updateOne(userAssocRating, userAssociatedRatingsUpdateOperation);
-
-          // if the movie does not have the rating category attached
-          String ratingCategoryNames = (String) movie.get("ratingCategoryNames");
-          if(!ratingCategoryNames.contains(ratingName)){
-            // add the rating name to the rating category name within the movie
-            Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
-            movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
-          }
-        }
-      }
-      // if the ratingCategory does not exist
-      else {
-        // create new rating for ratingCategory
-        Document newRating = new Document("userName", username).append("userRating", userRating)
-                .append("upperbound", upperbound).append("movieTitle", movie.get("movieTitle"))
-                .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-                .append("privacy", privacy);
-        // add rating to the userRatings array within the rating
-        Bson userRatingsUpdateOperation = Updates.push("userRatings", newRating);
-        ratingCollection.updateOne(rating, userRatingsUpdateOperation);
-
-        // add rating to UserAssociatedRating
-        Document userAssocRating = userAssociatedRatingCollection.find(Filters.eq("username", username)).first();
-        Bson userAssociatedRatingsUpdateOperation = Updates.push("username", newRating);
-        userAssociatedRatingCollection.updateOne(userAssocRating, userAssociatedRatingsUpdateOperation);
-
-        // add rating category to ratingCategoryNames
+      Bson ratingCategoryMovieFilter = Filters.eq("ratingCategoryNames", ratingName);
+      ObjectId movieId = new ObjectId(movieIdHexString);
+      Bson movieIdFilter = Filters.eq("_id", movieId);
+      Document movieWithRatingCategory = movieCollection.find(Filters.and(ratingCategoryMovieFilter, movieIdFilter)).first();
+      // check to see if movie category needs to be pushed
+      if (movieWithRatingCategory == null) {
         Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
         movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
       }
@@ -499,9 +459,9 @@ public class DatabaseController {
    * for the same movie.
    *
    * @param reviewDescription Freeform text from the user. No limits in size.
-   * @param userName the user who created the review
+   * @param username the user who created the review
    */
-  public void createReview(String movieIdString, String reviewDescription, String userName, String privacy){
+  public void createReview(String movieIdString, String reviewDescription, String username, String privacy){
     // get collections
     MongoCollection<Document> reviewCollection = getReviewCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
@@ -516,7 +476,7 @@ public class DatabaseController {
       BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
       Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
-              .append("userName", userName).append("dateTimeCreated", dateTimeCreated)
+              .append("username", username).append("dateTimeCreated", dateTimeCreated)
               .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
@@ -532,37 +492,30 @@ public class DatabaseController {
    * @param dob the date of birth of the actor
    * @param movieTitle a movie that the actor appears in. More can be added later
    */
-  public void createActor(String actorName, String dob, String movieTitle){
+  public void createActor(String actorName, String dob, String movieId){
     // get collections
     MongoCollection<Document> actorCollection = getActorCollection();
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    // TODO verify the actor does not already exist
-    String actorId = "";
-    // get the actor object to see if it exists
-    Document actor = actorCollection.find(Filters.eq("id", actorId)).first();
+    ObjectId movieIdObject = new ObjectId(movieId);
+    // get the movie object to make sure it exists
+    Document movie = movieCollection.find(Filters.eq("_id", movieIdObject)).first();
+    // if the movie exists
+    if(null != movie) {
+      // create a new actor
+      Document newActor = new Document().append("name", actorName)
+                .append("dob", dob);
+      actorCollection.insertOne(newActor);
+      Bson actorMovieUpdateOperation = Updates.push("movies", movieId);
+      actorCollection.updateOne(newActor, actorMovieUpdateOperation);
 
-    // if the actor exists
-    if(null != actor) { }
-
-    // if the actor does not exist
-    else{
-      // get the movie object to make sure it exists
-      Document movie = movieCollection.find(Filters.eq("title", movieTitle)).first();
-      // if the movie exists
-      if(null != movie) {
-        // create a new actor
-        Document newReview = new Document("id", actorId).append("name", actorName)
-                .append("dob", dob).append("movies", movieTitle);
-        actorCollection.insertOne(newReview);
-
-        // add actor to movie cast
-        Bson movieUpdateOperation = Updates.push("principalCast", actorName);
-        movieCollection.updateOne(movie, movieUpdateOperation);
-      }
-      // if the movie does not exist
-      else{ }
+      String actorId = newActor.getObjectId("_id").toHexString();
+      // add actor to movie cast
+      Bson movieUpdateOperation = Updates.push("principalCast", actorId);
+      movieCollection.updateOne(movie, movieUpdateOperation);
     }
+    // if the movie does not exist
+    else{ }
   }
 
   /**
@@ -614,8 +567,9 @@ public class DatabaseController {
     var actors = actorsCollection.find(filter).map(document -> {
       var a = new Actor();
       a.setName(document.getString("name"));
-      a.setDateOfBirth(document.getString("dateOfBirth"));
-
+      a.setDateOfBirth(document.getString("dob"));
+      a.setId(document.getObjectId("_id").toHexString());
+      a.setMovies(document.getList("movies", String.class));
       return a;
     });
     var list = new ArrayList<Actor>();
@@ -626,6 +580,7 @@ public class DatabaseController {
   private static ArrayList<Review> getReviewsWithFilter(MongoCollection<Document> reviewsCollection, Bson filter) {
     var reviews = reviewsCollection.find(filter).map(document -> {
       var re = new Review();
+      re.setUsername(document.getString("username"));
       re.setReviewDescription(document.getString("reviewDescription"));
       re.setMovieId(document.getString("movieId"));
       re.setDateTimeCreated(document.get("dateTimeCreated").toString());
@@ -645,6 +600,8 @@ public class DatabaseController {
       ra.setMovieTitle(document.getString("movieTitle"));
       ra.setDateTimeCreated(document.get("dateTimeCreated").toString());
       ra.setPrivacy(document.getString("privacy"));
+      ra.setMovieId(document.getString("movieId"));
+      ra.setUpperbound(document.getString("upperbound"));
       return ra;
     });
     var list = new ArrayList<Rating>();
@@ -669,9 +626,34 @@ public class DatabaseController {
     return getMoviesWithFilter(moviesCollection, filter);
   }
 
-  public List<Movie> getMoviesWithActor(String actor) {
+  public List<Movie> getMoviesWithRatingCategory(String ratingName, String upperbound) {
+    var ratingNameFilter = Filters.eq("ratingName", ratingName);
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    var filter = Filters.and(ratingNameFilter, upperboundFilter);
+    var ratings = getRatingCollection();
+    var movieCollection = getMovieCollection();
+    MongoIterable<Movie> movieIterable = ratings.distinct("movieId",filter, String.class)
+    .map(movieId -> {
+      ObjectId movieIdObject = new ObjectId(movieId);
+      Document document = movieCollection.find(Filters.eq("_id", movieIdObject)).first();
+      var m = new Movie();
+      m.setDirector(document.getString("director"));
+      m.setRuntime(document.getString("runtime"));
+      m.setSummary(document.getString("plotSummary"));
+      m.setTitle(document.getString("title"));
+      m.setWriters(document.getString("writers"));
+      m.setReleaseDate(document.getString("releaseDate"));
+      m.setId(document.getObjectId("_id").toHexString());
+      return m;
+    });
+    List<Movie> movies = new ArrayList<>();
+    movieIterable.forEach(movies::add);
+    return movies;
+  }
+
+  public List<Movie> getMoviesWithActor(String actorId) {
     var moviesCollection = getMovieCollection();
-    var filter = Filters.eq("actorNames", actor);
+    var filter = Filters.eq("principalCast", actorId);
     return getMoviesWithFilter(moviesCollection, filter);
   }
 
@@ -681,6 +663,10 @@ public class DatabaseController {
     return getMoviesWithFilter(moviesCollection, filter);
   }
 
+  public Optional<Movie> getMovieWithTitle(String title){
+    return getMoviesWithTitle(title).stream().findFirst();
+  }
+
   public Document getMovieDocumentWithTitle(String title) {
     var movieCollections = getMovieCollection();
     var filter = Filters.eq("title", title);
@@ -688,17 +674,35 @@ public class DatabaseController {
   }
 
   /**
-   * returns to X most recent movies based on the year of their release. This is done by sorting the ordering the
-   * collection by date and returning the first X.
+   * returns to numMovies most recent movies based on the year of their release. This is done by sorting the
+   * ordering the collection by date and returning the first numMovies.
    */
-  public List<Document> getRecentReleaseMovies() {
+  public List<Movie> getRecentReleaseMovies(int numMovies) {
+    // ArrayList to store Movie objects and eventually return
+    List<Movie> recentReleaseMovies = new ArrayList<>();
     // get the movie collection
     MongoCollection<Document> movieCollection = getMovieCollection();
-    int numberToReturn = 10; // how many movies we want to get, currently 10
     // sort the entire collection
-    List<Document> sortedList = (List<Document>) movieCollection.find().sort(descending("releaseDate"));
-    // return the first numberToReturn movies
-    return sortedList.subList(0,numberToReturn-1);
+    MongoIterable<Document> sortedList = movieCollection.find().sort(descending("releaseDate"));
+
+    // for each of the documents make a new movie and add to the ArrayList to return
+    for ( Document d : sortedList.batchSize(numMovies - 1)) {
+      // create the new movie object
+      Movie m = new Movie();
+      ObjectId id = new ObjectId(m.getId());
+      // get the movie that matches the movie id
+      Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
+      // set the needed information from movie
+      // TODO This is a stripped down version of the movie, if we want this to be a full movie we should add a constructor to the Movie object
+      m.setId(d.getString("_id"));
+      m.setTitle(movieDoc.getString("title"));
+      m.setSummary(movieDoc.getString("plotSummary"));
+
+      // add the movie to the list to return
+      recentReleaseMovies.add(m);
+    }
+
+    return recentReleaseMovies;
   }
 
   /**
@@ -724,9 +728,11 @@ public class DatabaseController {
     return getRatingsWithFilter(ratings, filter);
   }
 
-  public List<Rating> getRatingsInRatingsCategory(String category) {
+  public List<Rating> getRatingsInRatingsCategory(String ratingName, String upperbound) {
     var ratings = getRatingCollection();
-    var filter = Filters.eq("category", category);
+    var ratingNameFilter = Filters.eq("ratingName", ratingName);
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    var filter = Filters.and(ratingNameFilter, upperboundFilter);
     return getRatingsWithFilter(ratings, filter);
   }
 
@@ -736,9 +742,9 @@ public class DatabaseController {
     return getReviewsWithFilter(reviews, filter);
   }
 
-  public List<Review> getReviewsByUser(String userName) {
+  public List<Review> getReviewsByUser(String username) {
     var reviews = getReviewCollection();
-    var filter = Filters.eq("userName", userName);
+    var filter = Filters.eq("username", username);
     return getReviewsWithFilter(reviews, filter);
   }
 
@@ -761,7 +767,7 @@ public class DatabaseController {
       ObjectId id = new ObjectId(movie.getId());
       // get the movie that matches the movie id
       Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
-      // set the neeeded information from movie
+      // set the needed information from movie
       movie.setTitle(movieDoc.getString("title"));
       movie.setSummary(movieDoc.getString("plotSummary"));
       return movie;
@@ -769,6 +775,30 @@ public class DatabaseController {
     List<Movie> movies = new ArrayList<>();
     reviewsAggregated.forEach(movies::add);
     return movies;
+  }
+
+  public Rating getMostPopularAggregatedRatingForMovie(String movieId) {
+    MongoCollection<Document> ratingCollection = getRatingCollection();
+    Document ratingNameDoc = ratingCollection.aggregate(
+      Arrays.asList(
+        Aggregates.match(Filters.eq("movieId", movieId)),
+        Aggregates.group("$ratingName", Accumulators.sum("count", 1)),
+        Aggregates.sort(Sorts.descending("count"))
+      )
+    ).first();
+    String mostPopularCategoryName = ratingNameDoc.getString("_id");
+    Document ratingScaleDoc = ratingCollection.aggregate(
+      Arrays.asList(
+        Aggregates.match(Filters.and(Filters.eq("movieId", movieId), Filters.eq("ratingName", mostPopularCategoryName))),
+        Aggregates.group("$upperbound", Accumulators.sum("count", 1)),
+        Aggregates.sort(Sorts.descending("count"))
+      )
+    ).first();
+    String mostPopularCategoryUpperbound = ratingScaleDoc.getString("_id");
+    Rating rating = new Rating();
+    rating.setRatingName(mostPopularCategoryName);
+    rating.setUpperbound(mostPopularCategoryUpperbound);
+    return rating;
   }
 
   /**
@@ -799,7 +829,7 @@ public class DatabaseController {
     Bson titleQuery = Filters.eq("tagName", tagName);
     Document existingTag = tagCollection.find(titleQuery).first();
     //remove movie title from the tag
-    Bson tagRemoveOP2 = Updates.pull("movieTitles", movieTitle);
+    Bson tagRemoveOP2 = Updates.pull("movieTitle", movieTitle);
     tagCollection.updateOne(existingTag, tagRemoveOP2);
   }
   else if(movieWithId == null){}
@@ -825,8 +855,8 @@ public void deleteTags(String tagName){
     tagCollection.updateOne(document, tagRemoveOP);
   });
 
-  //set movieTitles array into an emptied one
-  Bson removeAll = Updates.set("movieTitles", "");
+  //set movieTitle array into an emptied one
+  Bson removeAll = Updates.set("movieTitle", "");
   Document tag = tagCollection.find(Filters.eq("tagName", tagName)).first();
   tagCollection.updateOne(tag, removeAll);
 }
@@ -854,12 +884,7 @@ public void deleteMovie(String movieTitle, String movieId){
     actorCollection.updateOne(document, movieRemoval);
   });
   //delete movie within tags
-  MongoCursor<Document> tags = tagCollection.find(Filters.eq("movieTitles", movieTitle)).iterator();
-  Bson movieRemovalF = Updates.pull("movieTitles", movieTitle);
-  tags.forEachRemaining(document -> {
-    // Delete each movie correspond with movieTitle in each qualified actor
-    tagCollection.updateOne(document, movieRemovalF);
-  });
+ 
 
   //delete all reviews related to the movie
   reviewCollection.deleteMany(Filters.eq("movieTitle", movieTitle));
@@ -877,5 +902,59 @@ public void deleteReview(String title, String userName){
   reviewCollection.deleteMany(reviewFilter);
 }
 
+/**
+ * delete user rating from User categories and user associated rating with user name and upperBounds created.
+ * Attemps to check if the ratings with that names exist then find the rating with the upperBounds specified.
+ * @param ratingName
+ * @param upperBounds
+ * @param movieIdString
+ */
+public void deleteUserRatingbyScore(String ratingName, String upperBounds, String movieIdString){
+  //get rating colletions
+  MongoCollection<Document> ratingCollection = getRatingCollection();
+  MongoCollection<Document> userAssociatedRating = getUserAssociatedRatingCollection();
+  //Filters out all ratings with the corresponding name
+  MongoCursor<Document> ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).iterator();
+  //check if the rating exist
+  Bson movieRemovalF = Updates.pull("ratingName", ratingName);
+  ratingFilter.forEachRemaining(document -> {
+    // Delete each movie correspond with movieTitle in each qualified actor
+    if(document.get("upperBound") == upperBounds){
+      ratingCollection.updateOne(document, movieRemovalF);
+      userAssociatedRating.updateOne(document, movieRemovalF);
+    }else{
+      //Do nothing for now
+    }
+  });
+  
+}
+/**
+ * delete user rating from User categories and user associated rating with user name and date time created.
+ * Attemps to check if the ratings with that names exist then find the rating with the date time specified.
+ * @param ratingName
+ * @param dateTimeCreated
+ * @param movieIdString
+ */
+public void deleteUserRatingbyTime(String ratingName, String dateTimeCreated, String movieIdString){
+  //get rating colletions
+  MongoCollection<Document> ratingCollection = getRatingCollection();
+  MongoCollection<Document> userAssociatedRating = getUserAssociatedRatingCollection();
+  //Filters out all ratings with the corresponding name
+  MongoCursor<Document> ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).iterator();
+  //check if the rating exist
+  Bson movieRemovalF = Updates.pull("ratingName", ratingName);
+  ratingFilter.forEachRemaining(document -> {
+    if(document.get("dateTimeCreated") == dateTimeCreated){
+      ratingCollection.updateOne(document, movieRemovalF);
+      userAssociatedRating.updateOne(document, movieRemovalF);
+    }else{
+      //Do nothing for now
+    }
+  });
+  
+}
+
+
 
 }
+ 

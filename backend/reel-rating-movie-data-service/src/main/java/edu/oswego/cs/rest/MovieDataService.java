@@ -3,8 +3,9 @@ package edu.oswego.cs.rest;
 import edu.oswego.cs.rest.JsonClasses.Actor;
 import edu.oswego.cs.rest.JsonClasses.Tag;
 import edu.oswego.cs.rest.JsonClasses.Movie;
+import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Review;
-
+import jakarta.ejb.PostActivate;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
@@ -69,23 +70,34 @@ public class MovieDataService {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  @Path("/actor/create/{movieTitle}")
-  public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, @PathParam("movieTitle") String movieTitle) throws Exception {
+  @Path("/actor/create/{movieId}")
+  public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, @PathParam("movieId") String movieId) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    db.createActor(actor.getName(), actor.getDateOfBirth(), movieTitle);
+    db.createActor(actor.getName(), actor.getDateOfBirth(), movieId);
     return Response.ok().build();
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/tag/create/{movieId}")
-  public Response createFlagEndPoint(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
+  public Response createTagEndPoint(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    db.createTag(tag.getTagName(), movieId);
+    db.createTag(tag.getTagName(), movieId, username, tag.getPrivacy());
+    return Response.ok().build();
+  }
+
+  @POST
+  @Path("/rating/create")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createRating(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    dbc.createRating(rating.getRatingName(), rating.getUserRating(), rating.getUpperbound(), requesterUsername, rating.getMovieId(), rating.getPrivacy());
     return Response.ok().build();
   }
 
@@ -96,8 +108,7 @@ public class MovieDataService {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    String tempUsername = "TempUsername";
-    db.createReview(movieId, review.getReviewDescription(), tempUsername, review.getPrivacy());
+    db.createReview(movieId, review.getReviewDescription(), username, review.getPrivacy());
     return Response.ok().build();
   }
 
@@ -139,12 +150,12 @@ public class MovieDataService {
 
   @POST
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByActor/{actor}")
-  public Response getMoviesWithActor(@Context HttpServletRequest request, @PathParam("actor") String actor) throws Exception {
+  @Path("/movie/getByActor/{actorId}")
+  public Response getMoviesWithActorId(@Context HttpServletRequest request, @PathParam("actorId") String actorId) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    List<Movie> movies = dbc.getMoviesWithActor(actor);
+    List<Movie> movies = dbc.getMoviesWithActor(actorId);
     return Response.ok(movies).build();
   }
 
@@ -159,6 +170,19 @@ public class MovieDataService {
     List<Movie> movies = dbc.getMoviesWithMostReviews(numMovies);
     return Response.ok(movies).build();
   }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getRecentReleaseMovies")
+  public Response getRecentReleaseMoviesEndpoint(@Context HttpServletRequest request) throws Exception {
+    String username = getUsername(request);
+    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    int numMovies = 10;
+    List<Movie> movies = dbc.getRecentReleaseMovies(numMovies);
+    return Response.ok(movies).build();
+  }
+
   /**
    * get endpoints for Actors
    */
@@ -183,7 +207,7 @@ public class MovieDataService {
     String requesterUsername = getUsername(request);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }      
     DatabaseController dbc = new DatabaseController();
-    List<Review> reviews = dbc.getReviewsByUser(username);
+    List<Review> reviews = dbc.getReviewsByUser(username.toLowerCase());
     return Response.ok(reviews).build();
   }
 
@@ -227,5 +251,62 @@ public class MovieDataService {
   public void generateStockImages() {
     DatabaseController dbc = new DatabaseController();
     dbc.storeStockImages();
+  }
+
+  @POST
+  @Path("/data/generate")
+  public void generateData() {
+    PopulationData data = new PopulationData();
+    data.populateDataBase();
+  }
+
+
+  /**
+   * Takes a rating name and rating upperbound in order to find the rating category.
+   * @param request
+   * @param rating
+   * @return A list of ratings that are within the rating category.
+   * @throws Exception
+   */
+  @POST
+  @Path("/rating/getRatingsInRatingCategory")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getRatingsInRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Rating> ratings = dbc.getRatingsInRatingsCategory(rating.getRatingName(), rating.getUpperbound());
+    return Response.ok(ratings).build();
+  }
+
+  /**
+   * Takes a rating name and rating upperbound in order to find the rating category.
+   * @param request
+   * @param rating
+   * @return A list of movies that are within the rating category.
+   * @throws Exception
+   */
+  @POST
+  @Path("/movie/getByRatingCategory")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getMoviesByRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithRatingCategory(rating.getRatingName(), rating.getUpperbound());
+    return Response.ok(movies).build();
+  }
+
+  @GET
+  @Path("/rating/getMostPopularAggregatedRatingForMovie/{movieId}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getMostPopularAggregatedRatingForMovie(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    Rating aggregatedRating = dbc.getMostPopularAggregatedRatingForMovie(movieId);
+    return Response.ok(aggregatedRating).build();
   }
 }
