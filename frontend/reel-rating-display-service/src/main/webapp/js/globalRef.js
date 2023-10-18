@@ -1,0 +1,16 @@
+"using strict;"
+
+const guiPort = 30400;
+const authPort = 30500;
+const dataPort = 30501;
+export class GlobalRef{
+    constructor(){
+        this.homeLocation = `http://localhost:${guiPort}/views/home.html`;
+        this.indexLocation = `http://localhost:${guiPort}/index.html`;
+        this.logInPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/login`;
+        this.regPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/register`;
+        this.baseDataPath = `http://localhost:${dataPort}/reel-rating-movie-data-service`;
+        this.regExSpecChar = /\W/; //Is not word char nor digit
+        this.regExNum = /\d/;
+    }
+}
