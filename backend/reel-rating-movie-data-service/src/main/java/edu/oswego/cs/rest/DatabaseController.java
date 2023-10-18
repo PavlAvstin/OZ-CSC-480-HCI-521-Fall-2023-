@@ -675,30 +675,34 @@ public class DatabaseController {
 
   /**
    * returns to numMovies most recent movies based on the year of their release. This is done by sorting the
-   * ordering the collection by date and returning the first X.
+   * ordering the collection by date and returning the first numMovies.
    */
   public List<Movie> getRecentReleaseMovies(int numMovies) {
+    // ArrayList to store Movie objects and eventually return
+    List<Movie> recentReleaseMovies = new ArrayList<>();
     // get the movie collection
     MongoCollection<Document> movieCollection = getMovieCollection();
     // sort the entire collection
-    List<Document> sortedList = (List<Document>) movieCollection.find().sort(descending("releaseDate"));
+    MongoIterable<Document> sortedList = movieCollection.find().sort(descending("releaseDate"));
 
-    // for each of the documents make a new movie
-    List<Movie> sortedMovies = new ArrayList<>();
-    for ( Document d : sortedList.subList(0, numMovies - 1)) {
+    // for each of the documents make a new movie and add to the ArrayList to return
+    for ( Document d : sortedList.batchSize(numMovies - 1)) {
+      // create the new movie object
       Movie m = new Movie();
-      m.setId(d.getString("_id"));
       ObjectId id = new ObjectId(m.getId());
       // get the movie that matches the movie id
       Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
-      // set the neeeded information from movie
+      // set the needed information from movie
+      // TODO This is a stripped down version of the movie, if we want this to be a full movie we should add a constructor to the Movie object
+      m.setId(d.getString("_id"));
       m.setTitle(movieDoc.getString("title"));
       m.setSummary(movieDoc.getString("plotSummary"));
 
       // add the movie to the list to return
-      sortedMovies.add(m);
+      recentReleaseMovies.add(m);
     }
-    return sortedMovies;
+
+    return recentReleaseMovies;
   }
 
   /**
@@ -763,7 +767,7 @@ public class DatabaseController {
       ObjectId id = new ObjectId(movie.getId());
       // get the movie that matches the movie id
       Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
-      // set the neeeded information from movie
+      // set the needed information from movie
       movie.setTitle(movieDoc.getString("title"));
       movie.setSummary(movieDoc.getString("plotSummary"));
       return movie;
