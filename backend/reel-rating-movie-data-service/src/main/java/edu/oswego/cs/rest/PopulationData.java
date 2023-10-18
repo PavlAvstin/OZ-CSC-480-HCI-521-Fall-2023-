@@ -248,43 +248,31 @@ public class PopulationData {
 
         //DataBase population for actors:
 
-        db.createActor("Julie Andrews", "10/01/1935", "Mary Poppins, The Sound of Music, The Americanization of Emily, Thoroughly Modern Millie, Hawaii, Victor/Victoria, The Princess Diaries, The Princess Diaries 2: Royal Engagement, The Pink Panther, Despicable Me");
+        db.createActor("Julie Andrews", "10/01/1935", movie1.get().getId());
+        db.createActor("Christopher Plummer", "12/13/1929", movie1.get().getId());
+        db.createActor("Eleanor Parker", "06/26/1922", movie1.get().getId());
 
-        db.createActor("Christopher Plummer", "12/13/1929", "The Sound of Music, Beginners, The Insider, Knives Out, The Girl with the Dragon Tattoo, The Last Station, Up, A Beautiful Mind, The Man Who Knew Infinity, 12 Monkeys");
+        db.createActor("Zac Efron", "10/18/1987", movie2.get().getId());
+        db.createActor("Matthew Perry", "08/19/1922", movie2.get().getId());
+        db.createActor("Leslie Mann", "03/26/1972", movie2.get().getId());
 
-        db.createActor("Eleanor Parker", "06/26/1922", "The Sound of Music, Detective Story, Caged, Interrupted Melody, Of Human Bondage, The Man with the Golden Arm, Scaramouche, The Naked Jungle, An American in Paris, A Hole in the Head");
+        db.createActor("Jay Baruchel", "04/09/1982", movie3.get().getId());
+        db.createActor("Gerard Butler", "11/13/1969", movie3.get().getId());
+        db.createActor("Christopher Mintz-Plasse", "06/20/1989", movie3.get().getId());
 
-        db.createActor("Zac Efron", "10/18/1987", "High School Musical, High School Musical 2, High School Musical 3: Senior Year, The Greatest Showman, Neighbors, 17 Again, Hairspray, The Lucky One, Baywatch, Extremely Wicked, Shockingly Evil and Vile");
+        db.createActor("Brad Garrett", "04/14/1960", movie4.get().getId());
+        db.createActor("Lou Romano", "04/15/1971", movie4.get().getId());
+        db.createActor("Paton Oswalt", "01/27/1969", movie4.get().getId());
 
-        db.createActor("Matthew Perry", "08/19/1922", "Friends, The Whole Nine Yards, 17 Again, The Odd Couple, Studio 60 on the Sunset Strip, The Good Fight, The Ron Clark Story, The Whole Ten Yards, Fools Rush In, The End of Longing");
 
-        db.createActor("Leslie Mann", "03/26/1972", "Knocked Up, This Is 40, The 40-Year-Old Virgin, Blockers, Funny People, The Cable Guy, George of the Jungle, Big Daddy, 17 Again, The Croods: A New Age");
+        db.createActor("Michael J. Fox", "06/09/1961", movie6.get().getId());
+        db.createActor("Jim Varney", "06/15/1949", movie6.get().getId());
+        db.createActor("Corey Burton", "08/03/1955", movie6.get().getId());
 
-        db.createActor("Jay Baruchel", "04/09/1982", "How to Train Your Dragon, This Is the End, How to Train Your Dragon 2, Knocked Up, She's Out of My League, Tropic Thunder, The Sorcerer's Apprentice, Million Dollar Baby, The Art of the Steal, How to Train Your Dragon: The Hidden World");
+        db.createActor("Brandy Norwood", "02/11/1979", movie13.get().getId());
+        db.createActor("Bernadette Peters", "02/28/1948",movie13.get().getId());
 
-        db.createActor("Gerard Butler", "11/13/1969", "300, Law Abiding Citizen, Olympus Has Fallen, P.S. I Love You, The Phantom of the Opera, How to Train Your Dragon, 300: Rise of an Empire, The Ugly Truth, Gods of Egypt, Machine Gun Preacher");
-
-        db.createActor("Christopher Mintz-Plasse", "06/20/1989", "Superbad, Role Models, Kick-Ass, Kick-Ass 2, How to Train Your Dragon, This Is the End, Neighbors, Fright Night, The To Do List, ParaNorman");
-
-        db.createActor("Brad Garrett", "04/14/1960", "Everybody Loves Raymond, Ratatouille, Finding Nemo, Tangled, Night at the Museum, Teen Titans Go! To the Movies, Hercules, Music and Lyrics, The Pacifier, Garfield: The Movie");
-        db.createActor("Lou Romano", "04/15/1971", "Ratatouille, The Incredibles, Cars, Inside Out, Up, The Incredibles 2, Bolt, Ratatouille: Food Fight, Ratatouille: Rat's House, Ratatouille: The Video Game");
-
-        db.createActor("Paton Oswalt", "01/27/1969", "Ratatouille, The King of Queens, Young Adult, Veep, United States of Tara, Reno 911!, A.P. Bio, Magnolia, Two and a Half Men, Big Fan");
-
-        db.createActor("Michael J. Fox", "06/09/1961", "Back to the Future, Family Ties, Back to the Future Part II, Back to the Future Part III, Spin City, Teen Wolf, Doc Hollywood, The Frighteners, Stuart Little, The Good Wife");
-
-        db.createActor("Jim Varney", "06/15/1949", "Ernest Saves Christmas, Ernest Goes to Camp, Ernest Scared Stupid, Ernest Rides Again, Ernest Goes to Jail, Ernest Goes to School, Ernest Goes to Africa, Ernest in the Army, Ernest Goes to Splash Mountain, Ernest's Greatest Hits 1");
-
-        db.createActor("Corey Burton", "08/03/1955", "Voice of Captain Hook, Voice of Ludwig Von Drake, Star Wars: The Clone Wars, The Transformers: The Movie, Gargoyles, Batman: The Animated Series, Transformers: Dark of the Moon, The Rescuers Down Under, Atlantis: The Lost Empire");
-
-        db.createActor("Brandy Norwood", "02/11/1979", "Cinderella, Moesha, I Still Know What You Did Last Summer, Set It Off, Double Platinum, The Game, Chicago, Thea, Temptation: Confessions of a Marriage Counselor, Osmosis Jones");
-
-        db.createActor("Bernadette Peters", "02/28/1948", "Into the Woods, Sunday in the Park with George, Annie, The Jerk, Pennies from Heaven, The Princess and the Cobbler, Pinkalicious & Peterrific, Cinderella, Gypsy, The Odyssey");
-
-        db.createActor("Veanne Cox", "01/19/1963", "You've Got Mail, Company, Two Weeks Notice, Erin Brockovich, Marci X, The Family Stone, Desperate Housewives, Nurse Jackie, The Prince of Egypt, Alice");
-
-        db.createActor("Simu Liu", "04/19/1989", "Shang-Chi and the Legend of the Ten Rings, Kim's Convenience, Barbie, Awkward, Blood and Water, Orphan Black, Reno 911!, A.P. Bio, Magnolia, Big Fan");
-
-        db.createActor("Awkwafina", "06/02/1988", "Crazy Rich Asians, The Farewell, Ocean's 8, Raya and the Last Dragon, Jumanji: The Next Level, The Dark Crystal: Age of Resistance, Nora from Queens, Paradise Hills, Storks, Bad Rap");
+        db.createActor("Simu Liu", "04/19/1989", movie18.get().getId());
+        db.createActor("Awkwafina", "06/02/1988", movie18.get().getId());
     }
 }
