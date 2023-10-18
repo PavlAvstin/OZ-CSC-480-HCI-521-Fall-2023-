@@ -19,6 +19,10 @@ public class PopulationData {
         db.createRating("A cute film", "3", "3", "David", movie1.get().getId(), "public");
         db.createRating("Best Musical", "10", "10", "David", movie1.get().getId(), "public");
 
+        db.createReview(movie1.get().getId(), "Much music very wow!", "David", "public");
+        db.createReview(movie1.get().getId(), "Very music much wow!", "Keith", "public");
+        db.createReview(movie1.get().getId(), "There was in fact music.", "Binura", "public");
+
         db.createMovie("17 Again", "Burr Steers", "2009", "1h. 42min.", "Jason Filardi",
                 "An ungrateful middle-aged man gets the chance to be 17 again because he had a fixation on his high-school glory days and gets a chance to be “17 again” by a magical janitor. His best friend was cool. His wife rightfully wants to divorce him after putting up with his ridiculousness for 20 years. But then he learns to appreciate what he has or something and she decides not to divorce him (unfortunately).");
 
@@ -30,6 +34,8 @@ public class PopulationData {
         db.createRating("They should get divorced", "3", "3", "David", movie2.get().getId(), "public");
         db.createRating("The best friend was the best character", "7", "7", "David", movie2.get().getId(), "public");
         db.createRating("How cute was Zac Efron", "10", "10", "David", movie2.get().getId(), "public");
+
+        db.createReview(movie2.get().getId(), "A movie for sure.", "David", "public");
 
         db.createMovie("How to Train Your Dragon", "Dean DeBlois, Chris Sanders", "2010", "1h. 38min.", "William Davies, Dean DeBlois, Chris Sanders",
                 "A young viking befriends a cat-like dragon. He also gets a date.");
@@ -43,6 +49,8 @@ public class PopulationData {
         db.createRating("Cute pet", "7", "7", "David", movie3.get().getId(), "public");
         db.createRating("Would watch again", "5", "5", "David", movie3.get().getId(), "public");
 
+        db.createReview(movie3.get().getId(), "Dragons are very cool.", "David", "public");
+
         db.createMovie("Ratatouille", "Brad Bird, Jan Pinkava", "2007", "1h. 51min.", "Brad Bird, Jan Pinkava, Jim Capobianco",
                 "A rat can cook and cooks for the son of a famous chef.");
 
@@ -54,6 +62,11 @@ public class PopulationData {
         db.createRating("Strong rats", "6", "6", "David", movie4.get().getId(), "public");
         db.createRating("rats everywhere", "7", "7", "David", movie4.get().getId(), "public");
         db.createRating("Too many rats", "5", "5", "David", movie4.get().getId(), "public");
+
+        db.createReview(movie4.get().getId(), "Rats touching food, don't watch this movie if you are eating a turkey sub from Subway.", "David", "public");
+        db.createReview(movie4.get().getId(), "Theres great colors, music, and character development whats not to love?", "Keith", "public");
+        db.createReview(movie4.get().getId(), "This movie was an absolute snooze-fest, no action means no fun.", "Binura", "public");
+        db.createReview(movie4.get().getId(), "A childhood favorite of mine!", "Mahella", "public");
 
         db.createMovie("Lilo and Stitch", "Dean DeBlois, Chris Sanders", "2002", "1h. 25min.", "Chris Sanders, Dean DeBlois",
                 "A girl named Lilo ends up adapting an alien by accident and things go down.");
@@ -67,6 +80,8 @@ public class PopulationData {
         db.createRating("Best Movies of all time", "10", "10", "David", movie5.get().getId(), "public");
         db.createRating("Best family movies", "6", "6", "David", movie5.get().getId(), "public");
         db.createRating("Paul Approved", "10", "10", "David", movie5.get().getId(), "public");
+
+        db.createReview(movie5.get().getId(), "One of my favorite family movies!", "Mahella", "public");
 
         db.createMovie("Atlantis: The Lost Empire", "Gary Trousdale, Kirk Wise", "2001", "1h. 35min.", "Tab Murphy, Kirk Wise, Gary Trousdale",
                 "A failure of a researcher who’s super dorky ends up going on an expedition to Atlantis, this is an attractive man. And he gets a hot girlfriend at the end of the movie.");
@@ -139,6 +154,8 @@ public class PopulationData {
         db.createRating("Existential Crises", "5", "5", "David", movie11.get().getId(), "public");
         db.createRating("2023 Movies", "8", "8", "David", movie11.get().getId(), "public");
 
+        db.createReview(movie11.get().getId(), "I'm just Ken.", "David", "public");
+
         db.createMovie("Barbie as The Princess and the Pauper", "William Lau", "2004", "1h. 25min.", "Cliff Ruby, Elana Lesser, Mark Twain",
                 "An adaption of the prince and the pauper but with Barbie.");
 
@@ -171,6 +188,8 @@ public class PopulationData {
         db.createTag("Drama", movie14.get().getId(), "David", "public");
 
         db.createRating("Best animated movie of all time", "7", "7", "David", movie14.get().getId(), "public");
+
+        db.createReview(movie14.get().getId(), "Ah Zabenya", "David", "public");
 
         db.createMovie("The Princess and the Frog", "Ron Clements, John Musker", "2009", "1h. 37min.", "Ron Clements, John Musker, Greg Erb",
                 "A girl who has life figured out gets bothered by a frog and her life becomes awful. But they fall in love and live happily ever after.");
@@ -246,6 +265,8 @@ public class PopulationData {
         db.createRating("Character drawing rating", "3", "3", "David", movie20.get().getId(), "public");
         db.createRating("Animation awesomeness", "4", "4", "David", movie20.get().getId(), "public");
 
+        db.createReview(movie20.get().getId(), "One of the best animated superhero movies of all time!", "David", "public");
+        db.createReview(movie20.get().getId(), "The soundtrack was a work of art!", "Binura", "public");
         //DataBase population for actors:
 
         db.createActor("Julie Andrews", "10/01/1935", movie1.get().getId());
