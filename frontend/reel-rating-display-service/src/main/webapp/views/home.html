@@ -13,9 +13,6 @@
     />
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="../css/global.css"><!-- Link to CSS file -->
-
-
-
 </head>
 
 <body class="mbMD">
@@ -1217,133 +1214,442 @@
 
 
 
+    <!-- Modals -->
+    <div class="modal" id="showMoreModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl fontWhite">
+            <div class="row modal-content darkFG">
 
-        
+                <!-- Modal Header -->
+                <div class="modal-header fontWhite d-flex justify-content-between align-items-center">
+                    <h2 class="col-2 modal-title">Barbie</h2>
+                    <button class="offset-5  col-3 btn btSecondaryStyle">Rate Barbie</button>
+                    <div class="header-right d-flex align-items-center">
+                        <div class="col-2  btSecondaryStyle iconWidth pSM brLeft brRight m-2">
+                            <!--Share Button Logo-->
+                            <a href="" class="iconWidth"><img src="../images/share.png" alt="Share Button logo" class=" img-fluid"></a>
+                        </div>
+                        <div class="iconWidth iconHeight brLeft brRight col-2 m-2">
+                            <!--Discord Button Logo-->
+                            <a href="">
+                                <img src="../images/Discord-New-Logo.png" alt="discord-logo Button" class="img-fluid">
+                            </a>
+                        </div>
 
-    <!--****************************Show More **********************************-->
-
-    <div class="modal" tabindex="-1" id="showMoreModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header row">
-                    <h5 class="modal-title col-4">"Waawareey Filim"</h5>
-                    <div id="rateToggle" class="offset-1 col-4">Rate "Movie Title"</div>
-                    <button type="button" class="btn-close modalClose" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body row">
-                    <div class="col-6"><img src="../images/background.png" class="img-fluid"></div>
-                    <div class="col-6" id="generalContent">
-                        <div class="row">
-                            <div class="mdFont col-12">General</div>
-                            <div id="generalContent" class="ofVert">
-                                <div>Actors</div>
-                                <div id="actorsContainer"></div>
-                                <div>Seasons</div>
-                                <div id="seasonContainer"></div>
-                                <div>Genres</div>
-                                <div id="genresContainer"></div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>ESRB</div>
-                                <div>BTJXKH</div>
-                                <div id="esrbContainer"></div>
-                            </div> <!-- End of General Content -->
-                        </div><!-- End of General Container -->
-                    </div><!-- End of Row -->
-
-                    <div class="row ofVert mtSM" id="ratingsContainer">
-                        <div class="col-12">Ratings</div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
-                        <div class="tagGroup col-2 mbSM">
-                            <div class="tag">Tag 1</div>
-                            <div class=" tagScore brAll textCenter">4.5</div>
-                        </div>
+                        <button type="button" 
+                                class="col-1 close mdFont iconWidth bt-Style m-2 " 
+                                data-bs-dismiss="Modal" 
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
-            </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Row for Movie Image and General Information -->
+                    <div class="row">
+                        <!-- Barbie Movie Image -->
+                        <div class="col ">
+                            <img src="../images/MostViewed02.png" 
+                            alt="Barbie Movie Image" 
+                            class="img-fluid imageWidth">
+                        </div>
+
+                        <!-- General Information -->
+                        <div class="col-md-6">
+                            <!-- General Information Title -->
+                            <div class="titleGridRow mtXSM ">
+                                <span class="gridTitle mdFont fontWhite mtXSM">General</span>
+                                <span class="titleLine brAll vcToParent customShadow"></span>
+                            </div>
+
+                            <!-- General Information Details -->
+                            <div class="info-section mb-4">
+                                <div class="row">
+                                    <div class="col-sm-4"><strong>Director:</strong> Greta Gerwig</div>
+                                    <div class="col-sm-4"><strong>Writer:</strong> Noah Baumbach</div>
+                                    <div class="col-sm-4"><strong>Release Date:</strong> July 21st, 2021</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4"><strong>Runtime:</strong> 1h 54m</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Row for Actors -->
+                    <div class="row">
+                        <div class="col-md-6"></div> <!-- Empty column for alignment -->
+                        <div class="col-md-6">
+                            <div class="actors-section mb-4">
+                                <strong>Actors</strong> 
+                            </div>
+                            <div class="row">
+                                <span class="col-4 tag">Ezra Miller(Berry) </span>
+                                <span class="col-4 tag">Sasha Calle(SuperGirl)</span>
+                                <span class="col-4 tag">Micheal Shanon(Zod) </span>
+                            </div>
+                            <div class="row">
+                                <span class="col-4 tag">Margot Robbie(Barbie)</span>
+                                <span class="col-4 tag">Ryan Gosling(Ken)</span>
+                                <span class="col-4 tag">Will Ferrell(Mattel CEO)</span>
+                            </div>
+                            <div class="row">
+                                <span class="col-4 tag">Ben Aflec</span>
+                                <span class="col-4 tag">Marian Fardud</span>
+            
+                            </div>
+                        </div>
+                    </div>
+                 
+                    <!-- Row for Tags -->
+                    <div class="row">
+                        <div class="col-md-6"></div> <!-- Empty column for alignment -->
+                        <div class="col-md-6">
+                            <div class="tags-section mb-4">
+                                <strong>Tags:</strong>
+                            </div>
+                            <div class="row">
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                                <span class="col-3 tag">Tag name</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row for Ratings and Followed Reviews -->
+                    <div class="row mt-custom">
+                        <!-- Ratings Section -->
+                        <div class="col-md-6">
+                            <!-- Ratings Title -->
+                            <div class="titleGridRow mtXSM">
+                                <span class="gridTitle mdFont fontWhite mtXSM">Ratings</span>
+                                <span class="titleLine brAll vcToParent customShadow"></span>
+                            </div>
+                            
+                            <!----First row of RAting Start here-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!----First row of RAting END here-->
+
+                            <!----Second row of RAting Start here-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!----Second row of RAting END here-->
+
+                            <!----Third row of RAting Start here-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!----Third row of RAting END here-->
+                           
+                            <!----Fourth row of RAting Start here-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <!-- Ratings Carousel -->
+                                    <div class="carousel-section mb-4">
+                                        <div class="ratings-carousel">
+                                            <div class="rating-item">Category name: 8.8</div>
+                                            <progress-bar 
+                                                scaleStart="1" scaleEnd="10" ratingValue="9.3" 
+                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
+                                            </progress-bar>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!----Fourth row of RAting END here-->
+
+                        </div> <!-- END Ratings Section -->
+
+                        <!-- Followed Reviews Section -->
+                        <div class="col-md-6">
+                            <!-- Followed Reviews Title -->
+                            <div class="titleGridRow mtXSM">
+                                <span class="gridTitle mdFont fontWhite mtXSM">Followed Reviews</span>
+                                <span class="titleLine brAll vcToParent customShadow"></span>
+                            </div>
+
+                            <!-- Followed Reviews Carousel -->
+                            <div class="carousel-section mb-4">
+                                <strong>Followed Reviews:</strong>
+                                <div class="reviews-carousel">
+                                    <div class="review-item">
+                                        <img src="reviewer_image.jpg" alt="Reviewer Name" class="img-fluid reviewer-image">
+                                        <span class="reviewer-name">""</span>
+                                        <div class="review-rating">Category name: 8.8</div>
+                                    </div>
+                                </div>
+                            </div><!--End Followed Reviews Carouse-->
+                        </div> <!-- End Followed Reviews Section -->
+                    </div> <!-- END Row for Ratings and Followed Reviews -->
+                </div> <!-- End of Modal Body -->
+
+            </div> <!--END modal Content-->
+        </div><!--END Model Dialog -->
+    </div><!--END Entire Model-->
+    
+
+<!--**********OffCanvas Body START Here*************-->
+<div class="offcanvas-body fontWhite">
+    <div class="row">
+        <div class="input-group" >
+            <input class="form-control brAll m-4 " type="search" placeholder="Search" aria-label="Search">
         </div>
     </div>
+
+    <!--CHeck Boxes list Start here-->
+    <ul>
+        <h5> Default Categories </h5>
+        
+        <!--Comedy check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Comedy
+            </label>
+        </div>
+        
+        <!--Drama check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Drama
+            </label>
+        </div>
+
+        <!--Horror check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Horror
+            </label>
+        </div>
+
+        <!--SCi-Fi check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                sci-Fi
+            </label>
+        </div>
+
+        <!--Fantasy check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Fantasy
+            </label>
+        </div>
+
+        <!--Action check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Action
+            </label>
+        </div>
+
+        <!--Romance check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Romance
+            </label>
+        </div>
+
+        <!--Adventure check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Adventure
+            </label>
+        </div>
+
+        <!--War check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                War
+            </label>
+        </div>
+
+        <!--Biography check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Biography
+            </label>
+        </div>
+
+        <!--Super Hero check box label-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Super Hero
+            </label>
+        </div>
+    </ul> <!-- END first list-->
+
+    <ul><!--Second List START here-->
+        <h5> Frequency Used </h5>
+
+        <!--Romance check box label under Frequency Used-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Romance
+            </label>
+        </div>
+
+        <!--Adventure check box label under Frequency Used-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Adventure
+            </label>
+        </div>
+
+        <!--War check box label under Frequency Used-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                War
+            </label>
+        </div>
+
+        <!--Biography check box label under Frequency Used-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Biography
+            </label>
+        </div>
+
+        <!--Super Hero check box label under Frequency Used-->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+            <label class="form-check-label" for="checkbox1">
+                Super Hero
+            </label>
+        </div>
+
+    </ul><!--Second list END Here -->
+    
+</div>
 
     <footer>
         <!-- JS imports-->
         <script src="../js/controller.js" type="module"></script>
         <script src="../js/webComps/progress-bar.js" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-            </script> <!-- Bootstrap 5 bundle -->
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+            crossorigin="anonymous">
+        </script> <!-- Bootstrap 5 bundle -->
     </footer>
 
 </body>

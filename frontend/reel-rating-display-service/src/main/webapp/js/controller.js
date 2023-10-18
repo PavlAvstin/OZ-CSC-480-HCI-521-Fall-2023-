@@ -1,11 +1,14 @@
 "use strict";
-import * as JSStyles from "./jsStyles.js"
-import * as NetworkReq from "./networkReq.js"
-import * as Login from "./login.js"
-import * as Tools from "./tools.js"
+import * as JSStyles from "./jsStyles.js";
+import * as NetworkReq from "./networkReq.js";
+import * as Login from "./login.js";
+import * as Tools from "./tools.js";
+import * as Home from "./home.js";
+import { GlobalRef } from "./globalRef.js";
+const globals = new GlobalRef();
+
 
 window.onload = ()=>{
-    
     //Run the JS nessary for the page
     var currentPage = Tools.getEndOfURL();
     switch (currentPage){
@@ -18,8 +21,10 @@ window.onload = ()=>{
 function loginInit(){
     var submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", ()=>{
-        var errors = false;
         var passwordMatch = true;
+        var emptyError = false;
+        var validError = false;
+        var usernameError = false;
         var newAccount = submitButton.getAttribute("newAccount");
         var currentAccountData = Login.getAccountData(newAccount);
         var currentEmptyErrorMessages = Login.getEmptyErrorMessages(newAccount);
@@ -27,21 +32,40 @@ function loginInit(){
         Tools.clearErrors();
 
         if(newAccount === "false"){
-            errors = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, false);
+            emptyError = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, false);
         }
         else if(newAccount === "true"){
-            errors = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, true);
-            errors = Login.checkVaildPassword(currentAccountData.password.value);
+            emptyError = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, true);
+            validError = Login.checkVaildPassword(
+                currentAccountData.password.value, 
+                globals.regExSpecChar,
+                globals.regExNum
+            );
+            usernameError = Login.checkValidUserName(currentAccountData.username.value);
             passwordMatch = Login.checkForPasswordMatch(currentAccountData, currentMatchErrors);
+
         }
 
-        if(errors === false && passwordMatch === true){
-            var jsonData = Tools.formatJSONData(currentAccountData, ["username", "password"]);
-            NetworkReq.fetchPost(
-                "http://localhost:30500/reel-rating-auth-service/auth/login", 
-                jsonData,
-                
+        if(emptyError === false && validError === false && passwordMatch === true && usernameError === false){
+            var jsonData = Tools.formatJSONData(
+                [currentAccountData.username, currentAccountData.password], 
+                ["username", "password"]
             );
+            debugger;
+            if(newAccount === "true"){
+                debugger;
+                NetworkReq.fetchPost(
+                    globals.regPath, 
+                    jsonData,
+                    Tools.navToHome
+                );
+            } else {
+                NetworkReq.fetchPost(
+                    globals.logInPath, 
+                    jsonData,
+                    Tools.navToHome
+                );
+            }
         }
     });
 
@@ -60,6 +84,12 @@ function loginInit(){
 }
 
 function homeInit(){
+    // NetworkReq.fetchGet(
+    //     `${globals.baseDataPath}/movie/getRecentReleaseMovies`,
+    //     Home.appendRowData
+    // );
+
+
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{

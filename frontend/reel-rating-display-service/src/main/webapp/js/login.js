@@ -1,6 +1,7 @@
 "using strict";
 
 
+
 export const getAccountData = (newAccount)=>{
     if(newAccount === "false"){
         var username = document.getElementById("username");
@@ -80,7 +81,7 @@ export const toggleCreateAccount = (submitButton)=>{
 }
 
 
-export const checkVaildPassword = (password)=>{
+export const checkVaildPassword = (password, regExSpecChar, regExNum)=>{
     var passwordNotVaildContainer = document.getElementById("passwordNotValid");
     var error = false;
     var errorHtml = "";
@@ -93,6 +94,16 @@ export const checkVaildPassword = (password)=>{
         error = true;
     }
 
+    
+    if(regExNum.test(password) === false){
+        errorHtml += "<div>Need at least one digit in your password</div>";
+        error = true;
+    }
+
+    if(regExSpecChar.test(password) === false){
+        errorHtml += "<div>Need at least one special char in your password</div>";
+        error = true;
+    }
     if (error === true){
         passwordNotVaildContainer.innerHTML = errorHtml;
         passwordNotVaildContainer.classList.remove("hidden");
@@ -102,4 +113,23 @@ export const checkVaildPassword = (password)=>{
 }
 
 
-export const 
+export const checkValidUserName = (userName)=>{
+    var userNameNotValidContainer = document.getElementById("userNameNotValid");
+    var error = false;
+    var errorHtml = "";
+
+    //At the moment we are only checking for one condidition
+    //However in the future there will be more
+    //When this happens append a new div to the string
+    if(userName.length < 2 || userName.length > 15){
+        errorHtml += "<div>Username must be between 2 and 15 chars</div>";
+        error = true;
+    }
+
+    if(error === true){
+        userNameNotValidContainer.innerHTML = errorHtml;
+        userNameNotValidContainer.classList.remove("hidden");
+    }
+
+    return error;
+}

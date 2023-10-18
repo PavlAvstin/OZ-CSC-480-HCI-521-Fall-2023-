@@ -1,5 +1,8 @@
 "using strict";
 
+import { GlobalRef } from "./globalRef.js";
+const globals = new GlobalRef();
+
 export const formatJSONData = (arrayData, arrayKeys)=>{
     var jsonString = "";
     for(var x=0; x < arrayData.length; x++){
@@ -21,14 +24,20 @@ export const clearErrors = ()=>{
     }
 }
 
-
 export const getEndOfURL = ()=>{
     var currentURL = window.location.pathname;
     var pathSegs = currentURL.split("/");
     return pathSegs[pathSegs.length - 1];
 }
 
+export const navToHome = (serverRes)=>{
 
-export const setJWT = ()=>{
-    
+    //Still need to use serverRes to check and see if there was not an error
+    debugger;
+    if(serverRes.status === 200){
+        window.location.href = globals.homeLocation;
+    }
 }
+
+
+
