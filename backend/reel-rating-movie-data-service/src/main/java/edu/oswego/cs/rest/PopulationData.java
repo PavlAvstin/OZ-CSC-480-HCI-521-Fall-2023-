@@ -1,10 +1,19 @@
 package edu.oswego.cs.rest;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+
+@Startup
+@Singleton
 public class PopulationData {
+
+    @PostConstruct
     public void populateDataBase(){
 
         var db = new DatabaseController();
         
+        db.storeStockImages();
         
         db.createMovie("The Sound of Music","Robert Wise", "1965", "2h. 52min.", "Georg Hurdalek, Howard Lindsay, Russel Crouse", "A nun ends up getting kicked out of the monastery after falling in love with a man and he has like 5 kids. Tragic, but he’s rich so it’s not so bad. He’s divorced. It’s a musical.");
 
