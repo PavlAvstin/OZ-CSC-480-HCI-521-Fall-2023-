@@ -243,25 +243,6 @@ public class MovieDataService {
   }
 
   /**
-   * Populates the database on startup with pre-selected stock images. This must be run otherwise the createMovies
-   * functionality will not work.
-   */
-  @POST
-  @Path("/stockImages/generate")
-  public void generateStockImages() {
-    DatabaseController dbc = new DatabaseController();
-    dbc.storeStockImages();
-  }
-
-  @POST
-  @Path("/data/generate")
-  public void generateData() {
-    PopulationData data = new PopulationData();
-    data.populateDataBase();
-  }
-
-
-  /**
    * Takes a rating name and rating upperbound in order to find the rating category.
    * @param request
    * @param rating
