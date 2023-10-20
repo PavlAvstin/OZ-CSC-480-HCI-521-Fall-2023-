@@ -5,8 +5,10 @@ const authPort = 30500;
 const dataPort = 30501;
 export class GlobalRef{
     constructor(){
-        this.homeLocation = `http://localhost:${guiPort}/views/home.html`;
-        this.indexLocation = `http://localhost:${guiPort}/index.html`;
+        this.homeLocation = `http://localhost:5500/frontend/reel-rating-display-service/src/main/webapp/views/home.html`;
+        this.indexLocation = `http://localhost:5500/frontend/reel-rating-display-service/src/main/webapp/index.html`;
+        // this.homeLocation = `http://localhost:${guiPort}/views/home.html`;
+        // this.indexLocation = `http://localhost:${guiPort}/index.html`;
         this.logInPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/login`;
         this.regPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/register`;
         this.baseDataPath = `http://localhost:${dataPort}/reel-rating-movie-data-service`;
