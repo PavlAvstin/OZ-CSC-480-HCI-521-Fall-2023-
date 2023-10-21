@@ -28,6 +28,13 @@ public class JwtAuthService {
     if (username == null) {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
+
+    //boolean validSessionTime = dbc.ensureSessionIsWithin24hours(id);
+    boolean validSessionTime = true;
+
+    if (!validSessionTime) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
     
     Set<String> roles = new HashSet<>();
     roles.add("user");
