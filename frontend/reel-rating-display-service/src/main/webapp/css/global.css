@@ -95,8 +95,8 @@ a{
 .carousel-item{ transition: var(--sliderTrans);}
 
 .modal-dialog{ 
-    max-width : 75%;
-    margin-left: 5%;
+    max-width : 80%;
+    margin-left: 10%;
 }
 
 body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgroundColor); }
