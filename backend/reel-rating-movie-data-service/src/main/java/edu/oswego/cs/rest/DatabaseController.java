@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -420,11 +417,12 @@ public class DatabaseController {
     if (!(Integer.valueOf(userRating) <= Integer.valueOf(upperbound) && Integer.valueOf(userRating) >= 1))
       return;
 
-    // attempt to get the rating if the user has already created one for this category and upperbound
+    // attempt to get the rating if the user has already created one for this category and upperbound on the movie 
     Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
     Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
     Bson usernameFilter = Filters.eq("username", username);
-    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter)).first();
+    Bson movieFilter = Filters.eq("movieId", movieIdHexString);
+    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
     // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
@@ -490,7 +488,7 @@ public class DatabaseController {
    *
    * @param actorName actor's name
    * @param dob the date of birth of the actor
-   * @param movieTitle a movie that the actor appears in. More can be added later
+   * @param movieId a movie that the actor appears in. More can be added later
    */
   public void createActor(String actorName, String dob, String movieId){
     // get collections
