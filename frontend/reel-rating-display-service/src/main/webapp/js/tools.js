@@ -30,12 +30,13 @@ export const getEndOfURL = ()=>{
     return pathSegs[pathSegs.length - 1];
 }
 
-export const navToHome = (serverRes)=>{
+export const navToHome = async(serverRes)=>{
 
     //Still need to use serverRes to check and see if there was not an error
-    debugger;
     if(serverRes.status === 200){
         window.location.href = globals.homeLocation;
+    } else {
+        alert(`There was an error going to home page\nserver status ${serverRes.status}`);
     }
 }
 

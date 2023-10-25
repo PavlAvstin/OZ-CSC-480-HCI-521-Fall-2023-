@@ -12,6 +12,7 @@
     --neutralHover : #f3f3f3;
     --backgroundColor : #1b1b1b;
     --darkFG : #2b2b2b;
+    --discordColor : #5165f6;
     --cardTextHeight : 135px;
     
     --radius : 15px; /* border radius amount */
@@ -49,11 +50,30 @@
         #3D37BF 100%
     );
 
+    --greenGrad : linear-gradient(
+        180deg,
+        #00d80e 0%, 
+        #00ff00 47.4%, 
+        #00d80e 100%
+    );
+
+    --redGrad : linear-gradient(
+        180deg,
+        #bd0404 0%, 
+        #ff0000 47.4%, 
+        #bd0404 100%
+    );
+
     --shadow : 0px 2px 2px 0px rgba(0, 0, 0, 0.50);
     --shadowCard : 0px 0px 4px 4px #FFF;
 
     --fadeAwayNeutral : linear-gradient(0deg, rgba(238,238,238, 1), rgba(238,238,238, 0.50) 39.29%, rgba(238,238,238, 0.00) 79.86%);
 
+}
+
+a{
+    text-decoration: none;
+    color : black;
 }
 
 /*  Over write bootstrap styles that conflict  */
@@ -74,7 +94,10 @@
 
 .carousel-item{ transition: var(--sliderTrans);}
 
-
+.modal-dialog{ 
+    max-width : 80%;
+    margin-left: 10%;
+}
 
 body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgroundColor); }
 .darkFG{ background-color : var(--darkFG) }
@@ -94,6 +117,8 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .modal-header.row > .modalClose{ margin-right : 10px; }
 .iconWidth { width : var(--lgPX); }
 .btPrimaryStyle{ background: var(--purpleGrad);}
+.btCalloutStyle{ background: var(--greenGrad);}
+.btNegativeStyle{ background: var(--redGrad); }
 .customShadow { box-shadow: var(--shadow); }
 .fadeAwayNeutral{ 
     background: var(--fadeAwayNeutral); 
@@ -103,6 +128,10 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     width:90%;
 }
 .pointerCursor{ cursor: pointer; }
+.discordColor { background-color: var(--discordColor); }
+.centerImg{ display:grid; justify-content: center; align-items: center;}
+.followedReview{ background-color: var(--neutralColor); }
+.personName{ color:black; }
 
 
 /* Font Sizes */
@@ -130,6 +159,20 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .mbSM{ margin-bottom: var(--sm); }
 .mbXSM{ margin-bottom: var(--xsm); }
 
+.mrXXL{ margin-right: var(--xxl); }
+.mrXL{ margin-right: var(--xl); }
+.mrLG{ margin-right: var(--lg); }
+.mrMD{ margin-right: var(--md); }
+.mrSM{ margin-right: var(--sm); }
+.mrXSM{ margin-right: var(--xsm); }
+
+.mlXXL{ margin-left: var(--xxl); }
+.mlXL{ margin-left: var(--xl); }
+.mlLG{ margin-left: var(--lg); }
+.mlMD{ margin-left: var(--md); }
+.mlSM{ margin-left: var(--sm); }
+.mlXSM{ margin-left: var(--xsm); }
+
 
 /* Padding */
 .pXXL{ padding: var(--xxl); }
@@ -148,6 +191,22 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .ptXSM{ padding-top: var(--xsm); }
 .ptXXSM{ padding-top: var(--xxsm); }
 
+.prXXL{ padding-right: var(--xxl); }
+.prXL{ padding-right: var(--xl); }
+.prLG{ padding-right: var(--lg); }
+.prMD{ padding-right: var(--md); }
+.prSM{ padding-right: var(--sm); }
+.prXSM{ padding-right: var(--xsm); }
+.prXXSM{ padding-right: var(--xxsm); }
+
+.plXXL{ padding-left: var(--xxl); }
+.plXL{ padding-left: var(--xl); }
+.plLG{ padding-left: var(--lg); }
+.plMD{ padding-left: var(--md); }
+.plSM{ padding-left: var(--sm); }
+.plXSM{ padding-left: var(--xsm); }
+.plXXSM{ padding-left: var(--xxsm); }
+
 
 .pbXXL{ padding-bottom: var(--xxl); }
 .pbXL{ padding-bottom: var(--xl); }
@@ -155,6 +214,7 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .pbMD{ padding-bottom: var(--md); }
 .pbSM{ padding-bottom: var(--sm); }
 .pbXSM{ padding-bottom: var(--xsm); }
+.pbXXSM{ padding-bottom: var(--xxsm); }
 
 
 /* Border Radius */
@@ -204,6 +264,17 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     column-gap: 20px;
     grid-template-columns: repeat(4, 1fr);
 }
+
+.modalHeaderRow{
+    display: grid;
+    column-gap: 5px;
+    grid-template-columns: repeat(12, 1fr);
+}
+.modalRate{ grid-column: 1 / span 5; }
+
+.modalShare{ grid-column: 6 / span 2; }
+
+.modalExit{ grid-column: 10 / span 2; }
 
 
 

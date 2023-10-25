@@ -1,10 +1,11 @@
-export const fetchPost = (url, jsonData, callbackFunc)=>{
-    fetch(url,{
+export const fetchPost = async(url, jsonData, callbackFunc)=>{
+    await fetch(url,{
         mode : "cors",
         method : "post",
         headers:{
             "Content-Type" : "application/json",
         },
+        credentials: "include",
         body : jsonData
     })
     .then(async(serverData)=>{
@@ -13,10 +14,11 @@ export const fetchPost = (url, jsonData, callbackFunc)=>{
 }
 
 
-export const fetchGet = (url, callbackFunc)=>{
-    fetch(url,{
+export const fetchGet = async (url, callbackFunc)=>{
+    await fetch(url,{
         mode : "cors",
-        method : "get"
+        method : "get",
+        credentials: "include"
     })
     .then(async(serverData)=>{
         callbackFunc(serverData);

@@ -51,9 +51,7 @@ function loginInit(){
                 [currentAccountData.username, currentAccountData.password], 
                 ["username", "password"]
             );
-            debugger;
             if(newAccount === "true"){
-                debugger;
                 NetworkReq.fetchPost(
                     globals.regPath, 
                     jsonData,
@@ -83,7 +81,7 @@ function loginInit(){
     }, 350); //350 miliseconds, slightly higher than average reaction time
 }
 
-function homeInit(){
+async function homeInit(){
     // NetworkReq.fetchGet(
     //     `${globals.baseDataPath}/movie/getRecentReleaseMovies`,
     //     Home.appendRowData
