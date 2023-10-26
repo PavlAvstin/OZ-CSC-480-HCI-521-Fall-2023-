@@ -840,13 +840,9 @@ public class DatabaseController {
     return rating;
   }
 
-  public String getThreeTags(String movieId) {
-    ArrayList<String> tagNames = new ArrayList<>();
+  public List<Tag> getThreeTags(String movieId) {
     List<Tag> tags = getTagsByMovieId(movieId).subList(0, 3);
-    for (Tag t: tags) {
-      tagNames.add(t.getTagName());
-    }
-    return tagNames.toString();
+    return tags;
   }
 
   /**
@@ -995,14 +991,9 @@ public void deleteUserRatingbyTime(String ratingName, String dateTimeCreated, St
     if(document.get("dateTimeCreated") == dateTimeCreated){
       ratingCollection.updateOne(document, movieRemovalF);
       userAssociatedRating.updateOne(document, movieRemovalF);
-    }else{
+    } else{
       //Do nothing for now
     }
-  });
-  
+    });
+  }
 }
-
-
-
-}
- 

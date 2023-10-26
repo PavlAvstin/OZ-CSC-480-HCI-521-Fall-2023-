@@ -20,9 +20,12 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
+import org.bson.BsonDocument;
+import org.bson.BsonValue;
 
 @Path("/")
 @RequestScoped
@@ -192,7 +195,12 @@ public class MovieDataService {
       m.setMostPopRatingAvg(r.getUserRating());
 
       // names of three tags from the movie
-      m.setAttachedTags(dbc.getThreeTags(m.getId()));
+      List<Tag> tagList = dbc.getThreeTags(m.getId());
+      ArrayList<String> tagNameList = new ArrayList<>();
+      for (Tag t: tagList ) {
+        tagNameList.add(t.getTagName());
+      }
+      m.setAttachedTags(tagNameList);
     }
     return Response.ok(movies).build();
   }
