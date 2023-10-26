@@ -1,5 +1,6 @@
 package edu.oswego.cs.rest;
 
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.mongodb.client.model.Sorts.descending;
 
+import edu.oswego.cs.rest.JsonClasses.*;
 import org.bson.BsonDateTime;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -28,11 +30,6 @@ import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
-
-import edu.oswego.cs.rest.JsonClasses.Actor;
-import edu.oswego.cs.rest.JsonClasses.Movie;
-import edu.oswego.cs.rest.JsonClasses.Rating;
-import edu.oswego.cs.rest.JsonClasses.Review;
 
 public class DatabaseController {
   String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
@@ -615,6 +612,21 @@ public class DatabaseController {
     return list;
   }
 
+  private static ArrayList<Tag> getTagsWithFilter(MongoCollection<Document> tagCollection, Bson filter) {
+    var ratings = tagCollection.find(filter).map(document -> {
+      var tag = new Tag();
+      tag.setTagName(document.getString("tagName"));
+      tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setUsername(document.getString("username"));
+      tag.setPrivacy(document.getString("privacy"));
+      tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
+      return tag;
+    });
+    var list = new ArrayList<Tag>();
+    ratings.forEach(list::add);
+    return list;
+  }
+
   /**
    * get[DatabaseEntity]With[Parameter] methods are used to retrieve database entities by using another entity or a
    * given parameter. These make use of the get[DatabaseEntity]WithFilter methods.
@@ -744,6 +756,12 @@ public class DatabaseController {
     return getReviewsWithFilter(reviews, filter);
   }
 
+  public List<Tag> getTagsByMovieId(String movieId) {
+    var reviews = getTagCollection();
+    var filter = Filters.eq("movieId", movieId);
+    return getTagsWithFilter(reviews, filter);
+  }
+
   public List<Review> getReviewsByUser(String username) {
     var reviews = getReviewCollection();
     var filter = Filters.eq("username", username);
@@ -820,6 +838,15 @@ public class DatabaseController {
     rating.setUpperbound(mostPopularCategoryUpperbound);
     rating.setUserRating(Double.toString(average));
     return rating;
+  }
+
+  public String getThreeTags(String movieId) {
+    ArrayList<String> tagNames = new ArrayList<>();
+    List<Tag> tags = getTagsByMovieId(movieId).subList(0, 3);
+    for (Tag t: tags) {
+      tagNames.add(t.getTagName());
+    }
+    return tagNames.toString();
   }
 
   /**

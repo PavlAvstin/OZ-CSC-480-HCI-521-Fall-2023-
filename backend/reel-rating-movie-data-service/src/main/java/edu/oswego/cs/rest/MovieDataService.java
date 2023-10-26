@@ -32,7 +32,6 @@ public class MovieDataService {
 
   /**
    * gets the username of the client request. Also authenticates the client using a JWT.
-   *
    * TODO double check if the above is correct
    *
    * @param request
@@ -192,6 +191,8 @@ public class MovieDataService {
       m.setMostPopRatingUpperBound(r.getUpperbound());
       m.setMostPopRatingAvg(r.getUserRating());
 
+      // names of three tags from the movie
+      m.setAttachedTags(dbc.getThreeTags(m.getId()));
     }
     return Response.ok(movies).build();
   }

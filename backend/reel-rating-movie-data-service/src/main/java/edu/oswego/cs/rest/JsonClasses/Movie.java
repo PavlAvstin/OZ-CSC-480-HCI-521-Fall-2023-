@@ -12,6 +12,7 @@ public class Movie {
   private String mostPopularRatingCategory;
   private String mostPopRatingAvg;
   private String mostPopRatingUpperbound;
+  private String attachedTags;
 
 
   // constructor
@@ -78,4 +79,8 @@ public class Movie {
 
   public String getMostPopRatingUpperBound() { return mostPopRatingUpperbound; }
   public void setMostPopRatingUpperBound(String mostPopRatingUpperBound) { this.mostPopRatingUpperbound = mostPopRatingUpperBound; }
+
+  public String getAttachedTags() { return attachedTags; }
+
+  public void setAttachedTags(String attachedTags) { this.attachedTags = attachedTags; }
 }
