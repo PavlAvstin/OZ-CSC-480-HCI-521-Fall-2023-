@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
-import org.bson.BsonDocument;
-import org.bson.BsonValue;
 
 @Path("/")
 @RequestScoped
@@ -119,7 +117,7 @@ public class MovieDataService {
   /**
    * get endpoints for movies
    */
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByTitle/{title}")
   public Response getMoviesWithTitleEndPoint(@Context HttpServletRequest request, @PathParam("title") String title) throws Exception {
@@ -130,7 +128,7 @@ public class MovieDataService {
     return Response.ok(movies).build();
   }
 
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByTagName/{TagName}")
   public Response getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName) throws Exception {
@@ -141,7 +139,7 @@ public class MovieDataService {
     return Response.ok(movies).build();
   }
 
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByRatingCategoryName/{ratingCategoryName}")
   public Response getMoviesWithRatingCategoryName(@Context HttpServletRequest request, @PathParam("ratingCategoryName") String ratingCategoryName) throws Exception {
@@ -152,7 +150,7 @@ public class MovieDataService {
     return Response.ok(movies).build();
   }
 
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByActor/{actorId}")
   public Response getMoviesWithActorId(@Context HttpServletRequest request, @PathParam("actorId") String actorId) throws Exception {
@@ -208,7 +206,7 @@ public class MovieDataService {
   /**
    * get endpoints for Actors
    */
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/actor/getByName/{name}")
   public Response getActorByName(@Context HttpServletRequest request, @PathParam("name") String name) throws Exception {
@@ -222,7 +220,7 @@ public class MovieDataService {
   /**
    * get endpoints for reviews
    */
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/reviews/getByUser/{username}")
   public Response getReviewsByUser(@Context HttpServletRequest request, @PathParam("username") String username) throws Exception {
@@ -233,7 +231,7 @@ public class MovieDataService {
     return Response.ok(reviews).build();
   }
 
-  @POST
+  @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/reviews/getByMovieId/{movieId}")
   public Response getReviewsByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {

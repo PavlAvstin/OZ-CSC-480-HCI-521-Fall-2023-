@@ -1,6 +1,5 @@
 package edu.oswego.cs.rest;
 
-import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -840,6 +839,17 @@ public class DatabaseController {
     return rating;
   }
 
+  /**
+   * Grabs three tags from the specified movie. Used in the getRecentReleaseMovies and in a larger sense for getting
+   * the information needed to display the movie preview (movie title, movie summary, name of three tags, and
+   * aggregated most popular rating.
+   * TODO decide if we want to create a function that gets the a movie preview object. Give it a movie ID and it returns
+   * TODO   a movie with all of the needed preview fields filled in. That way for search we can search our movies by
+   * TODO   the given criteria then create a list of all the movie preview objects to return.
+   *
+   * @param movieId MongoDB unique hex id of the movie to get the tags from
+   * @return a list of tags length three
+   */
   public List<Tag> getThreeTags(String movieId) {
     List<Tag> tags = getTagsByMovieId(movieId).subList(0, 3);
     return tags;
