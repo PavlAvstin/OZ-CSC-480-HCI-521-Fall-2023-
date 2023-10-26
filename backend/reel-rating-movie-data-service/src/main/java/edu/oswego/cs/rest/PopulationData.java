@@ -1,12 +1,54 @@
+/**
+ * This class serves to "prime the pump" on the database upon start up. This allows for easier testing, tweaking, and
+ * overall a better developing experience. Currently the class only has one method, which handles the creation of all
+ * the data.
+ */
+
 package edu.oswego.cs.rest;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+
+@Startup
+@Singleton
 public class PopulationData {
-    public void populateDataBase(){
+
+    @PostConstruct
+    public void populateDataBase() {
 
         var db = new DatabaseController();
+
+        db.storeStockImages();
         
-        
-        db.createMovie("The Sound of Music","Robert Wise", "1965", "2h. 52min.", "Georg Hurdalek, Howard Lindsay, Russel Crouse", "A nun ends up getting kicked out of the monastery after falling in love with a man and he has like 5 kids. Tragic, but he’s rich so it’s not so bad. He’s divorced. It’s a musical.");
+        createMovie1(db);
+        createMovie2(db);
+        createMovie3(db);
+        createMovie4(db);
+        createMovie5(db);
+        createMovie6(db);
+        createMovie7(db);
+        createMovie8(db);
+        createMovie9(db);
+        createMovie10(db);
+        createMovie11(db);
+        createMovie12(db);
+        createMovie13(db);
+        createMovie14(db);
+        createMovie15(db);
+        createMovie16(db);
+        createMovie17(db);
+        createMovie18(db);
+        createMovie19(db);
+    }
+    /*
+          Movie: Sound of Music
+          Tags: 4
+          Ratings: 4
+          Reviews: 3
+         */
+    private void createMovie1(DatabaseController db) {
+        db.createMovie("The Sound of Music", "Robert Wise", "1965", "2h. 52min.", "Georg Hurdalek, Howard Lindsay, Russel Crouse", "A nun ends up getting kicked out of the monastery after falling in love with a man and he has like 5 kids. Tragic, but he’s rich so it’s not so bad. He’s divorced. It’s a musical.");
 
         var movie1 = db.getMovieWithTitle("The Sound of Music");
         db.createTag("Romance", movie1.get().getId(), "David", "public");
@@ -19,6 +61,21 @@ public class PopulationData {
         db.createRating("A cute film", "3", "3", "David", movie1.get().getId(), "public");
         db.createRating("Best Musical", "10", "10", "David", movie1.get().getId(), "public");
 
+        db.createReview(movie1.get().getId(), "Much music very wow!", "David", "public");
+        db.createReview(movie1.get().getId(), "Very music much wow!", "Keith", "public");
+        db.createReview(movie1.get().getId(), "There was in fact music.", "Binura", "public");
+
+        db.createActor("Julie Andrews", "10/01/1935", movie1.get().getId());
+        db.createActor("Christopher Plummer", "12/13/1929", movie1.get().getId());
+        db.createActor("Eleanor Parker", "06/26/1922", movie1.get().getId());
+    }
+        /*
+          Movie: 17 again
+          Tags: 3
+          Ratings: 3
+          Reviews: 1
+         */
+    private void createMovie2(DatabaseController db) {
         db.createMovie("17 Again", "Burr Steers", "2009", "1h. 42min.", "Jason Filardi",
                 "An ungrateful middle-aged man gets the chance to be 17 again because he had a fixation on his high-school glory days and gets a chance to be “17 again” by a magical janitor. His best friend was cool. His wife rightfully wants to divorce him after putting up with his ridiculousness for 20 years. But then he learns to appreciate what he has or something and she decides not to divorce him (unfortunately).");
 
@@ -31,6 +88,19 @@ public class PopulationData {
         db.createRating("The best friend was the best character", "7", "7", "David", movie2.get().getId(), "public");
         db.createRating("How cute was Zac Efron", "10", "10", "David", movie2.get().getId(), "public");
 
+        db.createReview(movie2.get().getId(), "A movie for sure.", "David", "public");
+
+        db.createActor("Zac Efron", "10/18/1987", movie2.get().getId());
+        db.createActor("Matthew Perry", "08/19/1922", movie2.get().getId());
+        db.createActor("Leslie Mann", "03/26/1972", movie2.get().getId());
+    }
+        /*
+          Movie: How to Train Your Dragon
+          Tags: 3
+          Ratings: 3
+          Reviews: 1
+         */
+    private void createMovie3(DatabaseController db) {
         db.createMovie("How to Train Your Dragon", "Dean DeBlois, Chris Sanders", "2010", "1h. 38min.", "William Davies, Dean DeBlois, Chris Sanders",
                 "A young viking befriends a cat-like dragon. He also gets a date.");
 
@@ -43,6 +113,19 @@ public class PopulationData {
         db.createRating("Cute pet", "7", "7", "David", movie3.get().getId(), "public");
         db.createRating("Would watch again", "5", "5", "David", movie3.get().getId(), "public");
 
+        db.createReview(movie3.get().getId(), "Dragons are very cool.", "David", "public");
+
+        db.createActor("Jay Baruchel", "04/09/1982", movie3.get().getId());
+        db.createActor("Gerard Butler", "11/13/1969", movie3.get().getId());
+        db.createActor("Christopher Mintz-Plasse", "06/20/1989", movie3.get().getId());
+    }
+        /*
+          Movie: Ratatouilleie
+          Tags: 3
+          Ratings: 3
+          Reviews: 4
+         */
+    private void createMovie4(DatabaseController db) {
         db.createMovie("Ratatouille", "Brad Bird, Jan Pinkava", "2007", "1h. 51min.", "Brad Bird, Jan Pinkava, Jim Capobianco",
                 "A rat can cook and cooks for the son of a famous chef.");
 
@@ -55,6 +138,22 @@ public class PopulationData {
         db.createRating("rats everywhere", "7", "7", "David", movie4.get().getId(), "public");
         db.createRating("Too many rats", "5", "5", "David", movie4.get().getId(), "public");
 
+        db.createReview(movie4.get().getId(), "Rats touching food, don't watch this movie if you are eating a turkey sub from Subway.", "David", "public");
+        db.createReview(movie4.get().getId(), "Theres great colors, music, and character development whats not to love?", "Keith", "public");
+        db.createReview(movie4.get().getId(), "This movie was an absolute snooze-fest, no action means no fun.", "Binura", "public");
+        db.createReview(movie4.get().getId(), "A childhood favorite of mine!", "Mahella", "public");
+
+        db.createActor("Brad Garrett", "04/14/1960", movie4.get().getId());
+        db.createActor("Lou Romano", "04/15/1971", movie4.get().getId());
+        db.createActor("Paton Oswalt", "01/27/1969", movie4.get().getId());
+    }
+        /*
+          Movie: Lilo and Stitch
+          Tags: 4
+          Ratings: 3
+          Reviews: 1
+         */
+    private void createMovie5(DatabaseController db) {
         db.createMovie("Lilo and Stitch", "Dean DeBlois, Chris Sanders", "2002", "1h. 25min.", "Chris Sanders, Dean DeBlois",
                 "A girl named Lilo ends up adapting an alien by accident and things go down.");
 
@@ -68,6 +167,15 @@ public class PopulationData {
         db.createRating("Best family movies", "6", "6", "David", movie5.get().getId(), "public");
         db.createRating("Paul Approved", "10", "10", "David", movie5.get().getId(), "public");
 
+        db.createReview(movie5.get().getId(), "One of my favorite family movies!", "Mahella", "public");
+    }
+    /*
+    Movie: Atlantis: The Lost Empire
+    Tags: 3
+          Ratings: 2
+          Reviews: 0
+         */
+    private void createMovie6(DatabaseController db) {
         db.createMovie("Atlantis: The Lost Empire", "Gary Trousdale, Kirk Wise", "2001", "1h. 35min.", "Tab Murphy, Kirk Wise, Gary Trousdale",
                 "A failure of a researcher who’s super dorky ends up going on an expedition to Atlantis, this is an attractive man. And he gets a hot girlfriend at the end of the movie.");
 
@@ -79,6 +187,11 @@ public class PopulationData {
         db.createRating("Animated movies with somber deaths", "10", "10", "David", movie6.get().getId(), "public");
         db.createRating("Paul Approved", "10", "10", "David", movie6.get().getId(), "public");
 
+        db.createActor("Michael J. Fox", "06/09/1961", movie6.get().getId());
+        db.createActor("Jim Varney", "06/15/1949", movie6.get().getId());
+        db.createActor("Corey Burton", "08/03/1955", movie6.get().getId());
+    }
+    private void createMovie7(DatabaseController db) {
         db.createMovie("West Side Story", "Jerome Robbins, Robert Wise", "1961", "2h. 33min.", "Ernest Lehman, Arthur Laurents, Jerome Robbins",
                 "Lots of good-looking people fight like Romeo and Juliet in a modern gang thing. It’s a musical.");
 
@@ -89,7 +202,9 @@ public class PopulationData {
 
         db.createRating("Best musical", "10", "10", "David", movie7.get().getId(), "public");
         db.createRating("Feel good movies", "10", "10", "David", movie7.get().getId(), "public");
+    }
 
+    private void createMovie8(DatabaseController db){
         db.createMovie("Bring It On", "Peyton Reed", "2000", "1h. 38min.", "Jessica Bendinger",
                 "A chick who’s on a cheerleading team that steals routines from another way cooler school ends up being captain and changes her team’s ways. They end up losing to the way cooler team.");
 
@@ -100,10 +215,10 @@ public class PopulationData {
 
         db.createRating("Best Cheerleading movie", "6", "6", "David", movie8.get().getId(), "public");
         db.createRating("Cutest Outfits", "3", "3", "David", movie8.get().getId(), "public");
-
+    }
+    private void createMovie9(DatabaseController db) {
         db.createMovie("Enchanted", "Kevin Lima", "2007", "1h. 47min.", "Bill Kelly",
                 "An animated fairy-tale chick ends up falling into a well and ends up getting with a man who’s engaged. She was also engaged and having her wedding day before she fell into the well. They end up having an emotional affair and get together at the end of the movie. It’s so cute and their partners get together and live way better lives than them.");
-
         var movie9 = db.getMovieWithTitle("Enchanted");
         db.createTag("Animation", movie9.get().getId(), "David", "public");
         db.createTag("Adventure", movie9.get().getId(), "David", "public");
@@ -113,7 +228,8 @@ public class PopulationData {
         db.createRating("Best side character of all time", "3", "3", "David", movie9.get().getId(), "public");
         db.createRating("Best storyline of all time", "10", "10", "David", movie9.get().getId(), "public");
         db.createRating("Most satisfying ending of all time", "4", "4", "David", movie9.get().getId(), "public");
-
+    }
+    private void createMovie10(DatabaseController db) {
         db.createMovie("The Road to El Dorado", "Bibo Bergeron, Don Paul, Jeffrey Katzenberg", "2000", "1h. 29min.", "Ted Elliot, Terry Rossio, Karey Kirkpatrick",
                 "Two brother-like friends end up stranded on an island and deceive a bunch of natives into thinking they’re gods. They end up saving the island and leaving it though.");
 
@@ -126,7 +242,11 @@ public class PopulationData {
         db.createRating("Best bros United", "8", "8", "David", movie10.get().getId(), "public");
         db.createRating("Summer-time movies", "9", "9", "David", movie10.get().getId(), "public");
         db.createRating("Paul Approved", "10", "10", "David", movie10.get().getId(), "public");
-
+    }
+    /*
+     *
+     */
+    private void createMovie11(DatabaseController db) {
         db.createMovie("Barbie", "Greta Gerwig", "2023", "1h. 45min.", "Greta Gerwig, Noah Baumbach",
                 "Barbie becomes imperfect and wants to fix herself so she goes to the real world and then wants to stay imperfect. Ken is also a menace.");
 
@@ -139,9 +259,13 @@ public class PopulationData {
         db.createRating("Existential Crises", "5", "5", "David", movie11.get().getId(), "public");
         db.createRating("2023 Movies", "8", "8", "David", movie11.get().getId(), "public");
 
+        db.createReview(movie11.get().getId(), "I'm just Ken.", "David", "public");
+
         db.createMovie("Barbie as The Princess and the Pauper", "William Lau", "2004", "1h. 25min.", "Cliff Ruby, Elana Lesser, Mark Twain",
                 "An adaption of the prince and the pauper but with Barbie.");
+    }
 
+    private void createMovie12(DatabaseController db) {
         var movie12 = db.getMovieWithTitle("Barbie as The Princess and the Pauper");
         db.createTag("Animation", movie12.get().getId(), "David", "public");
         db.createTag("Comedy", movie12.get().getId(), "David", "public");
@@ -150,7 +274,9 @@ public class PopulationData {
         db.createRating("Best Barbie movie of all time", "10", "10", "David", movie12.get().getId(), "public");
         db.createRating("Best animated movie of all time", "5", "5", "David", movie12.get().getId(), "public");
         db.createRating("Cutest Couples in Movies", "2", "2", "David", movie12.get().getId(), "public");
+    }
 
+    private void createMovie13(DatabaseController db) {
         db.createMovie("Cinderella", "Robert Iscove", "1997", "1h. 28min.", "Oscar Hammerstein 2, Robert L. Freedman, Charles Perrault",
                 "A chick who can’t throw hands ends up meeting a prince and they live happily ever after.");
 
@@ -162,6 +288,11 @@ public class PopulationData {
         db.createRating("Live-Action Princess Movie", "4", "4", "David", movie13.get().getId(), "public");
         db.createRating("Confusing movies", "10", "10", "David", movie13.get().getId(), "public");
 
+        db.createActor("Brandy Norwood", "02/11/1979", movie13.get().getId());
+        db.createActor("Bernadette Peters", "02/28/1948",movie13.get().getId());
+    }
+
+    private void createMovie14(DatabaseController db) {
         db.createMovie("The Lion King", "Roger Allers, Rob Minkoff", "1994", "1h. 28min.", "Irene Mecchi, Jonathan Roberts, Linda Woolverton",
                 "Young lion cub murders his father cause he can’t follow instructions. He then fights his uncle to take his father’s place as leader of the lion pack.");
 
@@ -172,6 +303,10 @@ public class PopulationData {
 
         db.createRating("Best animated movie of all time", "7", "7", "David", movie14.get().getId(), "public");
 
+        db.createReview(movie14.get().getId(), "Ah Zabenya", "David", "public");
+    }
+
+    private void createMovie15(DatabaseController db) {
         db.createMovie("The Princess and the Frog", "Ron Clements, John Musker", "2009", "1h. 37min.", "Ron Clements, John Musker, Greg Erb",
                 "A girl who has life figured out gets bothered by a frog and her life becomes awful. But they fall in love and live happily ever after.");
 
@@ -183,7 +318,9 @@ public class PopulationData {
         db.createRating("Animated Disney Movie Goodness", "2", "2", "David", movie15.get().getId(), "public");
         db.createRating("Princess PrincessNess", "8", "8", "David", movie15.get().getId(), "public");
         db.createRating("Aesthetic", "6", "6", "David", movie15.get().getId(), "public");
+    }
 
+    private void createMovie16(DatabaseController db) {
         db.createMovie("Tangled", "Nathan Greno, Byron Howard", "2010", "1h. 40min.", "Dan Fogelman, Jacob Grimm, Wilhelm Grimm",
                 "A girl leaves the tower that her mom doesn’t want her to and falls in love. She was also imprisoned in said tower for years. And stolen from her parents.");
 
@@ -194,8 +331,10 @@ public class PopulationData {
 
         db.createRating("Disney Princess Movie", "10", "10", "David", movie16.get().getId(), "public");
         db.createRating("Quirky Disney Character rating", "7", "7", "David", movie16.get().getId(), "public");
-        db.createRating("Best animated movie", "8", "8", "David", movie16.get().getId(),"public");
+        db.createRating("Best animated movie", "8", "8", "David", movie16.get().getId(), "public");
+    }
 
+    private void createMovie17(DatabaseController db) {
         db.createMovie("Mulan", "Tony Bancroft, Barry Cook", "1998", "1h. 27 min.", "Robert D. San Souci, Rita Hsiao, Chris Sanders",
                 "A girl goes to war in place of her father and saves China. She also has a pet dragon and takes home a hot general.");
 
@@ -208,7 +347,8 @@ public class PopulationData {
         db.createRating("Princess PrincessNess", "8", "8", "David", movie17.get().getId(), "public");
         db.createRating("Best animated movie of all time", "10", "10", "David", movie17.get().getId(), "public");
         db.createRating("Best Movies of all time", "10", "10", "David", movie17.get().getId(), "public");
-
+    }
+    private void createMovie18(DatabaseController db) {
         db.createMovie("Shang-Chi and the Legend of the 10 Rings", "Destin Daniel Cretton", "2021", "2h. 12 min.", "Dave Callaham, Destin Daniel Cretton, Andrew Lanham",
                 "A boy becomes a superhero because he has to fight his father or something.");
 
@@ -221,6 +361,11 @@ public class PopulationData {
         db.createRating("Cutest male lead", "9", "9", "David", movie18.get().getId(), "public");
         db.createRating("Best weapons", "7", "7", "David", movie18.get().getId(), "public");
 
+        db.createActor("Simu Liu", "04/19/1989", movie18.get().getId());
+        db.createActor("Awkwafina", "06/02/1988", movie18.get().getId());
+    }
+
+    private void createMovie19(DatabaseController db) {
         db.createMovie("Everything Everywhere All at Once", "Daniel Kwan, Daniel Scheinert", "2022", "2h. 19min.", "Daniel Kwan, Daniel Scheinert",
                 "A middle-aged Chinese immigrant goes on an adventure exploring other universes.");
 
@@ -232,7 +377,9 @@ public class PopulationData {
         db.createRating("Costume rating", "7", "7", "David", movie19.get().getId(), "public");
         db.createRating("Weirdest people", "4", "4", "David", movie19.get().getId(), "public");
         db.createRating("Coolest plot", "3", "3", "David", movie19.get().getId(), "public");
+    }
 
+    private void createMovie20(DatabaseController db) {
         db.createMovie("Spider-Man: Across the Spider-Verse", "Joaquim Dos Santos, Kemp Powers, Justin K. Thompson", "2023", "2h. 20min.", "Phil Lord, Christopher Miller, Dave Callaham",
                 "Young Spider Boy has another spider-verse adventure.");
 
@@ -246,33 +393,7 @@ public class PopulationData {
         db.createRating("Character drawing rating", "3", "3", "David", movie20.get().getId(), "public");
         db.createRating("Animation awesomeness", "4", "4", "David", movie20.get().getId(), "public");
 
-        //DataBase population for actors:
-
-        db.createActor("Julie Andrews", "10/01/1935", movie1.get().getId());
-        db.createActor("Christopher Plummer", "12/13/1929", movie1.get().getId());
-        db.createActor("Eleanor Parker", "06/26/1922", movie1.get().getId());
-
-        db.createActor("Zac Efron", "10/18/1987", movie2.get().getId());
-        db.createActor("Matthew Perry", "08/19/1922", movie2.get().getId());
-        db.createActor("Leslie Mann", "03/26/1972", movie2.get().getId());
-
-        db.createActor("Jay Baruchel", "04/09/1982", movie3.get().getId());
-        db.createActor("Gerard Butler", "11/13/1969", movie3.get().getId());
-        db.createActor("Christopher Mintz-Plasse", "06/20/1989", movie3.get().getId());
-
-        db.createActor("Brad Garrett", "04/14/1960", movie4.get().getId());
-        db.createActor("Lou Romano", "04/15/1971", movie4.get().getId());
-        db.createActor("Paton Oswalt", "01/27/1969", movie4.get().getId());
-
-
-        db.createActor("Michael J. Fox", "06/09/1961", movie6.get().getId());
-        db.createActor("Jim Varney", "06/15/1949", movie6.get().getId());
-        db.createActor("Corey Burton", "08/03/1955", movie6.get().getId());
-
-        db.createActor("Brandy Norwood", "02/11/1979", movie13.get().getId());
-        db.createActor("Bernadette Peters", "02/28/1948",movie13.get().getId());
-
-        db.createActor("Simu Liu", "04/19/1989", movie18.get().getId());
-        db.createActor("Awkwafina", "06/02/1988", movie18.get().getId());
+        db.createReview(movie20.get().getId(), "One of the best animated superhero movies of all time!", "David", "public");
+        db.createReview(movie20.get().getId(), "The soundtrack was a work of art!", "Binura", "public");
     }
 }

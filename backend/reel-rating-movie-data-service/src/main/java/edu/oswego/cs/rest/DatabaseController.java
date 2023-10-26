@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -29,7 +26,6 @@ import com.mongodb.client.gridfs.GridFSDownloadStream;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 
@@ -48,8 +44,8 @@ public class DatabaseController {
   }
 
   /**
-   * get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
-   * be queried and updated by the other CRUD operations.
+   * <p>get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
+   * be queried and updated by the other CRUD operations. Currently there are
    */
   public MongoCollection<Document> getTagCollection() {
     return getMovieDatabase().getCollection("tags");
@@ -69,10 +65,6 @@ public class DatabaseController {
 
   public MongoCollection<Document> getUserAssociatedRatingCollection() {
     return getMovieDatabase().getCollection("userAssociatedRatings");
-  }
-
-  public MongoCollection<Document> getUserAssociatedTags() {
-    return getMovieDatabase().getCollection("userAssociatedTags");
   }
 
   public MongoCollection<Document> getReviewCollection() {
@@ -114,6 +106,10 @@ public class DatabaseController {
     }
   }
 
+  /**
+   * Selects and returns an image id at random from the established image database.
+   * @return the HexString representation of an image from the gridSFBucket
+   */
   public String getRandomImageId() {
     ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -125,7 +121,11 @@ public class DatabaseController {
     return gridFSBucket.find(query).first().getObjectId().toHexString();
   }
 
-
+  /**
+   * Gets image from the stock image database using the given hexId.
+   * @param hexId Unique String hexId of the desired image
+   * @return Single Byte[] representation of the image from the GridSFBucket
+   */
   public byte[] getStockImage(String hexId) {
     // establish the images hex id and image bucket
     ObjectId stockImageId = new ObjectId(hexId);
@@ -139,6 +139,11 @@ public class DatabaseController {
     return imageBytes;
   }
 
+  /**
+   * Returns the image assigned to the given movie
+   * @param movieId MongoDB assigned unique String hexId of the movie to search by
+   * @return String hexId of the image related to the provided movie
+   */
   public String getMovieImageId(String movieId) {
     return getMovieDocumentWithHexId(movieId).getString("movieImageId");
   }
@@ -420,11 +425,12 @@ public class DatabaseController {
     if (!(Integer.valueOf(userRating) <= Integer.valueOf(upperbound) && Integer.valueOf(userRating) >= 1))
       return;
 
-    // attempt to get the rating if the user has already created one for this category and upperbound
+    // attempt to get the rating if the user has already created one for this category and upperbound on the movie
     Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
     Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
     Bson usernameFilter = Filters.eq("username", username);
-    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter)).first();
+    Bson movieFilter = Filters.eq("movieId", movieIdHexString);
+    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
     // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
@@ -490,7 +496,7 @@ public class DatabaseController {
    *
    * @param actorName actor's name
    * @param dob the date of birth of the actor
-   * @param movieTitle a movie that the actor appears in. More can be added later
+   * @param movieId a movie that the actor appears in. More can be added later
    */
   public void createActor(String actorName, String dob, String movieId){
     // get collections
@@ -683,20 +689,16 @@ public class DatabaseController {
     // get the movie collection
     MongoCollection<Document> movieCollection = getMovieCollection();
     // sort the entire collection
-    MongoIterable<Document> sortedList = movieCollection.find().sort(descending("releaseDate"));
+    MongoIterable<Document> sortedList = movieCollection.find().sort(descending("releaseDate")).limit(numMovies);
 
     // for each of the documents make a new movie and add to the ArrayList to return
-    for ( Document d : sortedList.batchSize(numMovies - 1)) {
+    for ( Document d : sortedList) {
       // create the new movie object
       Movie m = new Movie();
-      ObjectId id = new ObjectId(m.getId());
-      // get the movie that matches the movie id
-      Document movieDoc = movieCollection.find(Filters.eq("_id", id)).first();
       // set the needed information from movie
-      // TODO This is a stripped down version of the movie, if we want this to be a full movie we should add a constructor to the Movie object
-      m.setId(d.getString("_id"));
-      m.setTitle(movieDoc.getString("title"));
-      m.setSummary(movieDoc.getString("plotSummary"));
+      m.setId(d.getObjectId("_id").toHexString());
+      m.setTitle(d.getString("title"));
+      m.setSummary(d.getString("plotSummary"));
 
       // add the movie to the list to return
       recentReleaseMovies.add(m);
@@ -759,7 +761,8 @@ public class DatabaseController {
     MongoIterable<Movie> reviewsAggregated = reviews.aggregate(
       Arrays.asList(
         Aggregates.group("$movieId", Accumulators.sum("count", 1)),
-        Aggregates.sort(Sorts.descending("count"))
+        Aggregates.sort(Sorts.descending("count")),
+        Aggregates.limit(numMovies)
       )
     ).map(doc -> {
       Movie movie = new Movie();
@@ -771,7 +774,7 @@ public class DatabaseController {
       movie.setTitle(movieDoc.getString("title"));
       movie.setSummary(movieDoc.getString("plotSummary"));
       return movie;
-    }).batchSize(numMovies); // gets the specified number of movies
+    });
     List<Movie> movies = new ArrayList<>();
     reviewsAggregated.forEach(movies::add);
     return movies;
