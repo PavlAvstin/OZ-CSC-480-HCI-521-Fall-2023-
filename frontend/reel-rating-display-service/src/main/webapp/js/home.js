@@ -49,9 +49,14 @@ function appendMovies(movies, carouselId) {
             highRatingColor:'#00ff00'
         };
 
-        //const progressBar = document.createElement('progress-bar', progressAtributes);
-
-        //cardBody.appendChild(progressBar);
+        const progressBar = document.createElement('progress-bar-create-modify');
+        progressBar.setAttribute("scaleStart", "1");
+        progressBar.setAttribute("scaleEnd", "10");
+        progressBar.setAttribute("ratingValue", "9.3");
+        progressBar.setAttribute("lowRatingColor", '#3d37bf');
+        progressBar.setAttribute("highRatingColor", '#00ff00');
+        progressBar.loadAttributes();
+        cardBody.appendChild(progressBar);
 
         const tags = document.createElement('tags');
         tags.classList.add("row", "g-0", "mtXSM", "mbXSM");
