@@ -32,7 +32,6 @@ public class MovieDataService {
 
   /**
    * gets the username of the client request. Also authenticates the client using a JWT.
-   *
    * TODO double check if the above is correct
    *
    * @param request
@@ -181,7 +180,20 @@ public class MovieDataService {
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     int numMovies = 12;
+    // get a List of the #numMovies most recent releases.
     List<Movie> movies = dbc.getRecentReleaseMovies(numMovies);
+    for ( Movie m : movies ) {
+      // get the most popular rating and average for each movie
+      Rating r = dbc.getMostPopularAggregatedRatingForMovie(m.getId());
+
+      // set the appropriate fields for each movie
+      m.setMostPopularRatingCategory(r.getRatingName());
+      m.setMostPopRatingUpperBound(r.getUpperbound());
+      m.setMostPopRatingAvg(r.getUserRating());
+
+      // names of three tags from the movie
+      m.setAttachedTags(dbc.getThreeTags(m.getId()));
+    }
     return Response.ok(movies).build();
   }
 

@@ -20,7 +20,7 @@ public class PopulationData {
         var db = new DatabaseController();
 
         db.storeStockImages();
-        
+
         createMovie1(db);
         createMovie2(db);
         createMovie3(db);
@@ -40,6 +40,7 @@ public class PopulationData {
         createMovie17(db);
         createMovie18(db);
         createMovie19(db);
+        createMovie20(db);
     }
     /*
           Movie: Sound of Music
@@ -261,17 +262,19 @@ public class PopulationData {
 
         db.createReview(movie11.get().getId(), "I'm just Ken.", "David", "public");
 
-        db.createMovie("Barbie as The Princess and the Pauper", "William Lau", "2004", "1h. 25min.", "Cliff Ruby, Elana Lesser, Mark Twain",
-                "An adaption of the prince and the pauper but with Barbie.");
     }
 
     private void createMovie12(DatabaseController db) {
+        db.createMovie("Barbie as The Princess and the Pauper", "William Lau", "2004", "1h. 25min.", "Cliff Ruby, Elana Lesser, Mark Twain",
+                "An adaption of the prince and the pauper but with Barbie.");
+
         var movie12 = db.getMovieWithTitle("Barbie as The Princess and the Pauper");
         db.createTag("Animation", movie12.get().getId(), "David", "public");
         db.createTag("Comedy", movie12.get().getId(), "David", "public");
         db.createTag("Family", movie12.get().getId(), "David", "public");
 
         db.createRating("Best Barbie movie of all time", "10", "10", "David", movie12.get().getId(), "public");
+        db.createRating("Best Barbie movie of all time", "7", "10", "Keith", movie12.get().getId(), "public");
         db.createRating("Best animated movie of all time", "5", "5", "David", movie12.get().getId(), "public");
         db.createRating("Cutest Couples in Movies", "2", "2", "David", movie12.get().getId(), "public");
     }
