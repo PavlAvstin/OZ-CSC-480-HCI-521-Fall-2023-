@@ -1,5 +1,7 @@
 package edu.oswego.cs.rest.JsonClasses;
 
+import java.util.ArrayList;
+
 public class Movie {
   private String id;
   private String title;
@@ -12,7 +14,7 @@ public class Movie {
   private String mostPopularRatingCategory;
   private String mostPopRatingAvg;
   private String mostPopRatingUpperbound;
-  private String attachedTags;
+  private ArrayList<String> attachedTags;
 
 
   // constructor
@@ -80,7 +82,7 @@ public class Movie {
   public String getMostPopRatingUpperBound() { return mostPopRatingUpperbound; }
   public void setMostPopRatingUpperBound(String mostPopRatingUpperBound) { this.mostPopRatingUpperbound = mostPopRatingUpperBound; }
 
-  public String getAttachedTags() { return attachedTags; }
+  public ArrayList<String> getAttachedTags() { return attachedTags; }
 
-  public void setAttachedTags(String attachedTags) { this.attachedTags = attachedTags; }
+  public void setAttachedTags(ArrayList<String> attachedTags) { this.attachedTags = attachedTags; }
 }
