@@ -9,18 +9,21 @@ public class Movie {
   private String writers;
   private String summary;
   private String principleCast;
+  private String mostPopularRatingCategory;
+  private String mostPopRatingAvg;
+  private String mostPopRatingUpperbound;
 
 
+  // constructor
   public Movie() {}
 
+  // getters and setters
   public String getId() { return id; }
-
   public void setId(String id) { this.id = id; }
 
   public String getTitle() {
     return title;
   }
-
   public void setTitle(String title) { 
     this.title = title;
   }
@@ -28,7 +31,6 @@ public class Movie {
   public String getDirector() {
     return director;
   }
-
   public void setDirector(String director) {
     this.director = director;
   }
@@ -36,7 +38,6 @@ public class Movie {
   public String getReleaseDate() {
     return releaseDate;
   }
-
   public void setReleaseDate(String releaseDate) {
     this.releaseDate = releaseDate;
   }
@@ -44,7 +45,6 @@ public class Movie {
   public String getRuntime() {
     return runtime;
   }
-
   public void setRuntime(String runtime) {
     this.runtime = runtime;
   }
@@ -52,7 +52,6 @@ public class Movie {
   public String getWriters() {
     return writers;
   }
-
   public void setWriters(String writers) {
     this.writers = writers;
   }
@@ -60,7 +59,6 @@ public class Movie {
   public String getSummary() {
     return summary;
   }
-
   public void setSummary(String summary) {
     this.summary = summary;
   }
@@ -68,10 +66,16 @@ public class Movie {
   public String getPrincipleCast() {
     return principleCast;
   }
-
   public void setPrincipleCast(String principleCast) {
     this.principleCast = principleCast;
   }
 
+  public String getMostPopularRatingCategory() { return mostPopularRatingCategory; }
+  public void setMostPopularRatingCategory(String mostPopularRatingCategory){ this.mostPopularRatingCategory = mostPopularRatingCategory; }
 
+  public String getMostPopRatingAvg() { return mostPopRatingAvg; }
+  public void setMostPopRatingAvg(String mostPopRatingAvg) { this.mostPopRatingAvg = mostPopRatingAvg; }
+
+  public String getMostPopRatingUpperBound() { return mostPopRatingUpperbound; }
+  public void setMostPopRatingUpperBound(String mostPopRatingUpperBound) { this.mostPopRatingUpperbound = mostPopRatingUpperBound; }
 }

@@ -782,6 +782,7 @@ public class DatabaseController {
 
   public Rating getMostPopularAggregatedRatingForMovie(String movieId) {
     MongoCollection<Document> ratingCollection = getRatingCollection();
+    // get the most popular rating category name for the movie
     Document ratingNameDoc = ratingCollection.aggregate(
       Arrays.asList(
         Aggregates.match(Filters.eq("movieId", movieId)),
@@ -789,6 +790,8 @@ public class DatabaseController {
         Aggregates.sort(Sorts.descending("count"))
       )
     ).first();
+
+    // gets the most popular upperbound for the category
     String mostPopularCategoryName = ratingNameDoc.getString("_id");
     Document ratingScaleDoc = ratingCollection.aggregate(
       Arrays.asList(
@@ -797,10 +800,25 @@ public class DatabaseController {
         Aggregates.sort(Sorts.descending("count"))
       )
     ).first();
+
     String mostPopularCategoryUpperbound = ratingScaleDoc.getString("_id");
+
+    int userRatingSum = 0;
+    // using the most popular name and most popular upperbound go through and collect the sum of all the user ratings
+    // gets the most popular upperbound for the category
+    for (Document doc : ratingCollection.find(Filters.and(Filters.eq("movieId", movieId), Filters.eq("ratingName", mostPopularCategoryName), Filters.eq("upperbound", mostPopularCategoryUpperbound)))) {
+      userRatingSum = userRatingSum + Integer.parseInt(doc.getString("userRating"));
+    }
+    int count = ratingScaleDoc.getInteger("count");
+    double average = ((double) userRatingSum ) / count;
+//
+//    // create a rating object that has the most popular name, upperbound, and a userRating of the average of all
+//    //  the ratings of that name with that upperbound.
+//    //  TODO consider collecting for all ratings of this name which would take some normalizing. Is this worth it?
     Rating rating = new Rating();
     rating.setRatingName(mostPopularCategoryName);
     rating.setUpperbound(mostPopularCategoryUpperbound);
+    rating.setUserRating(Double.toString(average));
     return rating;
   }
 
