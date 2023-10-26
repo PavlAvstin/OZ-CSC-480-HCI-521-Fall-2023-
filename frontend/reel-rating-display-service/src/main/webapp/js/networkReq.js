@@ -5,8 +5,8 @@ export const fetchPost = async(url, jsonData, callbackFunc)=>{
         headers:{
             "Content-Type" : "application/json",
         },
-        credentials: "include",
-        body : jsonData
+        body : jsonData,
+        credentials: "include"
     })
     .then(async(serverData)=>{
         callbackFunc(serverData);
