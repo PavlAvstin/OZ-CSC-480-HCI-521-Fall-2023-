@@ -170,6 +170,23 @@ public class MovieDataService {
     DatabaseController dbc = new DatabaseController();
     int numMovies = 12;
     List<Movie> movies = dbc.getMoviesWithMostReviews(numMovies);
+    for ( Movie m : movies ) {
+      // get the most popular rating and average for each movie
+      Rating r = dbc.getMostPopularAggregatedRatingForMovie(m.getId());
+
+      // set the appropriate fields for each movie
+      m.setMostPopularRatingCategory(r.getRatingName());
+      m.setMostPopRatingUpperBound(r.getUpperbound());
+      m.setMostPopRatingAvg(r.getUserRating());
+
+      // names of three tags from the movie
+      List<Tag> tagList = dbc.getThreeTags(m.getId());
+      ArrayList<String> tagNameList = new ArrayList<>();
+      for (Tag t: tagList ) {
+        tagNameList.add(t.getTagName());
+      }
+      m.setAttachedTags(tagNameList);
+    }
     return Response.ok(movies).build();
   }
 
