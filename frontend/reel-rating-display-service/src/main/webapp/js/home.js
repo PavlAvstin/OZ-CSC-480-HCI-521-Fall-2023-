@@ -25,21 +25,33 @@ function appendMovies(movies, carouselId) {
         const movieImage = document.createElement('img');
         movieImage.classList.add("card-img-top", "pt-1");
         movieImage.src = `http://localhost:30501/reel-rating-movie-data-service/movie/getMovieImage/${movie.id}`;
+        movieImage.style.height = "215px";
         movieCard.appendChild(movieImage);
 
         const cardBody = document.createElement('div');
-        cardBody.classList.add("card-body");
-        const titleAndRating = document.createElement('div');
-        titleAndRating.classList.add("row", "g-0");
+
         const title = document.createElement('div');
         title.classList.add("col-10", "card-title", "mdFont");
         title.textContent = `${movie.title}`;
-        titleAndRating.appendChild(title);
+        title.style.textOverflow = "ellipsis";
+        title.style.height = "34.50px";
+
+        cardBody.appendChild(title);
+
+        cardBody.classList.add("card-body");
+        const categoryAndRating = document.createElement('div');
+        categoryAndRating.classList.add("row", "g-0");
+        const category = document.createElement('div');
+        category.classList.add("col-10", "card-title", "mdFont");
+        category.textContent = `${movie.mostPopularRatingCategory}`;
+        category.style.textDecoration = "underline";
+        categoryAndRating.appendChild(category);
         const rating = document.createElement('div');
         rating.classList.add("col-2", "textRight", "mdFont");
         rating.textContent = movie.mostPopRatingAvg;
-        titleAndRating.append(rating);
-        cardBody.appendChild(titleAndRating);
+        rating.style.textOverflow = "ellipsis";
+        categoryAndRating.append(rating);
+        cardBody.appendChild(categoryAndRating);
 
         const progressBar = document.createElement('progress-bar-create-modify');
         progressBar.setAttribute("scaleStart", "1");
