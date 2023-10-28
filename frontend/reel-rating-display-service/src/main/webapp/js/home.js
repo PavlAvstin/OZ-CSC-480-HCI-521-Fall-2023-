@@ -37,22 +37,14 @@ function appendMovies(movies, carouselId) {
         titleAndRating.appendChild(title);
         const rating = document.createElement('div');
         rating.classList.add("col-2", "textRight", "mdFont");
-        rating.textContent = "9.3";
+        rating.textContent = movie.mostPopRatingAvg;
         titleAndRating.append(rating);
         cardBody.appendChild(titleAndRating);
 
-        let progressAtributes = {
-            scaleStart: "1",
-            scaleEnd: '10',
-            ratingValue: '9.3',
-            lowRatingColor:'#3d37bf',
-            highRatingColor:'#00ff00'
-        };
-
         const progressBar = document.createElement('progress-bar-create-modify');
         progressBar.setAttribute("scaleStart", "1");
-        progressBar.setAttribute("scaleEnd", "10");
-        progressBar.setAttribute("ratingValue", "9.3");
+        progressBar.setAttribute("scaleEnd", movie.mostPopRatingUpperBound);
+        progressBar.setAttribute("ratingValue", movie.mostPopRatingAvg);
         progressBar.setAttribute("lowRatingColor", '#3d37bf');
         progressBar.setAttribute("highRatingColor", '#00ff00');
         progressBar.loadAttributes();
@@ -60,7 +52,7 @@ function appendMovies(movies, carouselId) {
 
         const tags = document.createElement('tags');
         tags.classList.add("row", "g-0", "mtXSM", "mbXSM");
-        const tagsText = ["tag1", "tag2", "tag3"]
+        const tagsText = movie.attachedTags;
         for (let tag of tagsText) {
             const tagElement = document.createElement('div');
             tagElement.classList.add("brAll", "pXXSM", "col-4", "textCenter", "fontWhite", "bgSecondary", "xsFont");
