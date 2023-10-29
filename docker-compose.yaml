@@ -35,6 +35,42 @@ services:
       - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
       - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
 
+  reel-rating-actor-data-service:
+    build:
+      context: ./backend/reel-rating-actor-data-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-actor-data-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
+
+  reel-rating-rating-data-service:
+    build:
+      context: ./backend/reel-rating-rating-data-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-rating-data-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
+
+  reel-rating-review-data-service:
+    build:
+      context: ./backend/reel-rating-review-data-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-review-data-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
+
   reel-rating-display-service:
     build:
       context: ./frontend/reel-rating-display-service
@@ -55,4 +91,7 @@ services:
       - "127.0.0.1:30400:30400"
       - "127.0.0.1:30500:30500"
       - "127.0.0.1:30501:30501"
+      - "127.0.0.1:30502:30502"
+      - "127.0.0.1:30503:30503"
+      - "127.0.0.1:30504:30504"
     
