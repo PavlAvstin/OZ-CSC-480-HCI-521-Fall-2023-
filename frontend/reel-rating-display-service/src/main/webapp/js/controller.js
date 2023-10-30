@@ -91,8 +91,7 @@ function homeInit(){
         `${globals.baseDataPath}/movie/getMoviesWithMostReviews`,
         Home.appendRowDataToMostReviewed
     );
-
-
+    
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{

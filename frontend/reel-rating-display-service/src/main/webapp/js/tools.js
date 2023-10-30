@@ -41,4 +41,42 @@ export const navToHome = async(serverRes)=>{
 }
 
 
+export const createElm = (elmType, textData, attributeType, attributeString)=>{
+    try{
+        var newElm = document.createElement(elmType);
+        if(typeof textData === "string"){ newElm.innerText = textData; }
+        if(typeof attributeType === "string" && typeof attributeString === "string"){
+            newElm.setAttribute(`${attributeType}`, `${attributeString}`);
+        }
+        else if(typeof attributeType === "object" && typeof attributeString === "object"){
+            for(var x=0; x < attributeType.length; x++){
+                newElm.setAttribute(`${attributeType[x]}`, `${attributeString[x]}`);
+            }
+        }
+        return newElm;
+    }catch(error){
+        console.log(`There was an error in createElm()\n${error}`);
+    }
+    
+}
+
+
+export const randomString = () =>{
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomString = '';
+  
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters.charAt(randomIndex);
+    }
+  
+    return randomString;
+}
+
+
+export const randomNum = ()=>{
+    return Math.random() * (10 - 0) + 0;
+}
+
+
 

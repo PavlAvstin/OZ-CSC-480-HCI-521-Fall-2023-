@@ -17,7 +17,9 @@ export class GlobalRef{
         this.logInPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/login`;
         this.regPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/register`;
         this.baseDataPath = `http://localhost:${dataPort}/reel-rating-movie-data-service`;
+        this.movieImgBase = `http://localhost:${dataPort}/reel-rating-movie-data-service/movie/getMovieImage`
         this.regExSpecChar = /\W/; //Is not word char nor digit
         this.regExNum = /\d/;
+
     }
 }
