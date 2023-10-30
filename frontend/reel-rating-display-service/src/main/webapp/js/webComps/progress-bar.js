@@ -4,7 +4,9 @@
 class ProgressBar extends HTMLElement{
     constructor(){
         super();
-        
+    }
+
+    connectedCallback(){
         //Needed Elms
         var progressBarContainer = document.createElement("div");
         progressBarContainer.setAttribute("id", "progressBarContainer");
@@ -15,12 +17,11 @@ class ProgressBar extends HTMLElement{
 
         this.attachShadow({ mode : "open" });//Append the shadow root
         this.shadowRoot.appendChild(progressBarContainer.cloneNode(true));
-        
 
         //Get the attributes that where passed in and create the component
         progressBarContainer = this.shadowRoot.getElementById("progressBarContainer");
         progressBar = this.shadowRoot.getElementById("progressBar");
-
+        
         var scaleStart = Number(this.getAttribute("scaleStart"));
         var scaleEnd = Number(this.getAttribute("scaleEnd"));
         var ratingValue = Number(this.getAttribute("ratingValue"));

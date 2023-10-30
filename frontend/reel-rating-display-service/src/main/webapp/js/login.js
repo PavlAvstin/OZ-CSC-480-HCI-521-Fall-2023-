@@ -86,9 +86,6 @@ export const checkVaildPassword = (password, regExSpecChar, regExNum)=>{
     var error = false;
     var errorHtml = "";
 
-    //At the moment we are only checking for one condidition
-    //However in the future there will be more
-    //When this happens append a new div to the string
     if(password.length < 8){
         errorHtml += "<div>Password length must be 8 or more</div>";
         error = true;
