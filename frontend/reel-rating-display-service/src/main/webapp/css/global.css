@@ -10,10 +10,13 @@
     --maxRatingColor : #00ff00;
     --neutralColor : #eeeeee;
     --neutralHover : #f3f3f3;
+    --darkNeutral : #878787;
     --backgroundColor : #1b1b1b;
     --darkFG : #2b2b2b;
     --discordColor : #5165f6;
     --cardTextHeight : 135px;
+    --modalHeight : 733px;
+    --modalWidth : 1186px;
     
     --radius : 15px; /* border radius amount */
 
@@ -68,6 +71,7 @@
     --shadowCard : 0px 0px 4px 4px #FFF;
 
     --fadeAwayNeutral : linear-gradient(0deg, rgba(238,238,238, 1), rgba(238,238,238, 0.50) 39.29%, rgba(238,238,238, 0.00) 79.86%);
+    --fadeAwayDark : linear-gradient(0deg, rgba(43, 43, 43, 1), rgba(43, 43, 43, 0.50) 39.29%, rgba(43, 43, 43, 0.00) 79.86%);
 
 }
 
@@ -93,10 +97,10 @@ a{
 }
 
 .carousel-item{ transition: var(--sliderTrans);}
-
-.modal-dialog{ 
-    max-width : 80%;
-    margin-left: 10%;
+.modal-dialog{ margin-left: 0; margin-right:0; }
+.modal-content{
+    height : var(--modalHeight);
+    width : var(--modalWidth);
 }
 
 body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgroundColor); }
@@ -105,10 +109,12 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .textRight { text-align: right; }
 .fullWidth{ width : 100%; }
 .fontWhite{ color: white; }
+.fontBlack{ color: black; }
 .bgPrimary{ background-color: var(--mainColor);}
 .bgPrimary:hover{background-color: var(--secondaryColor); transition: var(--transDur);}
 .bgNeutral{ background-color: var(--neutralColor);}
 .bgNeutral:hover{background-color: var(--neutralHover); transition: var(--transDur);}
+.bgDarkNeutral{ background-color: var(--darkNeutral); }
 .bgSecondary{ background-color: var(--secondaryColor);}
 .hidden{ display : none; }
 .error{ width : 98%; margin-left: 1%; margin-right:1%; }
@@ -118,7 +124,7 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .iconWidth { width : var(--lgPX); }
 .btPrimaryStyle{ background: var(--purpleGrad);}
 .btCalloutStyle{ background: var(--greenGrad);}
-.btNegativeStyle{ background: var(--redGrad); }
+.btNegativeStyle{ background: var(--redGrad);}
 .customShadow { box-shadow: var(--shadow); }
 .fadeAwayNeutral{ 
     background: var(--fadeAwayNeutral); 
@@ -132,7 +138,11 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .centerImg{ display:grid; justify-content: center; align-items: center;}
 .followedReview{ background-color: var(--neutralColor); }
 .personName{ color:black; }
-
+.scrollHidden{ overflow-y: scroll; }
+.limitHeight350{ height : 350px; }
+.limitHeight275{ height : 275px; }
+.textAreaStyle{ height: 175px; }
+.inputHeight{ height : 35px; }
 
 /* Font Sizes */
 .xlFont{ font-size : var(--xlPX) }
@@ -236,6 +246,15 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     border-bottom-left-radius: var(--radius); 
 }
 
+/* Height */
+.hXL{ max-height: var(--xlPX); }
+.hLG{ max-height: var(--lgPX); }
+.hMD{ max-height: var(--medPX); }
+.hSM{ max-height: var(--smPX); }
+.hXSM{ max-height: var(--xsPX); }
+.hXXSM{ max-height: var(--xxsPX); }
+
+
 /* Border Color */
 .bcAll{ border: solid; border-color: var(--secondaryColor); }
 .bcTop{ border: solid; border-top-color: var(--secondaryColor); }
@@ -245,20 +264,6 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 
 
 /* CSS Grid */
-.titleGridRow{
-    display: grid;
-    grid-template-columns: repeat(24, 1fr);
-}
-.gridTitle{
-    grid-column: 1 / span 3;
-}
-.titleLine{
-    height: var(--xxsPX);
-    background: var(--purpleGrad);
-    box-shadow: var(--shadow);
-    grid-column: 4 / span 22;
-}
-
 .carouselRow{
     display: grid;
     column-gap: 20px;
@@ -275,6 +280,35 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .modalShare{ grid-column: 6 / span 2; }
 
 .modalExit{ grid-column: 10 / span 2; }
+
+
+#modalActionButtonsRow{
+    display: grid;
+    grid-template-columns: 13fr 4fr 4fr 3fr;
+    column-gap: var(--smPX);
+}
+
+
+#ratingActionButtonRow{
+    display: grid;
+    grid-template-columns: 21fr 3fr;
+    column-gap: var(--smPX);
+}
+
+.newRatingButtonsRow{
+    display: grid;
+    grid-template-columns: repeat(48, 1fr);
+}
+
+#cancelRating, #cancelTag, #cancelReview{ 
+    grid-column: 1 / span 14; 
+}
+#shareRating, #shareTag, #shareReview{ 
+    grid-column: 22 / span 12;
+}
+#submitRating, #submitTag, #submitReview{ 
+    grid-column: 36 / span 12; 
+}
 
 
 
@@ -320,3 +354,23 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 
 /* Mobile */
 
+
+
+/* Show More Modal */
+#generalDarkFade, #existingCategoriesFade, #newRatingsFade{
+    background: var(--fadeAwayDark);
+    position: absolute;
+    z-index: 1;
+    top: 360px;
+    height: 60px;
+    width: 49%;
+}
+
+#categoriesDarkFade, #friendsDarkFade, #existingTagsFade{
+    background: var(--fadeAwayDark);
+    position: absolute;
+    z-index: 1;
+    top: 665px;
+    height: 60px;
+    width: 49%;
+}

@@ -91,11 +91,16 @@ function homeInit(){
         `${globals.baseDataPath}/movie/getMoviesWithMostReviews`,
         Home.appendRowDataToMostReviewed
     );
-
-
+    
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{
         JSStyles.verticalCenterToParentHeight(parentVertCenterElms);
+    }, 350); //350 miliseconds, slightly higher than average reaction time
+    
+    //Vertical Center Elms that need it
+    var horizontalCenterElms = document.getElementsByClassName("hcToWindow");
+    setInterval(()=>{
+        JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
     }, 350); //350 miliseconds, slightly higher than average reaction time
 }
