@@ -235,6 +235,19 @@ public class MovieDataService {
   }
 
   /**
+   * get actor by movie ID
+   */
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/actor/getByMovieId/{movieId}")
+  public Response getActorByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    String username = getUsername(request);
+    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Actor> actors = dbc.getActorByMovieId(movieId);
+    return Response.ok(actors).build();
+  }
+  /**
    * get endpoints for reviews
    */
   @GET
