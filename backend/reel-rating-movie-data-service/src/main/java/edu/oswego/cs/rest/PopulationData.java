@@ -91,6 +91,16 @@ public class PopulationData {
         createMovie68(db);
         createMovie69(db);
         createMovie70(db);
+        createMovie71(db);
+        createMovie72(db);
+        createMovie73(db);
+        createMovie74(db);
+        createMovie75(db);
+        createMovie76(db);
+        createMovie77(db);
+        createMovie78(db);
+        createMovie79(db);
+        createMovie80(db);
 
     }
 
@@ -143,6 +153,8 @@ public class PopulationData {
         db.createRating("How cute was Zac Efron", "10", "10", "David", movie2.get().getId(), "public");
 
         db.createReview(movie2.get().getId(), "A movie for sure.", "David", "public");
+        db.createReview(movie2.get().getId(), "Beautiful movie", "Plum", "public");
+        db.createReview(movie2.get().getId(), "Terrible movie.", "Cherry", "public");
 
         db.createActor("Zac Efron", "10/18/1987", movie2.get().getId());
         db.createActor("Matthew Perry", "08/19/1922", movie2.get().getId());
@@ -764,9 +776,9 @@ public class PopulationData {
         db.createRating("Annoying cat", "7", "7", "Babaco", movie42.get().getId(), "public");
         db.createRating("Owner and pet bond", "5", "5", "Babaco", movie42.get().getId(), "public");
 
-        db.createReview(movie42.get().getId(), "", "Babaco", "public");
-        db.createReview(movie42.get().getId(), "", "Apple", "public");
-        db.createReview(movie42.get().getId(), "", "Lychee", "public");
+        db.createReview(movie42.get().getId(), "Movie of the century", "Babaco", "public");
+        db.createReview(movie42.get().getId(), "Great movie", "Apple", "public");
+        db.createReview(movie42.get().getId(), "Could be better", "Lychee", "public");
 
         db.createActor("John Travolta", "02/18/1954", movie42.get().getId());
         db.createActor("Miley Cyrus", "11/23/1992", movie42.get().getId());
@@ -786,9 +798,9 @@ public class PopulationData {
         db.createRating("Creative clothes", "9", "9", "Barberries", movie43.get().getId(), "public");
         db.createRating("Appealing height", "3", "3", "Barberries", movie43.get().getId(), "public");
 
-        db.createReview(movie43.get().getId(), "", "Barberries", "public");
-        db.createReview(movie43.get().getId(), "", "Banana", "public");
-        db.createReview(movie43.get().getId(), "", "Peach", "public");
+        db.createReview(movie43.get().getId(), "hdibchiwbdedufebobcjo dhbwbebi", "Barberries", "public");
+        db.createReview(movie43.get().getId(), "you know what, it was aight", "Banana", "public");
+        db.createReview(movie43.get().getId(), "Best tiny people movoie OOMGGGGGGG", "Peach", "public");
 
         db.createActor("Bridgit Mendler", "12/18/1992", movie43.get().getId());
         db.createActor("Amy Poehler", "09/16/1971", movie43.get().getId());
@@ -808,9 +820,9 @@ public class PopulationData {
         db.createRating("Weird plot", "6", "6", "Plum", movie44.get().getId(), "public");
         db.createRating("Sassy fairies", "5", "5", "Plum", movie44.get().getId(), "public");
 
-        db.createReview(movie44.get().getId(), "", "Plum", "public");
-        db.createReview(movie44.get().getId(), "", "Peach", "public");
-        db.createReview(movie44.get().getId(), "", "Strawberry", "public");
+        db.createReview(movie44.get().getId(), "ANNE HATHAWAY is tyhe BESTTTSTSTT", "Plum", "public");
+        db.createReview(movie44.get().getId(), "EW. Horrible movie", "Peach", "public");
+        db.createReview(movie44.get().getId(), "It lack pickles.", "Strawberry", "public");
 
         db.createActor("Anne Hathaway", "11/12/1982", movie44.get().getId());
         db.createActor("Hugh Dancy", "06/19/1975", movie44.get().getId());
@@ -830,9 +842,9 @@ public class PopulationData {
         db.createRating("Would've ended that friendship", "9", "9", "Bearberries", movie45.get().getId(), "public");
         db.createRating("Cute female lead", "4", "4", "Bearberries", movie45.get().getId(), "public");
 
-        db.createReview(movie45.get().getId(), "", "Bearberries", "public");
-        db.createReview(movie45.get().getId(), "", "Plum", "public");
-        db.createReview(movie45.get().getId(), "", "Peach", "public");
+        db.createReview(movie45.get().getId(), "I would never forgive my bsf for ehat sinbad did.", "Bearberries", "public");
+        db.createReview(movie45.get().getId(), "Hot Lady.", "Plum", "public");
+        db.createReview(movie45.get().getId(), "Hot Goddess", "Peach", "public");
 
         db.createActor("Brad Pitt", "12/18/1963", movie45.get().getId());
         db.createActor("Catherine Zeta-Jones", "09/25/1969", movie45.get().getId());
@@ -852,9 +864,9 @@ public class PopulationData {
         db.createRating("Side character came in clutch", "5", "5", "Beechnut", movie46.get().getId(), "public");
         db.createRating("Children's nightmare", "9", "9", "Beechnut", movie46.get().getId(), "public");
 
-        db.createReview(movie46.get().getId(), "", "Beechnut", "public");
-        db.createReview(movie46.get().getId(), "", "Bearberries", "public");
-        db.createReview(movie46.get().getId(), "", "Barberries", "public");
+        db.createReview(movie46.get().getId(), "Frightning", "Beechnut", "public");
+        db.createReview(movie46.get().getId(), "Wasn't sacredat all", "Bearberries", "public");
+        db.createReview(movie46.get().getId(), "fueuefueh ewbduwbduwd", "Barberries", "public");
 
         db.createActor("Dakota Fanning", "02/23/1994", movie46.get().getId());
         db.createActor("Teri Hatcher", "12/08/1964", movie46.get().getId());
@@ -874,9 +886,9 @@ public class PopulationData {
         db.createRating("Disgusting movie", "4", "4", "Calabash", movie47.get().getId(), "public");
         db.createRating("Santa's not that great", "8", "8", "Calabash", movie47.get().getId(), "public");
 
-        db.createReview(movie47.get().getId(), "", "Calabash", "public");
-        db.createReview(movie47.get().getId(), "", "Beechnut", "public");
-        db.createReview(movie47.get().getId(), "", "Cherry", "public");
+        db.createReview(movie47.get().getId(), "Ugly dude", "Calabash", "public");
+        db.createReview(movie47.get().getId(), "Ugly bride", "Beechnut", "public");
+        db.createReview(movie47.get().getId(), "Ugly movie", "Cherry", "public");
 
         db.createActor("Danny Elfman", "05/29/1953", movie47.get().getId());
         db.createActor("Chris Sarandon", "07/24/1942", movie47.get().getId());
@@ -896,9 +908,9 @@ public class PopulationData {
         db.createRating("Loyal dog", "2", "2", "Carambola", movie48.get().getId(), "public");
         db.createRating("Nice settings", "3", "3", "Carambola", movie48.get().getId(), "public");
 
-        db.createReview(movie48.get().getId(), "", "Carambola", "public");
-        db.createReview(movie48.get().getId(), "", "Cantaloupe", "public");
-        db.createReview(movie48.get().getId(), "", "Peach", "public");
+        db.createReview(movie48.get().getId(), "Nice apocolypse movie", "Carambola", "public");
+        db.createReview(movie48.get().getId(), "It was aight", "Cantaloupe", "public");
+        db.createReview(movie48.get().getId(), "Why'd he have to save the yt lady??", "Peach", "public");
 
         db.createActor("Will Smith", "09/25/1968", movie48.get().getId());
         db.createActor("Alice Braga", "04/15/1983", movie48.get().getId());
@@ -918,9 +930,9 @@ public class PopulationData {
         db.createRating("Useless male lead", "6", "6", "Carob", movie49.get().getId(), "public");
         db.createRating("Reused plot", "5", "5", "Carob", movie49.get().getId(), "public");
 
-        db.createReview(movie49.get().getId(), "", "Carob", "public");
-        db.createReview(movie49.get().getId(), "", "Cantaloupe", "public");
-        db.createReview(movie49.get().getId(), "", "JackFruit", "public");
+        db.createReview(movie49.get().getId(), "Best snow white ever", "Carob", "public");
+        db.createReview(movie49.get().getId(), "It wasn't all that", "Cantaloupe", "public");
+        db.createReview(movie49.get().getId(), "The queen should've won.", "JackFruit", "public");
 
         db.createActor("Lily Collins", "03/18/1989", movie49.get().getId());
         db.createActor("Julia Roberts", "10/28/1967", movie49.get().getId());
@@ -940,9 +952,9 @@ public class PopulationData {
         db.createRating("Creative clothes", "9", "9", "Quince", movie50.get().getId(), "public");
         db.createRating("Appealing height", "3", "3", "Quince", movie50.get().getId(), "public");
 
-        db.createReview(movie50.get().getId(), "", "Quince", "public");
-        db.createReview(movie50.get().getId(), "", "JackFruit", "public");
-        db.createReview(movie50.get().getId(), "", "Cherry", "public");
+        db.createReview(movie50.get().getId(), "I, Quince approve if this movie.", "Quince", "public");
+        db.createReview(movie50.get().getId(), "What credit does that give Quince, you cheated on your spouse. Anyways, nice movie.", "JackFruit", "public");
+        db.createReview(movie50.get().getId(), "Guys, we're supposed to be reviewing the movie, not people's infidelities. SOlid 4/5", "Cherry", "public");
 
         db.createActor("Bridgit Mendler", "12/18/1992", movie50.get().getId());
         db.createActor("Amy Poehler", "09/16/1971", movie50.get().getId());
@@ -962,9 +974,9 @@ public class PopulationData {
         db.createRating("Selena Gomez movies", "10", "10", "Coconut", movie51.get().getId(), "public");
         db.createRating("Joey King movies", "5", "5", "Coconut", movie51.get().getId(), "public");
 
-        db.createReview(movie51.get().getId(), "", "Coconut", "public");
-        db.createReview(movie51.get().getId(), "", "Pear", "public");
-        db.createReview(movie51.get().getId(), "", "Blueberry", "public");
+        db.createReview(movie51.get().getId(), "Selena gomez is QUEEN", "Coconut", "public");
+        db.createReview(movie51.get().getId(), "OMG that line was so good when she was all; Jesus??", "Pear", "public");
+        db.createReview(movie51.get().getId(), "Selena gomez is so CUUTTTEEEE", "Blueberry", "public");
 
         db.createActor("Joey King", "07/30/1999", movie51.get().getId());
         db.createActor("Selena Gomez", "07/22/1992", movie51.get().getId());
@@ -984,9 +996,9 @@ public class PopulationData {
         db.createRating("Jesus Remake", "3", "3", "Clementine", movie52.get().getId(), "public");
         db.createRating("These kids don't deserve it", "6", "6", "Clementine", movie52.get().getId(), "public");
 
-        db.createReview(movie52.get().getId(), "", "Clementine", "public");
-        db.createReview(movie52.get().getId(), "", "Blueberry", "public");
-        db.createReview(movie52.get().getId(), "", "Quince", "public");
+        db.createReview(movie52.get().getId(), "I likeed the other version better. I want to hate people. I could'nt hate anyone.", "Clementine", "public");
+        db.createReview(movie52.get().getId(), "Yeah, this movie lacked the utter obnoxiousness of OG Edmund", "Blueberry", "public");
+        db.createReview(movie52.get().getId(), "I liked it.", "Quince", "public");
 
         db.createActor("Tilda Swinton", "11/05/1960", movie52.get().getId());
         db.createActor("Georgie Henley", "07/09/1995", movie52.get().getId());
@@ -1007,9 +1019,9 @@ public class PopulationData {
         db.createRating("Interspecies relationships", "4", "4", "Citron", movie53.get().getId(), "public");
         db.createRating("Aliens", "7", "7", "Citron", movie53.get().getId(), "public");
 
-        db.createReview(movie53.get().getId(), "", "Citron", "public");
-        db.createReview(movie53.get().getId(), "", "Clementine", "public");
-        db.createReview(movie53.get().getId(), "", "Coconut", "public");
+        db.createReview(movie53.get().getId(), "It was a thout-provoking movie.", "Citron", "public");
+        db.createReview(movie53.get().getId(), "As if, Citron you slept half-way through it. The movie was aight.", "Clementine", "public");
+        db.createReview(movie53.get().getId(), "Hot blue girl.", "Coconut", "public");
 
         db.createActor("Sam Worthington", "08/02/1976", movie53.get().getId());
         db.createActor("Zoë Saldana", "06/19/1978", movie53.get().getId());
@@ -1029,9 +1041,9 @@ public class PopulationData {
         db.createRating("Good idea", "2", "2", "Courgette", movie54.get().getId(), "public");
         db.createRating("Animals", "6", "6", "Courgette", movie54.get().getId(), "public");
 
-        db.createReview(movie54.get().getId(), "", "Courgette", "public");
-        db.createReview(movie54.get().getId(), "", "Citron", "public");
-        db.createReview(movie54.get().getId(), "", "Apple", "public");
+        db.createReview(movie54.get().getId(), "My brother Citron loves this movie 5/5", "Courgette", "public");
+        db.createReview(movie54.get().getId(), "I do in fact love this movie, 5/5", "Citron", "public");
+        db.createReview(movie54.get().getId(), "this movie is BOOTY", "Apple", "public");
 
         db.createActor("Sam Neill", "09/14/1947", movie54.get().getId());
         db.createActor("Laura Dern", "02/10/1967", movie54.get().getId());
@@ -1050,9 +1062,9 @@ public class PopulationData {
         db.createRating("They would've divorced anyways", "5", "5", "Cranberry", movie55.get().getId(), "public");
         db.createRating("Standing with arms out", "9", "9", "Cranberry", movie55.get().getId(), "public");
 
-        db.createReview(movie55.get().getId(), "", "Cranberry", "public");
-        db.createReview(movie55.get().getId(), "", "Courgette", "public");
-        db.createReview(movie55.get().getId(), "", "Clementine", "public");
+        db.createReview(movie55.get().getId(), "I wish he'd died sooner.", "Cranberry", "public");
+        db.createReview(movie55.get().getId(), "It was ok.", "Courgette", "public");
+        db.createReview(movie55.get().getId(), "The lady was hot.", "Clementine", "public");
 
         db.createActor("Leonardo DiCaprio", "11/11/1974", movie55.get().getId());
         db.createActor("Kate Winslet", "10/05/1975", movie55.get().getId());
@@ -1072,9 +1084,9 @@ public class PopulationData {
         db.createRating("Cutest romance", "6", "6", "Cucumber", movie56.get().getId(), "public");
         db.createRating("Robot love", "4", "4", "Cucumber", movie56.get().getId(), "public");
 
-        db.createReview(movie56.get().getId(), "", "Cucumber", "public");
-        db.createReview(movie56.get().getId(), "", "Tomato", "public");
-        db.createReview(movie56.get().getId(), "", "Cranberry", "public");
+        db.createReview(movie56.get().getId(), "AHHHHHH SO CUTTETETET", "Cucumber", "public");
+        db.createReview(movie56.get().getId(), "BEst romance of all time", "Tomato", "public");
+        db.createReview(movie56.get().getId(), "When tyhey held hands in space, I had tears in my eyes.", "Cranberry", "public");
 
         db.createActor("Ben Burtt", "07/12/1948", movie56.get().getId());
         db.createActor("Elissa Knight", "04/15/1975", movie56.get().getId());
@@ -1094,9 +1106,9 @@ public class PopulationData {
         db.createRating("The plot killed him", "10", "10", "Durian", movie57.get().getId(), "public");
         db.createRating("Powerful female lead", "10", "10", "Durian", movie57.get().getId(), "public");
 
-        db.createReview(movie57.get().getId(), "", "Durian", "public");
-        db.createReview(movie57.get().getId(), "", "Cucumber", "public");
-        db.createReview(movie57.get().getId(), "", "Tomato", "public");
+        db.createReview(movie57.get().getId(), "Not that good.", "Durian", "public");
+        db.createReview(movie57.get().getId(), "Yea, Durian Like your child. how's the bail loan? It's a good movie.. ", "Cucumber", "public");
+        db.createReview(movie57.get().getId(), "I don't understand the meaning of the movie, like what's the message????", "Tomato", "public");
 
         db.createActor("Gal Gadot", "04/30/1985", movie57.get().getId());
         db.createActor("Chris Pine", "08/26/1980", movie57.get().getId());
@@ -1115,9 +1127,9 @@ public class PopulationData {
         db.createRating("Characters done dirty", "8", "8", "Dates", movie58.get().getId(), "public");
         db.createRating("Hateful author", "5", "5", "Dates", movie58.get().getId(), "public");
 
-        db.createReview(movie58.get().getId(), "", "Dates", "public");
-        db.createReview(movie58.get().getId(), "", "Durian", "public");
-        db.createReview(movie58.get().getId(), "", "Cherry", "public");
+        db.createReview(movie58.get().getId(), "BOOOTTYYYYYY", "Dates", "public");
+        db.createReview(movie58.get().getId(), "Bro one sister should've died and it wasn't the chick from the begining.", "Durian", "public");
+        db.createReview(movie58.get().getId(), "Tymothee chalamet is SO HOTTTTTTTTT", "Cherry", "public");
 
         db.createActor("Saoirse Ronan", "04/12/1994", movie58.get().getId());
         db.createActor("Emma Watson", "04/15/1990", movie58.get().getId());
@@ -1137,9 +1149,9 @@ public class PopulationData {
         db.createRating("A kid you don't want to eliminate", "5", "5", "Dekopon", movie59.get().getId(), "public");
         db.createRating("Motherly love", "4", "4", "Dekopon", movie59.get().getId(), "public");
 
-        db.createReview(movie59.get().getId(), "", "Dekopon", "public");
-        db.createReview(movie59.get().getId(), "", "Banana", "public");
-        db.createReview(movie59.get().getId(), "", "Apple", "public");
+        db.createReview(movie59.get().getId(), "I don't understand ho this movie contributes to the btterment of our universe??", "Dekopon", "public");
+        db.createReview(movie59.get().getId(), "MASTERPIECE", "Banana", "public");
+        db.createReview(movie59.get().getId(), "But like the princess was annoying, I wished she would've just no longer existed", "Apple", "public");
 
         db.createActor("Angelina Jolie", "06/04/1975", movie59.get().getId());
         db.createActor("Elle Fanning", "04/09/1998", movie59.get().getId());
@@ -1159,9 +1171,9 @@ public class PopulationData {
         db.createRating("Funny character", "4", "4", "Fig", movie60.get().getId(), "public");
         db.createRating("Brotherly love", "6", "6", "Fig", movie60.get().getId(), "public");
 
-        db.createReview(movie60.get().getId(), "", "Fig", "public");
-        db.createReview(movie60.get().getId(), "", "Melon", "public");
-        db.createReview(movie60.get().getId(), "", "Cherry", "public");
+        db.createReview(movie60.get().getId(), "Cute movie", "Fig", "public");
+        db.createReview(movie60.get().getId(), "Super family friendly", "Melon", "public");
+        db.createReview(movie60.get().getId(), "CRONK IS MY HUSBAND!! AHHHHHH", "Cherry", "public");
 
         db.createActor("Fig Spade", "07/22/1964", movie60.get().getId());
         db.createActor("John Goodman", "06/20/1952", movie60.get().getId());
@@ -1182,9 +1194,9 @@ public class PopulationData {
         db.createRating("Good-looking animated characters", "10", "10", "Lemon", movie61.get().getId(), "public");
         db.createRating("Crush-inducing", "2", "2", "Lemon", movie61.get().getId(), "public");
 
-        db.createReview(movie61.get().getId(), "", "Lemon", "public");
-        db.createReview(movie61.get().getId(), "", "Pear", "public");
-        db.createReview(movie61.get().getId(), "", "Cranberry", "public");
+        db.createReview(movie61.get().getId(), "Made my sour self sweet.", "Lemon", "public");
+        db.createReview(movie61.get().getId(), "It wasn't bad. Herc is HOt", "Pear", "public");
+        db.createReview(movie61.get().getId(), "MEG IS SOOOOOOOOOO HOTTTTT", "Cranberry", "public");
 
         db.createActor("Tate Donovan", "09/25/1963", movie61.get().getId());
         db.createActor("Susan Egan", "02/18/1970", movie61.get().getId());
@@ -1204,9 +1216,9 @@ public class PopulationData {
         db.createRating("Not worth it", "7", "7", "Dewberries", movie62.get().getId(), "public");
         db.createRating("They will divorce from lack of planning", "4", "4", "Dewberries", movie62.get().getId(), "public");
 
-        db.createReview(movie62.get().getId(), "", "Dewberries", "public");
-        db.createReview(movie62.get().getId(), "", "Cherry", "public");
-        db.createReview(movie62.get().getId(), "", "Cantaloupe", "public");
+        db.createReview(movie62.get().getId(), "Evruyone whould've been unalive in the end.", "Dewberries", "public");
+        db.createReview(movie62.get().getId(), "It was ok. I think the art was the best part of the movie", "Cherry", "public");
+        db.createReview(movie62.get().getId(), "0/10 booty and I felt ZERO connection ot the characters.", "Cantaloupe", "public");
 
         db.createActor("Kotaro Daigo", "04/01/2002", movie62.get().getId());
         db.createActor("Nana Mori", "11/21/2000", movie62.get().getId());
@@ -1226,9 +1238,9 @@ public class PopulationData {
         db.createRating("Cutest romance", "6", "6", "Dracontomelon", movie63.get().getId(), "public");
         db.createRating("Nice songs", "10", "10", "Dracontomelon", movie63.get().getId(), "public");
 
-        db.createReview(movie63.get().getId(), "", "Dracontomelon", "public");
-        db.createReview(movie63.get().getId(), "", "Dewberries", "public");
-        db.createReview(movie63.get().getId(), "", "Lemon", "public");
+        db.createReview(movie63.get().getId(), "YASSSSS THIS MOVIE IS the besttttt", "Dracontomelon", "public");
+        db.createReview(movie63.get().getId(), "This movie is SSSLLLAAAYYYYYY", "Dewberries", "public");
+        db.createReview(movie63.get().getId(), "Perfection and top teir.", "Lemon", "public");
 
         db.createActor("Youko Honna", "09/22/1976", movie63.get().getId());
         db.createActor("Issei Takahashi", "12/17/1959", movie63.get().getId());
@@ -1248,9 +1260,9 @@ public class PopulationData {
         db.createRating("Funny character", "4", "4", "Dragonfruit", movie64.get().getId(), "public");
         db.createRating("Chill movie", "5", "5", "Dragonfruit", movie64.get().getId(), "public");
 
-        db.createReview(movie64.get().getId(), "", "Dragonfruit", "public");
-        db.createReview(movie64.get().getId(), "", "Binura", "public");
-        db.createReview(movie64.get().getId(), "", "Banana", "public");
+        db.createReview(movie64.get().getId(), "I want a magic broom", "Dragonfruit", "public");
+        db.createReview(movie64.get().getId(), "I wanna marry the art lady", "Binura", "public");
+        db.createReview(movie64.get().getId(), "There wasn't any death.", "Banana", "public");
 
         db.createActor("Kirsten Dunst", "04/30/1982", movie64.get().getId());
         db.createActor("Minami Takayama", "05/05/1964", movie64.get().getId());
@@ -1270,9 +1282,9 @@ public class PopulationData {
         db.createRating("Weird movie", "3", "3", "Eggplant", movie65.get().getId(), "public");
         db.createRating("Animal cuteness", "9", "9", "Eggplant", movie65.get().getId(), "public");
 
-        db.createReview(movie65.get().getId(), "", "Eggplant", "public");
-        db.createReview(movie65.get().getId(), "", "Dragonfruit", "public");
-        db.createReview(movie65.get().getId(), "", "Binura", "public");
+        db.createReview(movie65.get().getId(), "Totoro can get it.", "Eggplant", "public");
+        db.createReview(movie65.get().getId(), "Eggplant, CHILL. This movie was 4/5", "Dragonfruit", "public");
+        db.createReview(movie65.get().getId(), "Fluffy animals. Would want to squish irl.", "Binura", "public");
 
         db.createActor("Hitoshi Takagi", "10/17/1959", movie65.get().getId());
         db.createActor("Noriko Hidaka", "05/31/1962", movie65.get().getId());
@@ -1291,9 +1303,9 @@ public class PopulationData {
         db.createRating("Strange movie", "8", "8", "Huckleberry", movie66.get().getId(), "public");
         db.createRating("Not sure how to feel", "10", "10", "Huckleberry", movie66.get().getId(), "public");
 
-        db.createReview(movie66.get().getId(), "", "Huckleberry", "public");
-        db.createReview(movie66.get().getId(), "", "Cherry", "public");
-        db.createReview(movie66.get().getId(), "", "Banana", "public");
+        db.createReview(movie66.get().getId(), "BOOOOOO TRash. I AM SO MADS!!!!", "Huckleberry", "public");
+        db.createReview(movie66.get().getId(), "This movie made me cry and idk why.", "Cherry", "public");
+        db.createReview(movie66.get().getId(), "I swear I never changed throughout this whole movie. I felt NOTHING.", "Banana", "public");
 
         db.createActor("Emmanuel Garijo", "03/18/1960", movie66.get().getId());
         db.createActor("Tom Hudson", "11/14/1984", movie66.get().getId());
@@ -1313,9 +1325,9 @@ public class PopulationData {
         db.createRating("Talking animals", "2", "2", "Etrog", movie67.get().getId(), "public");
         db.createRating("Interspecies relationships", "4", "4", "Etrog", movie67.get().getId(), "public");
 
-        db.createReview(movie67.get().getId(), "", "Etrog", "public");
-        db.createReview(movie67.get().getId(), "", "Cranberry", "public");
-        db.createReview(movie67.get().getId(), "", "Fig", "public");
+        db.createReview(movie67.get().getId(), "I wanna marry the baron", "Etrog", "public");
+        db.createReview(movie67.get().getId(), "Get in line Etrog. thi smovie was spectavular. Especially the baron", "Cranberry", "public");
+        db.createReview(movie67.get().getId(), "I don't get the hype.", "Fig", "public");
 
         db.createActor("Chizuru Ikewaki", "11/17/1981", movie67.get().getId());
         db.createActor("Yoshihiko Hakamada", "12/23/1982", movie67.get().getId());
@@ -1335,9 +1347,9 @@ public class PopulationData {
         db.createRating("Animal cuteness", "9", "9", "Elderberry", movie68.get().getId(), "public");
         db.createRating("They will divorce from lack of planning", "4", "4", "Elderberry", movie68.get().getId(), "public");
 
-        db.createReview(movie68.get().getId(), "", "Elderberry", "public");
-        db.createReview(movie68.get().getId(), "", "Cherry", "public");
-        db.createReview(movie68.get().getId(), "", "Cranberry", "public");
+        db.createReview(movie68.get().getId(), "She was so desperate, I can't.", "Elderberry", "public");
+        db.createReview(movie68.get().getId(), "Like your mom Elderberry??? Wrecking people's homes?? I'm ashamed to be your distant cousin. This movie was a MASTERPIECE.", "Cherry", "public");
+        db.createReview(movie68.get().getId(), "Chill out yall, this mobie was 3/5 at best.", "Cranberry", "public");
 
         db.createActor("Mirai Shida", "05/10/1993", movie68.get().getId());
         db.createActor("Natsuki Hanae", "06/26/1991", movie68.get().getId());
@@ -1358,9 +1370,9 @@ public class PopulationData {
         db.createRating("Powerful female lead", "10", "10", "Emblica", movie69.get().getId(), "public");
         db.createRating("Girl power", "7", "7", "Emblica", movie69.get().getId(), "public");
 
-        db.createReview(movie69.get().getId(), "", "Emblica", "public");
-        db.createReview(movie69.get().getId(), "", "Elderberry", "public");
-        db.createReview(movie69.get().getId(), "", "Lemon", "public");
+        db.createReview(movie69.get().getId(), "YASSS GIRL POWER", "Emblica", "public");
+        db.createReview(movie69.get().getId(), "Don't get the hype.", "Elderberry", "public");
+        db.createReview(movie69.get().getId(), "Elderberry if you don't LEAVE before I expose you for being just liek your mother. SUper GREAT MOVIE", "Lemon", "public");
 
         db.createActor("Beverly Caimen", "03/25/1996", movie69.get().getId());
         db.createActor("Aoife O'Donnell", "09/18/1990", movie69.get().getId());
@@ -1381,13 +1393,219 @@ public class PopulationData {
         db.createRating("Strong male lead", "9", "9", "Goumi", movie70.get().getId(), "public");
         db.createRating("Father needs to be gone", "10", "10", "Goumi", movie70.get().getId(), "public");
 
-        db.createReview(movie70.get().getId(), "", "Goumi", "public");
-        db.createReview(movie70.get().getId(), "", "Emblica", "public");
-        db.createReview(movie70.get().getId(), "", "Elderberry", "public");
+        db.createReview(movie70.get().getId(), "I loved Broly, like I think I'm in love.", "Goumi", "public");
+        db.createReview(movie70.get().getId(), "BROLY IS SO HOTTTTTTT", "Emblica", "public");
+        db.createReview(movie70.get().getId(), "I don't get the hype. Too much yelling and screeming.", "Elderberry", "public");
 
         db.createActor("Masako Nozawa", "10/25/1936", movie70.get().getId());
         db.createActor("Aya Hisakawa", "11/12/1968", movie70.get().getId());
         db.createActor("Ryô Horikawa", "02/01/1958", movie70.get().getId());
     }
+
+    private void createMovie71(DatabaseController db) {
+        db.createMovie("Catch Me If You Can", "Steven Spielberg", "2002", "2h 21m",
+                "Jeff Nathanson, Frank Abagnale Jr., Stan Redding",
+                "Frank Abagnale worked as a doctor, lawyer, and co-pilot at a young age, using forgery and fraudulent methods. FBI Agent Carl Hanratty makes it his mission to capture the infamous scammer.");
+
+        var movie71 = db.getMovieWithTitle("Catch Me If You Can");
+        db.createTag("Drama", movie71.get().getId(), "Pineberry", "public");
+        db.createTag("Action", movie71.get().getId(), "Pineberry", "public");
+        db.createTag("Biography", movie71.get().getId(), "Pineberry", "public");
+        db.createTag("Deception", movie71.get().getId(), "Pineberry", "public");
+
+        db.createRating("Forgery?", "1", "10", "Pineberry", movie71.get().getId(), "public");
+        db.createRating("Best Chase scene", "1", "10", "Pineberry", movie71.get().getId(), "public");
+        db.createRating("Funny", "1", "5", "Pineberry", movie71.get().getId(), "public");
+
+        db.createReview(movie71.get().getId(), "I don't rememeber what I just watvched.", "Cherry", "public");
+        db.createReview(movie71.get().getId(), "That's cause you have the attention span of a fish Cherry. This moovie was AWESOME", "Banana", "public");
+        db.createReview(movie71.get().getId(), "WOrst movie ever.", "Quince", "public");
+    }
+
+    private void createMovie72(DatabaseController db) {
+        db.createMovie("Shazam", "David F. Sandberg", "2019", "2h 12m",
+                "Henry Gayden",
+                "\"Shazam!\" is a superhero film about a teenage boy who can transform into an adult superhero by saying the magic word \"Shazam.\" He must face a villain while learning to harness his newfound powers.");
+
+        var movie72 = db.getMovieWithTitle("Shazam");
+        db.createTag("DC Comics", movie72.get().getId(), "Pineapple", "public");
+        db.createTag("Superheroes", movie72.get().getId(), "Pineapple", "public");
+        db.createTag("Action", movie72.get().getId(), "Pineapple", "public");
+        db.createTag("Comedy", movie72.get().getId(), "Pineapple", "public");
+        db.createTag("Family", movie72.get().getId(), "Pineapple", "public");
+
+        db.createRating("FamilyRating?", "1", "10", "Pineapple", movie72.get().getId(), "public");
+        db.createRating("Shazam is Hot", "1", "10", "Pineapple", movie72.get().getId(), "public");
+        db.createRating("LOLFunny", "1", "10", "Pineapple", movie72.get().getId(), "public");
+
+        db.createReview(movie72.get().getId(), "Shazam is the best. I've been if love with the character since I was 9.", "Pineberry", "public");
+        db.createReview(movie72.get().getId(), "What the heck is the plot?? Like wheere did ythe greater powers come from??", "Pineapple", "public");
+        db.createReview(movie72.get().getId(), "Your mother Pineapple. That's where they came from. It was such a heartwrenching movie.", "Plum", "public");
+    }
+
+    private void createMovie73(DatabaseController db) {
+        db.createMovie("Ring", "Hideo Nakata", "1998", "1h 36m",
+                "Hiroshi Takahashi",
+                "\"Ringu\" is a Japanese horror film about a journalist investigating a cursed videotape that leads to gruesome death seven days after watching it. She races against time to uncover its origins and break the curse before it claims her life and the life of her young son.");
+
+        var movie73 = db.getMovieWithTitle("Ring");
+        db.createTag("Horror", movie73.get().getId(), "Plantain", "public");
+        db.createTag("Japanese Horror", movie73.get().getId(), "Plantain", "public");
+        db.createTag("Haunting", movie73.get().getId(), "Plantain", "public");
+        db.createTag("Thriller", movie73.get().getId(), "Plantain", "public");
+
+        db.createRating("TooScary", "1", "10", "Plantain", movie73.get().getId(), "public");
+        db.createRating("HahaScary", "1", "10", "Plantain", movie73.get().getId(), "public");
+        db.createRating("NojumpScare?", "1", "10", "Plantain", movie73.get().getId(), "public");
+
+        db.createReview(movie73.get().getId(), "I was not scared at ALL. Do better.", "Plantain", "public");
+        db.createReview(movie73.get().getId(), "Bro, I saw you pee your pants in the theater Plantain. Grow up. 10/10 one of my favorite horror movies.", "Peach", "public");
+        db.createReview(movie73.get().getId(), "Chill out guys, was it just me or was the ghost girl hot???", "Blueberry", "public");
+    }
+
+    private void createMovie74(DatabaseController db) {
+        db.createMovie("The Iron Giant", "Brad Bird", "1999", "1h 26m",
+                "Ted Hughes, Tim McCanlies",
+                "\"The Iron Giant\" is an animated film about a young boy who befriends a giant robot from outer space. Together, they face the challenges of the 1950s Cold War era and learn about friendship and humanity.");
+
+        var movie74 = db.getMovieWithTitle("The Iron Giant");
+        db.createTag("Funny", movie74.get().getId(), "Pitaya", "public");
+        db.createTag("Family friendly", movie74.get().getId(), "Pitaya", "public");
+        db.createTag("Cold War", movie74.get().getId(), "Pitaya", "public");
+        db.createTag("Sci-Fi", movie74.get().getId(), "Pitaya", "public");
+        db.createTag("Classic", movie74.get().getId(), "Pitaya", "public");
+        db.createTag("Friendship", movie74.get().getId(), "Pitaya", "public");
+
+        db.createRating("Best movie of all time", "1", "10", "Pitaya", movie74.get().getId(), "public");
+        db.createRating("Best Robot character", "1", "10", "Pitaya", movie74.get().getId(), "public");
+        db.createRating("Too sad", "1", "10", "Pitaya", movie74.get().getId(), "public");
+
+        db.createReview(movie74.get().getId(), "Cool movie. Very Pitaya friendly.", "Pitaya", "public");
+        db.createReview(movie74.get().getId(), "I wanna be friends with the iron Giant", "Keith", "public");
+        db.createReview(movie74.get().getId(), "It was ok. I don't understand how thuis contributesto the betterment of the universe.", "Binura", "public");
+    }
+
+    private void createMovie75(DatabaseController db) {
+        db.createMovie("I.T", "John Moore", "2016", "1h 35m",
+                "Dan Kay, William Wisher",
+                "\"I.T\" is a thriller film, not a horror movie. If you need information on a specific horror film, please provide the title, and I'll assist you.");
+
+        var movie75 = db.getMovieWithTitle("I.T");
+        db.createTag("Thriller", movie75.get().getId(), "Plumcots", "public");
+        db.createTag("Technology", movie75.get().getId(), "Plumcots", "public");
+        db.createTag("Family", movie75.get().getId(), "Plumcots", "public");
+        db.createTag("Obsession", movie75.get().getId(), "Plumcots", "public");
+
+        db.createRating("Wrong I.T movie", "1", "10", "Plumcots", movie75.get().getId(), "public");
+        db.createRating("Pretty Techy", "1", "10", "Plumcots", movie75.get().getId(), "public");
+        db.createRating("Never using the internet again", "1", "10", "Plumcots", movie75.get().getId(), "public");
+
+        db.createReview(movie75.get().getId(), "I was so scared.", "Plumcots", "public");
+        db.createReview(movie75.get().getId(), "That's why I didn't want to bring you Plumcot. I'm ashamed to have you as a sibling. It was 4/10", "Keith", "public");
+        db.createReview(movie75.get().getId(), "I hate horror movies and they should be erased from the existence of the universe. Like how doe sthis contribute to the betterment of the universe?", "Cherry", "public");
+    }
+
+    private void createMovie76(DatabaseController db) {
+        db.createMovie("Rampage", "Brad Peyton", "2018", "1h 47m",
+                "Ryan Engle, Carlton Cuse, Ryan J. Condal",
+                "\"Rampage\" is a science fiction monster film starring Dwayne Johnson. It follows the story of a primatologist and a geneticist who team up to stop genetically mutated animals, including a giant ape, wolf, and crocodile, from destroying Chicago. It's a high-stakes action-adventure filled with monster-sized mayhem.");
+
+        var movie76 = db.getMovieWithTitle("Rampage");
+        db.createTag("Action", movie76.get().getId(), "Pomato", "public");
+        db.createTag("Monkey", movie76.get().getId(), "Pomato", "public");
+        db.createTag("Adventure", movie76.get().getId(), "Pomato", "public");
+        db.createTag("Science Fiction", movie76.get().getId(), "Pomato", "public");
+
+        db.createRating("Too many apes", "1", "10", "Pomato", movie76.get().getId(), "public");
+        db.createRating("The Rock", "1", "10", "Pomato", movie76.get().getId(), "public");
+        db.createRating("Too badass", "1", "10", "Pomato", movie76.get().getId(), "public");
+
+        db.createReview(movie76.get().getId(), "OOOHHHHHH. I hjave zero recollection of this.", "Pomato", "public");
+        db.createReview(movie76.get().getId(), "What even are you? Have you figured out your identity yet Pomato? This movie was AMAZING.", "Tomato", "public");
+        db.createReview(movie76.get().getId(), "Boooooo. Bad movie", "Cucumber", "public");
+    }
+
+    private void createMovie77(DatabaseController db) {
+        db.createMovie("Shrek", "Andrew Adamson, Vicky Jenson", "2001", "90min",
+                "Ted Elliot, Terry Rossio, Joe Stillman",
+                "\"Shrek\" is an animated comedy film that tells the story of an ogre named Shrek who embarks on a quest to rescue Princess Fiona. Along the way, he's joined by a talkative donkey and encounters a devious ruler. The film is known for its humor, subversion of fairy tale tropes, and memorable characters.");
+
+        var movie77 = db.getMovieWithTitle("Shrek");
+        db.createTag("Action", movie77.get().getId(), "Pomegranate", "public");
+        db.createTag("Animated", movie77.get().getId(), "Pomegranate", "public");
+        db.createTag("Comedy", movie77.get().getId(), "Pomegranate", "public");
+        db.createTag("Family Friendly", movie77.get().getId(), "Pomegranate", "public");
+
+        db.createRating("Donkey and the Dragon?", "1", "10", "Pomegranate", movie77.get().getId(), "public");
+        db.createRating("Fiona <3", "1", "10", "Pomegranate", movie77.get().getId(), "public");
+        db.createRating("Talking Donkey", "1", "10", "Pomegranate", movie77.get().getId(), "public");
+
+        db.createReview(movie77.get().getId(), "I loved the songs.", "Pomegranite", "public");
+        db.createReview(movie77.get().getId(), "Shrek is my soul-mate", "Pomato", "public");
+        db.createReview(movie77.get().getId(), "Fiona, AHHHHHH!!! I Love her!!", "Cherry", "public");
+    }
+
+    // Method to create Movie 78: Inception
+    private void createMovie78(DatabaseController db) {
+        db.createMovie("Inception", "Christopher Nolan", "2010", "2h 28m",
+                "Christopher Nolan",
+                "\"Inception\" is a science fiction thriller directed by Christopher Nolan. It follows Dom Cobb, a thief played by Leonardo DiCaprio, who enters people's dreams to steal their secrets. His latest mission involves planting an idea in someone's mind, leading to a complex journey through dreamscapes and reality. Cobb's personal past and a haunting memory add depth to the story, making \"Inception\" a visually stunning and mind-bending classic.");
+
+        var movie78 = db.getMovieWithTitle("Inception");
+        db.createTag("Action", movie78.get().getId(), "Keith", "public");
+        db.createTag("Animated", movie78.get().getId(), "Keith", "public");
+        db.createTag("Comedy", movie78.get().getId(), "Keith", "public");
+        db.createTag("Family Friendly", movie78.get().getId(), "Keith", "public");
+
+        db.createRating("Too Weird", "1", "10", "Keith", movie78.get().getId(), "public");
+        db.createRating("DiCaprio handsome", "1", "10", "Keith", movie78.get().getId(), "public");
+        db.createRating("Timeee", "1", "10", "Keith", movie78.get().getId(), "public");
+
+        db.createReview(movie78.get().getId(), "I don't believe this movie contributes to the betterment of the universe.", "Keith", "public");
+        db.createReview(movie78.get().getId(), "Failure to th universe this INception movie", "Binura", "public");
+        db.createReview(movie78.get().getId(), "Will yall just leave if you don't have legit reviews?? 1/5 for the movie. Will never watch again.", "Cherry", "public");
+    }
+
+    // Method to create Movie 79: The Shawshank Redemption
+    private void createMovie79(DatabaseController db) {
+        db.createMovie("The Shawshank Redemption", "Frank Darabont", "1994", "2h 22min",
+                "Frank Darabont",
+                "\"The Shawshank Redemption\" is a 1994 drama film directed by Frank Darabont. It tells the story of Andy Dufresne, a banker who is wrongfully convicted of murder and sentenced to Shawshank State Penitentiary. While in prison, Andy befriends a fellow inmate, Red, and uses his financial skills to make life better for his fellow prisoners. The film is a tale of hope, friendship, and the possibility of redemption in the most unlikely of places.");
+
+        var movie79 = db.getMovieWithTitle("The Shawshank Redemption");
+        db.createTag("Action", movie79.get().getId(), "Quandong", "public");
+        db.createTag("Drama", movie79.get().getId(), "Quandong", "public");
+        db.createTag("Prison", movie79.get().getId(), "Quandong", "public");
+
+        db.createRating("Morgan’s voice", "1", "10", "Quandong", movie79.get().getId(), "public");
+        db.createRating("Classical", "1", "10", "Quandong", movie79.get().getId(), "public");
+        db.createRating("Best prison movie", "1", "10", "Quandong", movie79.get().getId(), "public");
+
+        db.createReview(movie79.get().getId(), "LOVE THIS MOOVIEEE", "Pumpkin", "public");
+        db.createReview(movie79.get().getId(), "It was OK.", "Quandong", "public");
+        db.createReview(movie79.get().getId(), "Be honest, it sucked.", "Pineapple", "public");
+    }
+
+    private void createMovie80(DatabaseController db) {
+        db.createMovie("Jurassic Park", "Steven Spielberg", "1993", "2h 7min",
+                "Michael Crichton, David Koepp",
+                "\"Jurassic Park\" is a 1993 science fiction adventure film directed by Steven Spielberg. The story revolves around a theme park where dinosaurs have been genetically resurrected. When the park's security systems fail, a group of characters, including Dr. Alan Grant, Dr. Ellie Sattler, and Dr. Ian Malcolm, must navigate the dangers of a world filled with living dinosaurs. The film is known for its groundbreaking special effects and thrilling portrayal of humans coexisting with prehistoric creatures.");
+
+        var movie80 = db.getMovieWithTitle("Jurassic Park");
+        db.createTag("Science Fiction", movie80.get().getId(), "Raisin", "public");
+        db.createTag("Dinosaurs", movie80.get().getId(), "Raisin", "public");
+        db.createTag("Adventure", movie80.get().getId(), "Raisin", "public");
+        db.createTag("Thriller", movie80.get().getId(), "Raisin", "public");
+        db.createTag("DNA", movie80.get().getId(), "Raisin", "public");
+
+        db.createRating("Best scream", "1", "10", "Raisin", movie80.get().getId(), "public");
+        db.createRating("Velociraptor evil", "1", "10", "Raisin", movie80.get().getId(), "public");
+        db.createRating("Jeff Goldblum", "1", "10", "Raisin", movie80.get().getId(), "public");
+
+        db.createReview(movie80.get().getId(), "BOOOOOOO. WHYY?? Why kill the dynosours?????", "Raisin", "public");
+        db.createReview(movie80.get().getId(), "As a vegan this movie is a crime. 1/5", "Pineapple", "public");
+        db.createReview(movie80.get().getId(), "As a carniovore this movie is a menace to society. Where would my meat go if dynosaurs were here?? 1/7", "Apple", "public");
+    }
 }
+
 
