@@ -24,7 +24,9 @@ function loginInit(){
         var passwordMatch = true;
         var emptyError = false;
         var validError = false;
+        var emailError = false;
         var usernameError = false;
+
         var newAccount = submitButton.getAttribute("newAccount");
         var currentAccountData = Login.getAccountData(newAccount);
         var currentEmptyErrorMessages = Login.getEmptyErrorMessages(newAccount);
@@ -36,6 +38,10 @@ function loginInit(){
         }
         else if(newAccount === "true"){
             emptyError = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, true);
+            emailError = Login.checkValidEmail(
+                currentAccountData.email.value, 
+                globals.regExEmail
+            )
             validError = Login.checkVaildPassword(
                 currentAccountData.password.value, 
                 globals.regExSpecChar,
@@ -46,10 +52,22 @@ function loginInit(){
 
         }
 
-        if(emptyError === false && validError === false && passwordMatch === true && usernameError === false){
+        if(
+            emptyError === false && validError === false && 
+            passwordMatch === true && usernameError === false &&
+            emailError === false
+        ){
             var jsonData = Tools.formatJSONData(
-                [currentAccountData.username, currentAccountData.password], 
-                ["username", "password"]
+                [
+                    currentAccountData.username,
+                    currentAccountData.email,
+                    currentAccountData.password
+                ], 
+                [
+                    "username",
+                    "email", 
+                    "password"
+                ]
             );
             if(newAccount === "true"){
                 NetworkReq.fetchPost(
@@ -70,7 +88,7 @@ function loginInit(){
 
     var newAccountButton = document.getElementById("newAccount");
     newAccountButton.addEventListener("click", ()=>{
-        Login.toggleCreateAccount(submitButton);
+        Login.toggleCreateAccount(submitButton, newAccountButton);
     });
 
 
