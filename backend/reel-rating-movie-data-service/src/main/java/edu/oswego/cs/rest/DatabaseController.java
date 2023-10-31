@@ -147,7 +147,7 @@ public class DatabaseController {
 
   //DataBase Population for movies:
 
-  /**
+  /*
    * update operations are used to change individual fields within database entities. For example
    * <code>updateMovieTitle</code> goes through all parts of the database that contain a movies title and updates them
    * to the new provided title. The unique MongoDB ids are crucial for these methods so that we do not lose track of
@@ -340,9 +340,8 @@ public class DatabaseController {
     updateReviewDescription(movieTitle, username, reviewDescription);
   }
 
-  /**
+  /*
    * Create CRUD operations
-   *
    * The following methods can be called by endpoints or internally to create and add to the database. Methods check
    * for and do not permit duplicated. Many items are identified by their unique hex id to prevent double entries.
    */
@@ -718,6 +717,9 @@ public class DatabaseController {
     return recentReleaseMovies;
   }
 
+  /*
+   * Helper gets
+   */
   /**
    * retrieves movie using MongoDB unique hex identifier. Creates a ObjectID object to return the movie Document.
    * @param hexID String representation of the hex id.
@@ -735,23 +737,14 @@ public class DatabaseController {
     return getActorsWithFilter(actorsCollection, filter);
   }
 
-  public List<Rating> getUserAssociatedRatings(String userName) {
-    var ratings = getRatingCollection();
-    var filter = Filters.eq("user", userName);
-    return getRatingsWithFilter(ratings, filter);
-  }
-
-  public List<Rating> getRatingsInRatingsCategory(String ratingName, String upperbound) {
-    var ratings = getRatingCollection();
-    var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var upperboundFilter = Filters.eq("upperbound", upperbound);
-    var filter = Filters.and(ratingNameFilter, upperboundFilter);
-    return getRatingsWithFilter(ratings, filter);
-  }
-
   public List<Review> getReviewsByMovieId(String movieId) {
     var reviews = getReviewCollection();
     var filter = Filters.eq("movieId", movieId);
+    return getReviewsWithFilter(reviews, filter);
+  }
+  public List<Review> getReviewsByUser(String username) {
+    var reviews = getReviewCollection();
+    var filter = Filters.eq("username", username);
     return getReviewsWithFilter(reviews, filter);
   }
 
@@ -760,13 +753,6 @@ public class DatabaseController {
     var filter = Filters.eq("movieId", movieId);
     return getTagsWithFilter(reviews, filter);
   }
-
-  public List<Review> getReviewsByUser(String username) {
-    var reviews = getReviewCollection();
-    var filter = Filters.eq("username", username);
-    return getReviewsWithFilter(reviews, filter);
-  }
-
   /**
    * Gets the first numMovies movies that have the most reviews from the database.
    * @param numMovies the specified number of movies to be returned
