@@ -10,9 +10,10 @@ export const getAccountData = (newAccount)=>{
     } 
     else if(newAccount === "true"){
         var username = document.getElementById("username");
+        var email = document.getElementById("email");
         var password = document.getElementById("password");
         var passwordMatch = document.getElementById("passwordMatch");
-        return { username, password, passwordMatch };
+        return { username, email, password, passwordMatch };
     }
 }
 
@@ -25,9 +26,10 @@ export const getEmptyErrorMessages = (newAccount)=>{
     } 
     else if(newAccount === "true"){
         var usernameError = document.getElementById("userNameError");
+        var emailError = document.getElementById("emailError");
         var passwordEmptyError = document.getElementsByClassName("passwordErrorEmpty")[0];
         var passwordMatchEmptyError = document.getElementsByClassName("passwordErrorEmpty")[1];
-        return { usernameError, passwordEmptyError, passwordMatchEmptyError };
+        return { usernameError, emailError, passwordEmptyError, passwordMatchEmptyError };
     }
 }
 
@@ -50,7 +52,6 @@ export const checkForEmptyInputs = (currentInputs, currentErrorMessages, newAcco
             currentErrorMessages.passwordMatchEmptyError.classList.remove("hidden");
         }
     }
-    
     return emptyInput;
 }
 
@@ -66,17 +67,26 @@ export const checkForPasswordMatch = (currentInputs, currentMatchErrors)=>{
 }
 
 
-export const toggleCreateAccount = (submitButton)=>{
+export const toggleCreateAccount = (submitButton, newAccountButton)=>{
     var passwordMatchContainer = document.getElementById("passwordMatchContainer");
+    var emailContainer = document.getElementById("emailContainer");
+    var userNameLabel = document.getElementById("userNameLabel");
     if(passwordMatchContainer.classList.contains("hidden")){
         passwordMatchContainer.classList.remove("hidden");
+        emailContainer.classList.remove("hidden");
         submitButton.setAttribute("newAccount","true");
         submitButton.innerText = "Create!";
+        newAccountButton.innerText = "Back";
+        userNameLabel.innerText = "Username";
     }
     else if(passwordMatchContainer.classList.contains("hidden") === false){
         passwordMatchContainer.classList.add("hidden");
+        emailContainer.classList.add("hidden");
         submitButton.setAttribute("newAccount","false");
         submitButton.innerText = "Sign in";
+        newAccountButton.innerText = "New Account";
+        userNameLabel.innerText = "Username or Email";
+
     }
 }
 
@@ -126,6 +136,25 @@ export const checkValidUserName = (userName)=>{
     if(error === true){
         userNameNotValidContainer.innerHTML = errorHtml;
         userNameNotValidContainer.classList.remove("hidden");
+    }
+
+    return error;
+}
+
+
+export const checkValidEmail = (email, regExEmail)=>{
+    var emailNotVaildContainer = document.getElementById("emailNotValid");
+    var error = false;
+    var errorHtml = "";
+
+    if(regExEmail.test(email) === false){
+        errorHtml += "<div>Please enter a vaild email (email@domain.com)</div>";
+        error = true;
+    }
+
+    if (error === true){
+        emailNotVaildContainer.innerHTML = errorHtml;
+        emailNotVaildContainer.classList.remove("hidden");
     }
 
     return error;
