@@ -5,16 +5,15 @@ import com.ibm.websphere.security.jwt.JwtConsumer;
 import edu.oswego.cs.rest.JsonClasses.Actor;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 @Path("/")
 @RequestScoped
@@ -55,5 +54,27 @@ public class ActorDataService {
     DatabaseController db = new DatabaseController();
     db.createActor(actor.getName(), actor.getDateOfBirth(), movieId);
     return Response.ok().build();
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/actor/getActorWithName/{name}")
+  public Response getActorWithName(@Context HttpServletRequest request, @PathParam("name") String name) throws Exception {
+    String username = getUsername(request);
+    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Actor> actors = dbc.getActorWithName(name);
+    return Response.ok(actors).build();
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/actor/getActorWithMovieId/{movieId}")
+  public Response getActorByName(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    String username = getUsername(request);
+    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Actor> actors = dbc.getActorWithMovieId(movieId);
+    return Response.ok(actors).build();
   }
 }

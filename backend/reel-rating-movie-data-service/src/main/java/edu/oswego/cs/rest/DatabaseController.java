@@ -193,6 +193,7 @@ public class DatabaseController {
     reviews.updateMany(movieTitleFilterForReviews, updateMovieTitleForReviews);
   }
 
+
   public void updateMovieDocument(String hexId, Document movieDocument) {
     var movieCollection = getMovieCollection();
     ObjectId movieId = new ObjectId(hexId);
@@ -564,52 +565,6 @@ public class DatabaseController {
     return list;
   }
 
-  private static ArrayList<Actor> getActorsWithFilter(MongoCollection<Document> actorsCollection, Bson filter) {
-    var actors = actorsCollection.find(filter).map(document -> {
-      var a = new Actor();
-      a.setName(document.getString("name"));
-      a.setDateOfBirth(document.getString("dob"));
-      a.setId(document.getObjectId("_id").toHexString());
-      a.setMovies(document.getList("movies", String.class));
-      return a;
-    });
-    var list = new ArrayList<Actor>();
-    actors.forEach(list::add);
-    return list;
-  }
-
-  private static ArrayList<Review> getReviewsWithFilter(MongoCollection<Document> reviewsCollection, Bson filter) {
-    var reviews = reviewsCollection.find(filter).map(document -> {
-      var re = new Review();
-      re.setUsername(document.getString("username"));
-      re.setReviewDescription(document.getString("reviewDescription"));
-      re.setMovieId(document.getString("movieId"));
-      re.setDateTimeCreated(document.get("dateTimeCreated").toString());
-      re.setPrivacy(document.getString("privacy"));
-      return re;
-    });
-    var list = new ArrayList<Review>();
-    reviews.forEach(list::add);
-    return list;
-  }
-
-  private static ArrayList<Rating> getRatingsWithFilter(MongoCollection<Document> ratingsCollection, Bson filter) {
-    var ratings = ratingsCollection.find(filter).map(document -> {
-      var ra = new Rating();
-      ra.setRatingName(document.getString("ratingName"));
-      ra.setUserRating(document.getString("userRating"));
-      ra.setMovieTitle(document.getString("movieTitle"));
-      ra.setDateTimeCreated(document.get("dateTimeCreated").toString());
-      ra.setPrivacy(document.getString("privacy"));
-      ra.setMovieId(document.getString("movieId"));
-      ra.setUpperbound(document.getString("upperbound"));
-      return ra;
-    });
-    var list = new ArrayList<Rating>();
-    ratings.forEach(list::add);
-    return list;
-  }
-
   private static ArrayList<Tag> getTagsWithFilter(MongoCollection<Document> tagCollection, Bson filter) {
     var ratings = tagCollection.find(filter).map(document -> {
       var tag = new Tag();
@@ -683,12 +638,6 @@ public class DatabaseController {
     return getMoviesWithTitle(title).stream().findFirst();
   }
 
-  public Document getMovieDocumentWithTitle(String title) {
-    var movieCollections = getMovieCollection();
-    var filter = Filters.eq("title", title);
-    return movieCollections.find(filter).first();
-  }
-
   /**
    * returns to numMovies most recent movies based on the year of their release. This is done by sorting the
    * ordering the collection by date and returning the first numMovies.
@@ -731,46 +680,6 @@ public class DatabaseController {
     return movieCollection.find(Filters.eq("_id", movieId)).first();
   }
 
-  public List<Actor> getActorByName(String name) {
-    var actorsCollection = getActorCollection();
-    var filter = Filters.eq("name", name);
-    return getActorsWithFilter(actorsCollection, filter);
-  }
-  public List<Actor> getActorByMovieId(String movieId) {
-    //getting the movie by ID
-    var movie = getMovieDocumentWithHexId(movieId);
-    if (movie != null) {
-      //Looking at actors in movie
-      var actorNames = movie.getList("principleCast", String.class);
-      var actors = new ArrayList<Actor>();
-      //Putting actors into a list
-      for (var name : actorNames) {
-        var actorsQuery = getActorByName(name);
-        actors.addAll(actorsQuery);
-      }
-      //return actor list
-      return actors;
-    }
-    //return null if movie doesn't exist by ID.
-    return null;
-  }
-
-  public List<Review> getReviewsByMovieId(String movieId) {
-    var reviews = getReviewCollection();
-    var filter = Filters.eq("movieId", movieId);
-    return getReviewsWithFilter(reviews, filter);
-  }
-  public List<Review> getReviewsByUser(String username) {
-    var reviews = getReviewCollection();
-    var filter = Filters.eq("username", username);
-    return getReviewsWithFilter(reviews, filter);
-  }
-
-  public List<Tag> getTagsByMovieId(String movieId) {
-    var reviews = getTagCollection();
-    var filter = Filters.eq("movieId", movieId);
-    return getTagsWithFilter(reviews, filter);
-  }
   /**
    * Gets the first numMovies movies that have the most reviews from the database.
    * @param numMovies the specified number of movies to be returned
@@ -857,6 +766,12 @@ public class DatabaseController {
   public List<Tag> getThreeTags(String movieId) {
     List<Tag> tags = getTagsByMovieId(movieId).subList(0, 3);
     return tags;
+  }
+
+  public List<Tag> getTagsByMovieId(String movieId) {
+    var reviews = getTagCollection();
+    var filter = Filters.eq("movieId", movieId);
+    return getTagsWithFilter(reviews, filter);
   }
 
   /**
