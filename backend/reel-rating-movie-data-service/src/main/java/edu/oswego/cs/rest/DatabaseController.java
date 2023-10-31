@@ -478,7 +478,7 @@ public class DatabaseController {
       BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
       Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
-              .append("username", username).append("dateTimeCreated", dateTimeCreated)
+              .append("username", username.toLowerCase()).append("dateTimeCreated", dateTimeCreated)
               .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
