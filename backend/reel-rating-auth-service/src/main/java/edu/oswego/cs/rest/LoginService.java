@@ -69,7 +69,7 @@ public class LoginService {
     Pattern usernameLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{2,15}");
     Matcher usernameMatcher = usernameLength.matcher(username);
 
-    Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$"); 
+    Pattern emailPattern = Pattern.compile(".*@.*"); 
     Matcher emailMatcher = emailPattern.matcher(email);
 
     Pattern passwordLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{8,}");
@@ -82,29 +82,29 @@ public class LoginService {
     Matcher passwordNumberMatcher = passwordNumberRequirement.matcher(password);
 
     // Confirm the username meets our requirements
-    if (!db.checkIfUserExists(username)) {
-      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Username already exists.").build();
+    if (db.checkIfUserExists(username)) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode()).entity("Username already exists.").build();
     }
 
     if (!usernameMatcher.matches()) {
-      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Username is not valid (To short or too long).").build();
+      return Response.status(Status.UNAUTHORIZED.getStatusCode()).entity("Username is not valid (To short or too long).").build();
     }
 
     if (!passwordLengthMatcher.matches()) {
-      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password is not long enough.").build();
+      return Response.status(Status.UNAUTHORIZED.getStatusCode()).entity("Password is not long enough.").build();
     }
 
     if (!passwordSpecialMatcher.matches()) {
-      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password doesn't contain a special character").build();
+      return Response.status(Status.UNAUTHORIZED.getStatusCode()).entity("Password doesn't contain a special character").build();
 
     }
 
     if (!passwordNumberMatcher.matches()) {
-      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password doesn't contain a number.").build();
+      return Response.status(Status.UNAUTHORIZED.getStatusCode()).entity("Password doesn't contain a number.").build();
     }
 
     if(!emailMatcher.matches()) {
-      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Email is not valid").build();
+      return Response.status(Status.UNAUTHORIZED.getStatusCode()).entity("Email is not valid").build();
     }
 
     String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
