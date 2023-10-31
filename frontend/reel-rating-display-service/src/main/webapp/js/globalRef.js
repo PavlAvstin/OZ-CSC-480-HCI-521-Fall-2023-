@@ -20,6 +20,7 @@ export class GlobalRef{
         this.movieImgBase = `http://localhost:${dataPort}/reel-rating-movie-data-service/movie/getMovieImage`
         this.regExSpecChar = /\W/; //Is not word char nor digit
         this.regExNum = /\d/;
+        this.regExEmail = /^\w+?@\w+\.\w+/;
 
     }
 }
