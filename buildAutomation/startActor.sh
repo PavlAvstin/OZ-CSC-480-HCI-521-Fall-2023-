@@ -10,6 +10,9 @@ docker container remove reel-rating-actor-data-service
 docker container stop reel-rating-mongo-movie
 docker container remove reel-rating-mongo-movie
 
+docker container stop reel-rating-movie-data-service
+docker container remove reel-rating-movie-data-service
+
 cd ..
 
 docker compose -f "docker-compose-actor.yaml" up -d --build
