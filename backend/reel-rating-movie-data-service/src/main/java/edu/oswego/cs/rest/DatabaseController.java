@@ -736,6 +736,24 @@ public class DatabaseController {
     var filter = Filters.eq("name", name);
     return getActorsWithFilter(actorsCollection, filter);
   }
+  public List<Actor> getActorByMovieId(String movieId) {
+    //getting the movie by ID
+    var movie = getMovieDocumentWithHexId(movieId);
+    if (movie != null) {
+      //Looking at actors in movie
+      var actorNames = movie.getList("principleCast", String.class);
+      var actors = new ArrayList<Actor>();
+      //Putting actors into a list
+      for (var name : actorNames) {
+        var actorsQuery = getActorByName(name);
+        actors.addAll(actorsQuery);
+      }
+      //return actor list
+      return actors;
+    }
+    //return null if movie doesn't exist by ID.
+    return null;
+  }
 
   public List<Review> getReviewsByMovieId(String movieId) {
     var reviews = getReviewCollection();
