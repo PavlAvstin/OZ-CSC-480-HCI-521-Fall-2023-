@@ -764,8 +764,8 @@ public class DatabaseController {
    * @return a list of tags length three
    */
   public List<Tag> getThreeTags(String movieId) {
-    List<Tag> tags = getTagsByMovieId(movieId).subList(0, 3);
-    return tags;
+    List<Tag> tags = getTagsByMovieId(movieId);
+    return tags.subList(0, tags.size() < 3 ? tags.size() : 3);
   }
 
   public List<Tag> getTagsByMovieId(String movieId) {
