@@ -5,16 +5,15 @@ import com.ibm.websphere.security.jwt.JwtConsumer;
 import edu.oswego.cs.rest.JsonClasses.Review;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 @Path("/")
 @RequestScoped
@@ -48,11 +47,33 @@ public class ReviewDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/review/create/{movieId}")
-  public Response createReviewEndPoint(@Context HttpServletRequest request, Review review, @PathParam("movieId") String movieId) throws Exception {
+  public Response createReview(@Context HttpServletRequest request, Review review, @PathParam("movieId") String movieId) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
     db.createReview(movieId, review.getReviewDescription(), username, review.getPrivacy());
     return Response.ok().build();
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/reviews/getWithUser/{username}")
+  public Response getReviewsWithUser(@Context HttpServletRequest request, @PathParam("username") String username) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Review> reviews = dbc.getReviewsWithUser(username.toLowerCase());
+    return Response.ok(reviews).build();
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/reviews/getWithMovieId/{movieId}")
+  public Response getReviewsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Review> reviews = dbc.getReviewsWithMovieId(movieId);
+    return Response.ok(reviews).build();
   }
 }

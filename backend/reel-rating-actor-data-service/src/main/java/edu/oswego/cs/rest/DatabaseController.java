@@ -1,5 +1,6 @@
 package edu.oswego.cs.rest;
 
+import edu.oswego.cs.rest.JsonClasses.Actor;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -11,6 +12,9 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseController {
   String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
   String mongoURL = System.getenv("MONGO_MOVIE_URL");
@@ -20,6 +24,9 @@ public class DatabaseController {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
+  /*
+   * Database get collection methods
+   */
   public MongoCollection<Document> getMovieCollection() {
     return getMovieDatabase().getCollection("movies");
   }
@@ -28,7 +35,13 @@ public class DatabaseController {
     return getMovieDatabase().getCollection("actors");
   }
 
-    /**
+  /*
+   * Actor Create functions
+   *
+   * createActor
+   */
+
+  /**
    * Creates and adds an actor to the database. Users cannot create an actor if the actor already exists by name.
    * This may need to be reconfigured to allow for two actors with the same name.
    *
@@ -60,5 +73,89 @@ public class DatabaseController {
     }
     // if the movie does not exist
     else{ }
+  }
+
+  /*
+   * Actor get functions
+   *
+   * getActorsWithFilter
+   *
+   * getActorByName
+   * getActorWithMovieId
+   *
+   */
+
+  /**
+   * Creates and returns a list of actors based on the given filter.
+   * @param actorsCollection MongoDB Collection of Actor documents
+   * @param filter the filter to apply to the document collection
+   * @return ArrayList of actors that fit the filter
+   */
+  private static ArrayList<Actor> getActorsWithFilter(MongoCollection<Document> actorsCollection, Bson filter) {
+    var actors = actorsCollection.find(filter).map(document -> {
+      var a = new Actor();
+      a.setName(document.getString("name"));
+      a.setDateOfBirth(document.getString("dob"));
+      a.setId(document.getObjectId("_id").toHexString());
+      a.setMovies(document.getList("movies", String.class));
+      return a;
+    });
+    var list = new ArrayList<Actor>();
+    actors.forEach(list::add);
+    return list;
+  }
+
+  /**
+   * Returns all actors of the given name.
+   * @param name Name of the actor to find
+   * @return ArrayList of Actors whose name matches the <code>name</code> parameter
+   */
+  public List<Actor> getActorWithName(String name) {
+    var actorsCollection = getActorCollection();
+    var filter = Filters.eq("name", name);
+    return getActorsWithFilter(actorsCollection, filter);
+  }
+
+  /**
+   * Returns all actors listed in primary cast of a provided movie.
+   * @param movieId MongoDB hexId of movie to search through
+   * @return ArrayList of Actors from the movie
+   */
+  public List<Actor> getActorWithMovieId(String movieId) {
+    //getting the movie by ID
+    var movie = getMovieDocumentWithHexId(movieId);
+    if (movie != null) {
+      //Looking at actors in movie
+      var actorNames = movie.getList("principleCast", String.class);
+      var actors = new ArrayList<Actor>();
+      //Putting actors into a list
+      for (var name : actorNames) {
+        var actorsQuery = getActorWithName(name);
+        actors.addAll(actorsQuery);
+      }
+      //return actor list
+      return actors;
+    }
+    //return null if movie doesn't exist by ID.
+    return null;
+  }
+
+  /*
+   * Actor Update functions
+   */
+
+  /*
+   * Actor Delete functions
+   */
+
+  /*
+   * Other helper functions
+   *
+   * getMovieDocumentWithHexId
+   */
+  public Document getMovieDocumentWithHexId(String hexID){
+    MongoCollection<Document> movieCollection = getMovieCollection();
+    ObjectId movieId = new ObjectId(hexID);
+    return movieCollection.find(Filters.eq("_id", movieId)).first();
   }
 }
