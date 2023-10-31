@@ -64,9 +64,13 @@ public class LoginService {
     DatabaseController db = new DatabaseController();
     String username = user.getUsername().toLowerCase();
     String password = user.getPassword();
+    String email = user.getEmail();
 
     Pattern usernameLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{2,15}");
     Matcher usernameMatcher = usernameLength.matcher(username);
+
+    Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$"); 
+    Matcher emailMatcher = emailPattern.matcher(email);
 
     Pattern passwordLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{8,}");
     Matcher passwordLengthMatcher = passwordLength.matcher(password);
@@ -78,19 +82,36 @@ public class LoginService {
     Matcher passwordNumberMatcher = passwordNumberRequirement.matcher(password);
 
     // Confirm the username meets our requirements
-    if (usernameMatcher.matches()) {
-      // Confirm the password meets the requirements
-      if (passwordLengthMatcher.matches() && passwordSpecialMatcher.matches() && passwordNumberMatcher.matches()) {
-        if (!db.checkIfUserExists(username)) {
-          String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
-          String sessionId = request.getSession().getId();
-          String dateTime = LocalDateTime.now().toString();
-          db.createUser(username, encryptedPassword, sessionId, dateTime);
-          String stateMessage = "Registered";
-          return Response.ok(stateMessage).build();
-        }
-      }
+    if (!db.checkIfUserExists(username)) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Username already exists.").build();
     }
-    return Response.status(Status.UNAUTHORIZED).build();
+
+    if (!usernameMatcher.matches()) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Username is not valid (To short or too long).").build();
+    }
+
+    if (!passwordLengthMatcher.matches()) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password is not long enough.").build();
+    }
+
+    if (!passwordSpecialMatcher.matches()) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password doesn't contain a special character").build();
+
+    }
+
+    if (!passwordNumberMatcher.matches()) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password doesn't contain a number.").build();
+    }
+
+    if(!emailMatcher.matches()) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Email is not valid").build();
+    }
+
+    String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
+    String sessionId = request.getSession().getId();
+    String dateTime = LocalDateTime.now().toString();
+    db.createUser(username, encryptedPassword, sessionId, dateTime, email);
+    String stateMessage = "Registered";
+    return Response.ok(stateMessage).build();
   }
 }
