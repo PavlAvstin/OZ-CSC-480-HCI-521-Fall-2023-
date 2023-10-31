@@ -26,7 +26,7 @@ public class DatabaseController {
     return getUserCredentialsDatabase().getCollection("users");
   }
 
-  public void createUser(String username, String password, String sessionId, String dateTime) {
+  public void createUser(String username, String password, String sessionId, String dateTime, String email) {
       var users = getUserCollection();
       var userDocument = new Document();
       userDocument.put("username", username);
@@ -34,6 +34,7 @@ public class DatabaseController {
       userDocument.put("sessionId", sessionId);
       userDocument.put("dateTime", dateTime);
       userDocument.put("isValidSession", "true");
+      userDocument.put("email", email);
       invalidateAnySharedSessions(sessionId);
       users.insertOne(userDocument);
   }

@@ -64,9 +64,13 @@ public class LoginService {
     DatabaseController db = new DatabaseController();
     String username = user.getUsername().toLowerCase();
     String password = user.getPassword();
+    String email = user.getEmail();
 
     Pattern usernameLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{2,15}");
     Matcher usernameMatcher = usernameLength.matcher(username);
+
+    Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$"); 
+    Matcher emailMatcher = emailPattern.matcher(email);
 
     Pattern passwordLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{8,}");
     Matcher passwordLengthMatcher = passwordLength.matcher(password);
@@ -99,10 +103,14 @@ public class LoginService {
       return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Password doesn't contain a number.").build();
     }
 
+    if(!emailMatcher.matches()) {
+      return Response.status(Status.UNAUTHORIZED.getStatusCode(), "Email is not valid").build();
+    }
+
     String encryptedPassword = SecurityUtils.generatePassword(user.getPassword());
     String sessionId = request.getSession().getId();
     String dateTime = LocalDateTime.now().toString();
-    db.createUser(username, encryptedPassword, sessionId, dateTime);
+    db.createUser(username, encryptedPassword, sessionId, dateTime, email);
     String stateMessage = "Registered";
     return Response.ok(stateMessage).build();
   }
