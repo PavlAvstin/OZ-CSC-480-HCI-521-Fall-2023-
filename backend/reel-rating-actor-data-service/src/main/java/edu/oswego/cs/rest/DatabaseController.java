@@ -82,6 +82,7 @@ public class DatabaseController {
    *
    * getActorByName
    * getActorWithMovieId
+   * getActorWithActorId
    *
    */
 
@@ -117,6 +118,18 @@ public class DatabaseController {
   }
 
   /**
+   * Returns actor matching the given Id or null if the there is no actor by the hexId.
+   * @param actorId MongoDB hexId of the actor to find
+   * @return Actor object of the actor that has the given hexId.
+   */
+  public Actor getActorWithActorId(String actorId) {
+    MongoCollection<Document> actorsCollection = getActorCollection();
+    ObjectId hexId = new ObjectId(actorId);
+    Bson actorIdFilter = Filters.eq("_id", hexId);
+    return getActorsWithFilter(actorsCollection, actorIdFilter).get(0);
+  }
+
+  /**
    * Returns all actors listed in primary cast of a provided movie.
    * @param movieId MongoDB hexId of movie to search through
    * @return ArrayList of Actors from the movie
@@ -130,8 +143,8 @@ public class DatabaseController {
       var actors = new ArrayList<Actor>();
       //Putting actors into a list
       for (var name : actorNames) {
-        var actorsQuery = getActorWithName(name);
-        actors.addAll(actorsQuery);
+        Actor actorsQuery = getActorWithActorId(name);
+        actors.add(actorsQuery);
       }
       //return actor list
       return actors;
