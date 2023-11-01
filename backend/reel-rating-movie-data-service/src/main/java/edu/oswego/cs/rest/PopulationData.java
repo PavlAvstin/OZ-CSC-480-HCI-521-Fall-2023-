@@ -1606,6 +1606,64 @@ public class PopulationData {
         db.createReview(movie80.get().getId(), "As a vegan this movie is a crime. 1/5", "Pineapple", "public");
         db.createReview(movie80.get().getId(), "As a carniovore this movie is a menace to society. Where would my meat go if dynosaurs were here?? 1/7", "Apple", "public");
     }
+
+    private void createMovie81(DatabaseController db) {
+        db.createMovie("The Godfather", "Francis Ford Coppola", "March 24, 1972", "2h 55min",
+                "Mario Puzo, Francis Ford Coppola",
+                "\"The Godfather\" is a crime drama that explores the transformation of Michael Corleone from a reluctant family member to a powerful figure in the Corleone crime family. It delves into themes of family, loyalty, power, and the consequences of a life in the mafia");
+
+        var movie81 = db.getMovieWithTitle("The Godfather");
+        db.createTag("Mafia", movie81.get().getId(), "Binura", "public");
+        db.createTag("Crime", movie81.get().getId(), "Binura", "public");
+        db.createTag("Drama", movie81.get().getId(), "Binura", "public");
+        db.createTag("Family-Friendly", movie81.get().getId(), "Binura", "public");
+
+        db.createRating("Best moustache", "10", "10", "Binura", movie81.get().getId(), "public");
+        db.createRating("Oscar Winning", "10", "10", "Binura", movie81.get().getId(), "public");
+        db.createRating("For family to watch", "10", "10", "Binura", movie81.get().getId(), "public");
+
+        db.createReview(movie81.get().getId(), "never heard of it sadly, i'm too young", "Keith", "public");
+        db.createReview(movie81.get().getId(), "I watched this movie when i was young, how am i still alive ?", "David", "public");
+        db.createReview(movie81.get().getId(), "Best movie ever, the start of something great !!!!!", "Apple", "public");
+    }
+
+    private void createMovie82(DatabaseController db) {
+        db.createMovie("Forest Gump", "Robert Zemeckis", "1994", "2h 22min",
+                "Eric Roth, Winston Groom",
+                "\"Forest Gump\"  is a heartwarming and whimsical film that follows the extraordinary life of Forrest Gump (Tom Hanks), a man with a low IQ. Despite his limitations, Forrest finds himself at the center of several pivotal moments in American history, meeting iconic figures, and achieving remarkable feats. His journey is intertwined with his unwavering love for his childhood friend, Jenny. The film explores themes of love, destiny, and the unique perspective of a man who approaches life with simplicity and honesty.");
+
+        var movie82 = db.getMovieWithTitle("Forest Gump");
+        db.createTag("Romance", movie82.get().getId(), "Binura", "public");
+        db.createTag("Drama", movie82.get().getId(), "Binura", "public");
+        db.createTag("Family-Friendly", movie82.get().getId(), "Binura", "public");
+
+        db.createRating("Inspirational", "8", "10", "Keith", movie82.get().getId(), "public");
+        db.createRating("Jenayyyyyy", "9", "10", "Quan", movie82.get().getId(), "public");
+        db.createRating("Run Forest Fun !", "10", "10", "David", movie82.get().getId(), "public");
+
+        db.createReview(movie82.get().getId(), "I have seen this movie a thousand times, its the best movie ever", "Keith", "public");
+        db.createReview(movie82.get().getId(), "Its not thattt good Keith, get a life", "David", "public");
+        db.createReview(movie82.get().getId(), "i find the beauty of the film is how Forrest Gump manages to retains innocence and purity even in trying time", "Apple", "public");
+    }
+
+    private void createMovie83(DatabaseController db) {
+        db.createMovie("Forest Gump", "Robert Zemeckis", "1994", "2h 22min",
+                "Eric Roth, Winston Groom",
+                "\"Forest Gump\"  is a heartwarming and whimsical film that follows the extraordinary life of Forrest Gump (Tom Hanks), a man with a low IQ. Despite his limitations, Forrest finds himself at the center of several pivotal moments in American history, meeting iconic figures, and achieving remarkable feats. His journey is intertwined with his unwavering love for his childhood friend, Jenny. The film explores themes of love, destiny, and the unique perspective of a man who approaches life with simplicity and honesty.");
+
+        var movie83 = db.getMovieWithTitle("Forest Gump");
+        db.createTag("Romance", movie83.get().getId(), "Binura", "public");
+        db.createTag("Drama", movie83.get().getId(), "Binura", "public");
+        db.createTag("Family-Friendly", movie83.get().getId(), "Binura", "public");
+
+        db.createRating("Inspirational", "8", "10", "Keith", movie83.get().getId(), "public");
+        db.createRating("Jenayyyyyy", "9", "10", "Quan", movie83.get().getId(), "public");
+        db.createRating("Run Forest Fun !", "10", "10", "David", movie83.get().getId(), "public");
+
+        db.createReview(movie83.get().getId(), "I have seen this movie a thousand times, its the best movie ever", "Keith", "public");
+        db.createReview(movie83.get().getId(), "Its not thattt good Keith, get a life", "David", "public");
+        db.createReview(movie83.get().getId(), "i find the beauty of the film is how Forrest Gump manages to retains innocence and purity even in trying time", "Apple", "public");
+    }
 }
 
 
