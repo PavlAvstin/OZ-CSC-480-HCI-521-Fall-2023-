@@ -56,7 +56,7 @@
 
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
-    <cors domain="/reel-rating-movie-data-service"
+    <cors domain="/reel-rating-rating-data-service"
         allowedOrigins="*"
         allowedHeaders="*"
         allowedMethods="GET, POST"
