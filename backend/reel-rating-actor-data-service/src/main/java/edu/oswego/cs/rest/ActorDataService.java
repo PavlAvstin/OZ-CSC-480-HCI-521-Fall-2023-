@@ -69,8 +69,8 @@ public class ActorDataService {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/actor/getActorWithMovieId/{movieId}")
-  public Response getActorWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+  @Path("/actor/getActorsWithMovieId/{movieId}")
+  public Response getActorsByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();

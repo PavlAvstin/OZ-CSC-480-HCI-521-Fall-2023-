@@ -139,12 +139,17 @@ public class DatabaseController {
     var movie = getMovieDocumentWithHexId(movieId);
     if (movie != null) {
       //Looking at actors in movie
-      var actorNames = movie.getList("principleCast", String.class);
+      var actorIds = movie.getList("principalCast", String.class);
       var actors = new ArrayList<Actor>();
+      if (actorIds == null) {
+        return new ArrayList<>();
+      }
       //Putting actors into a list
-      for (var name : actorNames) {
-        Actor actorsQuery = getActorWithActorId(name);
-        actors.add(actorsQuery);
+      for (var actorId : actorIds) {
+        var actorQuery = getActorWithActorId(actorId);
+        if (actorQuery != null) {
+          actors.add(actorQuery);
+        }
       }
       //return actor list
       return actors;
@@ -153,6 +158,26 @@ public class DatabaseController {
     return null;
   }
 
+  /**
+   * Returns actor matching the given Id or null if the there is no actor by the hexId.
+   * @param actorId MongoDB hexId of the actor to find
+   * @return Actor object of the actor that has the given hexId.
+   */
+  public Actor getActorWithActorId(String actorId) {
+    var actorsCollection = getActorCollection();
+    ObjectId actorObjectId = new ObjectId(actorId);
+    var filter = Filters.eq("_id", actorObjectId);
+    var actorDocument = actorsCollection.find(filter).first();
+    if (actorDocument != null) {
+      Actor actor = new Actor();
+      actor.setName(actorDocument.getString("name"));
+      actor.setId(actorId);
+      actor.setDateOfBirth(actorDocument.getString("dob"));
+      actor.setMovies(actorDocument.getList("movies", String.class));
+      return actor;
+    }
+    return null;
+  }
   /*
    * Actor Update functions
    */
