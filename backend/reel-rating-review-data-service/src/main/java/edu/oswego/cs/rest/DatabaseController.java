@@ -63,7 +63,7 @@ public class DatabaseController {
       BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
       Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
-              .append("username", username).append("dateTimeCreated", dateTimeCreated)
+              .append("username", username.toLowerCase()).append("dateTimeCreated", dateTimeCreated)
               .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
@@ -98,7 +98,7 @@ public class DatabaseController {
     return getReviewsWithFilter(reviews, filter);
   }
 
-  public List<Review> getReviewsWithUser(String username) {
+  public List<Review> getReviewsWithUsername(String username) {
     var reviews = getReviewCollection();
     var filter = Filters.eq("username", username);
     return getReviewsWithFilter(reviews, filter);

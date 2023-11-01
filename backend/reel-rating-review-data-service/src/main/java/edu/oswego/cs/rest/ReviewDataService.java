@@ -51,24 +51,24 @@ public class ReviewDataService {
     String username = getUsername(request);
     if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    db.createReview(movieId, review.getReviewDescription(), username, review.getPrivacy());
+    db.createReview(movieId, review.getReviewDescription(), username.toLowerCase(), review.getPrivacy());
     return Response.ok().build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/reviews/getWithUser/{username}")
-  public Response getReviewsWithUser(@Context HttpServletRequest request, @PathParam("username") String username) throws Exception {
+  @Path("/reviews/getReviewsWithUsername/{username}")
+  public Response getReviewsWithUsername(@Context HttpServletRequest request, @PathParam("username") String username) throws Exception {
     String requesterUsername = getUsername(request);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    List<Review> reviews = dbc.getReviewsWithUser(username.toLowerCase());
+    List<Review> reviews = dbc.getReviewsWithUsername(username.toLowerCase());
     return Response.ok(reviews).build();
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/reviews/getWithMovieId/{movieId}")
+  @Path("/reviews/getReviewsWithMovieId/{movieId}")
   public Response getReviewsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
     String requesterUsername = getUsername(request);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
