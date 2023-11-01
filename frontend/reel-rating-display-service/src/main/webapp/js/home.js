@@ -38,8 +38,11 @@ function appendMovies(movies, carouselId) {
         const title = document.createElement('div');
         title.classList.add("col-10", "card-title", "mdFont");
         title.textContent = `${movie.title}`;
-        title.style.textOverflow = "ellipsis";
+        // Styles for title element
         title.style.height = "34.50px";
+        title.style.textOverflow = "ellipsis";
+        title.style.overflow = "hidden";
+        title.style.whiteSpace = "nowrap";
 
         cardBody.appendChild(title);
 
@@ -49,12 +52,18 @@ function appendMovies(movies, carouselId) {
         const category = document.createElement('div');
         category.classList.add("col-10", "card-title", "mdFont");
         category.textContent = `${movie.mostPopularRatingCategory}`;
+
         category.style.textDecoration = "underline";
+        category.style.textOverflow = "ellipsis";
+        category.style.overflow = "hidden";
+        category.style.whiteSpace = "nowrap";
+
         categoryAndRating.appendChild(category);
         const rating = document.createElement('div');
         rating.classList.add("col-2", "textRight", "mdFont");
         rating.textContent = movie.mostPopRatingAvg;
-        rating.style.textOverflow = "ellipsis";
+        rating.style.overflow = "hidden";
+        rating.style.whiteSpace = "nowrap";
         categoryAndRating.append(rating);
         cardBody.appendChild(categoryAndRating);
 
@@ -80,10 +89,10 @@ function appendMovies(movies, carouselId) {
 
         const cardTextElement = document.createElement('div');
         cardTextElement.classList.add('card-text');
-        cardTextElement.textContent = `${movie.summary}`;
         const fadeAway = document.createElement('div');
         fadeAway.classList.add('fadeAwayNeutral', 'fullWidth');
         cardTextElement.appendChild(fadeAway);
+        cardTextElement.textContent = `${movie.summary}`;
         cardBody.appendChild(cardTextElement);
 
         const showMoreButton = document.createElement('div');
