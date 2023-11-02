@@ -29,12 +29,14 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
 }
 
 
-export const getRatingsPageData = (movieID)=>{
+export const getRatingsPageData = (movieTitle, movieID)=>{
     //Get Existing Ratings
     NetworkReq.fetchGet(
         `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
         appendExistingCategories    
     );
+
+    document.getElementById("ratingTitle").innerText = `${movieTitle}`;
 
     appendUpDownVote();
 }
@@ -124,10 +126,12 @@ function appendMovies(movies, carouselId) {
 
         const cardTextElement = document.createElement('div');
         cardTextElement.classList.add('card-text');
+        const summary = document.createElement("div");
+        summary.textContent = `${movie.summary}`;
         const fadeAway = document.createElement('div');
         fadeAway.classList.add('fadeAwayNeutral', 'fullWidth');
         cardTextElement.appendChild(fadeAway);
-        cardTextElement.textContent = `${movie.summary}`;
+        cardTextElement.appendChild(summary);
         cardBody.appendChild(cardTextElement);
 
         const showMoreButton = document.createElement('div');
@@ -253,6 +257,7 @@ async function appendExistingRatings(serverRes){
     }
     document.getElementById("ratingsContainer").appendChild(ratingsRow);
 }
+
 
 async function appendExistingCategories(serverRes){
     var ratings = await serverRes.json();
