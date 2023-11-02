@@ -100,13 +100,20 @@ function loginInit(){
 }
 
 function homeInit(){
+    //Setting listener for the rate button on the showMoreModal
+    var showMoreRateButton = document.getElementById("rateButton");
+    showMoreRateButton.addEventListener("click", ()=>{
+        var movieID = showMoreRateButton.getAttribute("movieID");
+        Home.getRatingsPageData(movieID);
+    });
+
     NetworkReq.fetchGet(
-        `${globals.baseDataPath}/movie/getRecentReleaseMovies`,
+        `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
         Home.appendRowDataToRecentRelease
     );
 
     NetworkReq.fetchGet(
-        `${globals.baseDataPath}/movie/getMoviesWithMostReviews`,
+        `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
         Home.appendRowDataToMostReviewed
     );
     
@@ -121,4 +128,6 @@ function homeInit(){
     setInterval(()=>{
         JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
     }, 350); //350 miliseconds, slightly higher than average reaction time
+
+   
 }
