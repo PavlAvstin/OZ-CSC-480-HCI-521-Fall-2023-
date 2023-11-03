@@ -80,10 +80,6 @@
 
 
     <!-- Modals -->
-    <button 
-        type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#showMoreModal">
-        Launch demo modal
-      </button>
     <div class="modal fade" id="showMoreModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
         <div class="modal-dialog fontWhite hcToWindow">
             <div class="modal-content darkFG">
@@ -116,11 +112,11 @@
                                 id="showMoreImg" 
                                 src="../images/stockImage1.jpg" 
                                 alt="Barbie Movie Image" 
-                                class="img-fluid brAll"
+                                class="img-fluid brAll limitHeight325"
                             >
                         </div>
                         <div class="col-6" id="showMoreGeneralContainer"><!-- General Information -->
-                            <div class="row scrollHidden limitHeight350 pbSM">
+                            <div class="row scrollHidden limitHeight325 pbSM">
                                 <title-with-line
                                     title="General" fontSize="28px"
                                     lineColorOne="#3d37bf" lineColorTwo="#6864ca"
@@ -147,7 +143,7 @@
                     
                     <div class="row"> 
                         <div class="col-6"><!-- Start of Catg Ratings -->
-                            <div class="row limitHeight275 scrollHidden pbSM">
+                            <div class="row limitHeight325 scrollHidden pbSM">
                                 <title-with-line
                                     title="Categories" fontSize="28px"
                                     lineColorOne="#3d37bf" lineColorTwo="#6864ca"
@@ -158,7 +154,7 @@
                             </div>
                         </div> <!-- End of Catg Ratings -->
                         <div class="col-6">
-                            <div class="row scrollHidden limitHeight275 m-0 pbSM">
+                            <div class="row scrollHidden limitHeight325 m-0 pbSM">
                                 <title-with-line
                                     title="Freinds" fontSize="28px"
                                     lineColorOne="#3d37bf" lineColorTwo="#6864ca"
@@ -184,7 +180,7 @@
             <div class="modal-content darkFG">
                 <div class="modal-body"><!-- Modal Body -->
                     <div class="row"><!-- Modal Header -->
-                        <h2 class="col-6 lgFont fontWhite">Barbie</h2>
+                        <h2 class="col-6 lgFont fontWhite" id="ratingTitle"></h2>
                         <div class="col-6">
                             <div id="ratingActionButtonRow">
                                 <a class="bgDarkNeutral mdFont textCenter brAll hLG rateToggle fontWhite" data-bs-dismiss="Modal">Back</a>
@@ -195,157 +191,18 @@
                         </div>
                     </div>
                     <div class="row"> <!-- Top Section container / Row -->
-                        <div class="col-6 limitHeight350 scrollHidden"><!-- Current Ratings -->
+                        <div class="col-6 limitHeight325 scrollHidden"><!-- Existing Ratings -->
                             <div class="row">
                                 <title-with-line
                                     title="Existing Ratings" fontSize="28px"
                                     lineColorOne="#3d37bf" lineColorTwo="#6864ca"
                                 >
                                 </title-with-line>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="9" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="8" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="7" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="6" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="5" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="4" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="3" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="2" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="1" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="2" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="3" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="4" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="5" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div class="col-6 mtXSM"> <!-- Category Rating -->
-                                    <div class="row">
-                                        <div class="col-10">Category Name</div>
-                                        <div class="col-2">8.8</div>
-                                        <progress-bar 
-                                            scaleStart="1" scaleEnd="10" ratingValue="6" 
-                                            lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                        </progress-bar>
-                                    </div>
-                                </div>
-                                <div id="existingCategoriesFade"></div>
+                                <div id="ratingsExsistingCat"><!-- Filled with JS --></div>
                             </div>
+                            <div id="existingCategoriesFade"></div>
                         </div>
-                        <div class="col-6 limitHeight350 scrollHidden pbSM"><!-- General Information -->
+                        <div class="col-6 limitHeight325 scrollHidden pbSM"><!-- General Information -->
                             <div class="row g-0">
                                 <title-with-line
                                     title="New Rating" fontSize="28px"
@@ -428,135 +285,22 @@
                                         <div id="submitTag" class="btPrimaryStyle brAll ptSM pbSM mtXSM mbXSM textCenter">Create Rating</div>
                                     </div>
                                 </div>
-                                <div id="newRatingsFade"></div>
                             </div><!-- End of Row -->
+                            <div id="newRatingsFade"></div>
                         </div><!-- End of New Rating & New Tag -->
                     </div><!-- End of Top Section -->
 
-                    <div class="row mtXXSM">
-                        <div class="col-6 limitHeight275 scrollHidden pbSM"><!-- Start of Catg Ratings -->
+                    <div class="row">
+                        <div class="col-6 limitHeight300 scrollHidden mtXXSM pbSM"><!-- Start of Catg Ratings -->
                             <title-with-line
                                 title="Existing Tags" fontSize="28px"
                                 lineColorOne="#3d37bf" lineColorTwo="#6864ca"
                             >
                             </title-with-line>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row mtSM">
-                                        <div class="col-2"><img src="../images/hand-thumbs-up-white.png" class="img-fluid"/></div>
-                                        <div class="col-2"><img src="../images/hand-thumbs-down-fill-white.png" class="img-fluid"/></div>
-                                        <div class="col-8">Tag Name</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="row" id="upDownContainer"><!-- Filled with JS --></div>
                             <div id="existingTagsFade"></div>
                         </div> <!-- End of Catg Ratings -->
-                        <div class="col-6 scrollHidden limitHeight275 g-0">
+                        <div class="col-6 scrollHidden limitHeight325 mtXXSM pbSM g-0">
                             <title-with-line
                                 title="Written Review" fontSize="28px"
                                 lineColorOne="#3d37bf" lineColorTwo="#6864ca"
