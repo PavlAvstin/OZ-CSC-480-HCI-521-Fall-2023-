@@ -1647,22 +1647,60 @@ public class PopulationData {
     }
 
     private void createMovie83(DatabaseController db) {
-        db.createMovie("Forest Gump", "Robert Zemeckis", "1994", "2h 22min",
-                "Eric Roth, Winston Groom",
-                "\"Forest Gump\"  is a heartwarming and whimsical film that follows the extraordinary life of Forrest Gump (Tom Hanks), a man with a low IQ. Despite his limitations, Forrest finds himself at the center of several pivotal moments in American history, meeting iconic figures, and achieving remarkable feats. His journey is intertwined with his unwavering love for his childhood friend, Jenny. The film explores themes of love, destiny, and the unique perspective of a man who approaches life with simplicity and honesty.");
+        db.createMovie("The Dark Knight", "Christopher Nolan", "2008", "152 minutes",
+                "Christopher Nolan, Jonathan Nolan",
+                "\"The Dark Knight\"  is a gripping superhero film in which Batman confronts the chaos and anarchy unleashed by the Joker in Gotham City, leading to a moral and psychological battle of good versus evil.");
 
-        var movie83 = db.getMovieWithTitle("Forest Gump");
-        db.createTag("Romance", movie83.get().getId(), "Binura", "public");
-        db.createTag("Drama", movie83.get().getId(), "Binura", "public");
-        db.createTag("Family-Friendly", movie83.get().getId(), "Binura", "public");
+        var movie83 = db.getMovieWithTitle("The Dark Knight");
+        db.createTag("Superheroes", movie83.get().getId(), "Rando1", "public");
+        db.createTag("Crime", movie83.get().getId(), "Rando2", "public");
+        db.createTag("Action", movie83.get().getId(), "Quan", "public");
 
-        db.createRating("Inspirational", "8", "10", "Keith", movie83.get().getId(), "public");
-        db.createRating("Jenayyyyyy", "9", "10", "Quan", movie83.get().getId(), "public");
-        db.createRating("Run Forest Fun !", "10", "10", "David", movie83.get().getId(), "public");
+        db.createRating("Heath Ledger is Awesome", "10", "10", "Quan", movie83.get().getId(), "public");
+        db.createRating("Better than Iron Man", "3", "5", "Keith", movie83.get().getId(), "public");
+        db.createRating("I'm Batman", "6", "9", "Mahella", movie83.get().getId(), "public");
 
-        db.createReview(movie83.get().getId(), "I have seen this movie a thousand times, its the best movie ever", "Keith", "public");
-        db.createReview(movie83.get().getId(), "Its not thattt good Keith, get a life", "David", "public");
-        db.createReview(movie83.get().getId(), "i find the beauty of the film is how Forrest Gump manages to retains innocence and purity even in trying time", "Apple", "public");
+        db.createReview(movie83.get().getId(), "Marvel is wayyy better", "Rando1", "public");
+        db.createReview(movie83.get().getId(), "The Dark Knight is the best take on Joker", "Rando2", "public");
+        db.createReview(movie83.get().getId(), "A master piece of a Hero movie", "Apple", "public");
+    }
+
+    private void createMovie84(DatabaseController db) {
+        db.createMovie("The Matrix", "The Wachowskis", "1999", "136 minutes",
+                "The Wachowskis",
+                "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
+
+        var movie84 = db.getMovieWithTitle("THe Matrix");
+        db.createTag("Science Fiction", movie84.get().getId(), "Rando1", "public");
+        db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
+        db.createTag("Action", movie84.get().getId(), "Binura", "public");
+
+        db.createRating("Conspiracies theories alert", "10", "10", "Quan", movie84.get().getId(), "public");
+        db.createRating("Best Fight Scence Ever", "8", "10", "Binura", movie84.get().getId(), "public");
+        db.createRating("Philosophy", "6", "10", "Rando1", movie84.get().getId(), "public");
+
+        db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
+        db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
+        db.createReview(movie84.get().getId(), "A dark dystopian world is sooo 2009", "Apple", "public");
+    }
+
+    private void createMovie84(DatabaseController db) {
+        db.createMovie("The Matrix", "The Wachowskis", "1999", "136 minutes",
+                "The Wachowskis",
+                "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
+
+        var movie84 = db.getMovieWithTitle("THe Matrix");
+        db.createTag("Science Fiction", movie84.get().getId(), "Rando1", "public");
+        db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
+        db.createTag("Action", movie84.get().getId(), "Binura", "public");
+
+        db.createRating("Conspiracies theories alert", "10", "10", "Quan", movie84.get().getId(), "public");
+        db.createRating("Best Fight Scence Ever", "8", "10", "Binura", movie84.get().getId(), "public");
+        db.createRating("Philosophy", "6", "10", "Rando1", movie84.get().getId(), "public");
+
+        db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
+        db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
+        db.createReview(movie84.get().getId(), "A dark dystopian world is sooo 2009", "Apple", "public");
     }
 }
 
