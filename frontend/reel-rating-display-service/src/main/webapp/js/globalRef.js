@@ -2,7 +2,10 @@
 
 const guiPort = 30400;
 const authPort = 30500;
-const dataPort = 30501;
+const movieDataPort = 30501;
+const reviewsPort = 30502;
+const ratingsPort = 30503;
+const actorPort = 30504;
 export class GlobalRef{
     constructor(){
         if(window.location.port === `${guiPort}`){
@@ -16,11 +19,13 @@ export class GlobalRef{
         
         this.logInPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/login`;
         this.regPath = `http://localhost:${authPort}/reel-rating-auth-service/auth/register`;
-        this.baseDataPath = `http://localhost:${dataPort}/reel-rating-movie-data-service`;
-        this.movieImgBase = `http://localhost:${dataPort}/reel-rating-movie-data-service/movie/getMovieImage`
+        this.movieDataBase = `http://localhost:${movieDataPort}/reel-rating-movie-data-service`;
+        this.movieImgBase = `http://localhost:${movieDataPort}/reel-rating-movie-data-service/movie/getMovieImage`;
+        this.reviewBase = `http://localhost:${reviewsPort}/reel-rating-review-data-service`;
+        this.ratingsBase = `http://localhost:${ratingsPort}/reel-rating-rating-data-service`;
+        this.actorBase = `http://localhost:${actorPort}/reel-rating-actor-data-service`;
         this.regExSpecChar = /\W/; //Is not word char nor digit
         this.regExNum = /\d/;
         this.regExEmail = /^\w+?@\w+\.\w+/;
-
     }
 }
