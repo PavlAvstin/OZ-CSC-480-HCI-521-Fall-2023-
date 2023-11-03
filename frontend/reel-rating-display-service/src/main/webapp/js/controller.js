@@ -104,7 +104,8 @@ function homeInit(){
     var showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.addEventListener("click", ()=>{
         var movieID = showMoreRateButton.getAttribute("movieID");
-        Home.getRatingsPageData(movieID);
+        var movieTitle= document.getElementById("showMoreTitle").innerText;
+        Home.getRatingsPageData(movieTitle ,movieID);
     });
 
     NetworkReq.fetchGet(
