@@ -1684,9 +1684,9 @@ public class PopulationData {
         db.createReview(movie84.get().getId(), "A dark dystopian world is sooo 2009", "Apple", "public");
     }
 
-    private void createMovie84(DatabaseController db) {
-        db.createMovie("The Matrix", "The Wachowskis", "1999", "136 minutes",
-                "The Wachowskis",
+    private void createMovie85(DatabaseController db) {
+        db.createMovie("Pulp Fiction", "Quentin Taratino", "1994", "154 minutes",
+                "Quentin Taratino, Roger Avery",
                 "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
 
         var movie84 = db.getMovieWithTitle("THe Matrix");
