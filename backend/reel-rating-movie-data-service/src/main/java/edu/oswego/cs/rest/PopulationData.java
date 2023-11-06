@@ -101,7 +101,10 @@ public class PopulationData {
         createMovie78(db);
         createMovie79(db);
         createMovie80(db);
-
+        createMovie81(db);
+        createMovie82(db);
+        createMovie83(db);
+        createMovie84(db);
     }
 
     /*
@@ -1689,14 +1692,14 @@ public class PopulationData {
                 "Quentin Taratino, Roger Avery",
                 "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
 
-        var movie84 = db.getMovieWithTitle("THe Matrix");
+        var movie84 = db.getMovieWithTitle("The Matrix");
         db.createTag("Science Fiction", movie84.get().getId(), "Rando1", "public");
         db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
         db.createTag("Action", movie84.get().getId(), "Binura", "public");
 
-        db.createRating("Conspiracies theories alert", "10", "10", "Quan", movie84.get().getId(), "public");
-        db.createRating("Best Fight Scence Ever", "8", "10", "Binura", movie84.get().getId(), "public");
-        db.createRating("Philosophy", "6", "10", "Rando1", movie84.get().getId(), "public");
+        db.createRating("Best cheese burger ever", "10", "10", "Quan", movie84.get().getId(), "public");
+        db.createRating("Sumuel L. Jackson", "8", "10", "Binura", movie84.get().getId(), "public");
+        db.createRating("Violence level ?", "6", "10", "Rando1", movie84.get().getId(), "public");
 
         db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
         db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
