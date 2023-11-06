@@ -721,6 +721,11 @@ public class DatabaseController {
       )
     ).first();
 
+    // return null immediately if ratingNameDoc is null
+    if (ratingNameDoc == null) {
+      return null;
+    }
+
     // gets the most popular upperbound for the category
     String mostPopularCategoryName = ratingNameDoc.getString("_id");
     Document ratingScaleDoc = ratingCollection.aggregate(

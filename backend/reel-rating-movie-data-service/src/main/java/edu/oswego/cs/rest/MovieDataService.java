@@ -162,9 +162,12 @@ public class MovieDataService {
       Rating r = dbc.getMostPopularAggregatedRatingForMovie(m.getId());
 
       // set the appropriate fields for each movie
-      m.setMostPopularRatingCategory(r.getRatingName());
-      m.setMostPopRatingUpperBound(r.getUpperbound());
-      m.setMostPopRatingAvg(r.getUserRating());
+      //Do this if not null, do nothing if null.
+      if (r != null) {
+        m.setMostPopularRatingCategory(r.getRatingName());
+        m.setMostPopRatingUpperBound(r.getUpperbound());
+        m.setMostPopRatingAvg(r.getUserRating());
+      }
 
       // names of three tags from the movie
       List<Tag> tagList = dbc.getThreeTags(m.getId());
