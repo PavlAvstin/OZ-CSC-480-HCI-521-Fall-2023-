@@ -32,7 +32,7 @@ class TitleWithLine extends HTMLElement{
                 }
                 #titleWithLineContainer{ width : 100%; display : flex; }
                 //#titleWithLineContainer > div{ display : inline-block; }
-                #title{ color : white; font-size : ${fontSize}}
+                #title{ color : white; font-size : ${fontSize};}
                 #line{ 
                     background : linear-gradient(
                         180deg,
@@ -51,7 +51,8 @@ class TitleWithLine extends HTMLElement{
 
     setLineSize(titleWithLineContainer, title, line){
         var overallWidth = Number(titleWithLineContainer.clientWidth);
-        var titleWidth = Number(title.clientWidth);
+        var titleWidth = Number(title.clientWidth) + 10;
+        title.width = titleWidth; //This is to fix the "off by one px" problem forcing the 
         var newLineSize = overallWidth - titleWidth - 10;
         line.style.width = `${newLineSize}px`;
     }

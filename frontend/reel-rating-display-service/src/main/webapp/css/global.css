@@ -102,6 +102,10 @@ a{
     height : var(--modalHeight);
     width : var(--modalWidth);
 }
+.modal-body{
+    height : var(--modalHeight);
+    width : var(--modalWidth);
+}
 
 body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgroundColor); }
 .darkFG{ background-color : var(--darkFG) }
@@ -140,7 +144,8 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .personName{ color:black; }
 .scrollHidden{ overflow-y: scroll; }
 .limitHeight350{ height : 350px; }
-.limitHeight275{ height : 275px; }
+.limitHeight325{ height : 325px; }
+.limitHeight300{ height : 300px; }
 .textAreaStyle{ height: 175px; }
 .inputHeight{ height : 35px; }
 
@@ -361,7 +366,7 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     background: var(--fadeAwayDark);
     position: absolute;
     z-index: 1;
-    top: 360px;
+    top: 335px;
     height: 60px;
     width: 49%;
 }
