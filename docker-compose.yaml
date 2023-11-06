@@ -15,6 +15,7 @@ services:
     build:
       context: ./backend/reel-rating-auth-service/
       dockerfile: Dockerfile
+    image: reel-rating-auth-service
     container_name: reel-rating-auth-service
     restart: unless-stopped
     environment:
@@ -27,6 +28,7 @@ services:
     build:
       context: ./backend/reel-rating-movie-data-service/
       dockerfile: Dockerfile
+    image: reel-rating-movie-data-service
     container_name: reel-rating-movie-data-service
     restart: unless-stopped
     environment:
@@ -39,6 +41,7 @@ services:
     build:
       context: ./backend/reel-rating-actor-data-service/
       dockerfile: Dockerfile
+    image: reel-rating-actor-data-service
     container_name: reel-rating-actor-data-service
     restart: unless-stopped
     environment:
@@ -51,6 +54,7 @@ services:
     build:
       context: ./backend/reel-rating-rating-data-service/
       dockerfile: Dockerfile
+    image: reel-rating-rating-data-service
     container_name: reel-rating-rating-data-service
     restart: unless-stopped
     environment:
@@ -63,6 +67,7 @@ services:
     build:
       context: ./backend/reel-rating-review-data-service/
       dockerfile: Dockerfile
+    image: reel-rating-review-data-service
     container_name: reel-rating-review-data-service
     restart: unless-stopped
     environment:
@@ -75,6 +80,7 @@ services:
     build:
       context: ./frontend/reel-rating-display-service
       dockerfile: Dockerfile
+    image: reel-rating-display-service
     container_name: reel-rating-display-service
     restart: unless-stopped
     environment:
@@ -85,13 +91,14 @@ services:
     build:
       context: ./nginx/
       dockerfile: Dockerfile
+    image: reel-rating-reverse-proxy
     container_name: reel-rating-reverse-proxy
     restart: unless-stopped
     ports:
-      - "127.0.0.1:30400:30400"
-      - "127.0.0.1:30500:30500"
-      - "127.0.0.1:30501:30501"
-      - "127.0.0.1:30502:30502"
-      - "127.0.0.1:30503:30503"
-      - "127.0.0.1:30504:30504"
+      - "30400:30400"
+      - "30500:30500"
+      - "30501:30501"
+      - "30502:30502"
+      - "30503:30503"
+      - "30504:30504"
     
