@@ -57,25 +57,35 @@ function loginInit(){
             passwordMatch === true && usernameError === false &&
             emailError === false
         ){
-            var jsonData = Tools.formatJSONData(
-                [
-                    currentAccountData.username,
-                    currentAccountData.email,
-                    currentAccountData.password
-                ], 
-                [
-                    "username",
-                    "email", 
-                    "password"
-                ]
-            );
             if(newAccount === "true"){
+                var jsonData = Tools.formatJSONData(
+                    [
+                        currentAccountData.username,
+                        currentAccountData.email,
+                        currentAccountData.password
+                    ], 
+                    [
+                        "username",
+                        "email", 
+                        "password"
+                    ]
+                );
                 NetworkReq.fetchPost(
                     globals.regPath, 
                     jsonData,
                     Tools.navToHome
                 );
             } else {
+                var jsonData = Tools.formatJSONData(
+                    [
+                        currentAccountData.username,
+                        currentAccountData.password
+                    ], 
+                    [
+                        "username", 
+                        "password"
+                    ]
+                );
                 NetworkReq.fetchPost(
                     globals.logInPath, 
                     jsonData,
