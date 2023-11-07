@@ -141,7 +141,9 @@ public class DatabaseController {
    * @return String hexId of the image related to the provided movie
    */
   public String getMovieImageId(String movieId) {
-    return getMovieDocumentWithHexId(movieId).getString("movieImageId");
+    Document movieDocument = getMovieDocumentWithHexId(movieId);
+    if (movieDocument == null) return null;
+    return movieDocument.getString("movieImageId");
   }
 
 
