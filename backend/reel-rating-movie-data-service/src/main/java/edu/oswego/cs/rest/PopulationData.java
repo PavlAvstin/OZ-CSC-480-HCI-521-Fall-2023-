@@ -119,10 +119,10 @@ public class PopulationData {
         db.createTag("Family", movie1.get().getId(), "David", "public");
         db.createTag("Biography", movie1.get().getId(), "David", "public");
 
-        db.createRating("Blasphemy Against Vows", "3", "5", "David", movie1.get().getId(), "public");
-        db.createRating("Is it worth it?", "7", "10", "David", movie1.get().getId(), "public");
-        db.createRating("A cute film", "2", "3", "David", movie1.get().getId(), "public");
-        db.createRating("Best Musical", "2", "10", "David", movie1.get().getId(), "public");
+        db.createRating("Blasphemy Against Vows", "3", "5", "scale","David", movie1.get().getId(), "public");
+        db.createRating("Is it worth it?", "7", "10", "scale","David", movie1.get().getId(), "public");
+        db.createRating("A cute film", "2", "3", "scale","David", movie1.get().getId(), "public");
+        db.createRating("Best Musical", "2", "10", "scale","David", movie1.get().getId(), "public");
 
         db.createReview(movie1.get().getId(), "Much music very wow!", "David", "public");
         db.createReview(movie1.get().getId(), "Very music much wow!", "Keith", "public");
@@ -148,9 +148,9 @@ public class PopulationData {
         db.createTag("Drama", movie2.get().getId(), "David", "public");
         db.createTag("Fantasy", movie2.get().getId(), "David", "public");
 
-        db.createRating("They should get divorced", "2", "3", "David", movie2.get().getId(), "public");
-        db.createRating("The best friend was the best character", "4", "7", "David", movie2.get().getId(), "public");
-        db.createRating("How cute was Zac Efron", "9", "10", "David", movie2.get().getId(), "public");
+        db.createRating("They should get divorced", "2", "3", "scale","David", movie2.get().getId(), "public");
+        db.createRating("The best friend was the best character", "4","7", "scale", "David", movie2.get().getId(), "public");
+        db.createRating("How cute was Zac Efron", "9", "10", "scale","David", movie2.get().getId(), "public");
 
         db.createReview(movie2.get().getId(), "A movie for sure.", "David", "public");
         db.createReview(movie2.get().getId(), "Beautiful movie", "Plum", "public");
@@ -176,9 +176,9 @@ public class PopulationData {
         db.createTag("Action", movie3.get().getId(), "David", "public");
         db.createTag("Adventure", movie3.get().getId(), "David", "public");
 
-        db.createRating("Good animated movies", "3", "6", "David", movie3.get().getId(), "public");
-        db.createRating("Cute pet", "4", "7", "David", movie3.get().getId(), "public");
-        db.createRating("Would watch again", "4", "5", "David", movie3.get().getId(), "public");
+        db.createRating("Good animated movies", "3", "6", "scale","David", movie3.get().getId(), "public");
+        db.createRating("Cute pet", "4", "7", "scale","David", movie3.get().getId(), "public");
+        db.createRating("Would watch again", "4", "5", "scale","David", movie3.get().getId(), "public");
 
         db.createReview(movie3.get().getId(), "Dragons are very cool.", "David", "public");
 
@@ -202,9 +202,9 @@ public class PopulationData {
         db.createTag("Adventure", movie4.get().getId(), "David", "public");
         db.createTag("Comedy", movie4.get().getId(), "David", "public");
 
-        db.createRating("Strong rats", "3", "6", "David", movie4.get().getId(), "public");
-        db.createRating("rats everywhere", "4", "7", "David", movie4.get().getId(), "public");
-        db.createRating("Too many rats", "4", "5", "David", movie4.get().getId(), "public");
+        db.createRating("Strong rats", "3", "6", "scale","David", movie4.get().getId(), "public");
+        db.createRating("rats everywhere", "4", "7", "scale","David", movie4.get().getId(), "public");
+        db.createRating("Too many rats", "4", "5", "scale","David", movie4.get().getId(), "public");
 
         db.createReview(movie4.get().getId(), "Rats touching food, don't watch this movie if you are eating a turkey sub from Subway.", "David", "public");
         db.createReview(movie4.get().getId(), "Theres great colors, music, and character development whats not to love?", "Keith", "public");
@@ -232,9 +232,9 @@ public class PopulationData {
         db.createTag("Comedy", movie5.get().getId(), "David", "public");
         db.createTag("Family", movie5.get().getId(), "David", "public");
 
-        db.createRating("Best Movies of all time", "5", "10", "David", movie5.get().getId(), "public");
-        db.createRating("Best family movies", "3", "6", "David", movie5.get().getId(), "public");
-        db.createRating("Paul Approved", "7", "10", "David", movie5.get().getId(), "public");
+        db.createRating("Best Movies of all time", "5","10", "scale","David", movie5.get().getId(), "public");
+        db.createRating("Best family movies", "3", "6", "scale", "David", movie5.get().getId(), "public");
+        db.createRating("Paul Approved", "7", "10", "scale", "David", movie5.get().getId(), "public");
 
         db.createReview(movie5.get().getId(), "One of my favorite family movies!", "Mahella", "public");
     }
@@ -254,8 +254,8 @@ public class PopulationData {
         db.createTag("Action", movie6.get().getId(), "David", "public");
         db.createTag("Adventure", movie6.get().getId(), "David", "public");
 
-        db.createRating("Animated movies with somber deaths", "8", "10", "David", movie6.get().getId(), "public");
-        db.createRating("Paul Approved", "2", "10", "David", movie6.get().getId(), "public");
+        db.createRating("Animated movies with somber deaths", "8", "10", "scale","David", movie6.get().getId(), "public");
+        db.createRating("Paul Approved", "2", "10", "scale","David", movie6.get().getId(), "public");
 
         db.createActor("Michael J. Fox", "06/09/1961", movie6.get().getId());
         db.createActor("Jim Varney", "06/15/1949", movie6.get().getId());
@@ -271,8 +271,8 @@ public class PopulationData {
         db.createTag("Drama", movie7.get().getId(), "David", "public");
         db.createTag("Musical", movie7.get().getId(), "David", "public");
 
-        db.createRating("Best musical", "6", "10", "David", movie7.get().getId(), "public");
-        db.createRating("Feel good movies", "3", "10", "David", movie7.get().getId(), "public");
+        db.createRating("Best musical", "6", "10", "scale","David", movie7.get().getId(), "public");
+        db.createRating("Feel good movies", "3", "10", "scale","David", movie7.get().getId(), "public");
     }
 
     private void createMovie8(DatabaseController db) {
@@ -284,8 +284,8 @@ public class PopulationData {
         db.createTag("Romance", movie8.get().getId(), "David", "public");
         db.createTag("Sport", movie8.get().getId(), "David", "public");
 
-        db.createRating("Best Cheerleading movie", "4", "6", "David", movie8.get().getId(), "public");
-        db.createRating("Cutest Outfits", "1", "3", "David", movie8.get().getId(), "public");
+        db.createRating("Best Cheerleading movie", "4", "6", "scale","David", movie8.get().getId(), "public");
+        db.createRating("Cutest Outfits", "1", "3", "scale","David", movie8.get().getId(), "public");
     }
 
     private void createMovie9(DatabaseController db) {
@@ -296,10 +296,10 @@ public class PopulationData {
         db.createTag("Adventure", movie9.get().getId(), "David", "public");
         db.createTag("Comedy", movie9.get().getId(), "David", "public");
 
-        db.createRating("Best Movie of ALL TIME", "1", "10", "David", movie9.get().getId(), "public");
-        db.createRating("Best side character of all time", "3", "3", "David", movie9.get().getId(), "public");
-        db.createRating("Best storyline of all time", "10", "10", "David", movie9.get().getId(), "public");
-        db.createRating("Most satisfying ending of all time", "3", "4", "David", movie9.get().getId(), "public");
+        db.createRating("Best Movie of ALL TIME", "1", "10", "scale","David", movie9.get().getId(), "public");
+        db.createRating("Best side character of all time", "3", "3", "scale","David", movie9.get().getId(), "public");
+        db.createRating("Best storyline of all time", "10", "10", "scale","David", movie9.get().getId(), "public");
+        db.createRating("Most satisfying ending of all time", "3","4", "scale","David", movie9.get().getId(), "public");
     }
 
     private void createMovie10(DatabaseController db) {
@@ -311,10 +311,10 @@ public class PopulationData {
         db.createTag("Adventure", movie10.get().getId(), "David", "public");
         db.createTag("Comedy", movie10.get().getId(), "David", "public");
 
-        db.createRating("BEST movie of all time", "5", "10", "David", movie10.get().getId(), "public");
-        db.createRating("Best bros United", "7", "8", "David", movie10.get().getId(), "public");
-        db.createRating("Summer-time movies", "9", "9", "David", movie10.get().getId(), "public");
-        db.createRating("Paul Approved", "2", "10", "David", movie10.get().getId(), "public");
+        db.createRating("BEST movie of all time", "5", "10", "scale","David", movie10.get().getId(), "public");
+        db.createRating("Best bros United", "7", "8", "scale","David", movie10.get().getId(), "public");
+        db.createRating("Summer-time movies", "9", "9", "scale","David", movie10.get().getId(), "public");
+        db.createRating("Paul Approved", "2", "10", "scale","David", movie10.get().getId(), "public");
     }
 
     /*
@@ -329,9 +329,9 @@ public class PopulationData {
         db.createTag("Comedy", movie11.get().getId(), "David", "public");
         db.createTag("Fantasy", movie11.get().getId(), "David", "public");
 
-        db.createRating("Camp movies", "7", "10", "David", movie11.get().getId(), "public");
-        db.createRating("Existential Crises", "2", "5", "David", movie11.get().getId(), "public");
-        db.createRating("2023 Movies", "5", "8", "David", movie11.get().getId(), "public");
+        db.createRating("Camp movies", "7", "10", "scale","David", movie11.get().getId(), "public");
+        db.createRating("Existential Crises", "2", "5", "scale","David", movie11.get().getId(), "public");
+        db.createRating("2023 Movies", "5", "8", "scale","David", movie11.get().getId(), "public");
 
         db.createReview(movie11.get().getId(), "I'm just Ken.", "David", "public");
 
@@ -346,10 +346,10 @@ public class PopulationData {
         db.createTag("Comedy", movie12.get().getId(), "David", "public");
         db.createTag("Family", movie12.get().getId(), "David", "public");
 
-        db.createRating("Best Barbie movie of all time", "3", "10", "David", movie12.get().getId(), "public");
-        db.createRating("Best Barbie movie of all time", "7", "10", "Keith", movie12.get().getId(), "public");
-        db.createRating("Best animated movie of all time", "4", "5", "David", movie12.get().getId(), "public");
-        db.createRating("Cutest Couples in Movies", "1", "2", "David", movie12.get().getId(), "public");
+        db.createRating("Best Barbie movie of all time", "3", "10", "scale","David", movie12.get().getId(), "public");
+        db.createRating("Best Barbie movie of all time", "7", "10", "scale","Keith", movie12.get().getId(), "public");
+        db.createRating("Best animated movie of all time", "4", "5", "scale","David", movie12.get().getId(), "public");
+        db.createRating("Cutest Couples in Movies", "1", "2", "yes/no", "David", movie12.get().getId(), "public");
     }
 
     private void createMovie13(DatabaseController db) {
@@ -361,8 +361,8 @@ public class PopulationData {
         db.createTag("Fantasy", movie13.get().getId(), "David", "public");
         db.createTag("Musical", movie13.get().getId(), "David", "public");
 
-        db.createRating("Live-Action Princess Movie", "3", "4", "David", movie13.get().getId(), "public");
-        db.createRating("Confusing movies", "2", "10", "David", movie13.get().getId(), "public");
+        db.createRating("Live-Action Princess Movie", "3", "4", "scale","David", movie13.get().getId(), "public");
+        db.createRating("Confusing movies", "2", "10", "scale","David", movie13.get().getId(), "public");
 
         db.createActor("Brandy Norwood", "02/11/1979", movie13.get().getId());
         db.createActor("Bernadette Peters", "02/28/1948", movie13.get().getId());
@@ -377,7 +377,7 @@ public class PopulationData {
         db.createTag("Adventure", movie14.get().getId(), "David", "public");
         db.createTag("Drama", movie14.get().getId(), "David", "public");
 
-        db.createRating("Best animated movie of all time", "5", "7", "David", movie14.get().getId(), "public");
+        db.createRating("Best animated movie of all time", "5", "7", "scale","David", movie14.get().getId(), "public");
 
         db.createReview(movie14.get().getId(), "Ah Zabenya", "David", "public");
     }
@@ -391,9 +391,9 @@ public class PopulationData {
         db.createTag("Adventure", movie15.get().getId(), "David", "public");
         db.createTag("Comedy", movie15.get().getId(), "David", "public");
 
-        db.createRating("Animated Disney Movie Goodness", "1", "2", "David", movie15.get().getId(), "public");
-        db.createRating("Princess PrincessNess", "5", "8", "David", movie15.get().getId(), "public");
-        db.createRating("Aesthetic", "5", "6", "David", movie15.get().getId(), "public");
+        db.createRating("Animated Disney Movie Goodness", "1", "2", "thumbsup", "David", movie15.get().getId(), "public");
+        db.createRating("Princess PrincessNess", "5", "8", "scale","David", movie15.get().getId(), "public");
+        db.createRating("Aesthetic", "5", "6", "scale","David", movie15.get().getId(), "public");
     }
 
     private void createMovie16(DatabaseController db) {
@@ -405,9 +405,9 @@ public class PopulationData {
         db.createTag("Adventure", movie16.get().getId(), "David", "public");
         db.createTag("Comedy", movie16.get().getId(), "David", "public");
 
-        db.createRating("Disney Princess Movie", "4", "10", "David", movie16.get().getId(), "public");
-        db.createRating("Quirky Disney Character rating", "2", "7", "David", movie16.get().getId(), "public");
-        db.createRating("Best animated movie", "5", "8", "David", movie16.get().getId(), "public");
+        db.createRating("Disney Princess Movie", "4", "10", "scale","David", movie16.get().getId(), "public");
+        db.createRating("Quirky Disney Character rating", "2", "7", "thumbsup", "David", movie16.get().getId(), "public");
+        db.createRating("Best animated movie", "5", "8", "scale","David", movie16.get().getId(), "public");
     }
 
     private void createMovie17(DatabaseController db) {
@@ -419,10 +419,10 @@ public class PopulationData {
         db.createTag("Adventure", movie17.get().getId(), "David", "public");
         db.createTag("Comedy", movie17.get().getId(), "David", "public");
 
-        db.createRating("Disney Princess Movie", "7", "10", "David", movie17.get().getId(), "public");
-        db.createRating("Princess PrincessNess", "5", "8", "David", movie17.get().getId(), "public");
-        db.createRating("Best animated movie of all time", "8", "10", "David", movie17.get().getId(), "public");
-        db.createRating("Best Movies of all time", "2", "10", "David", movie17.get().getId(), "public");
+        db.createRating("Disney Princess Movie", "7", "10", "scale","David", movie17.get().getId(), "public");
+        db.createRating("Princess PrincessNess", "5", "8", "scale","David", movie17.get().getId(), "public");
+        db.createRating("Best animated movie of all time", "8", "10", "scale","David", movie17.get().getId(), "public");
+        db.createRating("Best Movies of all time", "2", "10", "scale","David", movie17.get().getId(), "public");
     }
 
     private void createMovie18(DatabaseController db) {
@@ -434,9 +434,9 @@ public class PopulationData {
         db.createTag("Adventure", movie18.get().getId(), "David", "public");
         db.createTag("Comedy", movie18.get().getId(), "David", "public");
 
-        db.createRating("Superhero origins", "3", "4", "David", movie18.get().getId(), "public");
-        db.createRating("Cutest male lead", "5", "9", "David", movie18.get().getId(), "public");
-        db.createRating("Best weapons", "2", "7", "David", movie18.get().getId(), "public");
+        db.createRating("Superhero origins", "3", "4", "scale","David", movie18.get().getId(), "public");
+        db.createRating("Cutest male lead", "5", "9", "scale", "David", movie18.get().getId(), "public");
+        db.createRating("Best weapons", "2", "7", "scale","David", movie18.get().getId(), "public");
 
         db.createActor("Simu Liu", "04/19/1989", movie18.get().getId());
         db.createActor("Awkwafina", "06/02/1988", movie18.get().getId());
@@ -451,9 +451,9 @@ public class PopulationData {
         db.createTag("Adventure", movie19.get().getId(), "David", "public");
         db.createTag("Comedy", movie19.get().getId(), "David", "public");
 
-        db.createRating("Costume rating", "5", "7", "David", movie19.get().getId(), "public");
-        db.createRating("Weirdest people", "3", "4", "David", movie19.get().getId(), "public");
-        db.createRating("Coolest plot", "2", "3", "David", movie19.get().getId(), "public");
+        db.createRating("Costume rating", "5", "7", "scale","David", movie19.get().getId(), "public");
+        db.createRating("Weirdest people", "3", "4", "scale","David", movie19.get().getId(), "public");
+        db.createRating("Coolest plot", "2", "3", "scale","David", movie19.get().getId(), "public");
     }
 
     private void createMovie20(DatabaseController db) {
@@ -465,10 +465,10 @@ public class PopulationData {
         db.createTag("Action", movie20.get().getId(), "David", "public");
         db.createTag("Adventure", movie20.get().getId(), "David", "public");
 
-        db.createRating("Best animated movie", "8", "10", "David", movie20.get().getId(), "public");
-        db.createRating("Movie of the year", "3", "9", "David", movie20.get().getId(), "public");
-        db.createRating("Character drawing rating", "2", "3", "David", movie20.get().getId(), "public");
-        db.createRating("Animation awesomeness", "1", "4", "David", movie20.get().getId(), "public");
+        db.createRating("Best animated movie", "8", "10", "scale","David", movie20.get().getId(), "public");
+        db.createRating("Movie of the year", "3", "9", "scale","David", movie20.get().getId(), "public");
+        db.createRating("Character drawing rating", "2", "3", "scale","David", movie20.get().getId(), "public");
+        db.createRating("Animation awesomeness", "1", "4", "scale","David", movie20.get().getId(), "public");
 
         db.createReview(movie20.get().getId(), "One of the best animated superhero movies of all time!", "David", "public");
         db.createReview(movie20.get().getId(), "The soundtrack was a work of art!", "Binura", "public");
@@ -482,10 +482,10 @@ public class PopulationData {
         db.createTag("Family", movie21.get().getId(), "Apple", "public");
         db.createTag("Fantasy", movie21.get().getId(), "Apple", "public");
 
-        db.createRating("Is it worth it?", "6", "10", "Apple", movie21.get().getId(), "public");
-        db.createRating("The sea is amazing", "4", "7", "Apple", movie21.get().getId(), "public");
-        db.createRating("Favorite Child Syndrome", "5", "6", "Apple", movie21.get().getId(), "public");
-        db.createRating("Spoiled children", "1", "3", "Apple", movie21.get().getId(), "public");
+        db.createRating("Is it worth it?", "6", "10", "scale","Apple", movie21.get().getId(), "public");
+        db.createRating("The sea is amazing", "4", "7", "scale","Apple", movie21.get().getId(), "public");
+        db.createRating("Favorite Child Syndrome", "5", "6", "scale","Apple", movie21.get().getId(), "public");
+        db.createRating("Spoiled children", "1", "3", "scale","Apple", movie21.get().getId(), "public");
     }
 
     private void createMovie22(DatabaseController db) {
@@ -496,9 +496,9 @@ public class PopulationData {
         db.createTag("Adventure", movie22.get().getId(), "Cherry", "public");
         db.createTag("Comedy", movie22.get().getId(), "Cherry", "public");
 
-        db.createRating("Motherless child", "3", "10", "Cherry", movie22.get().getId(), "public");
-        db.createRating("Interspecies relationships", "2", "4", "Cherry", movie22.get().getId(), "public");
-        db.createRating("Aliens", "2", "7", "Cherry", movie22.get().getId(), "public");
+        db.createRating("Motherless child", "3", "10", "scale","Cherry", movie22.get().getId(), "public");
+        db.createRating("Interspecies relationships", "2", "4", "scale","Cherry", movie22.get().getId(), "public");
+        db.createRating("Aliens", "2", "7", "scale","Cherry", movie22.get().getId(), "public");
     }
 
     private void createMovie23(DatabaseController db) {
@@ -509,9 +509,9 @@ public class PopulationData {
         db.createTag("Family", movie23.get().getId(), "Banana", "public");
         db.createTag("Fantasy", movie23.get().getId(), "Banana", "public");
 
-        db.createRating("Parents suck", "3", "4", "Banana", movie23.get().getId(), "public");
-        db.createRating("Fairies useless", "5", "9", "Banana", movie23.get().getId(), "public");
-        db.createRating("Talking animals", "2", "2", "Banana", movie23.get().getId(), "public");
+        db.createRating("Parents suck", "3", "4", "scale","Banana", movie23.get().getId(), "public");
+        db.createRating("Fairies useless", "5", "9", "scale","Banana", movie23.get().getId(), "public");
+        db.createRating("Talking animals", "2", "2", "yes/no", "Banana", movie23.get().getId(), "public");
     }
 
     private void createMovie24(DatabaseController db) {
@@ -522,9 +522,9 @@ public class PopulationData {
         db.createTag("Adventure", movie24.get().getId(), "Mango", "public");
         db.createTag("Comedy", movie24.get().getId(), "Mango", "public");
 
-        db.createRating("Romance", "1", "4", "Mango", movie24.get().getId(), "public");
-        db.createRating("Craziness", "3", "8", "Mango", movie24.get().getId(), "public");
-        db.createRating("Forced relationship", "4", "5", "Mango", movie24.get().getId(), "public");
+        db.createRating("Romance", "1", "4", "scale","Mango", movie24.get().getId(), "public");
+        db.createRating("Craziness", "3", "8", "scale","Mango", movie24.get().getId(), "public");
+        db.createRating("Forced relationship", "4", "5", "scale","Mango", movie24.get().getId(), "public");
     }
 
     private void createMovie25(DatabaseController db) {
@@ -535,9 +535,9 @@ public class PopulationData {
         db.createTag("Adventure", movie25.get().getId(), "Melon", "public");
         db.createTag("Comedy", movie25.get().getId(), "Melon", "public");
 
-        db.createRating("Superficial princess", "2", "7", "Melon", movie25.get().getId(), "public");
-        db.createRating("Character development", "1", "6", "Melon", movie25.get().getId(), "public");
-        db.createRating("Villain plan", "4", "8", "Melon", movie25.get().getId(), "public");
+        db.createRating("Superficial princess", "2", "7", "scale","Melon", movie25.get().getId(), "public");
+        db.createRating("Character development", "1", "6", "scale","Melon", movie25.get().getId(), "public");
+        db.createRating("Villain plan", "4", "8", "scale","Melon", movie25.get().getId(), "public");
     }
 
     private void createMovie26(DatabaseController db) {
@@ -548,9 +548,9 @@ public class PopulationData {
         db.createTag("Family", movie26.get().getId(), "Tomato", "public");
         db.createTag("Fantasy", movie26.get().getId(), "Tomato", "public");
 
-        db.createRating("Enemies to lovers", "8", "10", "Tomato", movie26.get().getId(), "public");
-        db.createRating("Marriage won’t last", "1", "2", "Tomato", movie26.get().getId(), "public");
-        db.createRating("She’s in the right", "4", "4", "Tomato", movie26.get().getId(), "public");
+        db.createRating("Enemies to lovers", "8", "10", "scale","Tomato", movie26.get().getId(), "public");
+        db.createRating("Marriage won’t last", "1", "2", "thumbsup", "Tomato", movie26.get().getId(), "public");
+        db.createRating("She’s in the right", "4", "4", "scale","Tomato", movie26.get().getId(), "public");
     }
 
     private void createMovie27(DatabaseController db) {
@@ -561,9 +561,9 @@ public class PopulationData {
         db.createTag("Family", movie27.get().getId(), "Strawberry", "public");
         db.createTag("Music", movie27.get().getId(), "Strawberry", "public");
 
-        db.createRating("Knockoff Jem and the holograms", "8", "9", "Strawberry", movie27.get().getId(), "public");
-        db.createRating("Barbie movie you never saw", "1", "4", "Strawberry", movie27.get().getId(), "public");
-        db.createRating("Forgettable plot", "2", "5", "Strawberry", movie27.get().getId(), "public");
+        db.createRating("Knockoff Jem and the holograms", "8", "9", "scale","Strawberry", movie27.get().getId(), "public");
+        db.createRating("Barbie movie you never saw", "1", "4", "scale","Strawberry", movie27.get().getId(), "public");
+        db.createRating("Forgettable plot", "2", "5", "scale","Strawberry", movie27.get().getId(), "public");
     }
 
     private void createMovie28(DatabaseController db) {
@@ -574,9 +574,9 @@ public class PopulationData {
         db.createTag("Family", movie28.get().getId(), "Zucchini", "public");
         db.createTag("Musical", movie28.get().getId(), "Zucchini", "public");
 
-        db.createRating("Creepy looking animals", "3", "10", "Zucchini", movie28.get().getId(), "public");
-        db.createRating("Unhelpful animals", "1", "3", "Zucchini", movie28.get().getId(), "public");
-        db.createRating("OP protagonist items", "7", "10", "Zucchini", movie28.get().getId(), "public");
+        db.createRating("Creepy looking animals", "3", "10", "scale","Zucchini", movie28.get().getId(), "public");
+        db.createRating("Unhelpful animals", "1", "3", "scale","Zucchini", movie28.get().getId(), "public");
+        db.createRating("OP protagonist items", "7", "10", "scale","Zucchini", movie28.get().getId(), "public");
     }
 
     private void createMovie29(DatabaseController db) {
@@ -587,10 +587,10 @@ public class PopulationData {
         db.createTag("Adventure", movie29.get().getId(), "Blueberry", "public");
         db.createTag("Fantasy", movie29.get().getId(), "Blueberry", "public");
 
-        db.createRating("Beautiful animated character", "6", "7", "Blueberry", movie29.get().getId(), "public");
-        db.createRating("Handsome animated character", "3", "8", "Blueberry", movie29.get().getId(), "public");
-        db.createRating("Best-looking power couple", "2", "9", "Blueberry", movie29.get().getId(), "public");
-        db.createRating("Jesus Remake", "3", "3", "Blueberry", movie29.get().getId(), "public");
+        db.createRating("Beautiful animated character", "6", "7", "scale","Blueberry", movie29.get().getId(), "public");
+        db.createRating("Handsome animated character", "3", "8", "scale","Blueberry", movie29.get().getId(), "public");
+        db.createRating("Best-looking power couple", "2", "9", "scale","Blueberry", movie29.get().getId(), "public");
+        db.createRating("Jesus Remake", "3", "3", "scale","Blueberry", movie29.get().getId(), "public");
     }
 
     private void createMovie30(DatabaseController db) {
@@ -600,9 +600,9 @@ public class PopulationData {
         db.createTag("Animation", movie30.get().getId(), "Rasberry", "public");
         db.createTag("Family", movie30.get().getId(), "Rasberry", "public");
 
-        db.createRating("Basic movies", "1", "4", "Rasberry", movie30.get().getId(), "public");
-        db.createRating("Cute side couple", "3", "7", "Rasberry", movie30.get().getId(), "public");
-        db.createRating("Not good plot-twists", "1", "2", "Rasberry", movie30.get().getId(), "public");
+        db.createRating("Basic movies", "1", "4", "scale","Rasberry", movie30.get().getId(), "public");
+        db.createRating("Cute side couple", "3", "7", "scale","Rasberry", movie30.get().getId(), "public");
+        db.createRating("Not good plot-twists", "1", "2", "yes/no", "Rasberry", movie30.get().getId(), "public");
     }
 
     private void createMovie31(DatabaseController db) {
@@ -612,9 +612,9 @@ public class PopulationData {
         db.createTag("Animation", movie31.get().getId(), "Peach", "public");
         db.createTag("Family", movie31.get().getId(), "Peach", "public");
 
-        db.createRating("horrible singing", "8", "10", "Peach", movie31.get().getId(), "public");
-        db.createRating("lame dance moves", "5", "6", "Peach", movie31.get().getId(), "public");
-        db.createRating("nice hair animation", "3", "8", "Peach", movie31.get().getId(), "public");
+        db.createRating("horrible singing", "8", "10", "scale","Peach", movie31.get().getId(), "public");
+        db.createRating("lame dance moves", "5", "6", "scale","Peach", movie31.get().getId(), "public");
+        db.createRating("nice hair animation", "3", "8", "scale","Peach", movie31.get().getId(), "public");
     }
 
     private void createMovie32(DatabaseController db) {
@@ -624,9 +624,9 @@ public class PopulationData {
         db.createTag("Animation", movie32.get().getId(), "JackFruit", "public");
         db.createTag("Family", movie32.get().getId(), "JackFruit", "public");
 
-        db.createRating("bratty kids", "7", "9", "JackFruit", movie32.get().getId(), "public");
-        db.createRating("Cute ending", "2", "5", "JackFruit", movie32.get().getId(), "public");
-        db.createRating("relatable protagonist", "3", "10", "JackFruit", movie32.get().getId(), "public");
+        db.createRating("bratty kids", "7", "9", "scale","JackFruit", movie32.get().getId(), "public");
+        db.createRating("Cute ending", "2", "5", "scale","JackFruit", movie32.get().getId(), "public");
+        db.createRating("relatable protagonist", "3", "10", "scale","JackFruit", movie32.get().getId(), "public");
     }
 
     private void createMovie33(DatabaseController db) {
@@ -637,9 +637,9 @@ public class PopulationData {
         db.createTag("Adventure", movie33.get().getId(), "Lychee", "public");
         db.createTag("Fantasy", movie33.get().getId(), "Lychee", "public");
 
-        db.createRating("Dramatic male protagonist", "1", "10", "Lychee", movie33.get().getId(), "public");
-        db.createRating("horrible personality male protagonist", "1", "3", "Lychee", movie33.get().getId(), "public");
-        db.createRating("unexpected plot twists", "5", "6", "Lychee", movie33.get().getId(), "public");
+        db.createRating("Dramatic male protagonist", "1", "10", "scale","Lychee", movie33.get().getId(), "public");
+        db.createRating("horrible personality male protagonist", "1", "3", "scale","Lychee", movie33.get().getId(), "public");
+        db.createRating("unexpected plot twists", "5", "6", "scale","Lychee", movie33.get().getId(), "public");
     }
 
     private void createMovie34(DatabaseController db) {
@@ -650,11 +650,11 @@ public class PopulationData {
         db.createTag("Adventure", movie34.get().getId(), "Cantaloupe", "public");
         db.createTag("Family", movie34.get().getId(), "Cantaloupe", "public");
 
-        db.createRating("Cutest movies", "3", "8", "Cantaloupe", movie34.get().getId(), "public");
-        db.createRating("adorable toddler", "4", "6", "Cantaloupe", movie34.get().getId(), "public");
-        db.createRating("Beautiful mothers", "6", "10", "Cantaloupe", movie34.get().getId(), "public");
-        db.createRating("best-looking animated wives", "5", "6", "Cantaloupe", movie34.get().getId(), "public");
-        db.createRating("Annoying child", "2", "10", "Cantaloupe", movie34.get().getId(), "public");
+        db.createRating("Cutest movies", "3", "8", "scale","Cantaloupe", movie34.get().getId(), "public");
+        db.createRating("adorable toddler", "4", "6", "scale","Cantaloupe", movie34.get().getId(), "public");
+        db.createRating("Beautiful mothers", "6", "10", "scale","Cantaloupe", movie34.get().getId(), "public");
+        db.createRating("best-looking animated wives", "5", "6", "scale","Cantaloupe", movie34.get().getId(), "public");
+        db.createRating("Annoying child", "2", "10", "scale","Cantaloupe", movie34.get().getId(), "public");
     }
 
     private void createMovie35(DatabaseController db) {
@@ -664,10 +664,10 @@ public class PopulationData {
         db.createTag("Animation", movie35.get().getId(), "Blackberry", "public");
         db.createTag("Family", movie35.get().getId(), "Blackberry", "public");
 
-        db.createRating("Annoying pets", "5", "9", "Blackberry", movie35.get().getId(), "public");
-        db.createRating("Useless barbie animals", "6", "10", "Blackberry", movie35.get().getId(), "public");
-        db.createRating("Surprisingly sympathetic male lead", "3", "3", "Blackberry", movie35.get().getId(), "public");
-        db.createRating("enemies to lovers", "3", "4", "Blackberry", movie35.get().getId(), "public");
+        db.createRating("Annoying pets", "5", "9", "scale","Blackberry", movie35.get().getId(), "public");
+        db.createRating("Useless barbie animals", "6", "10", "scale","Blackberry", movie35.get().getId(), "public");
+        db.createRating("Surprisingly sympathetic male lead", "3","3", "scale","Blackberry", movie35.get().getId(), "public");
+        db.createRating("enemies to lovers", "3", "4", "scale","Blackberry", movie35.get().getId(), "public");
     }
 
     private void createMovie36(DatabaseController db) {
@@ -677,9 +677,9 @@ public class PopulationData {
         db.createTag("Animation", movie36.get().getId(), "Pumpkin", "public");
         db.createTag("Family", movie36.get().getId(), "Pumpkin", "public");
 
-        db.createRating("Cutest romance", "2", "6", "Pumpkin", movie36.get().getId(), "public");
-        db.createRating("ridiculous plot", "7", "10", "Pumpkin", movie36.get().getId(), "public");
-        db.createRating("funny character", "3", "4", "Pumpkin", movie36.get().getId(), "public");
+        db.createRating("Cutest romance", "2", "6", "scale","Pumpkin", movie36.get().getId(), "public");
+        db.createRating("ridiculous plot", "7", "10", "scale","Pumpkin", movie36.get().getId(), "public");
+        db.createRating("funny character", "3", "4", "scale","Pumpkin", movie36.get().getId(), "public");
     }
 
     private void createMovie37(DatabaseController db) {
@@ -689,9 +689,9 @@ public class PopulationData {
         db.createTag("Animation", movie37.get().getId(), "Butterfly", "public");
         db.createTag("Family", movie37.get().getId(), "Butterfly", "public");
 
-        db.createRating("Cute sisters", "9", "10", "Butterfly", movie37.get().getId(), "public");
-        db.createRating("Best Adopted family", "2", "3", "Butterfly", movie37.get().getId(), "public");
-        db.createRating("Corny romance", "3", "6", "Butterfly", movie37.get().getId(), "public");
+        db.createRating("Cute sisters", "9", "10", "scale","Butterfly", movie37.get().getId(), "public");
+        db.createRating("Best Adopted family", "2", "3", "scale","Butterfly", movie37.get().getId(), "public");
+        db.createRating("Corny romance", "3", "6", "scale","Butterfly", movie37.get().getId(), "public");
     }
 
     private void createMovie38(DatabaseController db) {
@@ -701,9 +701,9 @@ public class PopulationData {
         db.createTag("Comedy", movie38.get().getId(), "Coffee", "public");
         db.createTag("Drama", movie38.get().getId(), "Coffee", "public");
 
-        db.createRating("Hilarious", "7", "10", "Coffee", movie38.get().getId(), "public");
-        db.createRating("Lipstick lesbian", "1", "2", "Coffee", movie38.get().getId(), "public");
-        db.createRating("campy movies", "5", "6", "Coffee", movie38.get().getId(), "public");
+        db.createRating("Hilarious", "7", "10", "scale","Coffee", movie38.get().getId(), "public");
+        db.createRating("Lipstick lesbian", "1", "2", "thumbsup", "Coffee", movie38.get().getId(), "public");
+        db.createRating("campy movies", "5", "6", "scale","Coffee", movie38.get().getId(), "public");
     }
 
     private void createMovie39(DatabaseController db) {
@@ -714,9 +714,9 @@ public class PopulationData {
         db.createTag("Family", movie39.get().getId(), "Apricotts", "public");
         db.createTag("Fantasy", movie39.get().getId(), "Apricotts", "public");
 
-        db.createRating("Nice songs", "8", "10", "Apricotts", movie39.get().getId(), "public");
-        db.createRating("ugly male protagonist", "2", "4", "Apricotts", movie39.get().getId(), "public");
-        db.createRating("Side characters carried the movie", "1", "2", "Apricotts", movie39.get().getId(), "public");
+        db.createRating("Nice songs", "8", "10", "scale","Apricotts", movie39.get().getId(), "public");
+        db.createRating("ugly male protagonist", "2", "4", "scale","Apricotts", movie39.get().getId(), "public");
+        db.createRating("Side characters carried the movie", "1", "2", "thumbsup", "Apricotts", movie39.get().getId(), "public");
     }
 
     private void createMovie40(DatabaseController db) {
@@ -728,10 +728,10 @@ public class PopulationData {
         db.createTag("Drama", movie40.get().getId(), "Pears", "public");
         db.createTag("Romance", movie40.get().getId(), "Pears", "public");
 
-        db.createRating("Teacher sucks", "6", "10", "Pears", movie40.get().getId(), "public");
-        db.createRating("Children to murder", "4", "10", "Pears", movie40.get().getId(), "public");
-        db.createRating("Fake people", "7", "10", "Pears", movie40.get().getId(), "public");
-        db.createRating("Largest hit list", "1", "10", "Pears", movie40.get().getId(), "public");
+        db.createRating("Teacher sucks", "6", "10", "scale","Pears", movie40.get().getId(), "public");
+        db.createRating("Children to murder", "4", "10", "scale","Pears", movie40.get().getId(), "public");
+        db.createRating("Fake people", "7", "10", "scale","Pears", movie40.get().getId(), "public");
+        db.createRating("Largest hit list", "1", "10", "scale","Pears", movie40.get().getId(), "public");
 
         db.createReview(movie40.get().getId(), "I want to murder the blond chick and the teacher and his ex-friend.", "Pears", "public");
         db.createReview(movie40.get().getId(), "They won't last long, life wise.", "Cherry", "public");
@@ -750,9 +750,9 @@ public class PopulationData {
         db.createTag("Drama", movie41.get().getId(), "Avacado", "public");
         db.createTag("Fantasy", movie41.get().getId(), "Avacado", "public");
 
-        db.createRating("Coolest movie ever", "4", "8", "Avacado", movie41.get().getId(), "public");
-        db.createRating("Cute movie", "2", "2", "Avacado", movie41.get().getId(), "public");
-        db.createRating("Second watch is better", "1", "4", "Avacado", movie41.get().getId(), "public");
+        db.createRating("Coolest movie ever", "4", "8", "scale","Avacado", movie41.get().getId(), "public");
+        db.createRating("Cute movie", "2", "2", "yes/no", "Avacado", movie41.get().getId(), "public");
+        db.createRating("Second watch is better", "1", "4", "scale","Avacado", movie41.get().getId(), "public");
 
         db.createReview(movie41.get().getId(), "", "Avacado", "public");
         db.createReview(movie41.get().getId(), "", "Pear", "public");
@@ -772,9 +772,9 @@ public class PopulationData {
         db.createTag("Adventure", movie42.get().getId(), "Babaco", "public");
         db.createTag("Comedy", movie42.get().getId(), "Babaco", "public");
 
-        db.createRating("Animal cuteness", "8", "9", "Babaco", movie42.get().getId(), "public");
-        db.createRating("Annoying cat", "6", "7", "Babaco", movie42.get().getId(), "public");
-        db.createRating("Owner and pet bond", "1", "5", "Babaco", movie42.get().getId(), "public");
+        db.createRating("Animal cuteness", "8", "9", "scale","Babaco", movie42.get().getId(), "public");
+        db.createRating("Annoying cat", "6", "7", "scale","Babaco", movie42.get().getId(), "public");
+        db.createRating("Owner and pet bond", "1", "5", "scale","Babaco", movie42.get().getId(), "public");
 
         db.createReview(movie42.get().getId(), "Movie of the century", "Babaco", "public");
         db.createReview(movie42.get().getId(), "Great movie", "Apple", "public");
@@ -794,9 +794,9 @@ public class PopulationData {
         db.createTag("Adventure", movie43.get().getId(), "Barberries", "public");
         db.createTag("Family", movie43.get().getId(), "Barberries", "public");
 
-        db.createRating("Cutest hair accessory", "2", "7", "Barberries", movie43.get().getId(), "public");
-        db.createRating("Creative clothes", "6", "9", "Barberries", movie43.get().getId(), "public");
-        db.createRating("Appealing height", "2", "3", "Barberries", movie43.get().getId(), "public");
+        db.createRating("Cutest hair accessory", "2", "7", "scale","Barberries", movie43.get().getId(), "public");
+        db.createRating("Creative clothes", "6", "9", "scale","Barberries", movie43.get().getId(), "public");
+        db.createRating("Appealing height", "2", "3", "scale","Barberries", movie43.get().getId(), "public");
 
         db.createReview(movie43.get().getId(), "hdibchiwbdedufebobcjo dhbwbebi", "Barberries", "public");
         db.createReview(movie43.get().getId(), "you know what, it was aight", "Banana", "public");
@@ -816,9 +816,9 @@ public class PopulationData {
         db.createTag("Family", movie44.get().getId(), "Plum", "public");
         db.createTag("Fantasy", movie44.get().getId(), "Plum", "public");
 
-        db.createRating("Good song", "2", "2", "Plum", movie44.get().getId(), "public");
-        db.createRating("Weird plot", "6", "6", "Plum", movie44.get().getId(), "public");
-        db.createRating("Sassy fairies", "4", "5", "Plum", movie44.get().getId(), "public");
+        db.createRating("Good song", "2", "2", "yes/no", "Plum", movie44.get().getId(), "public");
+        db.createRating("Weird plot", "6", "6", "scale","Plum", movie44.get().getId(), "public");
+        db.createRating("Sassy fairies", "4", "5", "scale","Plum", movie44.get().getId(), "public");
 
         db.createReview(movie44.get().getId(), "ANNE HATHAWAY is tyhe BESTTTSTSTT", "Plum", "public");
         db.createReview(movie44.get().getId(), "EW. Horrible movie", "Peach", "public");
@@ -838,9 +838,9 @@ public class PopulationData {
         db.createTag("Adventure", movie45.get().getId(), "Bearberries", "public");
         db.createTag("Family", movie45.get().getId(), "Bearberries", "public");
 
-        db.createRating("Betrayals", "4", "7", "Bearberries", movie45.get().getId(), "public");
-        db.createRating("Would've ended that friendship", "7", "9", "Bearberries", movie45.get().getId(), "public");
-        db.createRating("Cute female lead", "3", "4", "Bearberries", movie45.get().getId(), "public");
+        db.createRating("Betrayals", "4", "7", "scale","Bearberries", movie45.get().getId(), "public");
+        db.createRating("Would've ended that friendship", "7", "9", "scale","Bearberries", movie45.get().getId(), "public");
+        db.createRating("Cute female lead", "3", "4", "scale","Bearberries", movie45.get().getId(), "public");
 
         db.createReview(movie45.get().getId(), "I would never forgive my bsf for ehat sinbad did.", "Bearberries", "public");
         db.createReview(movie45.get().getId(), "Hot Lady.", "Plum", "public");
@@ -860,9 +860,9 @@ public class PopulationData {
         db.createTag("Drama", movie46.get().getId(), "Beechnut", "public");
         db.createTag("Fantasy", movie46.get().getId(), "Beechnut", "public");
 
-        db.createRating("Creepy neighbors", "9", "10", "Beechnut", movie46.get().getId(), "public");
-        db.createRating("Side character came in clutch", "2", "5", "Beechnut", movie46.get().getId(), "public");
-        db.createRating("Children's nightmare", "8", "9", "Beechnut", movie46.get().getId(), "public");
+        db.createRating("Creepy neighbors", "9", "10", "scale","Beechnut", movie46.get().getId(), "public");
+        db.createRating("Side character came in clutch", "2", "5", "scale","Beechnut", movie46.get().getId(), "public");
+        db.createRating("Children's nightmare", "8", "9", "scale","Beechnut", movie46.get().getId(), "public");
 
         db.createReview(movie46.get().getId(), "Frightning", "Beechnut", "public");
         db.createReview(movie46.get().getId(), "Wasn't sacredat all", "Bearberries", "public");
@@ -882,9 +882,9 @@ public class PopulationData {
         db.createTag("Family", movie47.get().getId(), "Calabash", "public");
         db.createTag("Fantasy", movie47.get().getId(), "Calabash", "public");
 
-        db.createRating("Booty movie", "4", "10", "Calabash", movie47.get().getId(), "public");
-        db.createRating("Disgusting movie", "2", "4", "Calabash", movie47.get().getId(), "public");
-        db.createRating("Santa's not that great", "2", "8", "Calabash", movie47.get().getId(), "public");
+        db.createRating("Booty movie", "4", "10", "scale","Calabash", movie47.get().getId(), "public");
+        db.createRating("Disgusting movie", "2", "4", "scale","Calabash", movie47.get().getId(), "public");
+        db.createRating("Santa's not that great", "2", "8", "scale","Calabash", movie47.get().getId(), "public");
 
         db.createReview(movie47.get().getId(), "Ugly dude", "Calabash", "public");
         db.createReview(movie47.get().getId(), "Ugly bride", "Beechnut", "public");
@@ -904,9 +904,9 @@ public class PopulationData {
         db.createTag("Horror", movie48.get().getId(), "Carambola", "public");
         db.createTag("Sci-Fi", movie48.get().getId(), "Carambola", "public");
 
-        db.createRating("Good apocalypse movies", "5", "10", "Carambola", movie48.get().getId(), "public");
-        db.createRating("Loyal dog", "2", "2", "Carambola", movie48.get().getId(), "public");
-        db.createRating("Nice settings", "1", "3", "Carambola", movie48.get().getId(), "public");
+        db.createRating("Good apocalypse movies", "5", "10", "scale","Carambola", movie48.get().getId(), "public");
+        db.createRating("Loyal dog", "2", "2", "yes/no", "Carambola", movie48.get().getId(), "public");
+        db.createRating("Nice settings", "1", "3", "scale","Carambola", movie48.get().getId(), "public");
 
         db.createReview(movie48.get().getId(), "Nice apocolypse movie", "Carambola", "public");
         db.createReview(movie48.get().getId(), "It was aight", "Cantaloupe", "public");
@@ -926,9 +926,9 @@ public class PopulationData {
         db.createTag("Comedy", movie49.get().getId(), "Carob", "public");
         db.createTag("Drama", movie49.get().getId(), "Carob", "public");
 
-        db.createRating("Sassy evil queen", "2", "10", "Carob", movie49.get().getId(), "public");
-        db.createRating("Useless male lead", "5", "6", "Carob", movie49.get().getId(), "public");
-        db.createRating("Reused plot", "3", "5", "Carob", movie49.get().getId(), "public");
+        db.createRating("Sassy evil queen", "2", "10", "scale","Carob", movie49.get().getId(), "public");
+        db.createRating("Useless male lead", "5", "6", "scale","Carob", movie49.get().getId(), "public");
+        db.createRating("Reused plot", "3", "5", "scale","Carob", movie49.get().getId(), "public");
 
         db.createReview(movie49.get().getId(), "Best snow white ever", "Carob", "public");
         db.createReview(movie49.get().getId(), "It wasn't all that", "Cantaloupe", "public");
@@ -948,9 +948,9 @@ public class PopulationData {
         db.createTag("Adventure", movie50.get().getId(), "Quince", "public");
         db.createTag("Family", movie50.get().getId(), "Quince", "public");
 
-        db.createRating("Cutest hair accessory", "4", "7", "Quince", movie50.get().getId(), "public");
-        db.createRating("Creative clothes", "5", "9", "Quince", movie50.get().getId(), "public");
-        db.createRating("Appealing height", "1", "3", "Quince", movie50.get().getId(), "public");
+        db.createRating("Cutest hair accessory", "4", "7", "scale","Quince", movie50.get().getId(), "public");
+        db.createRating("Creative clothes", "5", "9", "scale","Quince", movie50.get().getId(), "public");
+        db.createRating("Appealing height", "1", "3", "scale","Quince", movie50.get().getId(), "public");
 
         db.createReview(movie50.get().getId(), "I, Quince approve if this movie.", "Quince", "public");
         db.createReview(movie50.get().getId(), "What credit does that give Quince, you cheated on your spouse. Anyways, nice movie.", "JackFruit", "public");
@@ -970,9 +970,9 @@ public class PopulationData {
         db.createTag("Drama", movie51.get().getId(), "Coconut", "public");
         db.createTag("Family", movie51.get().getId(), "Coconut", "public");
 
-        db.createRating("Sibling relationship", "7", "10", "Coconut", movie51.get().getId(), "public");
-        db.createRating("Selena Gomez movies", "2", "10", "Coconut", movie51.get().getId(), "public");
-        db.createRating("Joey King movies", "4", "5", "Coconut", movie51.get().getId(), "public");
+        db.createRating("Sibling relationship", "7", "10", "scale","Coconut", movie51.get().getId(), "public");
+        db.createRating("Selena Gomez movies", "2", "10", "scale","Coconut", movie51.get().getId(), "public");
+        db.createRating("Joey King movies", "4", "5", "scale","Coconut", movie51.get().getId(), "public");
 
         db.createReview(movie51.get().getId(), "Selena gomez is QUEEN", "Coconut", "public");
         db.createReview(movie51.get().getId(), "OMG that line was so good when she was all; Jesus??", "Pear", "public");
@@ -992,9 +992,9 @@ public class PopulationData {
         db.createTag("Family", movie52.get().getId(), "Clementine", "public");
         db.createTag("Fantasy", movie52.get().getId(), "Clementine", "public");
 
-        db.createRating("Trash brother", "1", "9", "Clementine", movie52.get().getId(), "public");
-        db.createRating("Jesus Remake", "2", "3", "Clementine", movie52.get().getId(), "public");
-        db.createRating("These kids don't deserve it", "5", "6", "Clementine", movie52.get().getId(), "public");
+        db.createRating("Trash brother", "1", "9", "scale","Clementine", movie52.get().getId(), "public");
+        db.createRating("Jesus Remake", "2", "3", "scale","Clementine", movie52.get().getId(), "public");
+        db.createRating("These kids don't deserve it", "5", "6", "scale","Clementine", movie52.get().getId(), "public");
 
         db.createReview(movie52.get().getId(), "I likeed the other version better. I want to hate people. I could'nt hate anyone.", "Clementine", "public");
         db.createReview(movie52.get().getId(), "Yeah, this movie lacked the utter obnoxiousness of OG Edmund", "Blueberry", "public");
@@ -1014,10 +1014,10 @@ public class PopulationData {
         db.createTag("Adventure", movie53.get().getId(), "Citron", "public");
         db.createTag("Science Fiction", movie53.get().getId(), "Citron", "public");
 
-        db.createRating("Sus movie", "8", "9", "Citron", movie53.get().getId(), "public");
-        db.createRating("Cool planet", "2", "4", "Citron", movie53.get().getId(), "public");
-        db.createRating("Interspecies relationships", "4", "4", "Citron", movie53.get().getId(), "public");
-        db.createRating("Aliens", "3", "7", "Citron", movie53.get().getId(), "public");
+        db.createRating("Sus movie", "8", "9", "scale","Citron", movie53.get().getId(), "public");
+        db.createRating("Cool planet", "2", "4", "scale","Citron", movie53.get().getId(), "public");
+        db.createRating("Interspecies relationships", "4", "4", "scale","Citron", movie53.get().getId(), "public");
+        db.createRating("Aliens", "3", "7", "scale","Citron", movie53.get().getId(), "public");
 
         db.createReview(movie53.get().getId(), "It was a thout-provoking movie.", "Citron", "public");
         db.createReview(movie53.get().getId(), "As if, Citron you slept half-way through it. The movie was aight.", "Clementine", "public");
@@ -1037,9 +1037,9 @@ public class PopulationData {
         db.createTag("Sci-Fi", movie54.get().getId(), "Courgette", "public");
         db.createTag("Thriller", movie54.get().getId(), "Courgette", "public");
 
-        db.createRating("Predictable", "5", "10", "Courgette", movie54.get().getId(), "public");
-        db.createRating("Good idea", "2", "2", "Courgette", movie54.get().getId(), "public");
-        db.createRating("Animals", "2", "6", "Courgette", movie54.get().getId(), "public");
+        db.createRating("Predictable", "5", "10", "scale","Courgette", movie54.get().getId(), "public");
+        db.createRating("Good idea", "2", "2", "thumbsup", "Courgette", movie54.get().getId(), "public");
+        db.createRating("Animals", "2", "6", "scale","Courgette", movie54.get().getId(), "public");
 
         db.createReview(movie54.get().getId(), "My brother Citron loves this movie 5/5", "Courgette", "public");
         db.createReview(movie54.get().getId(), "I do in fact love this movie, 5/5", "Citron", "public");
@@ -1058,9 +1058,9 @@ public class PopulationData {
         db.createTag("Drama", movie55.get().getId(), "Cranberry", "public");
         db.createTag("Romance", movie55.get().getId(), "Cranberry", "public");
 
-        db.createRating("The plot killed him", "9", "10", "Cranberry", movie55.get().getId(), "public");
-        db.createRating("They would've divorced anyways", "4", "5", "Cranberry", movie55.get().getId(), "public");
-        db.createRating("Standing with arms out", "2", "9", "Cranberry", movie55.get().getId(), "public");
+        db.createRating("The plot killed him", "9", "10", "scale","Cranberry", movie55.get().getId(), "public");
+        db.createRating("They would've divorced anyways", "4", "5", "scale","Cranberry", movie55.get().getId(), "public");
+        db.createRating("Standing with arms out", "2", "9", "scale","Cranberry", movie55.get().getId(), "public");
 
         db.createReview(movie55.get().getId(), "I wish he'd died sooner.", "Cranberry", "public");
         db.createReview(movie55.get().getId(), "It was ok.", "Courgette", "public");
@@ -1080,9 +1080,9 @@ public class PopulationData {
         db.createTag("Adventure", movie56.get().getId(), "Cucumber", "public");
         db.createTag("Family", movie56.get().getId(), "Cucumber", "public");
 
-        db.createRating("Unexpected plot twists", "6", "6", "Cucumber", movie56.get().getId(), "public");
-        db.createRating("Cutest romance", "5", "6", "Cucumber", movie56.get().getId(), "public");
-        db.createRating("Robot love", "2", "4", "Cucumber", movie56.get().getId(), "public");
+        db.createRating("Unexpected plot twists", "6", "6", "scale","Cucumber", movie56.get().getId(), "public");
+        db.createRating("Cutest romance", "5", "6", "scale","Cucumber", movie56.get().getId(), "public");
+        db.createRating("Robot love", "2", "4", "scale","Cucumber", movie56.get().getId(), "public");
 
         db.createReview(movie56.get().getId(), "AHHHHHH SO CUTTETETET", "Cucumber", "public");
         db.createReview(movie56.get().getId(), "BEst romance of all time", "Tomato", "public");
@@ -1102,9 +1102,9 @@ public class PopulationData {
         db.createTag("Adventure", movie57.get().getId(), "Durian", "public");
         db.createTag("Fantasy", movie57.get().getId(), "Durian", "public");
 
-        db.createRating("Corny romance", "3", "6", "Durian", movie57.get().getId(), "public");
-        db.createRating("The plot killed him", "7", "10", "Durian", movie57.get().getId(), "public");
-        db.createRating("Powerful female lead", "6", "10", "Durian", movie57.get().getId(), "public");
+        db.createRating("Corny romance", "3", "6", "scale","Durian", movie57.get().getId(), "public");
+        db.createRating("The plot killed him", "7", "10", "scale","Durian", movie57.get().getId(), "public");
+        db.createRating("Powerful female lead", "6", "10", "scale","Durian", movie57.get().getId(), "public");
 
         db.createReview(movie57.get().getId(), "Not that good.", "Durian", "public");
         db.createReview(movie57.get().getId(), "Yea, Durian Like your child. how's the bail loan? It's a good movie.. ", "Cucumber", "public");
@@ -1123,9 +1123,9 @@ public class PopulationData {
         db.createTag("Drama", movie58.get().getId(), "Dates", "public");
         db.createTag("Romance", movie58.get().getId(), "Dates", "public");
 
-        db.createRating("Fatherless troubles", "1", "2", "Dates", movie58.get().getId(), "public");
-        db.createRating("Characters done dirty", "4", "8", "Dates", movie58.get().getId(), "public");
-        db.createRating("Hateful author", "1", "5", "Dates", movie58.get().getId(), "public");
+        db.createRating("Fatherless troubles", "1", "2", "thumbsup", "Dates", movie58.get().getId(), "public");
+        db.createRating("Characters done dirty", "4", "8", "scale","Dates", movie58.get().getId(), "public");
+        db.createRating("Hateful author", "1", "5", "scale","Dates", movie58.get().getId(), "public");
 
         db.createReview(movie58.get().getId(), "BOOOTTYYYYYY", "Dates", "public");
         db.createReview(movie58.get().getId(), "Bro one sister should've died and it wasn't the chick from the begining.", "Durian", "public");
@@ -1145,9 +1145,9 @@ public class PopulationData {
         db.createTag("Adventure", movie59.get().getId(), "Dekopon", "public");
         db.createTag("Family", movie59.get().getId(), "Dekopon", "public");
 
-        db.createRating("Cutest movies", "3", "8", "Dekopon", movie59.get().getId(), "public");
-        db.createRating("A kid you don't want to eliminate", "4", "5", "Dekopon", movie59.get().getId(), "public");
-        db.createRating("Motherly love", "3", "4", "Dekopon", movie59.get().getId(), "public");
+        db.createRating("Cutest movies", "3", "8", "scale","Dekopon", movie59.get().getId(), "public");
+        db.createRating("A kid you don't want to eliminate", "4", "5", "scale","Dekopon", movie59.get().getId(), "public");
+        db.createRating("Motherly love", "3", "4", "scale","Dekopon", movie59.get().getId(), "public");
 
         db.createReview(movie59.get().getId(), "I don't understand ho this movie contributes to the btterment of our universe??", "Dekopon", "public");
         db.createReview(movie59.get().getId(), "MASTERPIECE", "Banana", "public");
@@ -1167,9 +1167,9 @@ public class PopulationData {
         db.createTag("Adventure", movie60.get().getId(), "Fig", "public");
         db.createTag("Comedy", movie60.get().getId(), "Fig", "public");
 
-        db.createRating("Animal transformation", "3", "10", "Fig", movie60.get().getId(), "public");
-        db.createRating("Funny character", "2", "4", "Fig", movie60.get().getId(), "public");
-        db.createRating("Brotherly love", "1", "6", "Fig", movie60.get().getId(), "public");
+        db.createRating("Animal transformation", "3", "10", "scale","Fig", movie60.get().getId(), "public");
+        db.createRating("Funny character", "2", "4", "scale","Fig", movie60.get().getId(), "public");
+        db.createRating("Brotherly love", "1", "6", "scale","Fig", movie60.get().getId(), "public");
 
         db.createReview(movie60.get().getId(), "Cute movie", "Fig", "public");
         db.createReview(movie60.get().getId(), "Super family friendly", "Melon", "public");
@@ -1189,10 +1189,10 @@ public class PopulationData {
         db.createTag("Adventure", movie61.get().getId(), "Lemon", "public");
         db.createTag("Family", movie61.get().getId(), "Lemon", "public");
 
-        db.createRating("Cutest romance", "5", "6", "Lemon", movie61.get().getId(), "public");
-        db.createRating("Funny character", "3", "4", "Lemon", movie61.get().getId(), "public");
-        db.createRating("Good-looking animated characters", "2", "10", "Lemon", movie61.get().getId(), "public");
-        db.createRating("Crush-inducing", "1", "2", "Lemon", movie61.get().getId(), "public");
+        db.createRating("Cutest romance", "5", "6", "scale","Lemon", movie61.get().getId(), "public");
+        db.createRating("Funny character", "3", "4", "scale","Lemon", movie61.get().getId(), "public");
+        db.createRating("Good-looking animated characters", "2", "10", "scale","Lemon", movie61.get().getId(), "public");
+        db.createRating("Crush-inducing", "1", "2", "yes/no", "Lemon", movie61.get().getId(), "public");
 
         db.createReview(movie61.get().getId(), "Made my sour self sweet.", "Lemon", "public");
         db.createReview(movie61.get().getId(), "It wasn't bad. Herc is HOt", "Pear", "public");
@@ -1212,9 +1212,9 @@ public class PopulationData {
         db.createTag("Drama", movie62.get().getId(), "Dewberries", "public");
         db.createTag("Fantasy", movie62.get().getId(), "Dewberries", "public");
 
-        db.createRating("Ok romance", "5", "10", "Dewberries", movie62.get().getId(), "public");
-        db.createRating("Not worth it", "4", "7", "Dewberries", movie62.get().getId(), "public");
-        db.createRating("They will divorce from lack of planning", "1", "4", "Dewberries", movie62.get().getId(), "public");
+        db.createRating("Ok romance", "5", "10", "scale","Dewberries", movie62.get().getId(), "public");
+        db.createRating("Not worth it", "4", "7", "scale","Dewberries", movie62.get().getId(), "public");
+        db.createRating("They will divorce from lack of planning", "1", "4", "scale","Dewberries", movie62.get().getId(), "public");
 
         db.createReview(movie62.get().getId(), "Evruyone whould've been unalive in the end.", "Dewberries", "public");
         db.createReview(movie62.get().getId(), "It was ok. I think the art was the best part of the movie", "Cherry", "public");
@@ -1234,9 +1234,9 @@ public class PopulationData {
         db.createTag("Drama", movie63.get().getId(), "Dracontomelon", "public");
         db.createTag("Family", movie63.get().getId(), "Dracontomelon", "public");
 
-        db.createRating("They will divorce from lack of planning", "3", "4", "Dracontomelon", movie63.get().getId(), "public");
-        db.createRating("Cutest romance", "5", "6", "Dracontomelon", movie63.get().getId(), "public");
-        db.createRating("Nice songs", "3", "10", "Dracontomelon", movie63.get().getId(), "public");
+        db.createRating("They will divorce from lack of planning", "3", "4", "scale","Dracontomelon", movie63.get().getId(), "public");
+        db.createRating("Cutest romance", "5", "6", "scale","Dracontomelon", movie63.get().getId(), "public");
+        db.createRating("Nice songs", "3", "10", "scale","Dracontomelon", movie63.get().getId(), "public");
 
         db.createReview(movie63.get().getId(), "YASSSSS THIS MOVIE IS the besttttt", "Dracontomelon", "public");
         db.createReview(movie63.get().getId(), "This movie is SSSLLLAAAYYYYYY", "Dewberries", "public");
@@ -1256,9 +1256,9 @@ public class PopulationData {
         db.createTag("Adventure", movie64.get().getId(), "Dragonfruit", "public");
         db.createTag("Family", movie64.get().getId(), "Dragonfruit", "public");
 
-        db.createRating("Cutest romance", "4", "6", "Dragonfruit", movie64.get().getId(), "public");
-        db.createRating("Funny character", "2", "4", "Dragonfruit", movie64.get().getId(), "public");
-        db.createRating("Chill movie", "1", "5", "Dragonfruit", movie64.get().getId(), "public");
+        db.createRating("Cutest romance", "4", "6", "scale","Dragonfruit", movie64.get().getId(), "public");
+        db.createRating("Funny character", "2", "4", "scale","Dragonfruit", movie64.get().getId(), "public");
+        db.createRating("Chill movie", "1", "5", "scale","Dragonfruit", movie64.get().getId(), "public");
 
         db.createReview(movie64.get().getId(), "I want a magic broom", "Dragonfruit", "public");
         db.createReview(movie64.get().getId(), "I wanna marry the art lady", "Binura", "public");
@@ -1278,9 +1278,9 @@ public class PopulationData {
         db.createTag("Family", movie65.get().getId(), "Eggplant", "public");
         db.createTag("Fantasy", movie65.get().getId(), "Eggplant", "public");
 
-        db.createRating("Cutest movies", "6", "8", "Eggplant", movie65.get().getId(), "public");
-        db.createRating("Weird movie", "3", "3", "Eggplant", movie65.get().getId(), "public");
-        db.createRating("Animal cuteness", "7", "9", "Eggplant", movie65.get().getId(), "public");
+        db.createRating("Cutest movies", "6", "8", "scale","Eggplant", movie65.get().getId(), "public");
+        db.createRating("Weird movie", "3", "3", "scale","Eggplant", movie65.get().getId(), "public");
+        db.createRating("Animal cuteness", "7", "9", "scale","Eggplant", movie65.get().getId(), "public");
 
         db.createReview(movie65.get().getId(), "Totoro can get it.", "Eggplant", "public");
         db.createReview(movie65.get().getId(), "Eggplant, CHILL. This movie was 4/5", "Dragonfruit", "public");
@@ -1299,9 +1299,9 @@ public class PopulationData {
         db.createTag("Animation", movie66.get().getId(), "Huckleberry", "public");
         db.createTag("Fantasy", movie66.get().getId(), "Huckleberry", "public");
 
-        db.createRating("Weird plot", "5", "6", "Huckleberry", movie66.get().getId(), "public");
-        db.createRating("Strange movie", "1", "8", "Huckleberry", movie66.get().getId(), "public");
-        db.createRating("Not sure how to feel", "10", "10", "Huckleberry", movie66.get().getId(), "public");
+        db.createRating("Weird plot", "5", "6", "scale","Huckleberry", movie66.get().getId(), "public");
+        db.createRating("Strange movie", "1", "8", "scale","Huckleberry", movie66.get().getId(), "public");
+        db.createRating("Not sure how to feel", "10", "10", "scale","Huckleberry", movie66.get().getId(), "public");
 
         db.createReview(movie66.get().getId(), "BOOOOOO TRash. I AM SO MADS!!!!", "Huckleberry", "public");
         db.createReview(movie66.get().getId(), "This movie made me cry and idk why.", "Cherry", "public");
@@ -1321,9 +1321,9 @@ public class PopulationData {
         db.createTag("Adventure", movie67.get().getId(), "Etrog", "public");
         db.createTag("Comedy", movie67.get().getId(), "Etrog", "public");
 
-        db.createRating("Cutest movies", "7", "8", "Etrog", movie67.get().getId(), "public");
-        db.createRating("Talking animals", "1", "2", "Etrog", movie67.get().getId(), "public");
-        db.createRating("Interspecies relationships", "4", "4", "Etrog", movie67.get().getId(), "public");
+        db.createRating("Cutest movies", "7", "8", "scale","Etrog", movie67.get().getId(), "public");
+        db.createRating("Talking animals", "1", "2", "thumbsup", "Etrog", movie67.get().getId(), "public");
+        db.createRating("Interspecies relationships", "4", "4", "scale","Etrog", movie67.get().getId(), "public");
 
         db.createReview(movie67.get().getId(), "I wanna marry the baron", "Etrog", "public");
         db.createReview(movie67.get().getId(), "Get in line Etrog. thi smovie was spectavular. Especially the baron", "Cranberry", "public");
@@ -1343,9 +1343,9 @@ public class PopulationData {
         db.createTag("Drama", movie68.get().getId(), "Elderberry", "public");
         db.createTag("Fantasy", movie68.get().getId(), "Elderberry", "public");
 
-        db.createRating("Weird plot", "3", "6", "Elderberry", movie68.get().getId(), "public");
-        db.createRating("Animal cuteness", "1", "9", "Elderberry", movie68.get().getId(), "public");
-        db.createRating("They will divorce from lack of planning", "3", "4", "Elderberry", movie68.get().getId(), "public");
+        db.createRating("Weird plot", "3", "6", "scale","Elderberry", movie68.get().getId(), "public");
+        db.createRating("Animal cuteness", "1", "9", "scale","Elderberry", movie68.get().getId(), "public");
+        db.createRating("They will divorce from lack of planning", "3", "4", "scale","Elderberry", movie68.get().getId(), "public");
 
         db.createReview(movie68.get().getId(), "She was so desperate, I can't.", "Elderberry", "public");
         db.createReview(movie68.get().getId(), "Like your mom Elderberry??? Wrecking people's homes?? I'm ashamed to be your distant cousin. This movie was a MASTERPIECE.", "Cherry", "public");
@@ -1366,9 +1366,9 @@ public class PopulationData {
         db.createTag("Action", movie69.get().getId(), "Emblica", "public");
         db.createTag("Adventure", movie69.get().getId(), "Emblica", "public");
 
-        db.createRating("Cute female lead", "1", "4", "Emblica", movie69.get().getId(), "public");
-        db.createRating("Powerful female lead", "6", "10", "Emblica", movie69.get().getId(), "public");
-        db.createRating("Girl power", "2", "7", "Emblica", movie69.get().getId(), "public");
+        db.createRating("Cute female lead", "1", "4", "scale","Emblica", movie69.get().getId(), "public");
+        db.createRating("Powerful female lead", "6", "10", "scale","Emblica", movie69.get().getId(), "public");
+        db.createRating("Girl power", "2", "7", "scale","Emblica", movie69.get().getId(), "public");
 
         db.createReview(movie69.get().getId(), "YASSS GIRL POWER", "Emblica", "public");
         db.createReview(movie69.get().getId(), "Don't get the hype.", "Elderberry", "public");
@@ -1389,9 +1389,9 @@ public class PopulationData {
         db.createTag("Action", movie70.get().getId(), "Goumi", "public");
         db.createTag("Fantasy", movie70.get().getId(), "Goumi", "public");
 
-        db.createRating("Interspecies relationships", "1", "4", "Goumi", movie70.get().getId(), "public");
-        db.createRating("Strong male lead", "3", "9", "Goumi", movie70.get().getId(), "public");
-        db.createRating("Father needs to be gone", "7", "10", "Goumi", movie70.get().getId(), "public");
+        db.createRating("Interspecies relationships", "1", "4", "scale","Goumi", movie70.get().getId(), "public");
+        db.createRating("Strong male lead", "3", "9", "scale","Goumi", movie70.get().getId(), "public");
+        db.createRating("Father needs to be gone", "7", "10", "scale","Goumi", movie70.get().getId(), "public");
 
         db.createReview(movie70.get().getId(), "I loved Broly, like I think I'm in love.", "Goumi", "public");
         db.createReview(movie70.get().getId(), "BROLY IS SO HOTTTTTTT", "Emblica", "public");
@@ -1413,9 +1413,9 @@ public class PopulationData {
         db.createTag("Biography", movie71.get().getId(), "Pineberry", "public");
         db.createTag("Deception", movie71.get().getId(), "Pineberry", "public");
 
-        db.createRating("Forgery?", "1", "10", "Pineberry", movie71.get().getId(), "public");
-        db.createRating("Best Chase scene", "6", "10", "Pineberry", movie71.get().getId(), "public");
-        db.createRating("Funny", "4", "5", "Pineberry", movie71.get().getId(), "public");
+        db.createRating("Forgery?", "1", "10", "scale","Pineberry", movie71.get().getId(), "public");
+        db.createRating("Best Chase scene", "6", "10", "scale","Pineberry", movie71.get().getId(), "public");
+        db.createRating("Funny", "4", "5", "scale","Pineberry", movie71.get().getId(), "public");
 
         db.createReview(movie71.get().getId(), "I don't rememeber what I just watvched.", "Cherry", "public");
         db.createReview(movie71.get().getId(), "That's cause you have the attention span of a fish Cherry. This moovie was AWESOME", "Banana", "public");
@@ -1434,9 +1434,9 @@ public class PopulationData {
         db.createTag("Comedy", movie72.get().getId(), "Pineapple", "public");
         db.createTag("Family", movie72.get().getId(), "Pineapple", "public");
 
-        db.createRating("FamilyRating?", "5", "9", "Pineapple", movie72.get().getId(), "public");
-        db.createRating("Shazam is Hot", "1", "2", "Pineapple", movie72.get().getId(), "public");
-        db.createRating("LOLFunny", "6", "7", "Pineapple", movie72.get().getId(), "public");
+        db.createRating("FamilyRating?", "5", "9", "scale","Pineapple", movie72.get().getId(), "public");
+        db.createRating("Shazam is Hot", "1", "2", "yes/no", "Pineapple", movie72.get().getId(), "public");
+        db.createRating("LOLFunny", "6", "7", "scale","Pineapple", movie72.get().getId(), "public");
 
         db.createReview(movie72.get().getId(), "Shazam is the best. I've been if love with the character since I was 9.", "Pineberry", "public");
         db.createReview(movie72.get().getId(), "What the heck is the plot?? Like wheere did ythe greater powers come from??", "Pineapple", "public");
@@ -1454,9 +1454,9 @@ public class PopulationData {
         db.createTag("Haunting", movie73.get().getId(), "Plantain", "public");
         db.createTag("Thriller", movie73.get().getId(), "Plantain", "public");
 
-        db.createRating("TooScary", "1", "8", "Plantain", movie73.get().getId(), "public");
-        db.createRating("HahaScary", "3", "3", "Plantain", movie73.get().getId(), "public");
-        db.createRating("NojumpScare?", "4", "5", "Plantain", movie73.get().getId(), "public");
+        db.createRating("TooScary", "1", "8", "scale","Plantain", movie73.get().getId(), "public");
+        db.createRating("HahaScary", "3", "3", "scale","Plantain", movie73.get().getId(), "public");
+        db.createRating("NojumpScare?", "4", "5", "scale","Plantain", movie73.get().getId(), "public");
 
         db.createReview(movie73.get().getId(), "I was not scared at ALL. Do better.", "Plantain", "public");
         db.createReview(movie73.get().getId(), "Bro, I saw you pee your pants in the theater Plantain. Grow up. 10/10 one of my favorite horror movies.", "Peach", "public");
@@ -1476,9 +1476,9 @@ public class PopulationData {
         db.createTag("Classic", movie74.get().getId(), "Pitaya", "public");
         db.createTag("Friendship", movie74.get().getId(), "Pitaya", "public");
 
-        db.createRating("Best movie of all time", "4", "5", "Pitaya", movie74.get().getId(), "public");
-        db.createRating("Best Robot character", "2", "3", "Pitaya", movie74.get().getId(), "public");
-        db.createRating("Too sad", "3", "4", "Pitaya", movie74.get().getId(), "public");
+        db.createRating("Best movie of all time", "4", "5", "scale","Pitaya", movie74.get().getId(), "public");
+        db.createRating("Best Robot character", "2", "3", "scale","Pitaya", movie74.get().getId(), "public");
+        db.createRating("Too sad", "3", "4", "scale","Pitaya", movie74.get().getId(), "public");
 
         db.createReview(movie74.get().getId(), "Cool movie. Very Pitaya friendly.", "Pitaya", "public");
         db.createReview(movie74.get().getId(), "I wanna be friends with the iron Giant", "Keith", "public");
@@ -1496,9 +1496,9 @@ public class PopulationData {
         db.createTag("Family", movie75.get().getId(), "Plumcots", "public");
         db.createTag("Obsession", movie75.get().getId(), "Plumcots", "public");
 
-        db.createRating("Wrong I.T movie", "5", "9", "Plumcots", movie75.get().getId(), "public");
-        db.createRating("Pretty Techy", "2", "3", "Plumcots", movie75.get().getId(), "public");
-        db.createRating("Never using the internet again", "6", "10", "Plumcots", movie75.get().getId(), "public");
+        db.createRating("Wrong I.T movie", "5", "9", "scale","Plumcots", movie75.get().getId(), "public");
+        db.createRating("Pretty Techy", "2", "3", "scale","Plumcots", movie75.get().getId(), "public");
+        db.createRating("Never using the internet again", "6", "10", "scale","Plumcots", movie75.get().getId(), "public");
 
         db.createReview(movie75.get().getId(), "I was so scared.", "Plumcots", "public");
         db.createReview(movie75.get().getId(), "That's why I didn't want to bring you Plumcot. I'm ashamed to have you as a sibling. It was 4/10", "Keith", "public");
@@ -1516,9 +1516,9 @@ public class PopulationData {
         db.createTag("Adventure", movie76.get().getId(), "Pomato", "public");
         db.createTag("Science Fiction", movie76.get().getId(), "Pomato", "public");
 
-        db.createRating("Too many apes", "7", "8", "Pomato", movie76.get().getId(), "public");
-        db.createRating("The Rock", "4", "9", "Pomato", movie76.get().getId(), "public");
-        db.createRating("Too badass", "5", "7", "Pomato", movie76.get().getId(), "public");
+        db.createRating("Too many apes", "7", "8", "scale","Pomato", movie76.get().getId(), "public");
+        db.createRating("The Rock", "4", "9", "scale","Pomato", movie76.get().getId(), "public");
+        db.createRating("Too badass", "5", "7", "scale","Pomato", movie76.get().getId(), "public");
 
         db.createReview(movie76.get().getId(), "OOOHHHHHH. I hjave zero recollection of this.", "Pomato", "public");
         db.createReview(movie76.get().getId(), "What even are you? Have you figured out your identity yet Pomato? This movie was AMAZING.", "Tomato", "public");
@@ -1536,9 +1536,9 @@ public class PopulationData {
         db.createTag("Comedy", movie77.get().getId(), "Pomegranate", "public");
         db.createTag("Family Friendly", movie77.get().getId(), "Pomegranate", "public");
 
-        db.createRating("Donkey and the Dragon?", "5", "10", "Pomegranate", movie77.get().getId(), "public");
-        db.createRating("Fiona <3", "3", "4", "Pomegranate", movie77.get().getId(), "public");
-        db.createRating("Talking Donkey", "3", "6", "Pomegranate", movie77.get().getId(), "public");
+        db.createRating("Donkey and the Dragon?", "5", "10", "scale","Pomegranate", movie77.get().getId(), "public");
+        db.createRating("Fiona <3", "3", "4", "scale","Pomegranate", movie77.get().getId(), "public");
+        db.createRating("Talking Donkey", "3", "6", "scale","Pomegranate", movie77.get().getId(), "public");
 
         db.createReview(movie77.get().getId(), "I loved the songs.", "Pomegranite", "public");
         db.createReview(movie77.get().getId(), "Shrek is my soul-mate", "Pomato", "public");
@@ -1557,9 +1557,9 @@ public class PopulationData {
         db.createTag("Comedy", movie78.get().getId(), "Keith", "public");
         db.createTag("Family Friendly", movie78.get().getId(), "Keith", "public");
 
-        db.createRating("Too Weird", "6", "9", "Keith", movie78.get().getId(), "public");
-        db.createRating("DiCaprio handsome", "4", "4", "Keith", movie78.get().getId(), "public");
-        db.createRating("Timeee", "1", "2", "Keith", movie78.get().getId(), "public");
+        db.createRating("Too Weird", "6", "9", "scale","Keith", movie78.get().getId(), "public");
+        db.createRating("DiCaprio handsome", "4", "4", "scale","Keith", movie78.get().getId(), "public");
+        db.createRating("Timeee", "1", "2", "thumbsup", "Keith", movie78.get().getId(), "public");
 
         db.createReview(movie78.get().getId(), "I don't believe this movie contributes to the betterment of the universe.", "Keith", "public");
         db.createReview(movie78.get().getId(), "Failure to th universe this INception movie", "Binura", "public");
@@ -1577,9 +1577,9 @@ public class PopulationData {
         db.createTag("Drama", movie79.get().getId(), "Quandong", "public");
         db.createTag("Prison", movie79.get().getId(), "Quandong", "public");
 
-        db.createRating("Morgan’s voice", "7", "10", "Quandong", movie79.get().getId(), "public");
-        db.createRating("Classical", "3", "3", "Quandong", movie79.get().getId(), "public");
-        db.createRating("Best prison movie", "4", "6", "Quandong", movie79.get().getId(), "public");
+        db.createRating("Morgan’s voice", "7", "10", "scale","Quandong", movie79.get().getId(), "public");
+        db.createRating("Classical", "3", "3", "scale","Quandong", movie79.get().getId(), "public");
+        db.createRating("Best prison movie", "4", "6", "scale","Quandong", movie79.get().getId(), "public");
 
         db.createReview(movie79.get().getId(), "LOVE THIS MOOVIEEE", "Pumpkin", "public");
         db.createReview(movie79.get().getId(), "It was OK.", "Quandong", "public");
@@ -1598,9 +1598,9 @@ public class PopulationData {
         db.createTag("Thriller", movie80.get().getId(), "Raisin", "public");
         db.createTag("DNA", movie80.get().getId(), "Raisin", "public");
 
-        db.createRating("Best scream", "1", "7", "Raisin", movie80.get().getId(), "public");
-        db.createRating("Velociraptor evil", "1", "3", "Raisin", movie80.get().getId(), "public");
-        db.createRating("Jeff Goldblum", "10", "10", "Raisin", movie80.get().getId(), "public");
+        db.createRating("Best scream", "1", "7", "scale","Raisin", movie80.get().getId(), "public");
+        db.createRating("Velociraptor evil", "1", "3", "scale","Raisin", movie80.get().getId(), "public");
+        db.createRating("Jeff Goldblum", "10", "10", "scale","Raisin", movie80.get().getId(), "public");
 
         db.createReview(movie80.get().getId(), "BOOOOOOO. WHYY?? Why kill the dynosours?????", "Raisin", "public");
         db.createReview(movie80.get().getId(), "As a vegan this movie is a crime. 1/5", "Pineapple", "public");

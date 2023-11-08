@@ -53,7 +53,7 @@ public class RatingDataService {
     String requesterUsername = getUsername(request);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    dbc.createRating(rating.getRatingName(), rating.getUserRating(), rating.getUpperbound(), requesterUsername, rating.getMovieId(), rating.getPrivacy());
+    dbc.createRating(rating.getRatingName(), rating.getUserRating(), rating.getUpperbound(), rating.getSubtype(), requesterUsername, rating.getMovieId(), rating.getPrivacy());
     return Response.ok().build();
   }
 

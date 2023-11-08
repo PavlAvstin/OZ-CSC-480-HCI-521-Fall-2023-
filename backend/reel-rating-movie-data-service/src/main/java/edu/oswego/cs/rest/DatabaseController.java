@@ -41,7 +41,7 @@ public class DatabaseController {
 
   /**
    * <p>get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
-   * be queried and updated by the other CRUD operations. Currently there are
+   * be queried and updated by the other CRUD operations.
    */
   public MongoCollection<Document> getTagCollection() {
     return getMovieDatabase().getCollection("tags");
@@ -69,7 +69,7 @@ public class DatabaseController {
 
   /**
    * Image methods are used to store, edit, and retrieve images to display within the application. Due to MongoDB's
-   * approach to storing images collections cannot be used. Instead GridFSBuckets are used and Mongo handles the
+   * approach to storing images collections cannot be used. Instead, GridFSBuckets are used and Mongo handles the
    * underlying splitting and storing of data.
    *
    */
@@ -413,7 +413,7 @@ public class DatabaseController {
    * @param userRating value assigned by the user
    * @param upperbound upperbound of the rating scale. 0 < upperbound < 11
    */
-  public void createRating(String ratingName, String userRating, String upperbound, String username,
+  public void createRating(String ratingName, String userRating, String upperbound, String subtype, String username,
                            String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
@@ -441,7 +441,8 @@ public class DatabaseController {
                   .append("movieTitle", movie.get("title"))
                   .append("movieId", movieIdHexString)
                   .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-                  .append("privacy", privacy);
+                  .append("privacy", privacy)
+                  .append("subtype", subtype);
       ratingCollection.insertOne(newRating);
 
       Bson ratingCategoryMovieFilter = Filters.eq("ratingCategoryNames", ratingName);
