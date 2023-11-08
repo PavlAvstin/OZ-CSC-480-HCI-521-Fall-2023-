@@ -19,7 +19,7 @@
     <header class="row darkFG g-0 brBottom bcBottom pt-1 pb-1">
         <div class="col-3 offset-1">
             <div class="row">
-                <div class="col-2 iconWidth p-0">
+                <div class="col-2 iconWidth p-0" data-bs-toggle="offcanvas" href="#filterMenu">
                     <img src="../images/list-white.png" class="img-fluid vcToParent" />
                 </div> 
                 <div class="col-2">
@@ -36,7 +36,7 @@
         </div>
 
         <div class="col-3 offset-4">
-            <div class="row g-0 vcToParent customShadow">
+            <div class="row g-0 vcToParent">
                 <div class="input-group" id="searchContainer">
                     <input class="form-control brAll" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -55,21 +55,23 @@
     <!-- Start of cards -->
     <div class="row"> 
         <div class="col-10 offset-1">
-            <title-with-line
-                title="New Movies" fontSize="23px"
-                lineColorOne="#3d37bf" lineColorTwo="#6864ca"
-                class="mtLG mbLG"
-            >
-            </title-with-line>
+            <div class="mtSM">
+                <title-with-line
+                    title="New Movies" fontSize="28px"
+                    lineColorOne="#3d37bf" lineColorTwo="#6864ca"
+                >
+                </title-with-line>
+            </div>
             <div class="carousel slide mtXXSM row" data-bs-ride="carousel" id="recentReleaseCarousel">
                 <!-- Filled with JS -->
             </div>
-            <title-with-line
-                title="Most Reviewed" fontSize="23px"
-                lineColorOne="#3d37bf" lineColorTwo="#6864ca"
-                class="mtLG mbLG"
-            >
-            </title-with-line>
+            <div class="mtSM">
+                <title-with-line
+                    title="Most Reviewed" fontSize="28px"
+                    lineColorOne="#3d37bf" lineColorTwo="#6864ca"
+                >
+                </title-with-line>
+            </div>
             <div class="carousel slide mtXXSM row" data-bs-ride="carousel" id="mostReviewedCarousel">
                 <!-- Filled with JS -->
             </div>
@@ -94,10 +96,10 @@
                                 >
                                     <!-- Filled with JS -->
                                 </a>
-                                <a href="" class="brAll bgNeutral centerImg brAll hLG" target="_blank"><!--Share Button Logo-->
+                                <a href="" class="brAll bgNeutral centerImg brAll hLG notImplemented" target="_blank"><!--Share Button Logo-->
                                     <img src="../images/share.png" alt="Share Button logo" class="img-fluid iconWidth">
                                 </a>
-                                <a href="" class="discordColor centerImg brAll  hLG" target="_blank"><!--Discord Button Logo-->
+                                <a href="" class="discordColor centerImg brAll hLG notImplemented" target="_blank"><!--Discord Button Logo-->
                                     <img src="../images/Discord.png" alt="discord-logo Button" class="img-fluid iconWidth">
                                 </a>
                                 <a class="close brAll" data-bs-dismiss="modal" aria-label="Close">
@@ -183,7 +185,7 @@
                         <h2 class="col-6 lgFont fontWhite" id="ratingTitle"></h2>
                         <div class="col-6">
                             <div id="ratingActionButtonRow">
-                                <a class="bgDarkNeutral mdFont textCenter brAll hLG rateToggle fontWhite" data-bs-dismiss="Modal">Back</a>
+                                <a class="bgDarkNeutral mdFont textCenter brAll hLG rateToggle fontWhite" data-bs-dismiss="modal" aria-label="Back">Back</a>
                                 <a class="close brAll" data-bs-dismiss="modal" aria-label="Close">
                                     <img src="../images/close-purple-with-white-x.png" class="img-fluid iconWidth"/>
                                 </a>
@@ -322,155 +324,29 @@
     </div>
 
 
-
-    
-
 <!--OffCanvas-->
-    <div class="offcanvas-body fontWhite hidden">
+    <div class="offcanvas offcanvas-start darkFG fontWhite" data-bs-backdrop="false" tabindex="-1" id="filterMenu">
         <div class="row">
-            <div class="input-group" >
-                <input class="form-control brAll m-4 " type="search" placeholder="Search" aria-label="Search">
+            <div class="col-10">
+                <input class="form-control brAll fullWidth" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <div class="col-2">
+                <a class="close brAll text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
+                    <img src="../images/close-purple-with-white-x.png" class="img-fluid iconWidth"/>
+                </a>
             </div>
         </div>
-
-        <!--CHeck Boxes list Start here-->
-        <ul>
-            <h5> Default Categories </h5>
-            
-            <!--Comedy check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Comedy
-                </label>
+        <div class="offcanvas-body">
+            <div class="lgFont mtMD">Filters</div>
+            <div id="filterContainer">
+                
             </div>
-            
-            <!--Drama check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Drama
-                </label>
+    
+            <div class="lgFont mtMD">Popular Filters</div> 
+            <div id="freqFilterContainer">
+    
             </div>
-
-            <!--Horror check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Horror
-                </label>
-            </div>
-
-            <!--SCi-Fi check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    sci-Fi
-                </label>
-            </div>
-
-            <!--Fantasy check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Fantasy
-                </label>
-            </div>
-
-            <!--Action check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Action
-                </label>
-            </div>
-
-            <!--Romance check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Romance
-                </label>
-            </div>
-
-            <!--Adventure check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Adventure
-                </label>
-            </div>
-
-            <!--War check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    War
-                </label>
-            </div>
-
-            <!--Biography check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Biography
-                </label>
-            </div>
-
-            <!--Super Hero check box label-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Super Hero
-                </label>
-            </div>
-        </ul> <!-- END first list-->
-
-        <ul><!--Second List START here-->
-            <h5> Frequency Used </h5>
-
-            <!--Romance check box label under Frequency Used-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Romance
-                </label>
-            </div>
-
-            <!--Adventure check box label under Frequency Used-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Adventure
-                </label>
-            </div>
-
-            <!--War check box label under Frequency Used-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    War
-                </label>
-            </div>
-
-            <!--Biography check box label under Frequency Used-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Biography
-                </label>
-            </div>
-
-            <!--Super Hero check box label under Frequency Used-->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox1">
-                <label class="form-check-label" for="checkbox1">
-                    Super Hero
-                </label>
-            </div>
-
-        </ul><!--Second list END Here -->
-        
+        </div>
     </div>
 
     <footer>
