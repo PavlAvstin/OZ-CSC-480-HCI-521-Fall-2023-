@@ -102,6 +102,9 @@ function loginInit(){
     });
 
 
+    var notImplemented = document.getElementsByClassName("notImplemented");
+
+
     //Vertical Center Elms that need it
     var windowVertCenterElms = document.getElementsByClassName("vcToWindow");
     setInterval(()=>{
@@ -118,15 +121,22 @@ function homeInit(){
         Home.getRatingsPageData(movieTitle ,movieID);
     });
 
+    //Get Recent movies and append
     NetworkReq.fetchGet(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
         Home.appendRowDataToRecentRelease
     );
 
+    //Get movies with most reviews and append
     NetworkReq.fetchGet(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
         Home.appendRowDataToMostReviewed
     );
+
+    //Append the filter menu with dynamic id's to avoid all the id errors
+    Home.appendFilterMenu();
+    Home.appendFreqFilterMenu();
+
     
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");

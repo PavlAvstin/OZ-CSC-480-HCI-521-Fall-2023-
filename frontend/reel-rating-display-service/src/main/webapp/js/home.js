@@ -41,6 +41,41 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     appendUpDownVote();
 }
 
+
+export const appendFilterMenu = ()=>{
+    var filterMenuContainer = document.getElementById("filterContainer");
+    var filterRow = Tools.createElm("div", null, "class", "row");
+    var filterOptions = [
+        "Comedy", "Drama", "Horror", "Sci-Fi", "Fantasy", "Action",
+        "Romance", "Adventure", "War", "Biography", "Super Hero"
+    ];
+    for(let x=0; x < filterOptions.length; x++){
+        var formCheck = Tools.createElm("div", null, "class", "form-check col-12 mtSM");
+        var formInput = Tools.createElm("input", null, ["id", "type", "class"], [`filter${x}`, "checkbox", "col-2"]);
+        var label = Tools.createElm("label", filterOptions[x], ["class", "for"], ["form-check-label col-10", `filter${x}`]);
+        formCheck.appendChild(formInput);
+        formCheck.appendChild(label);
+        filterRow.appendChild(formCheck);
+    }
+    filterMenuContainer.appendChild(filterRow);
+}
+
+
+export const appendFreqFilterMenu = ()=>{
+    var filterMenuContainer = document.getElementById("freqFilterContainer");
+    var filterRow = Tools.createElm("div", null, "class", "row");
+    var filterOptions = ["Romance","Adventure","War","Biography","Super Hero"];
+    for(let x=0; x < filterOptions.length; x++){
+        var formCheck = Tools.createElm("div", null, "class", "form-check col-12 mtSM");
+        var formInput = Tools.createElm("input", null, ["id","type", "class"], [`freqFilter${x}`,"checkbox", "col-2"]);
+        var label = Tools.createElm("label", filterOptions[x], ["class", "for"], ["form-check-label col-10", `freqFilter${x}`]);
+        formCheck.appendChild(formInput);
+        formCheck.appendChild(label);
+        filterRow.appendChild(formCheck);
+    }
+    filterMenuContainer.appendChild(filterRow);
+}
+
 function appendMovies(movies, carouselId) {
     const recentReleasedCarousel = document.getElementById(carouselId);
     const carouselInner = document.createElement('div');
@@ -73,31 +108,30 @@ function appendMovies(movies, carouselId) {
         const cardBody = document.createElement('div');
 
         const title = document.createElement('div');
-        title.classList.add("col-10", "card-title", "mdFont");
+        title.classList.add("col-12", "card-title", "mdFont", "mb-0");
         title.textContent = `${movie.title}`;
         // Styles for title element
-        title.style.height = "34.50px";
+        title.style.height = "34px";
         title.style.textOverflow = "ellipsis";
         title.style.overflow = "hidden";
         title.style.whiteSpace = "nowrap";
 
         cardBody.appendChild(title);
 
-        cardBody.classList.add("card-body");
+        cardBody.classList.add("card-body", "pb-2", "pt-0", "px-2");
         const categoryAndRating = document.createElement('div');
         categoryAndRating.classList.add("row", "g-0");
         const category = document.createElement('div');
-        category.classList.add("col-10", "card-title", "mdFont");
+        category.classList.add("col-10", "smFont");
         category.textContent = `${movie.mostPopularRatingCategory}`;
 
-        category.style.textDecoration = "underline";
         category.style.textOverflow = "ellipsis";
         category.style.overflow = "hidden";
         category.style.whiteSpace = "nowrap";
 
         categoryAndRating.appendChild(category);
         const rating = document.createElement('div');
-        rating.classList.add("col-2", "textRight", "mdFont");
+        rating.classList.add("col-2", "textRight", "smFont");
         rating.textContent = movie.mostPopRatingAvg;
         rating.style.overflow = "hidden";
         rating.style.whiteSpace = "nowrap";
@@ -118,7 +152,7 @@ function appendMovies(movies, carouselId) {
         const tagsText = movie.attachedTags;
         for (let tag of tagsText) {
             const tagElement = document.createElement('div');
-            tagElement.classList.add("brAll", "pXXSM", "col-4", "textCenter", "fontWhite", "bgSecondary", "xsFont");
+            tagElement.classList.add("brAll", "pXXSM", "ptXSM", "pbXSM", "col-4", "textCenter", "fontWhite", "bgSecondary", "xsFont");
             tagElement.textContent = `${tag}`;
             tags.appendChild(tagElement);
         }
@@ -333,3 +367,5 @@ function appendFriends(){
     }
     document.getElementById("friendsContainer").appendChild(tempContainer);
 }
+
+
