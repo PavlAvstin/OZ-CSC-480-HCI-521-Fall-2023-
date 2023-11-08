@@ -141,7 +141,9 @@ public class DatabaseController {
    * @return String hexId of the image related to the provided movie
    */
   public String getMovieImageId(String movieId) {
-    return getMovieDocumentWithHexId(movieId).getString("movieImageId");
+    Document movieDocument = getMovieDocumentWithHexId(movieId);
+    if (movieDocument == null) return null;
+    return movieDocument.getString("movieImageId");
   }
 
 
@@ -720,6 +722,11 @@ public class DatabaseController {
         Aggregates.sort(Sorts.descending("count"))
       )
     ).first();
+
+    // return null immediately if ratingNameDoc is null
+    if (ratingNameDoc == null) {
+      return null;
+    }
 
     // gets the most popular upperbound for the category
     String mostPopularCategoryName = ratingNameDoc.getString("_id");

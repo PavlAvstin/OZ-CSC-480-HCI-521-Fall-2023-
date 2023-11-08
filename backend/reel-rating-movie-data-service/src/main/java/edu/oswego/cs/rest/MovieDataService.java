@@ -19,6 +19,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,9 +163,12 @@ public class MovieDataService {
       Rating r = dbc.getMostPopularAggregatedRatingForMovie(m.getId());
 
       // set the appropriate fields for each movie
-      m.setMostPopularRatingCategory(r.getRatingName());
-      m.setMostPopRatingUpperBound(r.getUpperbound());
-      m.setMostPopRatingAvg(r.getUserRating());
+      //Do this if not null, do nothing if null.
+      if (r != null) {
+        m.setMostPopularRatingCategory(r.getRatingName());
+        m.setMostPopRatingUpperBound(r.getUpperbound());
+        m.setMostPopRatingAvg(r.getUserRating());
+      }
 
       // names of three tags from the movie
       List<Tag> tagList = dbc.getThreeTags(m.getId());
@@ -192,10 +196,14 @@ public class MovieDataService {
   @GET
   @Produces("image/jpg")
   @Path("/movie/getMovieImage/{movieId}")
-  public byte[] getMovieImage(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+  public Response getMovieImage(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
+    String requesterUsername = getUsername(request);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     String imageId = dbc.getMovieImageId(movieId);
-    return dbc.getStockImage(imageId);
+    if (imageId == null) return Response.status(Status.NOT_FOUND).build();
+    byte[] image = dbc.getStockImage(imageId);
+    return Response.ok(image).build();
   }
 
   /**
