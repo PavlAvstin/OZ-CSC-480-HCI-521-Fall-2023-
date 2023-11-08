@@ -191,7 +191,7 @@ public class MovieDataService {
    * @throws Exception TODO not sure if that is needed
    */
   @GET
-  @Produces("image/jpg")
+  @Produces("image/webp")
   @Path("/movie/getMovieImage/{movieId}")
   public Response getMovieImage(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
     String requesterUsername = getUsername(request);

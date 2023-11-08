@@ -88,7 +88,7 @@ public class DatabaseController {
     GridFSBucket gridFSBucket = getStockImageBucket();
     for (int i = 1; i <= numMovieImages; i++) {
       // create a name to store the image
-      String movieFileName = "stockImage" + i + ".jpg";
+      String movieFileName = "stockImage" + i + ".webp";
       String movieImagePath = "images/" + movieFileName;
       // attempt to grab and upload the image
       try {
@@ -111,7 +111,7 @@ public class DatabaseController {
 
     // Account for movieImages starting at an index of 1.
     int movieNumber = random.nextInt(numMovieImages) + 1;
-    String movieFileName = "stockImage" + movieNumber + ".jpg";
+    String movieFileName = "stockImage" + movieNumber + ".webp";
     GridFSBucket gridFSBucket = getStockImageBucket();
     Bson query = Filters.eq("filename", movieFileName);
     return gridFSBucket.find(query).first().getObjectId().toHexString();
