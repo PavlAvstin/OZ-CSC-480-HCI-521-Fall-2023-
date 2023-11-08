@@ -58,7 +58,7 @@ public class DatabaseController {
    * @param userRating value assigned by the user
    * @param upperbound upperbound of the rating scale. 0 < upperbound < 11
    */
-  public void createRating(String ratingName, String userRating, String upperbound, String username,
+  public void createRating(String ratingName, String userRating, String upperbound, String subtype, String username,
                            String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
@@ -86,7 +86,8 @@ public class DatabaseController {
                   .append("movieTitle", movie.get("title"))
                   .append("movieId", movieIdHexString)
                   .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-                  .append("privacy", privacy);
+                  .append("privacy", privacy)
+                  .append("subtype", subtype);
       ratingCollection.insertOne(newRating);
 
       Bson ratingCategoryMovieFilter = Filters.eq("ratingCategoryNames", ratingName);
@@ -129,6 +130,7 @@ public class DatabaseController {
       ra.setPrivacy(document.getString("privacy"));
       ra.setMovieId(document.getString("movieId"));
       ra.setUpperbound(document.getString("upperbound"));
+      ra.setSubtype(document.getString("subtype"));
       return ra;
     });
     var list = new ArrayList<Rating>();
