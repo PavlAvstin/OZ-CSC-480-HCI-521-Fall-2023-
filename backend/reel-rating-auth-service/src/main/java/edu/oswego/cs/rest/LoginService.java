@@ -72,10 +72,10 @@ public class LoginService {
     Pattern emailPattern = Pattern.compile(".*@.*"); 
     Matcher emailMatcher = emailPattern.matcher(email);
 
-    Pattern passwordLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{8,}");
+    Pattern passwordLength = Pattern.compile(".{8,}");
     Matcher passwordLengthMatcher = passwordLength.matcher(password);
 
-    Pattern passwordSpecialCharacter = Pattern.compile(".*[!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{1,}.*");
+    Pattern passwordSpecialCharacter = Pattern.compile(".*\\W{1,}.*");
     Matcher passwordSpecialMatcher = passwordSpecialCharacter.matcher(password);
 
     Pattern passwordNumberRequirement = Pattern.compile(".*\\d{1,}.*");
