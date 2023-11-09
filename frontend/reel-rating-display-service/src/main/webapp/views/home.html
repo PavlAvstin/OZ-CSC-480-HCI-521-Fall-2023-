@@ -87,19 +87,19 @@
             <div class="modal-content darkFG">
                 <div class="modal-body"><!-- Modal Body -->
                     <div class="row"><!-- Modal Header -->
-                        <h2 class="col-6 lgFont fontWhite" id="showMoreTitle"><!--Filled with JS--></h2>
+                        <h2 class="col-6 lgFont fontWhite hideOverflow" id="showMoreTitle"><!--Filled with JS--></h2>
                         <div class="col-6">
                             <div id="modalActionButtonsRow">
                                 <a 
-                                    class="btCalloutStyle mdFont textCenter brAll hLG rateToggle" 
+                                    class="btCalloutStyle mdFont textCenter brAll hLG rateToggle hideOverflow px-2" 
                                     data-bs-toggle="modal" data-bs-target="#rateModal" id="rateButton"
                                 >
                                     <!-- Filled with JS -->
                                 </a>
-                                <a href="" class="brAll bgNeutral centerImg brAll hLG notImplemented" target="_blank"><!--Share Button Logo-->
+                                <a class="brAll bgNeutral centerImg brAll hLG notImplemented"><!--Share Button Logo-->
                                     <img src="../images/share.png" alt="Share Button logo" class="img-fluid iconWidth">
                                 </a>
-                                <a href="" class="discordColor centerImg brAll hLG notImplemented" target="_blank"><!--Discord Button Logo-->
+                                <a class="discordColor centerImg brAll hLG notImplemented"><!--Discord Button Logo-->
                                     <img src="../images/Discord.png" alt="discord-logo Button" class="img-fluid iconWidth">
                                 </a>
                                 <a class="close brAll" data-bs-dismiss="modal" aria-label="Close">
@@ -182,7 +182,7 @@
             <div class="modal-content darkFG">
                 <div class="modal-body"><!-- Modal Body -->
                     <div class="row"><!-- Modal Header -->
-                        <h2 class="col-6 lgFont fontWhite" id="ratingTitle"></h2>
+                        <h2 class="col-6 lgFont fontWhite hideOverflow" id="ratingTitle"></h2>
                         <div class="col-6">
                             <div id="ratingActionButtonRow">
                                 <a class="bgDarkNeutral mdFont textCenter brAll hLG rateToggle fontWhite" data-bs-dismiss="modal" aria-label="Back">Back</a>
@@ -285,6 +285,24 @@
                                         <div id="cancelTag" class="btNegativeStyle brAll ptSM pbSM textCenter mtXSM mbXSM">Clear</div>
                                         <div id="shareTag" class="bgDarkNeutral brAll ptSM pbSM mtXSM mbXSM textCenter">Public</div>
                                         <div id="submitTag" class="btPrimaryStyle brAll ptSM pbSM mtXSM mbXSM textCenter">Create Rating</div>
+                                    </div>
+                                </div>
+                            </div><!-- End of Row -->
+                            <div class="row mtSM">
+                                <title-with-line
+                                    title="New Up/Down Vote" fontSize="28px"
+                                    lineColorOne="#3d37bf" lineColorTwo="#6864ca"
+                                >
+                                </title-with-line>
+                                <div id="newRatingContainer" class="col-12">
+                                    <label id="newRatingLabel" for="newRatingInput">Up/Down Name</label>
+                                    <input type="text" class="fullWidth brAll customShadow inputHeight"/>
+                                </div>
+                                <div class="col-12">
+                                    <div class="newRatingButtonsRow mtXSM">
+                                        <div id="cancelUpDown" class="btNegativeStyle brAll ptSM pbSM textCenter mtXSM mbXSM">Clear</div>
+                                        <div id="shareUpDown" class="bgDarkNeutral brAll ptSM pbSM mtXSM mbXSM textCenter">Public</div>
+                                        <div id="submitUpDown" class="btPrimaryStyle brAll ptSM pbSM mtXSM mbXSM textCenter">Create Rating</div>
                                     </div>
                                 </div>
                             </div><!-- End of Row -->
