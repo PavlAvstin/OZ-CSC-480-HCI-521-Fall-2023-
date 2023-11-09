@@ -117,7 +117,7 @@ function homeInit(){
     var showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.addEventListener("click", ()=>{
         var movieID = showMoreRateButton.getAttribute("movieID");
-        var movieTitle= document.getElementById("showMoreTitle").innerText;
+        var movieTitle = document.getElementById("showMoreTitle").innerText;
         Home.getRatingsPageData(movieTitle ,movieID);
     });
 
@@ -138,6 +138,14 @@ function homeInit(){
     Home.appendFreqFilterMenu();
 
     
+    var notImplemented = document.getElementsByClassName("notImplemented");
+    for(let x =0; x < notImplemented.length; x++){
+        notImplemented[x].addEventListener("click",()=>{
+            alert("Feature is not implemented");
+        });
+    }
+
+
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{

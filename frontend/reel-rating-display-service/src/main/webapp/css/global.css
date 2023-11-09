@@ -137,6 +137,7 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     height: var(--cardTextHeight);
     width:90%;
 }
+.hideOverflow{ overflow-x: hidden; white-space: nowrap; text-overflow: ellipsis;}
 .pointerCursor{ cursor: pointer; }
 .discordColor { background-color: var(--discordColor); }
 .centerImg{ display:grid; justify-content: center; align-items: center;}
@@ -310,13 +311,13 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     grid-template-columns: repeat(48, 1fr);
 }
 
-#cancelRating, #cancelTag, #cancelReview{ 
+#cancelRating, #cancelTag, #cancelReview, #cancelUpDown{ 
     grid-column: 1 / span 14; 
 }
-#shareRating, #shareTag, #shareReview{ 
+#shareRating, #shareTag, #shareReview, #shareUpDown{ 
     grid-column: 22 / span 12;
 }
-#submitRating, #submitTag, #submitReview{ 
+#submitRating, #submitTag, #submitReview, #submitUpDown{ 
     grid-column: 36 / span 12; 
 }
 
