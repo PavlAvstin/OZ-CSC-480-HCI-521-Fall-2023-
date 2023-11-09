@@ -1,5 +1,5 @@
-export const fetchPost = async(url, jsonData, callbackFunc)=>{
-    await fetch(url,{
+export const fetchPost = (url, jsonData, callbackFunc)=>{
+    fetch(url,{
         mode : "cors",
         method : "post",
         headers:{
@@ -8,19 +8,19 @@ export const fetchPost = async(url, jsonData, callbackFunc)=>{
         body : jsonData,
         credentials: "include"
     })
-    .then(async(serverData)=>{
+    .then((serverData)=>{
         callbackFunc(serverData);
     });   
 }
 
 
-export const fetchGet = async (url, callbackFunc)=>{
-    await fetch(url,{
+export const fetchGet = (url, callbackFunc)=>{
+    fetch(url,{
         mode : "cors",
         method : "get",
         credentials: "include"
     })
-    .then(async(serverData)=>{
+    .then((serverData)=>{
         callbackFunc(serverData);
     }); 
 }

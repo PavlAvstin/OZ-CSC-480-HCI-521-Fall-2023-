@@ -37,12 +37,6 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
         appendExistingCategories    
     );
 
-    //Get Actors
-    NetworkReq.fetchGet(
-        `${globals.actorBase}/actor/getActorsWithMovieId/${movieID}`,
-        appendActors
-    )
-
     appendUpDownVote();
 }
 
@@ -200,6 +194,12 @@ function getShowMoreData(movieID, movieTitle){
         appendExistingRatings
     );
 
+    //Get Actors
+    NetworkReq.fetchGet(
+        `${globals.actorBase}/actor/getActorsWithMovieId/${movieID}`,
+        appendActors
+    )
+
     //Get Friends Reviews
     appendFriends();//Likely will not get this feature up and running
 }
@@ -249,10 +249,15 @@ async function appendActors(serverRes){
         var actors = await serverRes.json();
         //Actors
         var actorsRow = Tools.createElm("div", null, "class", "row");
-        var currentActor;
-        for(var x =0; x < actors.length; x++){
-            currentActor = Tools.createElm("div", actors[x].name, "class", "col-4 actor");
+        if(actors.length === 0){ 
+            var currentActor = Tools.createElm("div", "No actors recorded", "class", "col-4 actor");
             actorsRow.appendChild(currentActor);
+        }
+        else{
+            for(var x =0; x < actors.length; x++){
+                var currentActor = Tools.createElm("div", actors[x].name, "class", "col-4 actor");
+                actorsRow.appendChild(currentActor);
+            }
         }
         document.getElementById("showMoreActorsContainer").appendChild(actorsRow);
     }
