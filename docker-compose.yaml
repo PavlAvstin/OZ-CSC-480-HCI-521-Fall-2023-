@@ -76,6 +76,19 @@ services:
       - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
       - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
 
+  reel-rating-search-service:
+    build:
+      context: ./backend/reel-rating-search-service/
+      dockerfile: Dockerfile
+    image: reel-rating-search-service
+    container_name: reel-rating-search-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk
+
   reel-rating-display-service:
     build:
       context: ./frontend/reel-rating-display-service
@@ -101,4 +114,5 @@ services:
       - "30502:30502"
       - "30503:30503"
       - "30504:30504"
+      - "30505:30505"
     
