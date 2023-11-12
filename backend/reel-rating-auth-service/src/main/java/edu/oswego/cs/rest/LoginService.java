@@ -42,7 +42,7 @@ public class LoginService {
         String dateTime = LocalDateTime.now().toString();
         db.setUserDateTime(username, dateTime);
         String stateMessage = "logged in";
-        return Response.ok(stateMessage).build();
+        return Response.ok(stateMessage + "," + sessionId).build();
       }
     }
     return Response.status(Status.UNAUTHORIZED).build();
@@ -112,6 +112,6 @@ public class LoginService {
     String dateTime = LocalDateTime.now().toString();
     db.createUser(username, encryptedPassword, sessionId, dateTime, email);
     String stateMessage = "Registered";
-    return Response.ok(stateMessage).build();
+    return Response.ok(stateMessage + "," + sessionId).build();
   }
 }

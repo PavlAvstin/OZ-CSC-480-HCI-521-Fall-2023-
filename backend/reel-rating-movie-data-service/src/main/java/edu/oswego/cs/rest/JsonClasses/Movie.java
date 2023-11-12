@@ -2,7 +2,7 @@ package edu.oswego.cs.rest.JsonClasses;
 
 import java.util.ArrayList;
 
-public class Movie {
+public class Movie extends JSession {
   private String id;
   private String title;
   private String director;

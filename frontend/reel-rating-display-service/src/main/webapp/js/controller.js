@@ -117,13 +117,22 @@ function homeInit(){
         Home.getRatingsPageData(movieID);
     });
 
-    NetworkReq.fetchGet(
+    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+    if (JSESSIONID === null) {
+        window.location.href = globals.indexLocation;
+    }
+
+    let jsonObject = {JSESSIONID};
+
+    NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
+        JSON.stringify(jsonObject),
         Home.appendRowDataToRecentRelease
     );
 
-    NetworkReq.fetchGet(
+    NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
+        JSON.stringify(jsonObject),
         Home.appendRowDataToMostReviewed
     );
     
