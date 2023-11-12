@@ -102,6 +102,9 @@ function loginInit(){
     });
 
 
+    var notImplemented = document.getElementsByClassName("notImplemented");
+
+
     //Vertical Center Elms that need it
     var windowVertCenterElms = document.getElementsByClassName("vcToWindow");
     setInterval(()=>{
@@ -114,7 +117,8 @@ function homeInit(){
     var showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.addEventListener("click", ()=>{
         var movieID = showMoreRateButton.getAttribute("movieID");
-        Home.getRatingsPageData(movieID);
+        var movieTitle = document.getElementById("showMoreTitle").innerText;
+        Home.getRatingsPageData(movieTitle ,movieID);
     });
 
     let JSESSIONID = sessionStorage.getItem("JSESSIONID");
@@ -135,7 +139,20 @@ function homeInit(){
         JSON.stringify(jsonObject),
         Home.appendRowDataToMostReviewed
     );
+
+    //Append the filter menu with dynamic id's to avoid all the id errors
+    Home.appendFilterMenu();
+    Home.appendFreqFilterMenu();
+
     
+    var notImplemented = document.getElementsByClassName("notImplemented");
+    for(let x =0; x < notImplemented.length; x++){
+        notImplemented[x].addEventListener("click",()=>{
+            alert("Feature is not implemented");
+        });
+    }
+
+
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{
