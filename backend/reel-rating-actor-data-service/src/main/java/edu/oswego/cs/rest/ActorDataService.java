@@ -75,6 +75,7 @@ public class ActorDataService {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
   @Path("/actor/getActorsWithMovieId/{movieId}")
   public Response getActorsByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
