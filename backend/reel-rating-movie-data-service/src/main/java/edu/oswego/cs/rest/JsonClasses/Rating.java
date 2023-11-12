@@ -1,6 +1,6 @@
 package edu.oswego.cs.rest.JsonClasses;
 
-public class Rating {
+public class Rating extends JSession {
   private String movieTitle;
   private String ratingName;
   private String userRating;
