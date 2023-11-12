@@ -3,6 +3,7 @@ package edu.oswego.cs.rest;
 import com.ibm.websphere.security.jwt.JwtConsumer;
 
 import edu.oswego.cs.rest.JsonClasses.Actor;
+import edu.oswego.cs.rest.JsonClasses.JSession;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
@@ -25,13 +26,13 @@ public class ActorDataService {
    * gets the username of the client request. Also authenticates the client using a JWT.
    * TODO double check if the above is correct
    *
-   * @param request
+   * @param sessionId
    * @return String representation of the username within the request
    * @throws Exception
    */
-  public String getUsername(HttpServletRequest request) throws Exception {
+  public String getUsername(String sessionId) throws Exception {
     Client authClient = ClientBuilder.newClient();
-    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + request.getRequestedSessionId());
+    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + sessionId);
     Response response = target.request().get();
     String value = response.readEntity(String.class);
     if (value == null || value == "") {
@@ -49,30 +50,37 @@ public class ActorDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/actor/create/{movieId}")
   public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, @PathParam("movieId") String movieId) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = actor.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
     db.createActor(actor.getName(), actor.getDateOfBirth(), movieId);
     return Response.ok().build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/actor/getActorWithName/{name}")
-  public Response getActorWithName(@Context HttpServletRequest request, @PathParam("name") String name) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getActorWithName(@Context HttpServletRequest request, @PathParam("name") String name, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Actor> actors = dbc.getActorWithName(name);
     return Response.ok(actors).build();
   }
 
-  @GET
-  @Produces(MediaType.APPLICATION_JSON)
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Path("/actor/getActorsWithMovieId/{movieId}")
-  public Response getActorsByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getActorsByMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Actor> actors = dbc.getActorWithMovieId(movieId);
     return Response.ok(actors).build();
