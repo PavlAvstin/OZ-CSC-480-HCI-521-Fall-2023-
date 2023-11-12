@@ -37,7 +37,7 @@ public class MovieDataService {
    * gets the username of the client request. Also authenticates the client using a JWT.
    * TODO double check if the above is correct
    *
-   * @param request
+   * @param sessionId
    * @return String representation of the username within the request
    * @throws Exception
    */
