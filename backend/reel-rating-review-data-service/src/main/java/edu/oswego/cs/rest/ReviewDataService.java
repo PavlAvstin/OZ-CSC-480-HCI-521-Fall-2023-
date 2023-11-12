@@ -2,6 +2,7 @@ package edu.oswego.cs.rest;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
 
+import edu.oswego.cs.rest.JsonClasses.JSession;
 import edu.oswego.cs.rest.JsonClasses.Review;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,13 +25,13 @@ public class ReviewDataService {
   /**
    * gets the username of the client request. Also authenticates the client using a JWT.
    *
-   * @param request
+   * @param sessionId
    * @return String representation of the username within the request
    * @throws Exception
    */
-  public String getUsername(HttpServletRequest request) throws Exception {
+  public String getUsername(String sessionId) throws Exception {
     Client authClient = ClientBuilder.newClient();
-    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + request.getRequestedSessionId());
+    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + sessionId);
     Response response = target.request().get();
     String value = response.readEntity(String.class);
     if (value == null || value == "") {
@@ -48,29 +49,37 @@ public class ReviewDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/review/create/{movieId}")
   public Response createReview(@Context HttpServletRequest request, Review review, @PathParam("movieId") String movieId) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = review.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    db.createReview(movieId, review.getReviewDescription(), username.toLowerCase(), review.getPrivacy());
+    db.createReview(movieId, review.getReviewDescription(), requesterUsername.toLowerCase(), review.getPrivacy());
     return Response.ok().build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/reviews/getReviewsWithUsername/{username}")
-  public Response getReviewsWithUsername(@Context HttpServletRequest request, @PathParam("username") String username) throws Exception {
-    String requesterUsername = getUsername(request);
+  public Response getReviewsWithUsername(@Context HttpServletRequest request, @PathParam("username") String username, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Review> reviews = dbc.getReviewsWithUsername(username.toLowerCase());
     return Response.ok(reviews).build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/reviews/getReviewsWithMovieId/{movieId}")
-  public Response getReviewsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
-    String requesterUsername = getUsername(request);
+  public Response getReviewsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Review> reviews = dbc.getReviewsWithMovieId(movieId);
