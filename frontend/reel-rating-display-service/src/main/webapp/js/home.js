@@ -31,9 +31,18 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
 export const getRatingsPageData = (movieTitle, movieID)=>{
     document.getElementById("ratingTitle").innerText = `${movieTitle}`;
 
+    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+    if (JSESSIONID === null) {
+        window.location.href = globals.indexLocation;
+    }
+
+    let jsonObject = {JSESSIONID};
+    let jSessionIdStringified = JSON.stringify(jsonObject);
+
     //Get Existing Ratings
-    NetworkReq.fetchGet(
+    NetworkReq.fetchPost(
         `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        jSessionIdStringified,
         appendExistingCategories    
     );
 
@@ -181,22 +190,32 @@ function getShowMoreData(movieID, movieTitle){
     showMoreRateButton.setAttribute("movieID", movieID);
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
     
+    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+    if (JSESSIONID === null) {
+        window.location.href = globals.indexLocation;
+    }
+
+    let jsonObject = {JSESSIONID};
+    let jSessionIdStringified = JSON.stringify(jsonObject);
 
     //Get General Info
-    NetworkReq.fetchGet(
+    NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getByTitle/${movieTitle}`,
+        jSessionIdStringified,
         appendGeneralSection
     );
 
     //Get Existing Ratings
-    NetworkReq.fetchGet(
+    NetworkReq.fetchPost(
         `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        jSessionIdStringified,
         appendExistingRatings
     );
 
     //Get Actors
-    NetworkReq.fetchGet(
+    NetworkReq.fetchPost(
         `${globals.actorBase}/actor/getActorsWithMovieId/${movieID}`,
+        jSessionIdStringified,
         appendActors
     )
 
