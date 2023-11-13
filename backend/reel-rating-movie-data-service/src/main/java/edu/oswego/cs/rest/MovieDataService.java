@@ -24,6 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
 
@@ -101,6 +102,20 @@ public class MovieDataService {
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.getMoviesWithTag(tagName);
     return Response.ok(movies).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getByTitle/{movieId}")
+  public Response getMovieWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    Optional<Movie> movie = dbc.getMovieWithMovieId(movieId);
+    return Response.ok(movie).build();
   }
 
   @POST

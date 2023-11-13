@@ -3,6 +3,7 @@ package edu.oswego.cs.rest.JsonClasses;
 public class Tag extends JSession {
     private String tagName;
     private String movieTitle;
+    private String movieId;
     private String username;
     private String privacy;
     private String dateTimeCreated;
@@ -15,6 +16,9 @@ public class Tag extends JSession {
     // getters and setters
     public Tag() {}
     public String getTagName() { return tagName; }
+
+    public String getMovieId() { return movieId; }
+    public void setMovieId(String movieId) { this.movieId = movieId; }
 
     public String getMovieTitle() {
         return movieTitle;
