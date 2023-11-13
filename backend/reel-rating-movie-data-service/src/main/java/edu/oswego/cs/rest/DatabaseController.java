@@ -573,6 +573,7 @@ public class DatabaseController {
       var tag = new Tag();
       tag.setTagName(document.getString("tagName"));
       tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setMovieId(document.getString("movieId"));
       tag.setUsername(document.getString("username"));
       tag.setPrivacy(document.getString("privacy"));
       tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
@@ -635,6 +636,13 @@ public class DatabaseController {
     var moviesCollection = getMovieCollection();
     var filter = Filters.eq("title", title);
     return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public Optional<Movie> getMovieWithMovieId(String hexID) {
+    var moviesCollection = getMovieCollection();
+    ObjectId movieId = new ObjectId(hexID);
+    var filter = Filters.eq("_id", movieId);
+    return getMoviesWithFilter(moviesCollection, filter).stream().findFirst();
   }
 
   public Optional<Movie> getMovieWithTitle(String title){
