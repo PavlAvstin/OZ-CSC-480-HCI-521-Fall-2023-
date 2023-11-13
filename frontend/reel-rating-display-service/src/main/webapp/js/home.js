@@ -236,30 +236,36 @@ async function appendGeneralSection(serverRes){
         document.getElementById("showMoreReleaseDate").innerText = genData.releaseDate;
         document.getElementById("showMoreRuntime").innerText = genData.runtime;
 
-
-        //Tags
-        var tagsRow = Tools.createElm("div", null, "class", "row");
-        var tags = [ //Need the end point random names for now
-            'apple', 'banana', 'cherry', 'dog', 'elephant',
-            'fish', 'grape', 'horse', 'iguana', 'jacket',
-            'kiwi', 'lemon', 'mango', 'noodle', 'orange',
-            'pear', 'quilt', 'rabbit', 'strawberry', 'tiger',
-            'umbrella', 'violet', 'watermelon', 'xylophone', 'zebra',
-            'carrot', 'broccoli', 'potato', 'computer', 'guitar',
-            'keyboard', 'camera', 'sunglasses', 'book', 'pencil',
-            'lamp', 'table', 'chair', 'shoe', 'hat',
-            'globe', 'clock', 'window', 'door', 'balloon'
-        ];
-        var currentTag;
-        for(var x =0; x < tags.length; x++){
-            currentTag = Tools.createElm("div", tags[x], "class", "col-4 tag");
-            tagsRow.appendChild(currentTag);
+        let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+        if (JSESSIONID === null) {
+            window.location.href = globals.indexLocation;
         }
-        
-        document.getElementById("showMoreTagsContainer").appendChild(tagsRow);
+
+        let jsonObject = {JSESSIONID};
+        let jSessionIdStringified = JSON.stringify(jsonObject);
+
+        //Get Tags
+        NetworkReq.fetchPost(
+            `${globals.ratingsBase}/tag/getTagsByMovieId/${genData.id}`,
+            jSessionIdStringified,
+            appendTagsToShowMore
+        )
     }catch(error){
         console.log(`There was an error appending general content\n${error}`);
     }
+}
+
+async function appendTagsToShowMore(serverRes) {
+    //Tags
+    var tagsRow = Tools.createElm("div", null, "class", "row");
+    var tags = await serverRes.json();
+    var currentTag;
+    for(var x =0; x < tags.length; x++){
+        currentTag = Tools.createElm("div", tags[x].tagName, "class", "col-4 tag");
+        tagsRow.appendChild(currentTag);
+    }
+        
+    document.getElementById("showMoreTagsContainer").appendChild(tagsRow);
 }
 
 
