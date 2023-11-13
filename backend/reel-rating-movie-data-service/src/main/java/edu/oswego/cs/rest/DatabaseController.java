@@ -538,7 +538,7 @@ public class DatabaseController {
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    Document newMovie = new Document().append("title", movieTitle).append("director", director)
+    Document newMovie = new Document().append("title", movieTitle).append("director", director).append("writers", writers)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary)
             .append("movieImageId", getRandomImageId());
     movieCollection.insertOne(newMovie);
