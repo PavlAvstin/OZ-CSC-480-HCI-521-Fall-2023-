@@ -2,6 +2,7 @@ package edu.oswego.cs.rest;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
 
+import edu.oswego.cs.rest.JsonClasses.JSession;
 import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Tag;
 import jakarta.enterprise.context.RequestScoped;
@@ -13,7 +14,6 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
 import java.util.List;
 
@@ -26,13 +26,13 @@ public class RatingDataService {
   /**
    * gets the username of the client request. Also authenticates the client using a JWT.
    *
-   * @param request
+   * @param sessionId
    * @return String representation of the username within the request
    * @throws Exception
    */
-  public String getUsername(HttpServletRequest request) throws Exception {
+  public String getUsername(String sessionId) throws Exception {
     Client authClient = ClientBuilder.newClient();
-    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + request.getRequestedSessionId());
+    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + sessionId);
     Response response = target.request().get();
     String value = response.readEntity(String.class);
     if (value == null || value == "") {
@@ -47,57 +47,68 @@ public class RatingDataService {
   }
 
   @POST
-  @Path("/rating/create")
   @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/rating/create")
   public Response createRating(@Context HttpServletRequest request, Rating rating) throws Exception {
-    String requesterUsername = getUsername(request);
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = rating.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    dbc.createRating(rating.getRatingName(), rating.getUserRating(), rating.getUpperbound(), requesterUsername, rating.getMovieId(), rating.getPrivacy());
+    dbc.createRating(rating.getRatingName(), rating.getUserRating(), rating.getUpperbound(), rating.getSubtype(), requesterUsername, rating.getMovieId(), rating.getPrivacy());
     return Response.ok().build();
   }
 
-  @GET
-  @Path("/rating/getMostPopularAggregatedRatingForMovie/{movieId}")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMostPopularAggregatedRatingForMovie(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
-    String requesterUsername = getUsername(request);
+  @Path("/rating/getMostPopularAggregatedRatingForMovie/{movieId}")
+  public Response getMostPopularAggregatedRatingForMovie(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     Rating aggregatedRating = dbc.getMostPopularAggregatedRatingForMovie(movieId);
     return Response.ok(aggregatedRating).build();
   }
 
-  @GET
-  @Path("/rating/getRatingsWithSameNameAndUpperbound/{ratingName}{upperbound}")
+  @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getRatingsWithSameNameAndUpperbound(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, @PathParam("upperbound") String upperbound ) throws Exception {
-    String requesterUsername = getUsername(request);
+  @Path("/rating/getRatingsWithSameNameAndUpperbound/{ratingName}{upperbound}")
+  public Response getRatingsWithSameNameAndUpperbound(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, @PathParam("upperbound") String upperbound , JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Rating> ratings = dbc.getRatingsWithSameNameAndUpperbound(ratingName, upperbound);
     return Response.ok(ratings).build();
   }
 
-  @GET
-  @Path("/rating/getRatingsWithSameName/{ratingName}")
+  @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getRatingsWithSameName(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName) throws Exception {
-    String requesterUsername = getUsername(request);
+  @Path("/rating/getRatingsWithSameName/{ratingName}")
+  public Response getRatingsWithSameName(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Rating> ratings = dbc.getRatingsWithSameName(ratingName);
     return Response.ok(ratings).build();
   }
 
-  @GET
-  @Path("/rating/getRatingsWithMovieId/{movieId}")
+  @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getRatingsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
-    String requesterUsername = getUsername(request);
+  @Path("/rating/getRatingsWithMovieId/{movieId}")
+  public Response getRatingsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Rating> ratings = dbc.getRatingsWithMovieId(movieId);
@@ -108,19 +119,23 @@ public class RatingDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/tag/create/{movieId}")
   public Response createTag(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = tag.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
-    db.createTag(tag.getTagName(), movieId, username, tag.getPrivacy());
+    db.createTag(tag.getTagName(), movieId, requesterUsername, tag.getPrivacy());
     return Response.ok().build();
   }
 
-  @GET
-  @Path("/tag/getTagsByMovieId/{movieId}")
+  @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getTagsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
-    String requesterUsername = getUsername(request);
+  @Path("/tag/getTagsByMovieId/{movieId}")
+  public Response getTagsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Tag> tags = dbc.getTagsWithMovieId(movieId);

@@ -25,6 +25,9 @@ docker container remove reel-rating-rating-data-service
 docker container stop reel-rating-actor-data-service
 docker container remove reel-rating-actor-data-service
 
+docker container stop reel-rating-search-service
+docker container remove reel-rating-search-service
+
 cd ..
 
 docker compose up -d --build

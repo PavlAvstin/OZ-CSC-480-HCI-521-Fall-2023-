@@ -42,7 +42,7 @@ public class LoginService {
         String dateTime = LocalDateTime.now().toString();
         db.setUserDateTime(username, dateTime);
         String stateMessage = "logged in";
-        return Response.ok(stateMessage).build();
+        return Response.ok(stateMessage + "," + sessionId).build();
       }
     }
     return Response.status(Status.UNAUTHORIZED).build();
@@ -72,10 +72,10 @@ public class LoginService {
     Pattern emailPattern = Pattern.compile(".*@.*"); 
     Matcher emailMatcher = emailPattern.matcher(email);
 
-    Pattern passwordLength = Pattern.compile("[\\w!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{8,}");
+    Pattern passwordLength = Pattern.compile(".{8,}");
     Matcher passwordLengthMatcher = passwordLength.matcher(password);
 
-    Pattern passwordSpecialCharacter = Pattern.compile(".*[!\"#$%&'()*+,-./:;<=>?@\\[\\]\\^`\\{|\\}~]{1,}.*");
+    Pattern passwordSpecialCharacter = Pattern.compile(".*\\W{1,}.*");
     Matcher passwordSpecialMatcher = passwordSpecialCharacter.matcher(password);
 
     Pattern passwordNumberRequirement = Pattern.compile(".*\\d{1,}.*");
@@ -112,6 +112,6 @@ public class LoginService {
     String dateTime = LocalDateTime.now().toString();
     db.createUser(username, encryptedPassword, sessionId, dateTime, email);
     String stateMessage = "Registered";
-    return Response.ok(stateMessage).build();
+    return Response.ok(stateMessage + "," + sessionId).build();
   }
 }

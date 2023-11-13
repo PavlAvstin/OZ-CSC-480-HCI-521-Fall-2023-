@@ -41,7 +41,7 @@ public class DatabaseController {
 
   /**
    * <p>get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
-   * be queried and updated by the other CRUD operations. Currently there are
+   * be queried and updated by the other CRUD operations.
    */
   public MongoCollection<Document> getTagCollection() {
     return getMovieDatabase().getCollection("tags");
@@ -69,7 +69,7 @@ public class DatabaseController {
 
   /**
    * Image methods are used to store, edit, and retrieve images to display within the application. Due to MongoDB's
-   * approach to storing images collections cannot be used. Instead GridFSBuckets are used and Mongo handles the
+   * approach to storing images collections cannot be used. Instead, GridFSBuckets are used and Mongo handles the
    * underlying splitting and storing of data.
    *
    */
@@ -88,7 +88,7 @@ public class DatabaseController {
     GridFSBucket gridFSBucket = getStockImageBucket();
     for (int i = 1; i <= numMovieImages; i++) {
       // create a name to store the image
-      String movieFileName = "stockImage" + i + ".jpg";
+      String movieFileName = "stockImage" + i + ".webp";
       String movieImagePath = "images/" + movieFileName;
       // attempt to grab and upload the image
       try {
@@ -111,7 +111,7 @@ public class DatabaseController {
 
     // Account for movieImages starting at an index of 1.
     int movieNumber = random.nextInt(numMovieImages) + 1;
-    String movieFileName = "stockImage" + movieNumber + ".jpg";
+    String movieFileName = "stockImage" + movieNumber + ".webp";
     GridFSBucket gridFSBucket = getStockImageBucket();
     Bson query = Filters.eq("filename", movieFileName);
     return gridFSBucket.find(query).first().getObjectId().toHexString();
@@ -413,7 +413,7 @@ public class DatabaseController {
    * @param userRating value assigned by the user
    * @param upperbound upperbound of the rating scale. 0 < upperbound < 11
    */
-  public void createRating(String ratingName, String userRating, String upperbound, String username,
+  public void createRating(String ratingName, String userRating, String upperbound, String subtype, String username,
                            String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
@@ -441,7 +441,8 @@ public class DatabaseController {
                   .append("movieTitle", movie.get("title"))
                   .append("movieId", movieIdHexString)
                   .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-                  .append("privacy", privacy);
+                  .append("privacy", privacy)
+                  .append("subtype", subtype);
       ratingCollection.insertOne(newRating);
 
       Bson ratingCategoryMovieFilter = Filters.eq("ratingCategoryNames", ratingName);
@@ -572,6 +573,7 @@ public class DatabaseController {
       var tag = new Tag();
       tag.setTagName(document.getString("tagName"));
       tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setMovieId(document.getString("movieId"));
       tag.setUsername(document.getString("username"));
       tag.setPrivacy(document.getString("privacy"));
       tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
@@ -634,6 +636,13 @@ public class DatabaseController {
     var moviesCollection = getMovieCollection();
     var filter = Filters.eq("title", title);
     return getMoviesWithFilter(moviesCollection, filter);
+  }
+
+  public Optional<Movie> getMovieWithMovieId(String hexID) {
+    var moviesCollection = getMovieCollection();
+    ObjectId movieId = new ObjectId(hexID);
+    var filter = Filters.eq("_id", movieId);
+    return getMoviesWithFilter(moviesCollection, filter).stream().findFirst();
   }
 
   public Optional<Movie> getMovieWithTitle(String title){

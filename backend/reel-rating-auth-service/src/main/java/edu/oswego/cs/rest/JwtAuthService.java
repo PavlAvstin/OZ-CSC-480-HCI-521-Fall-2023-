@@ -29,8 +29,7 @@ public class JwtAuthService {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    //boolean validSessionTime = dbc.ensureSessionIsWithin24hours(id);
-    boolean validSessionTime = true;
+    boolean validSessionTime = dbc.ensureSessionIsWithin24hours(username);
 
     if (!validSessionTime) {
       return Response.status(Response.Status.UNAUTHORIZED).build();

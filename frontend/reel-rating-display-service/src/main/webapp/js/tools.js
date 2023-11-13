@@ -34,6 +34,8 @@ export const navToHome = async(serverRes)=>{
 
     //Still need to use serverRes to check and see if there was not an error
     if(serverRes.status === 200){
+        const jSessionId = await serverRes.text();
+        sessionStorage.setItem("JSESSIONID", jSessionId.split(",")[1]);
         window.location.href = globals.homeLocation;
     } else {
         alert(`There was an error going to home page\nserver status ${serverRes.status}`);
@@ -76,6 +78,16 @@ export const randomString = () =>{
 
 export const randomNum = ()=>{
     return Math.random() * (10 - 0) + 0;
+}
+
+export const getJSessionId = () => {
+    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+    if (JSESSIONID === null) {
+        window.location.href = globals.indexLocation;
+    }
+
+    let jsonObject = {JSESSIONID};
+    return JSON.stringify(jsonObject);
 }
 
 

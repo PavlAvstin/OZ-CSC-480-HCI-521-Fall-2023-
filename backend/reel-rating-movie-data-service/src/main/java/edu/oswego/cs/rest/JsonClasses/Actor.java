@@ -2,7 +2,7 @@ package edu.oswego.cs.rest.JsonClasses;
 
 import java.util.List;
 
-public class Actor {
+public class Actor extends JSession {
   private String id;
   private String name;
   private String dateOfBirth;

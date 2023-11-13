@@ -102,6 +102,9 @@ function loginInit(){
     });
 
 
+    var notImplemented = document.getElementsByClassName("notImplemented");
+
+
     //Vertical Center Elms that need it
     var windowVertCenterElms = document.getElementsByClassName("vcToWindow");
     setInterval(()=>{
@@ -114,20 +117,37 @@ function homeInit(){
     var showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.addEventListener("click", ()=>{
         var movieID = showMoreRateButton.getAttribute("movieID");
-        var movieTitle= document.getElementById("showMoreTitle").innerText;
+        var movieTitle = document.getElementById("showMoreTitle").innerText;
         Home.getRatingsPageData(movieTitle ,movieID);
     });
 
-    NetworkReq.fetchGet(
+    let JSessionId = Tools.getJSessionId();
+
+    NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
+        JSessionId,
         Home.appendRowDataToRecentRelease
     );
 
-    NetworkReq.fetchGet(
+    NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
+        JSessionId,
         Home.appendRowDataToMostReviewed
     );
+
+    //Append the filter menu with dynamic id's to avoid all the id errors
+    Home.appendFilterMenu();
+    Home.appendFreqFilterMenu();
+
     
+    var notImplemented = document.getElementsByClassName("notImplemented");
+    for(let x =0; x < notImplemented.length; x++){
+        notImplemented[x].addEventListener("click",()=>{
+            alert("Feature is not implemented");
+        });
+    }
+
+
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{

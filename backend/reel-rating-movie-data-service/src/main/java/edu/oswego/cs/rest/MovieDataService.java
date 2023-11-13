@@ -5,6 +5,7 @@ import edu.oswego.cs.rest.JsonClasses.Tag;
 import edu.oswego.cs.rest.JsonClasses.Movie;
 import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Review;
+import edu.oswego.cs.rest.JsonClasses.JSession;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
@@ -23,6 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
 
@@ -36,13 +38,13 @@ public class MovieDataService {
    * gets the username of the client request. Also authenticates the client using a JWT.
    * TODO double check if the above is correct
    *
-   * @param request
+   * @param sessionId
    * @return String representation of the username within the request
    * @throws Exception
    */
-  public String getUsername(HttpServletRequest request) throws Exception {
+  public String getUsername(String sessionId) throws Exception {
     Client authClient = ClientBuilder.newClient();
-    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + request.getRequestedSessionId());
+    WebTarget target = authClient.target(AuthServiceUrl + "/reel-rating-auth-service/jwt/generate/" + sessionId);
     Response response = target.request().get();
     String value = response.readEntity(String.class);
     if (value == null || value == "") {
@@ -64,67 +66,95 @@ public class MovieDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/movie/create")
   public Response createMovieEndPoint(@Context HttpServletRequest request, Movie movie) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = movie.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
     db.createMovie(movie.getTitle(), movie.getDirector(), movie.getReleaseDate(), movie.getRuntime(), movie.getWriters(), movie.getSummary());
     return Response.ok().build();
   }
 
 
-  /**
-   * get endpoints for movies
-   */
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByTitle/{title}")
-  public Response getMoviesWithTitleEndPoint(@Context HttpServletRequest request, @PathParam("title") String title) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getMoviesWithTitleEndPoint(@Context HttpServletRequest request, @PathParam("title") String title, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.getMoviesWithTitle(title);
     return Response.ok(movies).build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByTagName/{TagName}")
-  public Response getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.getMoviesWithTag(tagName);
     return Response.ok(movies).build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getById/{movieId}")
+  public Response getMovieWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    Optional<Movie> movie = dbc.getMovieWithMovieId(movieId);
+    return Response.ok(movie).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByRatingCategoryName/{ratingCategoryName}")
-  public Response getMoviesWithRatingCategoryName(@Context HttpServletRequest request, @PathParam("ratingCategoryName") String ratingCategoryName) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getMoviesWithRatingCategoryName(@Context HttpServletRequest request, @PathParam("ratingCategoryName") String ratingCategoryName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.getMoviesWithRatingCategory(ratingCategoryName);
     return Response.ok(movies).build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getByActor/{actorId}")
-  public Response getMoviesWithActorId(@Context HttpServletRequest request, @PathParam("actorId") String actorId) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getMoviesWithActorId(@Context HttpServletRequest request, @PathParam("actorId") String actorId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.getMoviesWithActor(actorId);
     return Response.ok(movies).build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getMoviesWithMostReviews")
-  public Response getMoviesWithMostReviews(@Context HttpServletRequest request) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getMoviesWithMostReviews(@Context HttpServletRequest request, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     int numMovies = 12;
     List<Movie> movies = dbc.getMoviesWithMostReviews(numMovies);
@@ -148,12 +178,15 @@ public class MovieDataService {
     return Response.ok(movies).build();
   }
 
-  @GET
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getRecentReleaseMovies")
-  public Response getRecentReleaseMoviesEndpoint(@Context HttpServletRequest request) throws Exception {
-    String username = getUsername(request);
-    if (username == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+  public Response getRecentReleaseMoviesEndpoint(@Context HttpServletRequest request, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     int numMovies = 12;
     // get a List of the #numMovies most recent releases.
@@ -194,11 +227,11 @@ public class MovieDataService {
    * @throws Exception TODO not sure if that is needed
    */
   @GET
-  @Produces("image/jpg")
+  @Produces("image/webp")
   @Path("/movie/getMovieImage/{movieId}")
   public Response getMovieImage(@Context HttpServletRequest request, @PathParam("movieId") String movieId) throws Exception {
-    String requesterUsername = getUsername(request);
-    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    //String requesterUsername = getUsername(request);
+    //if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     String imageId = dbc.getMovieImageId(movieId);
     if (imageId == null) return Response.status(Status.NOT_FOUND).build();
@@ -218,7 +251,9 @@ public class MovieDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response getMoviesByRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
-    String requesterUsername = getUsername(request);
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = rating.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.getMoviesWithRatingCategory(rating.getRatingName(), rating.getUpperbound());
