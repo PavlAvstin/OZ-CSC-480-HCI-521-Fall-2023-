@@ -297,6 +297,7 @@ public class DatabaseController {
       var tag = new Tag();
       tag.setTagName(document.getString("tagName"));
       tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setMovieId(document.getString("movieId"));
       tag.setUsername(document.getString("username"));
       tag.setPrivacy(document.getString("privacy"));
       tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
@@ -316,10 +317,81 @@ public class DatabaseController {
   /*
    * Tag Update Functions
    */
+  public void upvoteTag(String requesterUsername, String tagName, String movieId){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+    MongoCollection<Document> movieCollection = getMovieCollection();
+
+    // try to get your tag for this movie
+    Bson nameFilter = Filters.eq("username", requesterUsername);
+    Bson movieFilter = Filters.eq("movieId", movieId);
+    Bson tagNameFilter = Filters.eq("tagName", tagName);
+
+    Tag tag = getTagsWithFilter(tagCollection, Filters.and(nameFilter, tagNameFilter, movieFilter)).get(0);
+    // if you have not already made this tag for this movie
+    if(tag == null) {
+      // make this tag in your name for this movie
+      createTag(tagName, movieId, requesterUsername, "public");
+    }
+    // otherwise you already have made this tag. Why are you doing this please don't do this return nothing
+  }
+
+  public void downvoteTag(String requesterUsername, String tagName, String movieId){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+    MongoCollection<Document> movieCollection = getMovieCollection();
+
+    // try to get your tag for this movie
+    Bson nameFilter = Filters.eq("username", requesterUsername);
+    Bson movieFilter = Filters.eq("movieId", movieId);
+    Bson tagNameFilter = Filters.eq("tagName", tagName);
+
+    Tag tag = getTagsWithFilter(tagCollection, Filters.and(nameFilter, tagNameFilter, movieFilter)).get(0);
+
+    // if you have upvoted this tag simply delete the tag
+    if(tag != null){
+      deleteTagWithTagName(tagName, movieId, requesterUsername, requesterUsername);
+    }
+    // otherwise add your name to
+    else{
+
+    }
+  }
 
   /*
    * Tag Delete Functions
+   *
+   * deleteTagNameWithTagName
    */
+
+  /**
+   * Removes a tag from a database. Tags can be deleted by the creator of the tag and by anyone who is an admin.
+   * (For now everyone is an admin since this has not been fully implemented).
+   * @param tagName name of the tag to remove
+   * @param movieId MongoDB hexId of the movie to remove the tag from
+   * @param requesterUsername username of the person trying to delete the tag
+   * @return TRUE if the tag is deleted FALSE otherwise
+   */
+  public boolean deleteTagWithTagName(String tagName, String movieId, String tagOwnerUsername, String requesterUsername){
+    // get collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // attempt to get the tag from the tag collection
+    Bson movieFilter = Filters.eq("movieId", movieId);
+    Bson tagNameFilter = Filters.eq("tagName", tagName);
+    Bson ownerFilter = Filters.eq("username", tagOwnerUsername);
+    Bson deleteFilter = Filters.and(movieFilter, tagNameFilter, ownerFilter);
+
+    Tag tag = getTagsWithFilter(tagCollection, deleteFilter).get(0);
+    // if the tag exists, and you are the owner or you are an admin
+    if(tag!=null && (tagOwnerUsername.equals(requesterUsername)  || checkAdmin(requesterUsername))){
+        // remove the tag from the tags collection
+        tagCollection.deleteOne(deleteFilter);
+        return true;
+    }
+    // otherwise return false
+    return false;
+  }
 
 
   /*
@@ -336,5 +408,14 @@ public class DatabaseController {
       MongoCollection<Document> movieCollection = getMovieCollection();
       ObjectId movieId = new ObjectId(hexID);
       return movieCollection.find(Filters.eq("_id", movieId)).first();
+    }
+
+  /**
+   * One day will be used to check if a user is an admit. For now everyone is an admin
+   * @param username username to check if they are an admin.
+   * @return TRUE always
+   */
+  public boolean checkAdmin(String username){
+      return true;
     }
 }
