@@ -41,6 +41,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     appendUpDownVote();
+    progressBarForRatingUpdate();
 }
 
 
@@ -322,7 +323,7 @@ async function appendExistingCategories(serverRes){
             currentRatingContainer.appendChild(currentRatingRow);
             ratingsRow.appendChild(currentRatingContainer);
         }
-        document.getElementById("ratingsExsistingCat").appendChild(ratingsRow);
+        document.getElementById("ratingsExsistingCat").replaceChildren(ratingsRow);
     } catch(error){
         console.log(`There was an error in appendExistingCategories\n${error}`);
     }
@@ -389,4 +390,16 @@ function appendFriends(){
     }
 }
 
+export function progressBarForRatingUpdate() {
+
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+
+    var progressBar = Tools.createElm(
+        "progress-bar", null, 
+        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
+        ["1",`${ratingScaleEndNode.value}`,`${ratingScaleEndNode.value / 2}`,"#3d37bf","#00ff00"]
+    );
+
+    document.getElementById("progressBarForRating").replaceChildren(progressBar);
+}
 

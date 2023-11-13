@@ -119,6 +119,8 @@ function homeInit(){
         var movieID = showMoreRateButton.getAttribute("movieID");
         var movieTitle = document.getElementById("showMoreTitle").innerText;
         Home.getRatingsPageData(movieTitle ,movieID);
+        const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+        ratingScaleEndNode.value = '10';
     });
 
     let JSessionId = Tools.getJSessionId();
@@ -160,5 +162,7 @@ function homeInit(){
         JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
     }, 350); //350 miliseconds, slightly higher than average reaction time
 
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+    ratingScaleEndNode.addEventListener("change", () => {Home.progressBarForRatingUpdate();});
    
 }
