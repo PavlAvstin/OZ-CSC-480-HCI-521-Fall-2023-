@@ -80,5 +80,15 @@ export const randomNum = ()=>{
     return Math.random() * (10 - 0) + 0;
 }
 
+export const getJSessionId = () => {
+    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+    if (JSESSIONID === null) {
+        window.location.href = globals.indexLocation;
+    }
+
+    let jsonObject = {JSESSIONID};
+    return JSON.stringify(jsonObject);
+}
+
 
 

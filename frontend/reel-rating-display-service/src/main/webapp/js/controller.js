@@ -121,22 +121,17 @@ function homeInit(){
         Home.getRatingsPageData(movieTitle ,movieID);
     });
 
-    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-    if (JSESSIONID === null) {
-        window.location.href = globals.indexLocation;
-    }
-
-    let jsonObject = {JSESSIONID};
+    let JSessionId = Tools.getJSessionId();
 
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
-        JSON.stringify(jsonObject),
+        JSessionId,
         Home.appendRowDataToRecentRelease
     );
 
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
-        JSON.stringify(jsonObject),
+        JSessionId,
         Home.appendRowDataToMostReviewed
     );
 

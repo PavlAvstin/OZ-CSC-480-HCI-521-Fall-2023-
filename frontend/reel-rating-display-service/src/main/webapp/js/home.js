@@ -31,13 +31,7 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
 export const getRatingsPageData = (movieTitle, movieID)=>{
     document.getElementById("ratingTitle").innerText = `${movieTitle}`;
 
-    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-    if (JSESSIONID === null) {
-        window.location.href = globals.indexLocation;
-    }
-
-    let jsonObject = {JSESSIONID};
-    let jSessionIdStringified = JSON.stringify(jsonObject);
+    let jSessionIdStringified = Tools.getJSessionId();
 
     //Get Existing Ratings
     NetworkReq.fetchPost(
@@ -190,13 +184,7 @@ function getShowMoreData(movieID, movieTitle){
     showMoreRateButton.setAttribute("movieID", movieID);
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
     
-    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-    if (JSESSIONID === null) {
-        window.location.href = globals.indexLocation;
-    }
-
-    let jsonObject = {JSESSIONID};
-    let jSessionIdStringified = JSON.stringify(jsonObject);
+    let jSessionIdStringified = Tools.getJSessionId();
 
     //Get General Info
     NetworkReq.fetchPost(
@@ -236,13 +224,7 @@ async function appendGeneralSection(serverRes){
         document.getElementById("showMoreReleaseDate").innerText = genData.releaseDate;
         document.getElementById("showMoreRuntime").innerText = genData.runtime;
 
-        let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-        if (JSESSIONID === null) {
-            window.location.href = globals.indexLocation;
-        }
-
-        let jsonObject = {JSESSIONID};
-        let jSessionIdStringified = JSON.stringify(jsonObject);
+        let jSessionIdStringified = Tools.getJSessionId();
 
         //Get Tags
         NetworkReq.fetchPost(
