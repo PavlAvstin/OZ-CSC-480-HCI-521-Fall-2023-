@@ -1,6 +1,6 @@
 package edu.oswego.cs.rest.JsonClasses;
 
-public class Tag {
+public class Tag extends JSession{
     private String tagName;
     private String movieTitle;
     private String username;
