@@ -107,7 +107,7 @@ public class MovieDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByTitle/{movieId}")
+  @Path("/movie/getById/{movieId}")
   public Response getMovieWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
