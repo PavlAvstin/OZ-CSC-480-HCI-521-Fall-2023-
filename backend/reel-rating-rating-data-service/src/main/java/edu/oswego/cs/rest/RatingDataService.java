@@ -46,6 +46,11 @@ public class RatingDataService {
     return username;
   }
 
+  /*
+   * Rating Create Endpoints
+   *
+   * createRating
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/rating/create")
@@ -59,6 +64,15 @@ public class RatingDataService {
     return Response.ok().build();
   }
 
+  /*
+   * Rating Get Endpoints
+   *
+   * getMostPopularAggregatedRatingForMovie
+   * getRatingsWithSameNameAndUpperbound
+   * getRatingsWithSameName
+   * getRatingsWithMovieId
+   * getRatingsWithUpperbound
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -130,7 +144,9 @@ public class RatingDataService {
   }
 
   /*
-   * Tag endpoints
+   * Tag Create Endpoints
+   *
+   * createTag
    */
 
   @POST
@@ -146,6 +162,13 @@ public class RatingDataService {
     return Response.ok().build();
   }
 
+  /*
+   * Tag Get Endpoints
+   *
+   * getTagsWithMovieId
+   * getTagsWithTagName
+   * getTagsWithUsername
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -190,6 +213,12 @@ public class RatingDataService {
     return Response.ok(tags).build();
   }
 
+  /*
+   * Tag Update Endpoints
+   *
+   * upvoteTag
+   * downvoteTag
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)

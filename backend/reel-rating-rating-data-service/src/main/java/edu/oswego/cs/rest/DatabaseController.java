@@ -110,6 +110,7 @@ public class DatabaseController {
    * getRatingsWithSameNameAndUpperbound
    * getRatingsWithSameName
    * getRatingsWithMovieId
+   * getRatingsWithUpperbound
    * getMostPopularAggregatedRatingForMovie
    */
 
@@ -289,6 +290,8 @@ public class DatabaseController {
    *
    * getTagsWithFilter
    * getTagsByMovieId
+   * getTagsWithTagName
+   * getTagsWithUsername
    */
 
   /**
@@ -334,6 +337,9 @@ public class DatabaseController {
   }
   /*
    * Tag Update Functions
+   *
+   * upvoteTag
+   * downvoteTag
    */
   public void upvoteTag(String requesterUsername, String tagName, String movieId){
     // get the collections
