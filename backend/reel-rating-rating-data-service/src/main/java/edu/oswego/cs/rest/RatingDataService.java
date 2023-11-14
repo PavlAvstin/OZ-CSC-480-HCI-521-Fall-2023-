@@ -117,6 +117,24 @@ public class RatingDataService {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/rating/getRatingsWithUpperbound/{upperbound}")
+  public Response getRatingsWithUpperbound(@Context HttpServletRequest request, @PathParam("upperbound") String upperbound , JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Rating> ratings = dbc.getRatingsWithUpperbound(upperbound);
+    return Response.ok(ratings).build();
+  }
+
+  /*
+   * Tag endpoints
+   */
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Path("/tag/create/{movieId}")
   public Response createTag(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
     String sessionId = request.getRequestedSessionId();

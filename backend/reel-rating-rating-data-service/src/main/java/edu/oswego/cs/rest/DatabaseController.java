@@ -140,23 +140,28 @@ public class DatabaseController {
 
   public List<Rating> getRatingsWithSameNameAndUpperbound(String ratingName, String upperbound) {
     var ratings = getRatingCollection();
-    var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var upperboundFilter = Filters.eq("upperbound", upperbound);
-    var filter = Filters.and(ratingNameFilter, upperboundFilter);
+    Bson filter = Filters.and(
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("upperbound", upperbound));
     return getRatingsWithFilter(ratings, filter);
   }
 
   public List<Rating> getRatingsWithSameName(String ratingName) {
     var ratings = getRatingCollection();
     var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var filter = Filters.eq(ratingNameFilter);
-    return getRatingsWithFilter(ratings, filter);
+    return getRatingsWithFilter(ratings, ratingNameFilter);
   }
 
   public List<Rating> getRatingsWithMovieId(String movieId){
     var ratings = getRatingCollection();
     var movieIdFilter = Filters.eq("movieId", movieId);
     return getRatingsWithFilter(ratings, movieIdFilter);
+  }
+
+  public List<Rating> getRatingsWithUpperbound(String upperbound){
+    var ratings = getRatingCollection();
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    return getRatingsWithFilter(ratings, upperboundFilter);
   }
 
   /**
