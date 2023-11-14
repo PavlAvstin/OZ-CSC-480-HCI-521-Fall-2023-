@@ -7,6 +7,7 @@ public class Tag extends JSession{
     private String username;
     private String privacy;
     private String dateTimeCreated;
+    private String state;
 
     // constructor
     public void setTagName(String tagName) {
@@ -36,8 +37,10 @@ public class Tag extends JSession{
     public void setDateTimeCreated(String dateTimeCreated) { this.dateTimeCreated = dateTimeCreated; }
 
     public String getUsername() { return username; }
-
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
 }

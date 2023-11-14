@@ -246,7 +246,7 @@ public class DatabaseController {
 
     // attempt to grab the tag in a few different types
     Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson tagNameFilter = Filters.eq("tagName", tagName);
 
     Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
@@ -257,12 +257,13 @@ public class DatabaseController {
     } // else the tag does not exist
     else{
       // create and add the tag
-      Document newTag = new Document("userName", username)
+      Document newTag = new Document("username", username.toLowerCase())
               .append("tagName", tagName)
               .append("movieTitle", movie.get("title"))
               .append("movieId", movieIdHexString)
               .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-              .append("privacy", privacy);
+              .append("privacy", privacy)
+              .append("state", "upvote");
       // add to the database
       tagCollection.insertOne(newTag);
 
@@ -301,6 +302,7 @@ public class DatabaseController {
       tag.setUsername(document.getString("username"));
       tag.setPrivacy(document.getString("privacy"));
       tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
+      tag.setState(document.getString("state"));
       return tag;
     });
     var list = new ArrayList<Tag>();
@@ -309,29 +311,44 @@ public class DatabaseController {
   }
 
   public List<Tag> getTagsWithMovieId(String movieId) {
-    var reviews = getTagCollection();
+    var tags = getTagCollection();
     var filter = Filters.eq("movieId", movieId);
-    return getTagsWithFilter(reviews, filter);
+    return getTagsWithFilter(tags, filter);
   }
 
+  public List<Tag> getTagsWithTagName(String tagName) {
+    MongoCollection<Document> tags = getTagCollection();
+    Bson filter = Filters.eq("tagName", tagName);
+    return getTagsWithFilter(tags, filter);
+  }
+
+  public List<Tag> getTagsWithUsername(String username) {
+    MongoCollection<Document> tags = getTagCollection();
+    Bson filter = Filters.eq("username", username.toLowerCase());
+    return getTagsWithFilter(tags, filter);
+  }
   /*
    * Tag Update Functions
    */
   public void upvoteTag(String requesterUsername, String tagName, String movieId){
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
-    MongoCollection<Document> movieCollection = getMovieCollection();
 
     // try to get your tag for this movie
-    Bson nameFilter = Filters.eq("username", requesterUsername);
-    Bson movieFilter = Filters.eq("movieId", movieId);
-    Bson tagNameFilter = Filters.eq("tagName", tagName);
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
 
-    Tag tag = getTagsWithFilter(tagCollection, Filters.and(nameFilter, tagNameFilter, movieFilter)).get(0);
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
     // if you have not already made this tag for this movie
-    if(tag == null) {
+    if(tags.isEmpty()) {
       // make this tag in your name for this movie
       createTag(tagName, movieId, requesterUsername, "public");
+    } else if (tags.get(0).getState().equals("downvote")){
+      // change to upvote
+      Bson upvoteUpdate = Updates.set("state", "upvote");
+      tagCollection.updateOne(tagFilter, upvoteUpdate);
     }
     // otherwise you already have made this tag. Why are you doing this please don't do this return nothing
   }
@@ -339,22 +356,28 @@ public class DatabaseController {
   public void downvoteTag(String requesterUsername, String tagName, String movieId){
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
-    MongoCollection<Document> movieCollection = getMovieCollection();
 
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
     // try to get your tag for this movie
-    Bson nameFilter = Filters.eq("username", requesterUsername);
-    Bson movieFilter = Filters.eq("movieId", movieId);
-    Bson tagNameFilter = Filters.eq("tagName", tagName);
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
 
-    Tag tag = getTagsWithFilter(tagCollection, Filters.and(nameFilter, tagNameFilter, movieFilter)).get(0);
-
-    // if you have upvoted this tag simply delete the tag
-    if(tag != null){
-      deleteTagWithTagName(tagName, movieId, requesterUsername, requesterUsername);
+    // if the tag exists and is currently set to upvote
+    if(!tags.isEmpty() && tags.get(0).getState().equals("upvote")){
+      // set the state to downvote
+      Bson downvoteUpdate = Updates.set("state", "downvote");
+      tagCollection.updateOne(tagFilter, downvoteUpdate);
     }
-    // otherwise add your name to
-    else{
+    // otherwise the tag does not exist
+    else {
+      // therefore create a tag for in the users name
+      createTag(tagName, movieId, requesterUsername, "public");
 
+      // set the state to downvote
+      Bson downVoteUpdate = Updates.set("state", "downvote");
+      tagCollection.updateOne(tagFilter, downVoteUpdate);
     }
   }
 
@@ -379,12 +402,12 @@ public class DatabaseController {
     // attempt to get the tag from the tag collection
     Bson movieFilter = Filters.eq("movieId", movieId);
     Bson tagNameFilter = Filters.eq("tagName", tagName);
-    Bson ownerFilter = Filters.eq("username", tagOwnerUsername);
+    Bson ownerFilter = Filters.eq("username", tagOwnerUsername.toLowerCase());
     Bson deleteFilter = Filters.and(movieFilter, tagNameFilter, ownerFilter);
 
     Tag tag = getTagsWithFilter(tagCollection, deleteFilter).get(0);
     // if the tag exists, and you are the owner or you are an admin
-    if(tag!=null && (tagOwnerUsername.equals(requesterUsername)  || checkAdmin(requesterUsername))){
+    if(tag!=null && (tagOwnerUsername.toLowerCase().equals(requesterUsername.toLowerCase())  || checkAdmin(requesterUsername))){
         // remove the tag from the tags collection
         tagCollection.deleteOne(deleteFilter);
         return true;
@@ -416,6 +439,7 @@ public class DatabaseController {
    * @return TRUE always
    */
   public boolean checkAdmin(String username){
+      // TODO if this is ever implemented remember things need to work off of lowercase names
       return true;
     }
 }
