@@ -9,8 +9,8 @@ const actorPort = 30504;
 export class GlobalRef{
     constructor(){
         if(window.location.port === `${guiPort}`){
-            this.homeLocation = `http://localhost:${guiPort}/views/home.html`;
-            this.indexLocation = `http://localhost:${guiPort}/index.html`;
+            this.homeLocation = `http://moxie.cs.oswego.edu:${guiPort}/views/home.html`;
+            this.indexLocation = `http://moxie.cs.oswego.edu:${guiPort}/index.html`;
         }
         else{
             this.homeLocation = `http://localhost:5500/frontend/reel-rating-display-service/src/main/webapp/views/home.html`;
