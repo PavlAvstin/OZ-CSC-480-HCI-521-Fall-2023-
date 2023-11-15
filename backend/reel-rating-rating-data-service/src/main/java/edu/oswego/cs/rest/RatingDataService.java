@@ -91,14 +91,14 @@ public class RatingDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/rating/getRatingsWithSameNameAndUpperbound/{ratingName}/{upperbound}")
-  public Response getRatingsWithSameNameAndUpperbound(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, @PathParam("upperbound") String upperbound , JSession jsession) throws Exception {
+  @Path("/rating/getRatingsWithSameNameAndUpperbound/")
+  public Response getRatingsWithSameNameAndUpperbound(@Context HttpServletRequest request, Rating rating) throws Exception {
     String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    if (sessionId == null) sessionId = rating.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
-    List<Rating> ratings = dbc.getRatingsWithSameNameAndUpperbound(ratingName, upperbound);
+    List<Rating> ratings = dbc.getRatingsWithSameNameAndUpperbound(rating.getRatingName(), rating.getUpperbound());
     return Response.ok(ratings).build();
   }
 
@@ -240,34 +240,34 @@ public class RatingDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/tag/upvoteTag/{tagName}/{movieId}")
-  public Response upvoteTag(@Context HttpServletRequest request, @PathParam("movieId") String movieId, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
+  @Path("/tag/upvoteTag/")
+  public Response upvoteTag(@Context HttpServletRequest request, Tag tag) throws Exception {
     String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    if (sessionId == null) sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     DatabaseController dbc = new DatabaseController();
-    dbc.upvoteTag(getUsername(sessionId), tagName, movieId);
+    dbc.upvoteTag(getUsername(sessionId), tag.getTagName(), tag.getMovieId());
     return Response.ok().build();
   }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/tag/downvoteTag/{tagName}/{movieId}")
-  public Response downvoteTag(@Context HttpServletRequest request, @PathParam("movieId") String movieId, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
+  @Path("/tag/downvoteTag/")
+  public Response downvoteTag(@Context HttpServletRequest request, Tag tag) throws Exception {
     String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    if (sessionId == null) sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     DatabaseController dbc = new DatabaseController();
-    dbc.downvoteTag(getUsername(sessionId), tagName, movieId);
+    dbc.downvoteTag(getUsername(sessionId), tag.getTagName(), tag.getMovieId());
     return Response.ok().build();
   }
 }
