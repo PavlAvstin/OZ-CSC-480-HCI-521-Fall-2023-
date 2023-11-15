@@ -31,13 +31,7 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
 export const getRatingsPageData = (movieTitle, movieID)=>{
     document.getElementById("ratingTitle").innerText = `${movieTitle}`;
 
-    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-    if (JSESSIONID === null) {
-        window.location.href = globals.indexLocation;
-    }
-
-    let jsonObject = {JSESSIONID};
-    let jSessionIdStringified = JSON.stringify(jsonObject);
+    let jSessionIdStringified = Tools.getJSessionId();
 
     //Get Existing Ratings
     NetworkReq.fetchPost(
@@ -47,6 +41,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     appendUpDownVote();
+    progressBarForRatingUpdate();
 }
 
 
@@ -190,17 +185,11 @@ function getShowMoreData(movieID, movieTitle){
     showMoreRateButton.setAttribute("movieID", movieID);
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
     
-    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-    if (JSESSIONID === null) {
-        window.location.href = globals.indexLocation;
-    }
-
-    let jsonObject = {JSESSIONID};
-    let jSessionIdStringified = JSON.stringify(jsonObject);
+    let jSessionIdStringified = Tools.getJSessionId();
 
     //Get General Info
     NetworkReq.fetchPost(
-        `${globals.movieDataBase}/movie/getByTitle/${movieTitle}`,
+        `${globals.movieDataBase}/movie/getById/${movieID}`,
         jSessionIdStringified,
         appendGeneralSection
     );
@@ -227,22 +216,15 @@ function getShowMoreData(movieID, movieTitle){
 async function appendGeneralSection(serverRes){
     try{
         var genData = await serverRes.json();
-        genData = genData[0];
         
         //General
         document.getElementById("showMoreSummary").innerText = genData.summary;
         document.getElementById("showMoreDirector").innerText = genData.director;
-        //document.getElementById("showMoreWriter").innerText = genData.writer;
+        document.getElementById("showMoreWriter").innerText = genData.writers;
         document.getElementById("showMoreReleaseDate").innerText = genData.releaseDate;
         document.getElementById("showMoreRuntime").innerText = genData.runtime;
 
-        let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-        if (JSESSIONID === null) {
-            window.location.href = globals.indexLocation;
-        }
-
-        let jsonObject = {JSESSIONID};
-        let jSessionIdStringified = JSON.stringify(jsonObject);
+        let jSessionIdStringified = Tools.getJSessionId();
 
         //Get Tags
         NetworkReq.fetchPost(
@@ -265,7 +247,7 @@ async function appendTagsToShowMore(serverRes) {
         tagsRow.appendChild(currentTag);
     }
         
-    document.getElementById("showMoreTagsContainer").appendChild(tagsRow);
+    document.getElementById("showMoreTagsContainer").replaceChildren(tagsRow);
 }
 
 
@@ -284,7 +266,7 @@ async function appendActors(serverRes){
                 actorsRow.appendChild(currentActor);
             }
         }
-        document.getElementById("showMoreActorsContainer").appendChild(actorsRow);
+        document.getElementById("showMoreActorsContainer").replaceChildren(actorsRow);
     }
     catch(error){
         console.log(`There was an error appending actors\n${error}`);
@@ -313,7 +295,7 @@ async function appendExistingRatings(serverRes){
             currentRatingContainer.appendChild(currentRatingRow);
             ratingsRow.appendChild(currentRatingContainer);
         }
-        document.getElementById("ratingsContainer").appendChild(ratingsRow);
+        document.getElementById("ratingsContainer").replaceChildren(ratingsRow);
     } catch(error){
         console.log(`There was an error in appendingExistingRatings\n${error}`);
     }
@@ -341,7 +323,7 @@ async function appendExistingCategories(serverRes){
             currentRatingContainer.appendChild(currentRatingRow);
             ratingsRow.appendChild(currentRatingContainer);
         }
-        document.getElementById("ratingsExsistingCat").appendChild(ratingsRow);
+        document.getElementById("ratingsExsistingCat").replaceChildren(ratingsRow);
     } catch(error){
         console.log(`There was an error in appendExistingCategories\n${error}`);
     }
@@ -392,7 +374,7 @@ function appendFriends(){
             'Paula Young','Quincy White','Rachel Martin','Steven Santent'
         ];
         var tempContainer = Tools.createElm("div", null, "class", "col-12");
-        for(var x=0; x < 20; x++){
+        for(var x=0; x < 19; x++){
             var friendRow = Tools.createElm("div", null, "class", "row followedReview brAll ptXXSM pbXXSM mtXSM");
             var imgContainer = Tools.createElm("div", null, "class", "col-2");
             var friendImg = Tools.createElm("img", null, ["src", "class"], ["../images/person-1.webp", "img-fluid"]);
@@ -402,10 +384,22 @@ function appendFriends(){
             friendRow.appendChild(friendName);
             tempContainer.appendChild(friendRow);
         }
-        document.getElementById("friendsContainer").appendChild(tempContainer);
+        document.getElementById("friendsContainer").replaceChildren(tempContainer);
     } catch(error){
         console.log(`There was an error in appendFriends\n${error}`);
     }
 }
 
+export function progressBarForRatingUpdate() {
+
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+
+    var progressBar = Tools.createElm(
+        "progress-bar", null, 
+        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
+        ["1",`${ratingScaleEndNode.value}`,`${ratingScaleEndNode.value / 2}`,"#3d37bf","#00ff00"]
+    );
+
+    document.getElementById("progressBarForRating").replaceChildren(progressBar);
+}
 

@@ -221,26 +221,13 @@
                                         <div class="col-5">
                                             <label id="ratingScaleLabelStart" for="ratingScaleStart" class="hidden">Start</label>
                                             <select class="form-select brAll" aria-label="Rating scale start" id="ratingScaleStart">
-                                                <option selected>Start</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
+                                                <option selected value="1">1</option>
                                             </select>
                                         </div>
                                         <div class="col-2 textCenter">to</div>
                                         <div class="col-5">
                                             <label id="ratingScaleLabelEnd" for="ratingScaleEnd" class="hidden">End</label>
                                             <select class="form-select brAll" aria-label="Rating scale end" id="ratingScaleEnd">
-                                                <option selected>End</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
                                                 <option value="3">3</option>
                                                 <option value="4">4</option>
                                                 <option value="5">5</option>
@@ -248,7 +235,7 @@
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
                                                 <option value="9">9</option>
-                                                <option value="10">10</option>
+                                                <option selected value="10">10</option>
                                             </select>
                                         </div>
                                     </div>
@@ -257,10 +244,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <label id="newRatingValueLabel" for="newRatingValueInput">Rating Value</label>
-                                            <progress-bar 
-                                                scaleStart="1" scaleEnd="10" ratingValue="5" 
-                                                lowRatingColor="#3d37bf" highRatingColor="#00ff00">
-                                            </progress-bar>
+                                            <div id="progressBarForRating"></div>
                                         </div>
                                     </div>
                                 </div>

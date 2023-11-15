@@ -119,24 +119,21 @@ function homeInit(){
         var movieID = showMoreRateButton.getAttribute("movieID");
         var movieTitle = document.getElementById("showMoreTitle").innerText;
         Home.getRatingsPageData(movieTitle ,movieID);
+        const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+        ratingScaleEndNode.value = '10';
     });
 
-    let JSESSIONID = sessionStorage.getItem("JSESSIONID");
-    if (JSESSIONID === null) {
-        window.location.href = globals.indexLocation;
-    }
-
-    let jsonObject = {JSESSIONID};
+    let JSessionId = Tools.getJSessionId();
 
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
-        JSON.stringify(jsonObject),
+        JSessionId,
         Home.appendRowDataToRecentRelease
     );
 
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
-        JSON.stringify(jsonObject),
+        JSessionId,
         Home.appendRowDataToMostReviewed
     );
 
@@ -165,5 +162,7 @@ function homeInit(){
         JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
     }, 350); //350 miliseconds, slightly higher than average reaction time
 
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+    ratingScaleEndNode.addEventListener("change", () => {Home.progressBarForRatingUpdate();});
    
 }
