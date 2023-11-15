@@ -43,7 +43,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsByMovieId/${movieID}`,
+        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendUpDownVote    
     );
@@ -241,7 +241,7 @@ function getShowMoreData(movieID, movieTitle){
 
     //Get General Info
     NetworkReq.fetchPost(
-        `${globals.movieDataBase}/movie/getById/${movieID}`,
+        `${globals.movieDataBase}/movie/getMovieWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendGeneralSection
     );
@@ -282,7 +282,7 @@ async function appendGeneralSection(serverRes){
 
         //Get Tags
         NetworkReq.fetchPost(
-            `${globals.ratingsBase}/tag/getTagsByMovieId/${genData.id}`,
+            `${globals.ratingsBase}/tag/getTagsWithMovieId/${genData.id}`,
             jSessionIdStringified,
             appendTagsToShowMore
         )
