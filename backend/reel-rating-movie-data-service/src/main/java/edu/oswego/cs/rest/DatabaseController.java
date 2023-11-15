@@ -31,11 +31,11 @@ import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 
 public class DatabaseController {
-  String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
-  String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
+  private static String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
   public MongoDatabase getMovieDatabase() {
-    MongoClient mongoClient = MongoClients.create(mongoURL);
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
