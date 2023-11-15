@@ -45,6 +45,11 @@ public class ReviewDataService {
     return username;
   }
 
+  /*
+   * Review Create Endpoints
+   *
+   * createReview
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/review/create/{movieId}")
@@ -58,6 +63,12 @@ public class ReviewDataService {
     return Response.ok().build();
   }
 
+  /*
+   * Review Get Endpoints
+   *
+   * getReviewsWithUsername
+   * getReviewsWithMovieId
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)

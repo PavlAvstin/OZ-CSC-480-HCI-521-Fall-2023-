@@ -1,10 +1,8 @@
 package edu.oswego.cs.rest;
 
-import edu.oswego.cs.rest.JsonClasses.Actor;
 import edu.oswego.cs.rest.JsonClasses.Tag;
 import edu.oswego.cs.rest.JsonClasses.Movie;
 import edu.oswego.cs.rest.JsonClasses.Rating;
-import edu.oswego.cs.rest.JsonClasses.Review;
 import edu.oswego.cs.rest.JsonClasses.JSession;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,14 +56,16 @@ public class MovieDataService {
     return username;
   }
 
-  /**
-   * Create Endpoints
+  /*
+   * Movie Create Endpoints
+   *
+   * createMovie
    */
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/movie/create")
-  public Response createMovieEndPoint(@Context HttpServletRequest request, Movie movie) throws Exception {
+  public Response createMovie(@Context HttpServletRequest request, Movie movie) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = movie.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
@@ -75,12 +75,25 @@ public class MovieDataService {
     return Response.ok().build();
   }
 
-
+  /*
+   * Movie Get Endpoints
+   *
+   * getMoviesWithTitle
+   * getMovieWithMovieId
+   * getMoviesWithTagName
+   * getMoviesWithRatingCategoryName
+   * getMoviesWithActor
+   * getMoviesWithRatingCategory
+   *
+   * getMoviesWithMostReviews
+   * getRecentReleaseMovies
+   *
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByTitle/{title}")
-  public Response getMoviesWithTitleEndPoint(@Context HttpServletRequest request, @PathParam("title") String title, JSession jsession) throws Exception {
+  @Path("/movie/getMoviesWithTitle/{title}")
+  public Response getMoviesWithTitle(@Context HttpServletRequest request, @PathParam("title") String title, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
@@ -93,21 +106,7 @@ public class MovieDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByTagName/{TagName}")
-  public Response getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("TagName") String tagName, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-    String requesterUsername = getUsername(sessionId);
-    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
-    DatabaseController dbc = new DatabaseController();
-    List<Movie> movies = dbc.getMoviesWithTag(tagName);
-    return Response.ok(movies).build();
-  }
-
-  @POST
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByTitle/{movieId}")
+  @Path("/movie/getMovieWithMovieId/{movieId}")
   public Response getMovieWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
@@ -121,7 +120,22 @@ public class MovieDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByRatingCategoryName/{ratingCategoryName}")
+  @Path("/movie/getMoviesWithTagName/{tagName}")
+  public Response getMoviesWithTagName(@Context HttpServletRequest request, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithTag(tagName);
+    return Response.ok(movies).build();
+  }
+
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getMoviesWithRatingCategoryName/{ratingCategoryName}")
   public Response getMoviesWithRatingCategoryName(@Context HttpServletRequest request, @PathParam("ratingCategoryName") String ratingCategoryName, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
@@ -135,8 +149,8 @@ public class MovieDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/movie/getByActor/{actorId}")
-  public Response getMoviesWithActorId(@Context HttpServletRequest request, @PathParam("actorId") String actorId, JSession jsession) throws Exception {
+  @Path("/movie/getMoviesWithActor/{actorId}")
+  public Response getMoviesWithActor(@Context HttpServletRequest request, @PathParam("actorId") String actorId, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
@@ -182,7 +196,7 @@ public class MovieDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/getRecentReleaseMovies")
-  public Response getRecentReleaseMoviesEndpoint(@Context HttpServletRequest request, JSession jsession) throws Exception {
+  public Response getRecentReleaseMovies(@Context HttpServletRequest request, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
@@ -214,9 +228,23 @@ public class MovieDataService {
     return Response.ok(movies).build();
   }
 
-
-  /**
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/getMoviesWithRatingCategory")
+  public Response getMoviesWithRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = rating.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.getMoviesWithRatingCategory(rating.getRatingName(), rating.getUpperbound());
+    return Response.ok(movies).build();
+  }
+  /*
    * Image methods
+   *
+   * getMovieImage
    */
 
   /**
@@ -237,26 +265,5 @@ public class MovieDataService {
     if (imageId == null) return Response.status(Status.NOT_FOUND).build();
     byte[] image = dbc.getStockImage(imageId);
     return Response.ok(image).build();
-  }
-
-  /**
-   * Returns a list of movies that have been rated using a specific category
-   * @param request
-   * @param rating
-   * @return
-   * @throws Exception
-   */
-  @POST
-  @Path("/movie/getByRatingCategory")
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response getMoviesByRatingCategory(@Context HttpServletRequest request, Rating rating) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = rating.getJSESSIONID();
-    String requesterUsername = getUsername(sessionId);
-    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
-    DatabaseController dbc = new DatabaseController();
-    List<Movie> movies = dbc.getMoviesWithRatingCategory(rating.getRatingName(), rating.getUpperbound());
-    return Response.ok(movies).build();
   }
 }
