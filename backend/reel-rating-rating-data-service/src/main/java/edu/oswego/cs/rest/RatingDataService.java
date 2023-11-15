@@ -6,6 +6,7 @@ import edu.oswego.cs.rest.JsonClasses.JSession;
 import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Tag;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.json.Json;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.client.Client;
@@ -211,6 +212,23 @@ public class RatingDataService {
     DatabaseController dbc = new DatabaseController();
     List<Tag> tags = dbc.getTagsWithUsername(username);
     return Response.ok(tags).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/tag/getTagStatus/")
+  public Response getTagStatus(@Context HttpServletRequest request, Tag tag) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = tag.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+
+    DatabaseController dbc = new DatabaseController();
+    Tag returnTag = new Tag();
+    returnTag.setTagName(tag.getTagName()); returnTag.setUsername(requesterUsername); returnTag.setMovieId(tag.getMovieId());
+    returnTag.setState(dbc.getTagStatus(requesterUsername, tag.getMovieId(), tag.getTagName()));
+    return Response.ok(returnTag).build();
   }
 
   /*

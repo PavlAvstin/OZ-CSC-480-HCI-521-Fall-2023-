@@ -335,6 +335,37 @@ public class DatabaseController {
     Bson filter = Filters.eq("username", username.toLowerCase());
     return getTagsWithFilter(tags, filter);
   }
+
+  /**
+   * Returns a string that reports the status of the tag.
+   * @param requesterUsername username of tag creator
+   * @param movieId Mongo hexId of the movie that tag is attached to
+   * @param tagName name of the tag to find
+   * @return String of either "upvote", "downvote", or "noTag".
+   */
+  public String getTagStatus(String requesterUsername, String movieId, String tagName){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // attempt to get the tag
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
+
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
+
+    // if the tag does not exist
+    if(tags.isEmpty()){
+      // return "noTag"
+      return "noTag";
+    }
+    // else find the state
+    else {
+      // return the state
+      return tags.get(0).getState();
+    }
+  }
   /*
    * Tag Update Functions
    *
