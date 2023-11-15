@@ -110,6 +110,7 @@ public class DatabaseController {
    * getRatingsWithSameNameAndUpperbound
    * getRatingsWithSameName
    * getRatingsWithMovieId
+   * getRatingsWithUpperbound
    * getMostPopularAggregatedRatingForMovie
    */
 
@@ -140,23 +141,28 @@ public class DatabaseController {
 
   public List<Rating> getRatingsWithSameNameAndUpperbound(String ratingName, String upperbound) {
     var ratings = getRatingCollection();
-    var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var upperboundFilter = Filters.eq("upperbound", upperbound);
-    var filter = Filters.and(ratingNameFilter, upperboundFilter);
+    Bson filter = Filters.and(
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("upperbound", upperbound));
     return getRatingsWithFilter(ratings, filter);
   }
 
   public List<Rating> getRatingsWithSameName(String ratingName) {
     var ratings = getRatingCollection();
     var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var filter = Filters.eq(ratingNameFilter);
-    return getRatingsWithFilter(ratings, filter);
+    return getRatingsWithFilter(ratings, ratingNameFilter);
   }
 
   public List<Rating> getRatingsWithMovieId(String movieId){
     var ratings = getRatingCollection();
     var movieIdFilter = Filters.eq("movieId", movieId);
     return getRatingsWithFilter(ratings, movieIdFilter);
+  }
+
+  public List<Rating> getRatingsWithUpperbound(String upperbound){
+    var ratings = getRatingCollection();
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    return getRatingsWithFilter(ratings, upperboundFilter);
   }
 
   /**
@@ -246,7 +252,7 @@ public class DatabaseController {
 
     // attempt to grab the tag in a few different types
     Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson tagNameFilter = Filters.eq("tagName", tagName);
 
     Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
@@ -257,12 +263,13 @@ public class DatabaseController {
     } // else the tag does not exist
     else{
       // create and add the tag
-      Document newTag = new Document("userName", username)
+      Document newTag = new Document("username", username.toLowerCase())
               .append("tagName", tagName)
               .append("movieTitle", movie.get("title"))
               .append("movieId", movieIdHexString)
               .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-              .append("privacy", privacy);
+              .append("privacy", privacy)
+              .append("state", "upvote");
       // add to the database
       tagCollection.insertOne(newTag);
 
@@ -283,6 +290,8 @@ public class DatabaseController {
    *
    * getTagsWithFilter
    * getTagsByMovieId
+   * getTagsWithTagName
+   * getTagsWithUsername
    */
 
   /**
@@ -297,9 +306,11 @@ public class DatabaseController {
       var tag = new Tag();
       tag.setTagName(document.getString("tagName"));
       tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setMovieId(document.getString("movieId"));
       tag.setUsername(document.getString("username"));
       tag.setPrivacy(document.getString("privacy"));
       tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
+      tag.setState(document.getString("state"));
       return tag;
     });
     var list = new ArrayList<Tag>();
@@ -308,18 +319,113 @@ public class DatabaseController {
   }
 
   public List<Tag> getTagsWithMovieId(String movieId) {
-    var reviews = getTagCollection();
+    var tags = getTagCollection();
     var filter = Filters.eq("movieId", movieId);
-    return getTagsWithFilter(reviews, filter);
+    return getTagsWithFilter(tags, filter);
+  }
+
+  public List<Tag> getTagsWithTagName(String tagName) {
+    MongoCollection<Document> tags = getTagCollection();
+    Bson filter = Filters.eq("tagName", tagName);
+    return getTagsWithFilter(tags, filter);
+  }
+
+  public List<Tag> getTagsWithUsername(String username) {
+    MongoCollection<Document> tags = getTagCollection();
+    Bson filter = Filters.eq("username", username.toLowerCase());
+    return getTagsWithFilter(tags, filter);
+  }
+  /*
+   * Tag Update Functions
+   *
+   * upvoteTag
+   * downvoteTag
+   */
+  public void upvoteTag(String requesterUsername, String tagName, String movieId){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // try to get your tag for this movie
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
+
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
+    // if you have not already made this tag for this movie
+    if(tags.isEmpty()) {
+      // make this tag in your name for this movie
+      createTag(tagName, movieId, requesterUsername, "public");
+    } else if (tags.get(0).getState().equals("downvote")){
+      // change to upvote
+      Bson upvoteUpdate = Updates.set("state", "upvote");
+      tagCollection.updateOne(tagFilter, upvoteUpdate);
+    }
+    // otherwise you already have made this tag. Why are you doing this please don't do this return nothing
+  }
+
+  public void downvoteTag(String requesterUsername, String tagName, String movieId){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
+    // try to get your tag for this movie
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
+
+    // if the tag exists and is currently set to upvote
+    if(!tags.isEmpty() && tags.get(0).getState().equals("upvote")){
+      // set the state to downvote
+      Bson downvoteUpdate = Updates.set("state", "downvote");
+      tagCollection.updateOne(tagFilter, downvoteUpdate);
+    }
+    // otherwise the tag does not exist
+    else {
+      // therefore create a tag for in the users name
+      createTag(tagName, movieId, requesterUsername, "public");
+
+      // set the state to downvote
+      Bson downVoteUpdate = Updates.set("state", "downvote");
+      tagCollection.updateOne(tagFilter, downVoteUpdate);
+    }
   }
 
   /*
-   * Tag Update Functions
+   * Tag Delete Functions
+   *
+   * deleteTagNameWithTagName
    */
 
-  /*
-   * Tag Delete Functions
+  /**
+   * Removes a tag from a database. Tags can be deleted by the creator of the tag and by anyone who is an admin.
+   * (For now everyone is an admin since this has not been fully implemented).
+   * @param tagName name of the tag to remove
+   * @param movieId MongoDB hexId of the movie to remove the tag from
+   * @param requesterUsername username of the person trying to delete the tag
+   * @return TRUE if the tag is deleted FALSE otherwise
    */
+  public boolean deleteTagWithTagName(String tagName, String movieId, String tagOwnerUsername, String requesterUsername){
+    // get collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // attempt to get the tag from the tag collection
+    Bson movieFilter = Filters.eq("movieId", movieId);
+    Bson tagNameFilter = Filters.eq("tagName", tagName);
+    Bson ownerFilter = Filters.eq("username", tagOwnerUsername.toLowerCase());
+    Bson deleteFilter = Filters.and(movieFilter, tagNameFilter, ownerFilter);
+
+    Tag tag = getTagsWithFilter(tagCollection, deleteFilter).get(0);
+    // if the tag exists, and you are the owner or you are an admin
+    if(tag!=null && (tagOwnerUsername.toLowerCase().equals(requesterUsername.toLowerCase())  || checkAdmin(requesterUsername))){
+        // remove the tag from the tags collection
+        tagCollection.deleteOne(deleteFilter);
+        return true;
+    }
+    // otherwise return false
+    return false;
+  }
 
 
   /*
@@ -336,5 +442,15 @@ public class DatabaseController {
       MongoCollection<Document> movieCollection = getMovieCollection();
       ObjectId movieId = new ObjectId(hexID);
       return movieCollection.find(Filters.eq("_id", movieId)).first();
+    }
+
+  /**
+   * One day will be used to check if a user is an admit. For now everyone is an admin
+   * @param username username to check if they are an admin.
+   * @return TRUE always
+   */
+  public boolean checkAdmin(String username){
+      // TODO if this is ever implemented remember things need to work off of lowercase names
+      return true;
     }
 }

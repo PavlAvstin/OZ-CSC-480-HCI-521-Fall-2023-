@@ -46,10 +46,15 @@ public class ActorDataService {
     return username;
   }
 
+  /*
+   * Actor Create Endpoints
+   *
+   * createActor
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/actor/create/{movieId}")
-  public Response createActorEndPoint(@Context HttpServletRequest request, Actor actor, @PathParam("movieId") String movieId) throws Exception {
+  public Response createActor(@Context HttpServletRequest request, Actor actor, @PathParam("movieId") String movieId) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = actor.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
@@ -59,6 +64,12 @@ public class ActorDataService {
     return Response.ok().build();
   }
 
+  /*
+   * Actor Get Endpoints
+   *
+   * getActorWithName
+   * getActorWithMovieId
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)

@@ -212,21 +212,21 @@
                                 >
                                 </title-with-line>
                                 <div id="newRatingContainer" class="col-12">
-                                    <label id="newRatingLabel" for="newRatingInput">Rating Name</label>
-                                    <input type="text" class="fullWidth brAll inputHeight"/>
+                                    <label id="newRatingLabel">Rating Name</label>
+                                    <input type="text" class="fullWidth brAll inputHeight" id="newRatingInput"/>
                                 </div>
                                 <div id="ratingScaleContainer" class="col-5 mtXSM">
                                     <div class="row g-0">
                                         <div class="col-12">Scale</div>
                                         <div class="col-5">
-                                            <label id="ratingScaleLabelStart" for="ratingScaleStart" class="hidden">Start</label>
+                                            <label id="ratingScaleLabelStart" class="hidden">Start</label>
                                             <select class="form-select brAll" aria-label="Rating scale start" id="ratingScaleStart">
                                                 <option selected value="1">1</option>
                                             </select>
                                         </div>
                                         <div class="col-2 textCenter">to</div>
                                         <div class="col-5">
-                                            <label id="ratingScaleLabelEnd" for="ratingScaleEnd" class="hidden">End</label>
+                                            <label id="ratingScaleLabelEnd" class="hidden">End</label>
                                             <select class="form-select brAll" aria-label="Rating scale end" id="ratingScaleEnd">
                                                 <option value="3">3</option>
                                                 <option value="4">4</option>
@@ -243,7 +243,7 @@
                                 <div id="ratingValue" class="col-7 mtXSM plXXSM">
                                     <div class="row">
                                         <div class="col-12">
-                                            <label id="newRatingValueLabel" for="newRatingValueInput">Rating Value</label>
+                                            <label id="newRatingValueLabel">Rating Value</label>
                                             <div id="progressBarForRating"></div>
                                         </div>
                                     </div>
@@ -261,7 +261,7 @@
                                 >
                                 </title-with-line>
                                 <div id="newRatingContainer" class="col-12">
-                                    <label id="newRatingLabel" for="newRatingInput">Tag Name</label>
+                                    <label id="newRatingLabel">Tag Name</label>
                                     <input type="text" class="fullWidth brAll customShadow inputHeight"/>
                                 </div>
                                 <div class="col-12">
@@ -279,7 +279,7 @@
                                 >
                                 </title-with-line>
                                 <div id="newRatingContainer" class="col-12">
-                                    <label id="newRatingLabel" for="newRatingInput">Up/Down Name</label>
+                                    <label id="newRatingLabel">Up/Down Name</label>
                                     <input type="text" class="fullWidth brAll customShadow inputHeight"/>
                                 </div>
                                 <div class="col-12">
@@ -350,11 +350,11 @@
             </div>
         </div>
     </div>
-
     <footer>
         <!-- JS imports-->
         <script src="../js/controller.js" type="module"></script>
         <script src="../js/webComps/progress-bar.js" defer></script>
+        <script src="../js/webComps/progress-bar-clickable.js" defer></script>
         <script src="../js/webComps/progress-bar-create-modify.js" defer></script>
         <script src="../js/webComps/title-with-line.js" defer></script>
         <script 

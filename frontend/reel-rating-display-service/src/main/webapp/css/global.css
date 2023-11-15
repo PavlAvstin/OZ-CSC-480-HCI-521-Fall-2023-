@@ -149,6 +149,12 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
 .limitHeight300{ height : 300px; }
 .textAreaStyle{ height: 175px; }
 .inputHeight{ height : 35px; }
+.controls{width : 10%; color : black;}
+.controls:hover{ 
+    background-color : rgba(0, 0, 0, 0.50); 
+    transition: var(--transDur); 
+    width : 13%;
+}
 
 /* Font Sizes */
 .xlFont{ font-size : var(--xlPX) }

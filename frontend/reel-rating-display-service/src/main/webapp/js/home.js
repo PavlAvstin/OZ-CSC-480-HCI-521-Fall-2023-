@@ -10,6 +10,7 @@ export const appendRowDataToRecentRelease = async(serverData)=>{
     try{
         let movies = await serverData.json();
         appendMovies(movies, "recentReleaseCarousel");
+        appendControls("recentReleaseCarousel");
     } catch(error){
         console.log(error);
         alert("There was an error getting data from the server");
@@ -21,6 +22,7 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
     try{
         let movies = await serverData.json();
         appendMovies(movies, "mostReviewedCarousel");
+        appendControls("mostReviewedCarousel");
     } catch(error){
         console.log(error);
         alert("There was an error getting data from the server");
@@ -40,7 +42,12 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
         appendExistingCategories    
     );
 
-    appendUpDownVote();
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/getTagsByMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendUpDownVote    
+    );
+
     progressBarForRatingUpdate();
 }
 
@@ -77,6 +84,50 @@ export const appendFreqFilterMenu = ()=>{
         filterRow.appendChild(formCheck);
     }
     filterMenuContainer.appendChild(filterRow);
+}
+
+
+export function progressBarForRatingUpdate() {
+
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+
+    var progressBar = Tools.createElm(
+        "progress-bar", null, 
+        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
+        ["1",`${ratingScaleEndNode.value}`,`${ratingScaleEndNode.value / 2}`,"#3d37bf","#00ff00"]
+    );
+
+    document.getElementById("progressBarForRating").replaceChildren(progressBar);
+}
+
+
+export function toggleUpDown(eventTarget){
+    if(eventTarget.getAttribute("icon") === "true"){
+        var upIcon = eventTarget.getAttribute("upIcon");
+        var iconIDNumber = (eventTarget.getAttribute("idNumber"));
+        if(upIcon === "true"){
+            if(eventTarget.getAttribute("voted") === "false"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-up-fill-white.png");
+                eventTarget.setAttribute("voted", "true");
+                document.getElementById(`voteID${Number(iconIDNumber) + 1}`).setAttribute("src", "../images/hand-thumbs-down-white.png");
+            }
+            else if(eventTarget.getAttribute("voted") === "true"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-up-white.png");
+                eventTarget.setAttribute("voted", "false");
+            }
+        } 
+        else if(upIcon === "false"){
+            if(eventTarget.getAttribute("voted") === "false"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-down-fill-white.png");
+                eventTarget.setAttribute("voted", "true");
+                document.getElementById(`voteID${Number(iconIDNumber) - 1}`).setAttribute("src", "../images/hand-thumbs-up-white.png");
+            }
+            else if(eventTarget.getAttribute("voted") === "true"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-down-white.png");
+                eventTarget.setAttribute("voted", "false");
+            }
+        }
+    }
 }
 
 
@@ -171,6 +222,7 @@ function appendMovies(movies, carouselId) {
         carouselItem.appendChild(carouselRow);
         carouselInner.appendChild(carouselItem);
         carouselContainer.appendChild(carouselInner);
+
     } catch(error){
         console.log(`There was an error appending home page cards\n${error}`);
     }
@@ -206,7 +258,9 @@ function getShowMoreData(movieID, movieTitle){
         `${globals.actorBase}/actor/getActorsWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendActors
-    )
+    );
+
+    //
 
     //Get Friends Reviews
     appendFriends();//Likely will not get this feature up and running
@@ -236,6 +290,7 @@ async function appendGeneralSection(serverRes){
         console.log(`There was an error appending general content\n${error}`);
     }
 }
+
 
 async function appendTagsToShowMore(serverRes) {
     //Tags
@@ -308,19 +363,12 @@ async function appendExistingCategories(serverRes){
         var ratingsRow = Tools.createElm("div", null, "class", "row");
         for(var x =0; x < ratings.length; x++){
             var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtXSM");
-            var currentRatingRow = Tools.createElm("div", null, "class", "row");
-            var ratingName = Tools.createElm("div", ratings[x].ratingName, "class", "col-10 hideOverflow");
-            var ratingValue = Tools.createElm("div", ratings[x].userRating, "class", "col-2");
-            
             var progressBar = Tools.createElm(
-                "progress-bar", null, 
-                ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
-                ["1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00"]
+                "progress-clickable", null, 
+                ["ratingName","scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
+                [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00"]
             );
-            currentRatingRow.appendChild(ratingName);
-            currentRatingRow.appendChild(ratingValue);
-            currentRatingRow.appendChild(progressBar);
-            currentRatingContainer.appendChild(currentRatingRow);
+            currentRatingContainer.appendChild(progressBar);
             ratingsRow.appendChild(currentRatingContainer);
         }
         document.getElementById("ratingsExsistingCat").replaceChildren(ratingsRow);
@@ -330,34 +378,36 @@ async function appendExistingCategories(serverRes){
 }
 
 
-function appendUpDownVote(){
+async function appendUpDownVote(serverData){
     try{
-        //Tags
+        var upDownData = await serverData.json();
+        var upDownContainer = document.getElementById("upDownContainer");
+        Tools.clearChildren(upDownContainer);
+        
         var votingRow = Tools.createElm("div", null, "class", "row");
-        var tags = [ //Need the end point random names for now
-            'apple', 'banana', 'cherry', 'dog', 'elephant',
-            'fish', 'grape', 'horse', 'iguana', 'jacket',
-            'kiwi', 'lemon', 'mango', 'noodle', 'orange',
-            'pear', 'quilt', 'rabbit', 'strawberry', 'tiger',
-            'umbrella', 'violet', 'watermelon', 'xylophone', 'zebra',
-            'carrot', 'broccoli', 'potato', 'computer', 'guitar',
-            'keyboard', 'camera', 'sunglasses', 'book', 'pencil',
-            'lamp', 'table', 'chair', 'shoe', 'hat',
-            'globe', 'clock', 'window', 'door', 'balloon'
-        ];
-        for(var x =0; x < tags.length; x++){
+        var voteID = 0
+        for(var x =0; x < upDownData.length; x++){
             var voteRowContainer = Tools.createElm("div", null, "class", "col-6");
             var voteRow = Tools.createElm("div",null,"class","upVoteRow row mtSM");
-            var upVote = Tools.createElm("img", null, ["class","src"],["upVote col-2",`../images/hand-thumbs-up-white.png`]);
-            var downVote = Tools.createElm("img", null, ["class","src"],["downVote col-2",`../images/hand-thumbs-down-white.png`]);
-            var tagName = Tools.createElm("div", tags[x], "class", "col-8 tagName");
+            var upVote = Tools.createElm(
+                "img", null, 
+                ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
+                [`voteID${voteID}`, `${voteID}`, "upVote col-2",`../images/hand-thumbs-up-white.png`,"true", "false", "true"]
+            );
+            var downVote = Tools.createElm(
+                "img", null, 
+                ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
+                [`voteID${voteID + 1}`, `${voteID + 1}`, "downVote col-2",`../images/hand-thumbs-down-white.png`,"true", "false", "false"]
+            );
+            var tagName = Tools.createElm("div", upDownData[x].tagName, ["class","icon"], ["col-8 tagName","false"]);
             voteRow.appendChild(upVote);
             voteRow.appendChild(downVote);
             voteRow.appendChild(tagName);
             voteRowContainer.appendChild(voteRow);
             votingRow.appendChild(voteRowContainer);
+            voteID += 2;
         }
-        document.getElementById("upDownContainer").appendChild(votingRow);
+        upDownContainer.appendChild(votingRow);
     } catch(error){
         console.log(`There was an error appendUpDownVote\n${error}`);
     }
@@ -390,16 +440,23 @@ function appendFriends(){
     }
 }
 
-export function progressBarForRatingUpdate() {
 
-    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
 
-    var progressBar = Tools.createElm(
-        "progress-bar", null, 
-        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
-        ["1",`${ratingScaleEndNode.value}`,`${ratingScaleEndNode.value / 2}`,"#3d37bf","#00ff00"]
+
+function appendControls(carouselContainerID){
+    var carouselContainer = document.getElementById(carouselContainerID);
+    var prevButton = Tools.createElm(
+        "button", "<", 
+        ["class","type","data-bs-target","data-bs-slide"], 
+        ["carousel-control-prev controls lgFont","button",`#${carouselContainerID}`,"prev"]
+    );
+    
+    var nextButton = Tools.createElm(
+        "button", ">", 
+        ["class","type","data-bs-target","data-bs-slide"], 
+        ["carousel-control-next controls lgFont", "button",`#${carouselContainerID}`,"next"]
     );
 
-    document.getElementById("progressBarForRating").replaceChildren(progressBar);
+    carouselContainer.appendChild(prevButton);
+    carouselContainer.appendChild(nextButton);
 }
-
