@@ -149,6 +149,11 @@ function homeInit(){
         });
     }
 
+    var upDownContainer = document.getElementById("upDownContainer");
+    upDownContainer.addEventListener("click", (event)=>{
+        Home.toggleUpDown(event.target);
+    })
+
 
     //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");

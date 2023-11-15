@@ -9,7 +9,11 @@ export const fetchPost = (url, jsonData, callbackFunc)=>{
         credentials: "include"
     })
     .then((serverData)=>{
-        callbackFunc(serverData);
+        if(serverData.status === 200){
+            callbackFunc(serverData);
+        } else {
+            throw `There was an error in getting data at ${url}`
+        }
     });   
 }
 
@@ -21,6 +25,10 @@ export const fetchGet = (url, callbackFunc)=>{
         credentials: "include"
     })
     .then((serverData)=>{
-        callbackFunc(serverData);
+        if(serverData.status === 200){
+            callbackFunc(serverData);
+        } else {
+            throw `There was an error in getting data at ${url}`
+        }
     }); 
 }
