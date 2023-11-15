@@ -46,6 +46,11 @@ public class RatingDataService {
     return username;
   }
 
+  /*
+   * Rating Create Endpoints
+   *
+   * createRating
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/rating/create")
@@ -59,6 +64,15 @@ public class RatingDataService {
     return Response.ok().build();
   }
 
+  /*
+   * Rating Get Endpoints
+   *
+   * getMostPopularAggregatedRatingForMovie
+   * getRatingsWithSameNameAndUpperbound
+   * getRatingsWithSameName
+   * getRatingsWithMovieId
+   * getRatingsWithUpperbound
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
@@ -76,7 +90,7 @@ public class RatingDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/rating/getRatingsWithSameNameAndUpperbound/{ratingName}{upperbound}")
+  @Path("/rating/getRatingsWithSameNameAndUpperbound/{ratingName}/{upperbound}")
   public Response getRatingsWithSameNameAndUpperbound(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, @PathParam("upperbound") String upperbound , JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
@@ -117,6 +131,26 @@ public class RatingDataService {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/rating/getRatingsWithUpperbound/{upperbound}")
+  public Response getRatingsWithUpperbound(@Context HttpServletRequest request, @PathParam("upperbound") String upperbound , JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Rating> ratings = dbc.getRatingsWithUpperbound(upperbound);
+    return Response.ok(ratings).build();
+  }
+
+  /*
+   * Tag Create Endpoints
+   *
+   * createTag
+   */
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
   @Path("/tag/create/{movieId}")
   public Response createTag(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
     String sessionId = request.getRequestedSessionId();
@@ -128,10 +162,17 @@ public class RatingDataService {
     return Response.ok().build();
   }
 
+  /*
+   * Tag Get Endpoints
+   *
+   * getTagsWithMovieId
+   * getTagsWithTagName
+   * getTagsWithUsername
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/tag/getTagsByMovieId/{movieId}")
+  @Path("/tag/getTagsWithMovieId/{movieId}")
   public Response getTagsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = jsession.getJSESSIONID();
@@ -140,5 +181,75 @@ public class RatingDataService {
     DatabaseController dbc = new DatabaseController();
     List<Tag> tags = dbc.getTagsWithMovieId(movieId);
     return Response.ok(tags).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/tag/getTagsWithTagName/{tagName}")
+  public Response getTagsWithTagName(@Context HttpServletRequest request, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+
+    DatabaseController dbc = new DatabaseController();
+    List<Tag> tags = dbc.getTagsWithTagName(tagName);
+    return Response.ok(tags).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/tag/getTagsWithUsername/{username}")
+  public Response getTagsWithUsername(@Context HttpServletRequest request, @PathParam("username") String username, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+
+    DatabaseController dbc = new DatabaseController();
+    List<Tag> tags = dbc.getTagsWithUsername(username);
+    return Response.ok(tags).build();
+  }
+
+  /*
+   * Tag Update Endpoints
+   *
+   * upvoteTag
+   * downvoteTag
+   */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/tag/upvoteTag/{tagName}/{movieId}")
+  public Response upvoteTag(@Context HttpServletRequest request, @PathParam("movieId") String movieId, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    DatabaseController dbc = new DatabaseController();
+    dbc.upvoteTag(getUsername(sessionId), tagName, movieId);
+    return Response.ok().build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/tag/downvoteTag/{tagName}/{movieId}")
+  public Response downvoteTag(@Context HttpServletRequest request, @PathParam("movieId") String movieId, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    DatabaseController dbc = new DatabaseController();
+    dbc.downvoteTag(getUsername(sessionId), tagName, movieId);
+    return Response.ok().build();
   }
 }

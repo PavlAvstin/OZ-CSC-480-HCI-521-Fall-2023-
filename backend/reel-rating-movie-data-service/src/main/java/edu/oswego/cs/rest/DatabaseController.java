@@ -351,7 +351,8 @@ public class DatabaseController {
 
   /**
    * Users are not allowed to create a tag for a movie that does not already exist, or the same tag for the same movie.
-   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues
+   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues. All tags have the state of upvote
+   * upon creation.
    *
    * @param tagName name of tag used to access and store the information
    * @param movieIdHexString MongoDB unique identifier for the movie to attach the tag to
@@ -372,7 +373,7 @@ public class DatabaseController {
 
     // attempt to grab the tag in a few different types
     Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson tagNameFilter = Filters.eq("tagName", tagName);
 
     Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
@@ -383,12 +384,13 @@ public class DatabaseController {
     } // else the tag does not exist
     else{
       // create and add the tag
-      Document newTag = new Document("userName", username)
+      Document newTag = new Document("username", username.toLowerCase())
               .append("tagName", tagName)
               .append("movieTitle", movie.get("title"))
               .append("movieId", movieIdHexString)
               .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-              .append("privacy", privacy);
+              .append("privacy", privacy)
+              .append("state", "upvote");
       // add to the database
       tagCollection.insertOne(newTag);
 
