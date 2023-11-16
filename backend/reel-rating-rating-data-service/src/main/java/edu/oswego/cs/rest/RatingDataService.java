@@ -217,8 +217,8 @@ public class RatingDataService {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @Path("/tag/getTagStatus/")
-  public Response getTagStatus(@Context HttpServletRequest request, Tag tag) throws Exception {
+  @Path("/tag/getTagState/")
+  public Response getTagState(@Context HttpServletRequest request, Tag tag) throws Exception {
     String sessionId = request.getRequestedSessionId();
     if (sessionId == null) sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
@@ -227,8 +227,23 @@ public class RatingDataService {
     DatabaseController dbc = new DatabaseController();
     Tag returnTag = new Tag();
     returnTag.setTagName(tag.getTagName()); returnTag.setUsername(requesterUsername); returnTag.setMovieId(tag.getMovieId());
-    returnTag.setState(dbc.getTagStatus(requesterUsername, tag.getMovieId(), tag.getTagName()));
+    returnTag.setState(dbc.getTagState(requesterUsername, tag.getMovieId(), tag.getTagName()));
     return Response.ok(returnTag).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/tag/getTagScoresForMovieModal/{movieId}")
+  public Response getTagScoresForMovieModal(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+
+    DatabaseController dbc = new DatabaseController();
+    List<Tag> tags = dbc.getTagScoresForMovieModal(requesterUsername, movieId);
+    return Response.ok(tags).build();
   }
 
   /*

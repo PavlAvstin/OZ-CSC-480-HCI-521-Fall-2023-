@@ -1,6 +1,9 @@
 package edu.oswego.cs.rest.JsonClasses;
 
-public class Tag extends JSession{
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Tag extends JSession implements Comparable{
     private String tagName;
     private String movieTitle;
     private String movieId;
@@ -8,6 +11,7 @@ public class Tag extends JSession{
     private String privacy;
     private String dateTimeCreated;
     private String state;
+    private String totalCount;
 
     // constructor
     public void setTagName(String tagName) {
@@ -43,4 +47,23 @@ public class Tag extends JSession{
 
     public String getState() { return state; }
     public void setState(String state) { this.state = state; }
+
+    public String getTotalCount() { return totalCount; }
+    public void setTotalCount(String totalCount) { this.totalCount = totalCount; }
+
+    // compare to method
+
+    public String toString(){
+        return tagName;
+    }
+
+    @Override
+    public int compareTo(Object tag2) {
+        if( tag2 instanceof Tag ) {
+            return Integer.parseInt(((Tag) tag2).getTotalCount()) - Integer.parseInt(this.totalCount);
+        }
+        else {
+            return 0;
+        }
+    }
 }

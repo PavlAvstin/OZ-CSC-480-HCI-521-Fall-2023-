@@ -13,9 +13,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DatabaseController {
   private static String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
@@ -292,6 +290,8 @@ public class DatabaseController {
    * getTagsByMovieId
    * getTagsWithTagName
    * getTagsWithUsername
+   * getTagState
+   * getTagScoresForMovieModal
    */
 
   /**
@@ -343,7 +343,7 @@ public class DatabaseController {
    * @param tagName name of the tag to find
    * @return String of either "upvote", "downvote", or "noTag".
    */
-  public String getTagStatus(String requesterUsername, String movieId, String tagName){
+  public String getTagState(String requesterUsername, String movieId, String tagName){
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
 
@@ -366,6 +366,58 @@ public class DatabaseController {
       return tags.get(0).getState();
     }
   }
+
+  /**
+   * Returns a list of unique tags in descending order based on their total aggregated upvote/downvote score. Each
+   * upvote counts for 1 and each downvote -1. The tags state is also filled with the state of the current users
+   * vote for the tag (upvote, downvote, noTag). This makes this the one stop shop endpoint for populating the movie
+   * modal.
+   *
+   * @param requesterUsername username of the client requesting
+   * @param movieId movie to pull the tags from
+   * @return an ArrayList&lt;Tag&gt; in descending order based on total score
+   */
+  public List<Tag> getTagScoresForMovieModal(String requesterUsername, String movieId){
+    List<Tag> tags = getTagsWithMovieId(movieId);
+
+    HashMap<String, Integer> totalCount = new HashMap<>();
+    // for each tagName we have: Use a hashmap to count its value
+    for (Tag tag : tags){
+      String tagName = tag.getTagName();
+      // if the tag is already in the map
+      if(totalCount.containsKey(tagName)){
+        // add one to the count
+        if (tag.getState().equals("upvote")) { totalCount.put(tagName, ( totalCount.get(tagName) + 1 ) ); }
+        // subtract one from the count
+        else { totalCount.put(tagName, ( totalCount.get(tagName) - 1 ) ); }
+      }
+      // this tag is a new one
+      else{
+        // start the count at 1
+        if (tag.getState().equals("upvote")) { totalCount.put(tagName, 1); }
+        // start the count at -1
+        else { totalCount.put(tagName, -1); }
+      }
+    }
+    ArrayList<Tag> uniqueTags = new ArrayList<>();
+    // for each unique named tag create a tag
+    for(String tagName : totalCount.keySet()){
+      // create a new tag and populate its data
+      Tag tag = new Tag();
+      tag.setTagName(tagName);
+      tag.setTotalCount(totalCount.get(tagName).toString());
+      // while we are at it lets assign what the user thinks of it
+      tag.setState(getTagState(requesterUsername, movieId, tagName));
+
+      // add the tag to the list
+      uniqueTags.add(tag);
+    }
+    // order the list in reverse order by total value
+    uniqueTags.sort(Collections.reverseOrder());
+
+    return uniqueTags;
+  }
+
   /*
    * Tag Update Functions
    *
