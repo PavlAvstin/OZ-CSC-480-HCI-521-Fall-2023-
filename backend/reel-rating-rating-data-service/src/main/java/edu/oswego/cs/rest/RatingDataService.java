@@ -6,7 +6,6 @@ import edu.oswego.cs.rest.JsonClasses.JSession;
 import edu.oswego.cs.rest.JsonClasses.Rating;
 import edu.oswego.cs.rest.JsonClasses.Tag;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.json.Json;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.client.Client;

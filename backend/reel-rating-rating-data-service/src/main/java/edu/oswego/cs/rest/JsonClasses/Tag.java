@@ -1,7 +1,5 @@
 package edu.oswego.cs.rest.JsonClasses;
 
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class Tag extends JSession implements Comparable{
     private String tagName;
@@ -60,7 +58,7 @@ public class Tag extends JSession implements Comparable{
     @Override
     public int compareTo(Object tag2) {
         if( tag2 instanceof Tag ) {
-            return Integer.parseInt(((Tag) tag2).getTotalCount()) - Integer.parseInt(this.totalCount);
+            return Integer.parseInt(this.totalCount) - Integer.parseInt(((Tag) tag2).getTotalCount());
         }
         else {
             return 0;
