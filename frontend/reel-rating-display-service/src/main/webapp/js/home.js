@@ -92,7 +92,7 @@ export function progressBarForRatingUpdate() {
     const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
 
     var progressBar = Tools.createElm(
-        "progress-bar", null, 
+        "progress-clickable", null, 
         ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
         ["1",`${ratingScaleEndNode.value}`,`${ratingScaleEndNode.value / 2}`,"#3d37bf","#00ff00"]
     );
@@ -399,7 +399,7 @@ async function appendUpDownVote(serverData){
                 ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
                 [`voteID${voteID + 1}`, `${voteID + 1}`, "downVote col-2",`../images/hand-thumbs-down-white.png`,"true", "false", "false"]
             );
-            var tagName = Tools.createElm("div", upDownData[x].tagName, ["class","icon"], ["col-8 tagName","false"]);
+            var tagName = Tools.createElm("div", upDownData[x].tagName, ["class","icon"], ["col-8 tagName hideOverflow","false"]);
             voteRow.appendChild(upVote);
             voteRow.appendChild(downVote);
             voteRow.appendChild(tagName);
@@ -440,7 +440,37 @@ function appendFriends(){
     }
 }
 
+export function feedbackForRatingSubmission() {
+    alert("Rating Created");
+    let jSessionIdStringified = Tools.getJSessionId();
 
+    const showMoreRateButton = document.getElementById("rateButton");
+    let movieID = showMoreRateButton.getAttribute("movieID");
+    //Update Ratings to include new rating
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendExistingCategories    
+    );
+}
+
+export function feedbackForTagSubmission() {
+    alert("Tag Created");
+    let jSessionIdStringified = Tools.getJSessionId();
+
+    const showMoreRateButton = document.getElementById("rateButton");
+    let movieID = showMoreRateButton.getAttribute("movieID");
+    //Update Tags to include new rating
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendUpDownVote    
+    );
+}
+
+export function feedbackForReviewSubmission() {
+    alert("Review Created");
+}
 
 
 function appendControls(carouselContainerID){
