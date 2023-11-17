@@ -150,8 +150,8 @@ function appendMovies(movies, carouselId) {
             const movieCard = Tools.createElm("div", null, "class", "movieCard bgNeutral card");
             const movieImage = Tools.createElm(
                 "img", null, 
-                ["src", "class"], 
-                [`${globals.movieImgBase}/${movies[x].id}`, "card-img-top pt-1"]
+                ["src", "class", "alt"], 
+                [`${globals.movieImgBase}/${movies[x].id}`, "card-img-top pt-1", `${movies[x].title} Movie Image`]
             );
             movieCard.appendChild(movieImage);
     
@@ -233,6 +233,7 @@ function getShowMoreData(movieID, movieTitle){
     //Set static elms
     document.getElementById("showMoreTitle").innerText = movieTitle;
     document.getElementById("showMoreImg").src = `${globals.movieImgBase}/${movieID}`;
+    document.getElementById("showMoreImg").setAttribute("alt", `${movieTitle} Movie Image`);
     var showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.setAttribute("movieID", movieID);
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
