@@ -152,6 +152,89 @@ function homeInit(){
     var upDownContainer = document.getElementById("upDownContainer");
     upDownContainer.addEventListener("click", (event)=>{
         Home.toggleUpDown(event.target);
+    });
+
+    const submitRatingButton = document.getElementById("submitRating");
+    submitRatingButton.addEventListener("click", () => {
+        const ratingTitleInput = document.getElementById("newRatingInput");
+        const ratingScaleEnd = document.getElementById("ratingScaleEnd");
+        const progressBar = document.getElementById("progressBarForRating").querySelector("progress-clickable");
+        let movieID = showMoreRateButton.getAttribute("movieID");
+        let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+        let json = {
+            "ratingName" : ratingTitleInput.value,
+            "userRating" : progressBar.getAttribute("ratingValue"),
+            "upperbound" : ratingScaleEnd.value,
+            "privacy" : "public",
+            "subtype" : "scale",
+            "movieId" : movieID,
+            "JSESSIONID" : JSESSIONID
+        };
+        let jsonString = JSON.stringify(json);
+        NetworkReq.fetchPost(
+            `${globals.ratingsBase}/rating/create`,
+            jsonString,
+            Home.feedbackForRatingSubmission
+        )
+    });
+
+    const clearRatingButton = document.getElementById("cancelRating");
+    clearRatingButton.addEventListener("click", () => {
+        const ratingTitleInput = document.getElementById("newRatingInput");
+        ratingTitleInput.value = "";
+        const ratingScaleEnd = document.getElementById("ratingScaleEnd");
+        ratingScaleEnd.value = 10;
+        Home.progressBarForRatingUpdate();
+    });
+
+    const submitTagButton = document.getElementById("submitTag");
+    submitTagButton.addEventListener("click", () => {
+        const tagTitleInput = document.getElementById("newTagInput");
+        let movieID = showMoreRateButton.getAttribute("movieID");
+        let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+        let json = {
+            "tagName" : tagTitleInput.value,
+            "privacy" : "public",
+            "movieId" : movieID,
+            "JSESSIONID" : JSESSIONID
+        };
+        let jsonString = JSON.stringify(json);
+        NetworkReq.fetchPost(
+            `${globals.ratingsBase}/tag/create/${movieID}`,
+            jsonString,
+            Home.feedbackForTagSubmission
+        )
+    });
+
+    const clearTagButton = document.getElementById("cancelTag");
+    clearTagButton.addEventListener("click", () => {
+        const ratingTitleInput = document.getElementById("newTagInput");
+        ratingTitleInput.value = "";
+    });
+
+    const submitReviewButton = document.getElementById("submitReview");
+    submitReviewButton.addEventListener("click", () => {
+        const reviewInput = document.getElementById("newReviewInput");
+        let movieID = showMoreRateButton.getAttribute("movieID");
+        let JSESSIONID = sessionStorage.getItem("JSESSIONID");
+        let json = {
+            "reviewDescription" : reviewInput.value,
+            "privacy" : "public",
+            "movieId" : movieID,
+            "JSESSIONID" : JSESSIONID
+        };
+        let jsonString = JSON.stringify(json);
+        NetworkReq.fetchPost(
+            `${globals.reviewBase}/review/create/${movieID}`,
+            jsonString,
+            Home.feedbackForReviewSubmission
+        )
+    });
+
+    const clearReviewButton = document.getElementById("cancelReview");
+    clearReviewButton.addEventListener("click", () => {
+        const ratingReviewInput = document.getElementById("newReviewInput");
+        ratingReviewInput.value = "";
     })
 
 

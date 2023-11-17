@@ -134,6 +134,7 @@ class ProgressBarClickable extends HTMLElement{
 
     changeRating(spanNumber, scaleEnd, lowRatingColor, highRatingColor){
         var barColor = this.createBarColor(spanNumber, scaleEnd, lowRatingColor, highRatingColor);
+        this.setAttribute("ratingValue", spanNumber);
         this.fillProgressBar(
             this.shadowRoot.getElementById("progressBar"), 
             barColor, spanNumber
