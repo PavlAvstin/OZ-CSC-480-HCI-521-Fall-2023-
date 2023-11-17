@@ -141,7 +141,7 @@ function homeInit(){
     Home.appendFilterMenu();
     Home.appendFreqFilterMenu();
 
-    
+    // Add event listeners to home.html
     var notImplemented = document.getElementsByClassName("notImplemented");
     for(let x =0; x < notImplemented.length; x++){
         notImplemented[x].addEventListener("click",()=>{

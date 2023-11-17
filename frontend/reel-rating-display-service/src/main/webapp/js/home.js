@@ -5,7 +5,10 @@ import * as NetworkReq from "./networkReq.js";
 import { GlobalRef } from "./globalRef.js";
 const globals = new GlobalRef();
 
-
+/**
+ * Appends movies to the Recent Release Carousel.
+ * @param {Object[]} serverData 
+ */
 export const appendRowDataToRecentRelease = async(serverData)=>{
     try{
         let movies = await serverData.json();
@@ -17,7 +20,10 @@ export const appendRowDataToRecentRelease = async(serverData)=>{
     }
 }
 
-
+/**
+ * Appends movies to the Most Reviewed Carousel.
+ * @param {Object[]} serverData 
+ */
 export const appendRowDataToMostReviewed = async(serverData)=>{
     try{
         let movies = await serverData.json();
@@ -29,7 +35,11 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
     }
 }
 
-
+/**
+ * Makes all of the network requests necessary to populate the rating page and delegates the responses to the populating functions.
+ * @param {String} movieTitle 
+ * @param {String} movieID 
+ */
 export const getRatingsPageData = (movieTitle, movieID)=>{
     document.getElementById("ratingTitle").innerText = `${movieTitle}`;
 
@@ -51,7 +61,9 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     progressBarForRatingUpdate();
 }
 
-
+/**
+ * Appends filters for the user to select on the hamburger search menu.
+ */
 export const appendFilterMenu = ()=>{
     var filterMenuContainer = document.getElementById("filterContainer");
     var filterRow = Tools.createElm("div", null, "class", "row");
@@ -70,7 +82,9 @@ export const appendFilterMenu = ()=>{
     filterMenuContainer.appendChild(filterRow);
 }
 
-
+/**
+ * Appends filter options to the frequency filter portion of the hamburger menu.
+ */
 export const appendFreqFilterMenu = ()=>{
     var filterMenuContainer = document.getElementById("freqFilterContainer");
     var filterRow = Tools.createElm("div", null, "class", "row");
@@ -100,7 +114,10 @@ export function progressBarForRatingUpdate() {
     document.getElementById("progressBarForRating").replaceChildren(progressBar);
 }
 
-
+/**
+ * Toggles the associated tags up and down buttons accordingly.
+ * @param eventTarget 
+ */
 export function toggleUpDown(eventTarget){
     if(eventTarget.getAttribute("icon") === "true"){
         var upIcon = eventTarget.getAttribute("upIcon");
@@ -130,7 +147,12 @@ export function toggleUpDown(eventTarget){
     }
 }
 
-
+/**
+ * Appends movies to the specified carouselId.
+ * @param movies - A list of movie objects that each contain a movie title, id, summary, aggregated rating value, rating upperbound, and rating name.
+ * @param carouselId - The html id of the target carousel.
+ * @type {(movies : Object[], carouselId : String)}
+ */
 function appendMovies(movies, carouselId) {
     try{
         const carouselContainer = document.getElementById(carouselId);
@@ -228,7 +250,12 @@ function appendMovies(movies, carouselId) {
     }
 }
 
-
+/**
+ * Setups the show more modal, appends a movietitle and loads image before making network requests to populate the modal.
+ * @param movieID - A movies database id.
+ * @param movieTitle - The movie title associated with the movieID.
+ * @type {(movieID : String, movieTitle : String)}
+ */
 function getShowMoreData(movieID, movieTitle){
     //Set static elms
     document.getElementById("showMoreTitle").innerText = movieTitle;
@@ -267,7 +294,12 @@ function getShowMoreData(movieID, movieTitle){
     appendFriends();//Likely will not get this feature up and running
 }
 
-
+/**
+ * Appends the movie summary, directors, writers, release date, and runtime to the Show More Modal. 
+ * Also calls a fetch post that after recieving data appends tags to the Show More Modal.
+ * @param serverRes - An object that contains a movie summary, directors, writers, release date, runtime, and id.
+ * @type {(serverRes : Object)}
+ */
 async function appendGeneralSection(serverRes){
     try{
         var genData = await serverRes.json();
@@ -292,7 +324,11 @@ async function appendGeneralSection(serverRes){
     }
 }
 
-
+/**
+ * Appends tags to the Show More Modal.
+ * @param serverRes - The server response object is a list consiting of tag objects that have tag names.
+ * @type {(serverRes : Object[])}
+ */
 async function appendTagsToShowMore(serverRes) {
     //Tags
     var tagsRow = Tools.createElm("div", null, "class", "row");
@@ -306,7 +342,11 @@ async function appendTagsToShowMore(serverRes) {
     document.getElementById("showMoreTagsContainer").replaceChildren(tagsRow);
 }
 
-
+/**
+ * Appends actors to the Show More Modal.
+ * @param serverRes - A list of actor objects that each contain an actors name.
+ * @type {(serverRes : Object[])}
+ */
 async function appendActors(serverRes){
     try{
         var actors = await serverRes.json();
@@ -329,7 +369,11 @@ async function appendActors(serverRes){
     }
 }
 
-
+/**
+ * Appends aggregated rating progress bars with associated names and values to the Show More Modal.
+ * @param serverRes - The server response is a list consiting of rating objects that have rating category names, upperbounds, and rating.
+ * @type {(serverRes : Object[])}
+ */
 async function appendExistingRatings(serverRes){
     try{
         var ratings = await serverRes.json();
@@ -357,7 +401,11 @@ async function appendExistingRatings(serverRes){
     }
 }
 
-
+/**
+ * Appends aggregated rating progress bars with associated names and values to the Rating Modal.
+ * @param serverRes - The server response is a list consiting ratings with rating category names, upperbounds, and rating.
+ * @type {(serverRes : Object[])}
+ */
 async function appendExistingCategories(serverRes){
     try{
         var ratings = await serverRes.json();
@@ -378,7 +426,12 @@ async function appendExistingCategories(serverRes){
     }
 }
 
-
+/**
+ * Appends tags with the ability to be upvoted or downvoted to the Rating Modal. The users' previous upvotes/downvotes
+ * are taken into account based on a voteID.
+ * @param serverData - The server response object is a list consiting of tag objects that have tag names and an associated voteID.
+ * @type {(serverData : Object[])}
+ */
 async function appendUpDownVote(serverData){
     try{
         var upDownData = await serverData.json();
@@ -415,7 +468,9 @@ async function appendUpDownVote(serverData){
     
 }
 
-
+/**
+ * Appends friends to the Show More Modal.
+ */
 function appendFriends(){
     try{
         var names = [ //Need the end point random names for now
@@ -441,6 +496,9 @@ function appendFriends(){
     }
 }
 
+/**
+ * Alerts the user that their rating was submitted and refreshes the Rating Modal ratings.
+ */
 export function feedbackForRatingSubmission() {
     alert("Rating Created");
     let jSessionIdStringified = Tools.getJSessionId();
@@ -455,6 +513,9 @@ export function feedbackForRatingSubmission() {
     );
 }
 
+/**
+ * Provides the user with confirmation that their tag was submitted and refreshes the tag portion of the Rating Modal.
+ */
 export function feedbackForTagSubmission() {
     alert("Tag Created");
     let jSessionIdStringified = Tools.getJSessionId();
@@ -469,11 +530,18 @@ export function feedbackForTagSubmission() {
     );
 }
 
+/**
+ * Alerts the user that their review was submitted.
+ */
 export function feedbackForReviewSubmission() {
     alert("Review Created");
 }
 
-
+/**
+ * Adds flag controls to the specified carousel.
+ * @param carouselContainerID - The html id of the carousel container.
+ * @type {(carouselContainerID : String)}
+ */
 function appendControls(carouselContainerID){
     var carouselContainer = document.getElementById(carouselContainerID);
     var prevButton = Tools.createElm(
