@@ -235,7 +235,7 @@ function homeInit(){
     clearReviewButton.addEventListener("click", () => {
         const ratingReviewInput = document.getElementById("newReviewInput");
         ratingReviewInput.value = "";
-    })
+    });
 
 
     //Vertical Center Elms that need it
