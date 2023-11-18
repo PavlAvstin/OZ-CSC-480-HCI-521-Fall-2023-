@@ -207,7 +207,7 @@ export function toggleUpDown(eventTarget){
  * Get movieID and movieTitle
  */
 export function showMoreRateHandler(){
-    var movieID = showMoreRateButton.getAttribute("movieID");
+    var movieID = document.getElementById("rateButton").getAttribute("movieID");
     var movieTitle = document.getElementById("showMoreTitle").innerText;
     document.getElementById("ratingScaleEnd").value = '10';
     getRatingsPageData(movieTitle ,movieID);
@@ -237,7 +237,7 @@ export function submitRatingHandler(){
         "upperbound" : document.getElementById("ratingScaleEnd").value,
         "privacy" : "public",
         "subtype" : "scale",
-        "movieId" : showMoreRateButton.getAttribute("movieID"),
+        "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
         "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
     });
     NetworkReq.fetchPost(
@@ -262,12 +262,13 @@ export function clearRatingHandler(){
  * Submit a new tag
  */
 export function submitTagHandler(){
+    var movieID = document.getElementById("rateButton").getAttribute("movieID");
     NetworkReq.fetchPost(
         `${globals.ratingsBase}/tag/create/${movieID}`,
         JSON.stringify({
             "tagName" : document.getElementById("newTagInput").value,
             "privacy" : "public",
-            "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
+            "movieId" : movieID,
             "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
         }),
         feedbackForTagSubmission
@@ -279,12 +280,13 @@ export function submitTagHandler(){
  * Submit review
  */
 export function submitReviewHandler(){
+    var movieID = document.getElementById("rateButton").getAttribute("movieID");
     NetworkReq.fetchPost(
         `${globals.reviewBase}/review/create/${movieID}`,
         JSON.stringify({
             "reviewDescription" : document.getElementById("newReviewInput").value,
             "privacy" : "public",
-            "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
+            "movieId" : movieID,
             "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
         }),
         feedbackForReviewSubmission
