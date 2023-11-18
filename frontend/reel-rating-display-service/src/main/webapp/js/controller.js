@@ -149,6 +149,12 @@ function homeInit(){
         document.getElementById("newReviewInput").value = "";
     });
 
+    // const webSocket = NetworkReq.openWebSocket("urlForWS");
+    // const searchBar = document.getElementById("searchBar");
+    // searchBar.addEventListener("input", ()=>{
+    //     NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
+    // });
+
     const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
     ratingScaleEndNode.addEventListener("change", Home.progressBarForRatingUpdate);
    
