@@ -9,6 +9,7 @@ export const fetchPost = (url, jsonData, callbackFunc)=>{
         credentials: "include"
     })
     .then((serverData)=>{
+        console.log(`Type of serverData is ${typeof serverData}`);
         if(serverData.status === 200){
             callbackFunc(serverData);
         } else {
@@ -25,6 +26,7 @@ export const fetchGet = (url, callbackFunc)=>{
         credentials: "include"
     })
     .then((serverData)=>{
+        console.log(`Type of serverData is ${typeof serverData}`);
         if(serverData.status === 200){
             callbackFunc(serverData);
         } else {

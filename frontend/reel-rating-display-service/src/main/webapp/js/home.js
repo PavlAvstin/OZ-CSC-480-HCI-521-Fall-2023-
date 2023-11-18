@@ -5,9 +5,10 @@ import * as NetworkReq from "./networkReq.js";
 import { GlobalRef } from "./globalRef.js";
 const globals = new GlobalRef();
 
+
 /**
  * Appends movies to the Recent Release Carousel.
- * @param {Object[]} serverData 
+ * @param {object} serverData 
  */
 export const appendRowDataToRecentRelease = async(serverData)=>{
     try{
@@ -20,9 +21,10 @@ export const appendRowDataToRecentRelease = async(serverData)=>{
     }
 }
 
+
 /**
  * Appends movies to the Most Reviewed Carousel.
- * @param {Object[]} serverData 
+ * @param {object} serverData 
  */
 export const appendRowDataToMostReviewed = async(serverData)=>{
     try{
@@ -34,6 +36,7 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
         alert("There was an error getting data from the server");
     }
 }
+
 
 /**
  * Makes all of the network requests necessary to populate the rating page and delegates the responses to the populating functions.
@@ -61,6 +64,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     progressBarForRatingUpdate();
 }
 
+
 /**
  * Appends filters for the user to select on the hamburger search menu.
  */
@@ -82,6 +86,7 @@ export const appendFilterMenu = ()=>{
     filterMenuContainer.appendChild(filterRow);
 }
 
+
 /**
  * Appends filter options to the frequency filter portion of the hamburger menu.
  */
@@ -101,6 +106,9 @@ export const appendFreqFilterMenu = ()=>{
 }
 
 
+/**
+ * Update the progress bar when the user selects a new scale
+ */
 export function progressBarForRatingUpdate() {
 
     const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
@@ -114,9 +122,54 @@ export function progressBarForRatingUpdate() {
     document.getElementById("progressBarForRating").replaceChildren(progressBar);
 }
 
+
+/**
+ * Alerts the user that their rating was submitted and refreshes the Rating Modal ratings.
+ */
+export function feedbackForRatingSubmission() {
+    alert("Rating Created");
+    let jSessionIdStringified = Tools.getJSessionId();
+
+    const showMoreRateButton = document.getElementById("rateButton");
+    let movieID = showMoreRateButton.getAttribute("movieID");
+    //Update Ratings to include new rating
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendExistingCategories    
+    );
+}
+
+
+/**
+ * Provides the user with confirmation that their tag was submitted and refreshes the tag portion of the Rating Modal.
+ */
+export function feedbackForTagSubmission() {
+    alert("Tag Created");
+    let jSessionIdStringified = Tools.getJSessionId();
+
+    const showMoreRateButton = document.getElementById("rateButton");
+    let movieID = showMoreRateButton.getAttribute("movieID");
+    //Update Tags to include new rating
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendUpDownVote    
+    );
+}
+
+
+/**
+ * Alerts the user that their review was submitted.
+ */
+export function feedbackForReviewSubmission() {
+    alert("Review Created");
+}
+
+
 /**
  * Toggles the associated tags up and down buttons accordingly.
- * @param eventTarget 
+ * @param {object} eventTarget 
  */
 export function toggleUpDown(eventTarget){
     if(eventTarget.getAttribute("icon") === "true"){
@@ -147,11 +200,102 @@ export function toggleUpDown(eventTarget){
     }
 }
 
+
+/**
+ * Get the data for show more rate modal
+ * Set the ratingsScale
+ * Get movieID and movieTitle
+ */
+export function showMoreRateHandler(){
+    var movieID = showMoreRateButton.getAttribute("movieID");
+    var movieTitle = document.getElementById("showMoreTitle").innerText;
+    document.getElementById("ratingScaleEnd").value = '10';
+    getRatingsPageData(movieTitle ,movieID);
+}
+
+
+/**
+ * Set this default alter to thing that are not implamented yet
+ */
+export function setNotImplemented(){
+    var notImplemented = document.getElementsByClassName("notImplemented");
+    for(let x =0; x < notImplemented.length; x++){
+        notImplemented[x].addEventListener("click",()=>{
+            alert("Feature is not implemented");
+        });
+    }
+}
+
+
+/**
+ * Submit rating to the end point
+ */
+export function submitRatingHandler(){
+    let jsonString = JSON.stringify({
+        "ratingName" : document.getElementById("newRatingInput").value,
+        "userRating" : document.querySelector("#progressBarForRating > progress-clickable").getAttribute("ratingValue"),
+        "upperbound" : document.getElementById("ratingScaleEnd").value,
+        "privacy" : "public",
+        "subtype" : "scale",
+        "movieId" : showMoreRateButton.getAttribute("movieID"),
+        "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+    });
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/rating/create`,
+        jsonString,
+        feedbackForRatingSubmission
+    );
+}
+
+
+/**
+ * Clear rating if the user wants to cancel
+ */
+export function clearRatingHandler(){
+    document.getElementById("newRatingInput").value = "";
+    document.getElementById("ratingScaleEnd").value = 10;
+    progressBarForRatingUpdate();
+}
+
+
+/**
+ * Submit a new tag
+ */
+export function submitTagHandler(){
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/create/${movieID}`,
+        JSON.stringify({
+            "tagName" : document.getElementById("newTagInput").value,
+            "privacy" : "public",
+            "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
+            "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+        }),
+        feedbackForTagSubmission
+    )
+}
+
+
+/**
+ * Submit review
+ */
+export function submitReviewHandler(){
+    NetworkReq.fetchPost(
+        `${globals.reviewBase}/review/create/${movieID}`,
+        JSON.stringify({
+            "reviewDescription" : document.getElementById("newReviewInput").value,
+            "privacy" : "public",
+            "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
+            "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+        }),
+        feedbackForReviewSubmission
+    );
+}
+
+
 /**
  * Appends movies to the specified carouselId.
- * @param movies - A list of movie objects that each contain a movie title, id, summary, aggregated rating value, rating upperbound, and rating name.
- * @param carouselId - The html id of the target carousel.
- * @type {(movies : Object[], carouselId : String)}
+ * @param {object[]} movies - A list of movie objects that each contain a movie title, id, summary, aggregated rating value, rating upperbound, and rating name.
+ * @param {string} carouselId - The html id of the target carousel.
  */
 function appendMovies(movies, carouselId) {
     try{
@@ -250,11 +394,11 @@ function appendMovies(movies, carouselId) {
     }
 }
 
+
 /**
  * Setups the show more modal, appends a movietitle and loads image before making network requests to populate the modal.
- * @param movieID - A movies database id.
- * @param movieTitle - The movie title associated with the movieID.
- * @type {(movieID : String, movieTitle : String)}
+ * @param {string} movieID - A movies database id.
+ * @param {string} movieTitle - The movie title associated with the movieID.
  */
 function getShowMoreData(movieID, movieTitle){
     //Set static elms
@@ -294,11 +438,11 @@ function getShowMoreData(movieID, movieTitle){
     appendFriends();//Likely will not get this feature up and running
 }
 
+
 /**
  * Appends the movie summary, directors, writers, release date, and runtime to the Show More Modal. 
  * Also calls a fetch post that after recieving data appends tags to the Show More Modal.
- * @param serverRes - An object that contains a movie summary, directors, writers, release date, runtime, and id.
- * @type {(serverRes : Object)}
+ * @param {object} serverRes - An object that contains a movie summary, directors, writers, release date, runtime, and id.
  */
 async function appendGeneralSection(serverRes){
     try{
@@ -324,10 +468,10 @@ async function appendGeneralSection(serverRes){
     }
 }
 
+
 /**
  * Appends tags to the Show More Modal.
- * @param serverRes - The server response object is a list consiting of tag objects that have tag names.
- * @type {(serverRes : Object[])}
+ * @param {object} serverRes - The server response object is a list consiting of tag objects that have tag names.
  */
 async function appendTagsToShowMore(serverRes) {
     //Tags
@@ -344,8 +488,7 @@ async function appendTagsToShowMore(serverRes) {
 
 /**
  * Appends actors to the Show More Modal.
- * @param serverRes - A list of actor objects that each contain an actors name.
- * @type {(serverRes : Object[])}
+ * @param {object} serverRes - A list of actor objects that each contain an actors name
  */
 async function appendActors(serverRes){
     try{
@@ -369,10 +512,10 @@ async function appendActors(serverRes){
     }
 }
 
+
 /**
  * Appends aggregated rating progress bars with associated names and values to the Show More Modal.
- * @param serverRes - The server response is a list consiting of rating objects that have rating category names, upperbounds, and rating.
- * @type {(serverRes : Object[])}
+ * @param {object} serverRes - The server response is a list consiting of rating objects that have rating category names, upperbounds, and rating.
  */
 async function appendExistingRatings(serverRes){
     try{
@@ -401,10 +544,10 @@ async function appendExistingRatings(serverRes){
     }
 }
 
+
 /**
  * Appends aggregated rating progress bars with associated names and values to the Rating Modal.
- * @param serverRes - The server response is a list consiting ratings with rating category names, upperbounds, and rating.
- * @type {(serverRes : Object[])}
+ * @param {object} serverRes - The server response is a list consiting ratings with rating category names, upperbounds, and rating.
  */
 async function appendExistingCategories(serverRes){
     try{
@@ -426,11 +569,12 @@ async function appendExistingCategories(serverRes){
     }
 }
 
+
 /**
  * Appends tags with the ability to be upvoted or downvoted to the Rating Modal. The users' previous upvotes/downvotes
  * are taken into account based on a voteID.
  * @param serverData - The server response object is a list consiting of tag objects that have tag names and an associated voteID.
- * @type {(serverData : Object[])}
+ * @type {(serverData : object[])}
  */
 async function appendUpDownVote(serverData){
     try{
@@ -468,6 +612,7 @@ async function appendUpDownVote(serverData){
     
 }
 
+
 /**
  * Appends friends to the Show More Modal.
  */
@@ -496,46 +641,6 @@ function appendFriends(){
     }
 }
 
-/**
- * Alerts the user that their rating was submitted and refreshes the Rating Modal ratings.
- */
-export function feedbackForRatingSubmission() {
-    alert("Rating Created");
-    let jSessionIdStringified = Tools.getJSessionId();
-
-    const showMoreRateButton = document.getElementById("rateButton");
-    let movieID = showMoreRateButton.getAttribute("movieID");
-    //Update Ratings to include new rating
-    NetworkReq.fetchPost(
-        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
-        jSessionIdStringified,
-        appendExistingCategories    
-    );
-}
-
-/**
- * Provides the user with confirmation that their tag was submitted and refreshes the tag portion of the Rating Modal.
- */
-export function feedbackForTagSubmission() {
-    alert("Tag Created");
-    let jSessionIdStringified = Tools.getJSessionId();
-
-    const showMoreRateButton = document.getElementById("rateButton");
-    let movieID = showMoreRateButton.getAttribute("movieID");
-    //Update Tags to include new rating
-    NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
-        jSessionIdStringified,
-        appendUpDownVote    
-    );
-}
-
-/**
- * Alerts the user that their review was submitted.
- */
-export function feedbackForReviewSubmission() {
-    alert("Review Created");
-}
 
 /**
  * Adds flag controls to the specified carousel.

@@ -1,7 +1,13 @@
 "using strict";
 
 
-
+/**
+ * Get new account data select data needed based on the state of the log in page
+ * If new account return an object of username, email, password, and passwordMatch
+ * If not return username and password
+ * @param {object} newAccount 
+ * @returns object
+ */
 export const getAccountData = (newAccount)=>{
     if(newAccount === "false"){
         var username = document.getElementById("username");
@@ -18,6 +24,11 @@ export const getAccountData = (newAccount)=>{
 }
 
 
+/**
+ * Get elements that represent empty error messages
+ * @param {object} newAccount 
+ * @returns object
+ */
 export const getEmptyErrorMessages = (newAccount)=>{
     if(newAccount === "false"){
         var usernameError = document.getElementById("userNameError");
@@ -34,6 +45,13 @@ export const getEmptyErrorMessages = (newAccount)=>{
 }
 
 
+/**
+ * Checking for empty inputs. Return a bool of true if an empty input was found
+ * @param {object} currentInputs 
+ * @param {object} currentErrorMessages 
+ * @param {object} newAccount 
+ * @returns bool
+ */
 export const checkForEmptyInputs = (currentInputs, currentErrorMessages, newAccount)=>{
     var emptyInput = false;
     if(currentInputs.username.value === ""){
@@ -56,6 +74,12 @@ export const checkForEmptyInputs = (currentInputs, currentErrorMessages, newAcco
 }
 
 
+/**
+ * Check to see if the passwords match for a new account. Return false if passwords dont match
+ * @param {object} currentInputs 
+ * @param {object[]} currentMatchErrors 
+ * @returns bool
+ */
 export const checkForPasswordMatch = (currentInputs, currentMatchErrors)=>{
     var passwordMatch = true;
     if(currentInputs.password.value !== currentInputs.passwordMatch.value){
@@ -67,17 +91,20 @@ export const checkForPasswordMatch = (currentInputs, currentMatchErrors)=>{
 }
 
 
+/**
+ * 
+ * @param {HTMLDivElement} submitButton 
+ * @param {HTMLDivElement} newAccountButton 
+ */
 export const toggleCreateAccount = (submitButton, newAccountButton)=>{
     var passwordMatchContainer = document.getElementById("passwordMatchContainer");
     var emailContainer = document.getElementById("emailContainer");
-    var userNameLabel = document.getElementById("userNameLabel");
     if(passwordMatchContainer.classList.contains("hidden")){
         passwordMatchContainer.classList.remove("hidden");
         emailContainer.classList.remove("hidden");
         submitButton.setAttribute("newAccount","true");
         submitButton.innerText = "Create!";
         newAccountButton.innerText = "Back";
-        userNameLabel.innerText = "Username";
     }
     else if(passwordMatchContainer.classList.contains("hidden") === false){
         passwordMatchContainer.classList.add("hidden");
@@ -85,12 +112,17 @@ export const toggleCreateAccount = (submitButton, newAccountButton)=>{
         submitButton.setAttribute("newAccount","false");
         submitButton.innerText = "Sign in";
         newAccountButton.innerText = "New Account";
-        userNameLabel.innerText = "Username or Email";
-
     }
 }
 
 
+/**
+ * Check for password complexity
+ * @param {string} password 
+ * @param {object} regExSpecChar 
+ * @param {object} regExNum 
+ * @returns bool
+ */
 export const checkVaildPassword = (password, regExSpecChar, regExNum)=>{
     var passwordNotVaildContainer = document.getElementById("passwordNotValid");
     var error = false;
@@ -120,6 +152,11 @@ export const checkVaildPassword = (password, regExSpecChar, regExNum)=>{
 }
 
 
+/**
+ * Check username to make sure that the string length is between 2 and 15 chars
+ * @param {string} userName 
+ * @returns bool
+ */
 export const checkValidUserName = (userName)=>{
     var userNameNotValidContainer = document.getElementById("userNameNotValid");
     var error = false;
@@ -141,7 +178,12 @@ export const checkValidUserName = (userName)=>{
     return error;
 }
 
-
+/**
+ * Check for basic email. At the moment there are no numbers nor special chars in the email id
+ * @param {string} email 
+ * @param {object} regExEmail 
+ * @returns bool
+ */
 export const checkValidEmail = (email, regExEmail)=>{
     var emailNotVaildContainer = document.getElementById("emailNotValid");
     var error = false;
