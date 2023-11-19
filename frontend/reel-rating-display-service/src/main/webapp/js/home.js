@@ -2,8 +2,10 @@
 
 import * as Tools from "./tools.js";
 import * as NetworkReq from "./networkReq.js";
+import * as JSStyles from "./jsStyles.js";
 import { GlobalRef } from "./globalRef.js";
 const globals = new GlobalRef();
+
 
 
 /**
@@ -17,7 +19,7 @@ export const appendRowDataToRecentRelease = async(serverData)=>{
         appendControls("recentReleaseCarousel");
     } catch(error){
         console.log(error);
-        alert("There was an error getting data from the server");
+        JSStyles.alertAnimation("There was an error getting data from the server");
     }
 }
 
@@ -33,7 +35,7 @@ export const appendRowDataToMostReviewed = async(serverData)=>{
         appendControls("mostReviewedCarousel");
     } catch(error){
         console.log(error);
-        alert("There was an error getting data from the server");
+        JSStyles.alertAnimation("There was an error getting data from the server");
     }
 }
 
@@ -114,9 +116,9 @@ export function progressBarForRatingUpdate() {
     const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
 
     var progressBar = Tools.createElm(
-        "progress-clickable", null, 
-        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
-        ["1",`${ratingScaleEndNode.value}`,`${ratingScaleEndNode.value / 2}`,"#3d37bf","#00ff00"]
+        "progress-create", null, 
+        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor","ratingName"], 
+        ["1",`${ratingScaleEndNode.value}`,`${Math.round(ratingScaleEndNode.value / 2)}`,"#3d37bf","#00ff00", "Rating Value"]
     );
 
     document.getElementById("progressBarForRating").replaceChildren(progressBar);
@@ -127,7 +129,7 @@ export function progressBarForRatingUpdate() {
  * Alerts the user that their rating was submitted and refreshes the Rating Modal ratings.
  */
 export function feedbackForRatingSubmission() {
-    alert("Rating Created");
+    JSStyles.alertAnimation("Rating Created");
     let jSessionIdStringified = Tools.getJSessionId();
 
     const showMoreRateButton = document.getElementById("rateButton");
@@ -145,7 +147,7 @@ export function feedbackForRatingSubmission() {
  * Provides the user with confirmation that their tag was submitted and refreshes the tag portion of the Rating Modal.
  */
 export function feedbackForTagSubmission() {
-    alert("Tag Created");
+    JSStyles.alertAnimation("Tag Created");
     let jSessionIdStringified = Tools.getJSessionId();
 
     const showMoreRateButton = document.getElementById("rateButton");
@@ -163,7 +165,7 @@ export function feedbackForTagSubmission() {
  * Alerts the user that their review was submitted.
  */
 export function feedbackForReviewSubmission() {
-    alert("Review Created");
+    JSStyles.alertAnimation("Review Created");
 }
 
 
@@ -221,7 +223,7 @@ export function setNotImplemented(){
     var notImplemented = document.getElementsByClassName("notImplemented");
     for(let x =0; x < notImplemented.length; x++){
         notImplemented[x].addEventListener("click",()=>{
-            alert("Feature is not implemented");
+            JSStyles.alertAnimation("Feature is not implemented");
         });
     }
 }
@@ -233,7 +235,7 @@ export function setNotImplemented(){
 export function submitRatingHandler(){
     let jsonString = JSON.stringify({
         "ratingName" : document.getElementById("newRatingInput").value,
-        "userRating" : document.querySelector("#progressBarForRating > progress-clickable").getAttribute("ratingValue"),
+        "userRating" : document.querySelector("#progressBarForRating > progress-create").getAttribute("ratingValue"),
         "upperbound" : document.getElementById("ratingScaleEnd").value,
         "privacy" : "public",
         "subtype" : "scale",
@@ -341,13 +343,16 @@ function appendMovies(movies, carouselId) {
             categoryAndRating.append(rating);
             cardBody.appendChild(categoryAndRating);
     
-            const progressBar = document.createElement('progress-bar-create-modify');
-            progressBar.setAttribute("scaleStart", "1");
-            progressBar.setAttribute("scaleEnd", movies[x].mostPopRatingUpperBound);
-            progressBar.setAttribute("ratingValue", movies[x].mostPopRatingAvg);
-            progressBar.setAttribute("lowRatingColor", '#3d37bf');
-            progressBar.setAttribute("highRatingColor", '#00ff00');
-            progressBar.loadAttributes();
+            const progressBar = Tools.createElm(
+                "progress-bar", null,
+                ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
+                [
+                    "1",
+                    movies[x].mostPopRatingUpperBound,
+                    movies[x].mostPopRatingAvg,
+                    "#3d37bf","#00ff00"
+                ]
+            )
             cardBody.appendChild(progressBar);
 
             const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
@@ -488,6 +493,7 @@ async function appendTagsToShowMore(serverRes) {
     document.getElementById("showMoreTagsContainer").replaceChildren(tagsRow);
 }
 
+
 /**
  * Appends actors to the Show More Modal.
  * @param {object} serverRes - A list of actor objects that each contain an actors name
@@ -559,8 +565,8 @@ async function appendExistingCategories(serverRes){
             var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtXSM");
             var progressBar = Tools.createElm(
                 "progress-clickable", null, 
-                ["ratingName","scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
-                [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00"]
+                ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "avgRating"], 
+                [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00", `${ratings[x]}`]
             );
             currentRatingContainer.appendChild(progressBar);
             ratingsRow.appendChild(currentRatingContainer);

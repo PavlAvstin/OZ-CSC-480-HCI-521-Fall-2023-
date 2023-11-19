@@ -80,7 +80,7 @@ export function openWebSocket(url){
 
 
 /**
- * 
+ * Use the current websocket to send a message to the server
  * @param {Object} currentWebSocket 
  * @param {string} message 
  */
