@@ -1,34 +1,45 @@
 "using strict;"
 
 
-class ProgressBarCreateModify extends HTMLElement{
-    
-    static observedAttributes = ["highRatingColor"];
-    
+class ProgressBarCreate extends HTMLElement{
     constructor(){
         super();
         //Needed Elms
         var progressBarContainer = document.createElement("div");
         progressBarContainer.setAttribute("id", "progressBarContainer");
-            
-        var progressBar = document.createElement("div");
-        progressBar.setAttribute("id", "progressBar");
-        progressBarContainer.appendChild(progressBar);
 
         this.attachShadow({ mode : "open" });//Append the shadow root
         this.shadowRoot.appendChild(progressBarContainer.cloneNode(true));
     }
 
-    loadAttributes() {    
-        //Get the attributes that where passed in and create the component
-        var progressBarContainer = this.shadowRoot.getElementById("progressBarContainer");
-        var progressBar = this.shadowRoot.getElementById("progressBar");
-
+    connectedCallback() {
         var scaleStart = Number(this.getAttribute("scaleStart"));
         var scaleEnd = Number(this.getAttribute("scaleEnd"));
         var ratingValue = Number(this.getAttribute("ratingValue"));
         var lowRatingColor = this.getAttribute("lowRatingColor");
         var highRatingColor = this.getAttribute("highRatingColor");
+        
+        //Get the attributes that where passed in and create the component
+        var progressBarContainer = this.shadowRoot.getElementById("progressBarContainer");
+        var progressBar = document.createElement("div");
+        progressBar.setAttribute("id", "progressBar");
+        
+
+        var ratingsContainer = document.createElement("div");
+        ratingsContainer.setAttribute("id", "ratingsContainer");
+
+        var ratingName = document.createElement("div");
+        ratingName.setAttribute('id', 'ratingName');
+        ratingName.innerText = this.getAttribute("ratingName");
+        ratingsContainer.appendChild(ratingName);
+
+        var userRating = document.createElement("div");
+        userRating.setAttribute("id", "userRating");
+        userRating.innerText = ratingValue;
+        ratingsContainer.appendChild(userRating);
+        progressBarContainer.appendChild(ratingsContainer);
+        progressBarContainer.appendChild(progressBar);
+
         lowRatingColor = this.hexToRgb(lowRatingColor);
         highRatingColor = this.hexToRgb(highRatingColor);
         progressBar = this.createBlocks(progressBar, scaleStart, scaleEnd);
@@ -39,6 +50,12 @@ class ProgressBarCreateModify extends HTMLElement{
         //These are needed because :last-child was not working for some reason
         progressBar.children[progressBar.children.length - 1].style.borderTopRightRadius = "15px";
         progressBar.children[progressBar.children.length - 1].style.borderBottomRightRadius = "15px";
+
+        progressBar.addEventListener("click", (event)=>{ 
+            var spanNumber = event.target.getAttribute("spanNumber");
+            this.changeRating(spanNumber, scaleEnd, lowRatingColor, highRatingColor); 
+            userRating.innerText = `${spanNumber}`;
+        });
     }
 
     fillProgressBar(progressBar, barColor, ratingValue){
@@ -50,6 +67,8 @@ class ProgressBarCreateModify extends HTMLElement{
     setProgressBarStyle(progressBarContainer, scaleEnd){
         var styleTag = document.createElement("style");
         styleTag.innerHTML += `
+            #ratingsContainer{ display:grid; grid-template-columns: 10fr 2fr; color:white; }
+            #userRating{ text-align: right; }
             #progressBar{ 
                 display : grid;
                 grid-template-columns: repeat(${scaleEnd}, 1fr);
@@ -75,7 +94,7 @@ class ProgressBarCreateModify extends HTMLElement{
 
     createBlocks(progressBar, scaleStart, scaleEnd){
         for(var x = scaleStart; x <= scaleEnd; x++){
-            progressBar.innerHTML += `<span class="ratingBlock"></span>`;
+            progressBar.innerHTML += `<span class="ratingBlock" spanNumber="${x}"></span>`;
         }
         return progressBar;
     }
@@ -106,6 +125,22 @@ class ProgressBarCreateModify extends HTMLElement{
         return { red, green, blue };
     }
 
+    fillProgressBar(progressBar, barColor, ratingValue){
+        for(var x =0; x < progressBar.children.length; x++){ progressBar.children[x].style.backgroundColor = "white"; }
+        for(var x =0; x < ratingValue; x++){ 
+            progressBar.children[x].style.backgroundColor = `rgb(${barColor.red}, ${barColor.green}, ${barColor.blue})`; 
+        }
+    }
+
+    changeRating(spanNumber, scaleEnd, lowRatingColor, highRatingColor){
+        var barColor = this.createBarColor(spanNumber, scaleEnd, lowRatingColor, highRatingColor);
+        this.setAttribute("ratingValue", spanNumber);
+        this.fillProgressBar(
+            this.shadowRoot.getElementById("progressBar"), 
+            barColor, spanNumber
+        );
+    }
+
     //Make this custom element avalible to the dom
 }
-window.customElements.define("progress-bar-create-modify", ProgressBarCreateModify);
+window.customElements.define("progress-create", ProgressBarCreate);
