@@ -2,6 +2,7 @@ package edu.oswego.cs.rest.JsonClasses;
 
 public class Rating extends JSession{
   private String movieTitle;
+  private String username;
   private String ratingName;
   private String userRating;
   private String upperbound;
@@ -9,6 +10,7 @@ public class Rating extends JSession{
   private String privacy;
   private String movieId;
   private String subtype;
+  private String avgRating;
 
   public Rating() {}
 
@@ -47,4 +49,10 @@ public class Rating extends JSession{
 
   public String getSubtype() {return subtype;}
   public void setSubtype(String subtype) { this.subtype = subtype; }
+
+  public String getUsername() {return username;}
+  public void setUsername(String username) { this.username = username; }
+
+  public String getAvgRating() {return avgRating;}
+  public void setAvgRating(String avgRating) { this.avgRating = avgRating; }
 }

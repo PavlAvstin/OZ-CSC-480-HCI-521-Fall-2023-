@@ -143,6 +143,20 @@ public class RatingDataService {
     return Response.ok(ratings).build();
   }
 
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/{movieId}")
+  public Response getUniqueRatingCategoriesAndUserRatingWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId , JSession jsession) throws Exception {
+    String sessionId = request.getRequestedSessionId();
+    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String requesterUsername = getUsername(sessionId);
+    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Rating> ratings = dbc.getUniqueRatingCategoriesAndUserRatingWithMovieId(movieId, requesterUsername);
+    return Response.ok(ratings).build();
+  }
+
   /*
    * Tag Create Endpoints
    *
@@ -168,6 +182,8 @@ public class RatingDataService {
    * getTagsWithMovieId
    * getTagsWithTagName
    * getTagsWithUsername
+   * getTagState
+   * getTagScoresForMovieModal
    */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)

@@ -13,6 +13,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import javax.print.Doc;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class DatabaseController {
@@ -77,7 +79,7 @@ public class DatabaseController {
 
     // check to see if movie exists and rating is not already created by user
     if (rating == null && movie != null) {
-      Document newRating = new Document("userName", username)
+      Document newRating = new Document("username", username)
                   .append("ratingName", ratingName)
                   .append("userRating", userRating)
                   .append("upperbound", upperbound)
@@ -122,6 +124,7 @@ public class DatabaseController {
   private static ArrayList<Rating> getRatingsWithFilter(MongoCollection<Document> ratingsCollection, Bson filter) {
     var ratings = ratingsCollection.find(filter).map(document -> {
       var ra = new Rating();
+      ra.setUsername(document.getString("username"));
       ra.setRatingName(document.getString("ratingName"));
       ra.setUserRating(document.getString("userRating"));
       ra.setMovieTitle(document.getString("movieTitle"));
@@ -207,8 +210,82 @@ public class DatabaseController {
     Rating rating = new Rating();
     rating.setRatingName(mostPopularCategoryName);
     rating.setUpperbound(mostPopularCategoryUpperbound);
-    rating.setUserRating(Double.toString(average));
+    rating.setAvgRating(Double.toString(average));
     return rating;
+  }
+
+  /**
+   * Calculates the average rating of a list of ratings passed to it. The ratings are assumed to be of the same rating
+   * category, meaning they share a ratingName and upperbound. The method also populated the username and userRating
+   * fields of a Rating if the given requesterUsername has created a rating for this rating category
+   * @param ratings all ratings in a rating category
+   * @param requesterUsername username to check for to see if they have already created a rating in this category
+   * @return Rating object that contains the average rating of the category and other useful information
+   */
+  private Rating getAverageRatingWithRatingCategoryList(List<Rating> ratings, String requesterUsername){
+    // should not happen but good to check
+    if(ratings.isEmpty()){ return null; }
+    Rating rating = new Rating();
+    // calculate the average and try to add the
+    int average = 0;
+    for(Rating r : ratings){
+      average += Integer.parseInt(r.getUserRating());
+      // check if the user rated this
+      if(r.getUsername().equals(requesterUsername)){
+        rating.setUserRating(r.getUserRating());
+        rating.setUsername(requesterUsername);
+      }
+    }
+
+    // create and populate new rating to return
+    rating.setMovieId(ratings.get(0).getMovieId());
+    rating.setRatingName(ratings.get(0).getRatingName());
+    rating.setSubtype(ratings.get(0).getSubtype());
+    rating.setAvgRating(Double.toString(average/((double) ratings.size())));
+    rating.setUpperbound(ratings.get(0).getUpperbound());
+
+    // return the rating
+    return rating;
+  }
+
+  /**
+   * creates and returns a list of Rating objects that represent the average ratings of each rating category for the
+   * given movie. If the user has created a rating within a category their rating is provided along with their username.
+   * @param movieId Mongo hexId of movie to find ratings from
+   * @param requesterUsername username of requester used to check if they have rated the movie in any categories
+   * @return ArrayList of Ratings containing one rating for every unique rating category
+   */
+  public List<Rating> getUniqueRatingCategoriesAndUserRatingWithMovieId(String movieId, String requesterUsername){
+    // get collection and set up hashmap
+    List<Rating> ratings = getRatingsWithMovieId(movieId);
+    HashMap<String, ArrayList<Rating>> uniqueRatingCategories = new HashMap<>();
+    ArrayList<Rating> uniqueRatings = new ArrayList<>();
+
+    // for every rating attached to the movie
+    for (Rating r : ratings) {
+      // create a key so it can be added to the hashmap
+      String key = r.getRatingName() + r.getUpperbound();
+      // other ratings of this category are in here so add this rating to the end of the ArrayList
+      if(uniqueRatingCategories.containsKey(key)){
+        uniqueRatingCategories.get(key).add(r);
+      }
+      // no ratings of this category exist yet so we need to create a new arraylist and enter it into the hashmap
+      else{
+        ArrayList<Rating> newRatingList = new ArrayList<>(List.of(r));
+        uniqueRatingCategories.put(key, newRatingList);
+      }
+    }
+
+    // for every unique ratingCategory(ratingName and upperbound pair)
+    for(String category : uniqueRatingCategories.keySet()){
+      // get a rating object that holds the average rating for the rating category
+      Rating r = getAverageRatingWithRatingCategoryList(uniqueRatingCategories.get(category), requesterUsername);
+      // add it to the list of uniqueRatings to return
+      uniqueRatings.add(r);
+    }
+
+    // return it
+    return uniqueRatings;
   }
 
   /*
@@ -535,5 +612,5 @@ public class DatabaseController {
   public boolean checkAdmin(String username){
       // TODO if this is ever implemented remember things need to work off of lowercase names
       return true;
-    }
+  }
 }
