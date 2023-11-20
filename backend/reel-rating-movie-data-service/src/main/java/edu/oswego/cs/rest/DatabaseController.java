@@ -428,7 +428,7 @@ public class DatabaseController {
     // attempt to get the rating if the user has already created one for this category and upperbound on the movie
     Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
     Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson movieFilter = Filters.eq("movieId", movieIdHexString);
     Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
     // attempt to get the corresponding movie
@@ -436,7 +436,7 @@ public class DatabaseController {
 
     // check to see if movie exists and rating is not already created by user
     if (rating == null && movie != null) {
-      Document newRating = new Document("userName", username)
+      Document newRating = new Document("username", username.toLowerCase())
                   .append("ratingName", ratingName)
                   .append("userRating", userRating)
                   .append("upperbound", upperbound)
