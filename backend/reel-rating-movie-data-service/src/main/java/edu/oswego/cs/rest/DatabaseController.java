@@ -426,17 +426,20 @@ public class DatabaseController {
       return;
 
     // attempt to get the rating if the user has already created one for this category and upperbound on the movie
-    Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
-    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
-    Bson usernameFilter = Filters.eq("username", username);
-    Bson movieFilter = Filters.eq("movieId", movieIdHexString);
-    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
+    Bson filter = Filters.and(
+            Filters.eq("upperbound", upperbound),
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("username", username),
+            Filters.eq("movieId", movieIdHexString)
+    );
+
+    Document rating = ratingCollection.find(filter).first();
     // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
     // check to see if movie exists and rating is not already created by user
     if (rating == null && movie != null) {
-      Document newRating = new Document("userName", username)
+      Document newRating = new Document("username", username.toLowerCase())
                   .append("ratingName", ratingName)
                   .append("userRating", userRating)
                   .append("upperbound", upperbound)
@@ -456,6 +459,10 @@ public class DatabaseController {
         Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
         movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
       }
+    }
+    if(rating != null){
+      Bson updateOperation = Updates.set("userRating", userRating);
+      ratingCollection.updateOne(filter, updateOperation);
     }
   }
 
