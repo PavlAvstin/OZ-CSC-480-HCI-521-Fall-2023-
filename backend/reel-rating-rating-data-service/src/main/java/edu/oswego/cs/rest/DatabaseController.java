@@ -13,19 +13,19 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.print.Doc;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class DatabaseController {
-  String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
-  String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
+  private static String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
   /*
    *
    */
   public MongoDatabase getMovieDatabase() {
-    MongoClient mongoClient = MongoClients.create(mongoURL);
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
@@ -69,17 +69,20 @@ public class DatabaseController {
       return;
 
     // attempt to get the rating if the user has already created one for this category and upperbound on the movie
-    Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
-    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
-    Bson usernameFilter = Filters.eq("username", username);
-    Bson movieFilter = Filters.eq("movieId", movieIdHexString);
-    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
+    Bson filter = Filters.and(
+            Filters.eq("upperbound", upperbound),
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("username", username),
+            Filters.eq("movieId", movieIdHexString)
+    );
+
+    Document rating = ratingCollection.find(filter).first();
     // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
     // check to see if movie exists and rating is not already created by user
     if (rating == null && movie != null) {
-      Document newRating = new Document("userName", username)
+      Document newRating = new Document("username", username)
                   .append("ratingName", ratingName)
                   .append("userRating", userRating)
                   .append("upperbound", upperbound)
@@ -100,6 +103,10 @@ public class DatabaseController {
         movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
       }
     }
+    if(rating != null){
+      Bson updateOperation = Updates.set("userRating", userRating);
+      ratingCollection.updateOne(filter, updateOperation);
+    }
   }
 
   /*
@@ -110,6 +117,7 @@ public class DatabaseController {
    * getRatingsWithSameNameAndUpperbound
    * getRatingsWithSameName
    * getRatingsWithMovieId
+   * getRatingsWithUpperbound
    * getMostPopularAggregatedRatingForMovie
    */
 
@@ -123,6 +131,7 @@ public class DatabaseController {
   private static ArrayList<Rating> getRatingsWithFilter(MongoCollection<Document> ratingsCollection, Bson filter) {
     var ratings = ratingsCollection.find(filter).map(document -> {
       var ra = new Rating();
+      ra.setUsername(document.getString("username"));
       ra.setRatingName(document.getString("ratingName"));
       ra.setUserRating(document.getString("userRating"));
       ra.setMovieTitle(document.getString("movieTitle"));
@@ -140,23 +149,28 @@ public class DatabaseController {
 
   public List<Rating> getRatingsWithSameNameAndUpperbound(String ratingName, String upperbound) {
     var ratings = getRatingCollection();
-    var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var upperboundFilter = Filters.eq("upperbound", upperbound);
-    var filter = Filters.and(ratingNameFilter, upperboundFilter);
+    Bson filter = Filters.and(
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("upperbound", upperbound));
     return getRatingsWithFilter(ratings, filter);
   }
 
   public List<Rating> getRatingsWithSameName(String ratingName) {
     var ratings = getRatingCollection();
     var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var filter = Filters.eq(ratingNameFilter);
-    return getRatingsWithFilter(ratings, filter);
+    return getRatingsWithFilter(ratings, ratingNameFilter);
   }
 
   public List<Rating> getRatingsWithMovieId(String movieId){
     var ratings = getRatingCollection();
     var movieIdFilter = Filters.eq("movieId", movieId);
     return getRatingsWithFilter(ratings, movieIdFilter);
+  }
+
+  public List<Rating> getRatingsWithUpperbound(String upperbound){
+    var ratings = getRatingCollection();
+    var upperboundFilter = Filters.eq("upperbound", upperbound);
+    return getRatingsWithFilter(ratings, upperboundFilter);
   }
 
   /**
@@ -203,8 +217,82 @@ public class DatabaseController {
     Rating rating = new Rating();
     rating.setRatingName(mostPopularCategoryName);
     rating.setUpperbound(mostPopularCategoryUpperbound);
-    rating.setUserRating(Double.toString(average));
+    rating.setAvgRating(Double.toString(average));
     return rating;
+  }
+
+  /**
+   * Calculates the average rating of a list of ratings passed to it. The ratings are assumed to be of the same rating
+   * category, meaning they share a ratingName and upperbound. The method also populated the username and userRating
+   * fields of a Rating if the given requesterUsername has created a rating for this rating category
+   * @param ratings all ratings in a rating category
+   * @param requesterUsername username to check for to see if they have already created a rating in this category
+   * @return Rating object that contains the average rating of the category and other useful information
+   */
+  private Rating getAverageRatingWithRatingCategoryList(List<Rating> ratings, String requesterUsername){
+    // should not happen but good to check
+    if(ratings.isEmpty()){ return null; }
+    Rating rating = new Rating();
+    // calculate the average and try to add the
+    int average = 0;
+    for(Rating r : ratings){
+      average += Integer.parseInt(r.getUserRating());
+      // check if the user rated this
+      if(r.getUsername().equals(requesterUsername)){
+        rating.setUserRating(r.getUserRating());
+        rating.setUsername(requesterUsername);
+      }
+    }
+
+    // create and populate new rating to return
+    rating.setMovieId(ratings.get(0).getMovieId());
+    rating.setRatingName(ratings.get(0).getRatingName());
+    rating.setSubtype(ratings.get(0).getSubtype());
+    rating.setAvgRating(Double.toString(average/((double) ratings.size())));
+    rating.setUpperbound(ratings.get(0).getUpperbound());
+
+    // return the rating
+    return rating;
+  }
+
+  /**
+   * creates and returns a list of Rating objects that represent the average ratings of each rating category for the
+   * given movie. If the user has created a rating within a category their rating is provided along with their username.
+   * @param movieId Mongo hexId of movie to find ratings from
+   * @param requesterUsername username of requester used to check if they have rated the movie in any categories
+   * @return ArrayList of Ratings containing one rating for every unique rating category
+   */
+  public List<Rating> getUniqueRatingCategoriesAndUserRatingWithMovieId(String movieId, String requesterUsername){
+    // get collection and set up hashmap
+    List<Rating> ratings = getRatingsWithMovieId(movieId);
+    HashMap<String, ArrayList<Rating>> uniqueRatingCategories = new HashMap<>();
+    ArrayList<Rating> uniqueRatings = new ArrayList<>();
+
+    // for every rating attached to the movie
+    for (Rating r : ratings) {
+      // create a key so it can be added to the hashmap
+      String key = r.getRatingName() + r.getUpperbound();
+      // other ratings of this category are in here so add this rating to the end of the ArrayList
+      if(uniqueRatingCategories.containsKey(key)){
+        uniqueRatingCategories.get(key).add(r);
+      }
+      // no ratings of this category exist yet so we need to create a new arraylist and enter it into the hashmap
+      else{
+        ArrayList<Rating> newRatingList = new ArrayList<>(List.of(r));
+        uniqueRatingCategories.put(key, newRatingList);
+      }
+    }
+
+    // for every unique ratingCategory(ratingName and upperbound pair)
+    for(String category : uniqueRatingCategories.keySet()){
+      // get a rating object that holds the average rating for the rating category
+      Rating r = getAverageRatingWithRatingCategoryList(uniqueRatingCategories.get(category), requesterUsername);
+      // add it to the list of uniqueRatings to return
+      uniqueRatings.add(r);
+    }
+
+    // return it
+    return uniqueRatings;
   }
 
   /*
@@ -246,7 +334,7 @@ public class DatabaseController {
 
     // attempt to grab the tag in a few different types
     Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson tagNameFilter = Filters.eq("tagName", tagName);
 
     Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
@@ -257,12 +345,13 @@ public class DatabaseController {
     } // else the tag does not exist
     else{
       // create and add the tag
-      Document newTag = new Document("userName", username)
+      Document newTag = new Document("username", username.toLowerCase())
               .append("tagName", tagName)
               .append("movieTitle", movie.get("title"))
               .append("movieId", movieIdHexString)
               .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-              .append("privacy", privacy);
+              .append("privacy", privacy)
+              .append("state", "upvote");
       // add to the database
       tagCollection.insertOne(newTag);
 
@@ -283,6 +372,10 @@ public class DatabaseController {
    *
    * getTagsWithFilter
    * getTagsByMovieId
+   * getTagsWithTagName
+   * getTagsWithUsername
+   * getTagState
+   * getTagScoresForMovieModal
    */
 
   /**
@@ -297,9 +390,11 @@ public class DatabaseController {
       var tag = new Tag();
       tag.setTagName(document.getString("tagName"));
       tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setMovieId(document.getString("movieId"));
       tag.setUsername(document.getString("username"));
       tag.setPrivacy(document.getString("privacy"));
       tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
+      tag.setState(document.getString("state"));
       return tag;
     });
     var list = new ArrayList<Tag>();
@@ -308,18 +403,196 @@ public class DatabaseController {
   }
 
   public List<Tag> getTagsWithMovieId(String movieId) {
-    var reviews = getTagCollection();
+    var tags = getTagCollection();
     var filter = Filters.eq("movieId", movieId);
-    return getTagsWithFilter(reviews, filter);
+    return getTagsWithFilter(tags, filter);
+  }
+
+  public List<Tag> getTagsWithTagName(String tagName) {
+    MongoCollection<Document> tags = getTagCollection();
+    Bson filter = Filters.eq("tagName", tagName);
+    return getTagsWithFilter(tags, filter);
+  }
+
+  public List<Tag> getTagsWithUsername(String username) {
+    MongoCollection<Document> tags = getTagCollection();
+    Bson filter = Filters.eq("username", username.toLowerCase());
+    return getTagsWithFilter(tags, filter);
+  }
+
+  /**
+   * Returns a string that reports the status of the tag.
+   * @param requesterUsername username of tag creator
+   * @param movieId Mongo hexId of the movie that tag is attached to
+   * @param tagName name of the tag to find
+   * @return String of either "upvote", "downvote", or "noTag".
+   */
+  public String getTagState(String requesterUsername, String movieId, String tagName){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // attempt to get the tag
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
+
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
+
+    // if the tag does not exist
+    if(tags.isEmpty()){
+      // return "noTag"
+      return "noTag";
+    }
+    // else find the state
+    else {
+      // return the state
+      return tags.get(0).getState();
+    }
+  }
+
+  /**
+   * Returns a list of unique tags in descending order based on their total aggregated upvote/downvote score. Each
+   * upvote counts for 1 and each downvote -1. The tags state is also filled with the state of the current users
+   * vote for the tag (upvote, downvote, noTag). This makes this the one stop shop endpoint for populating the movie
+   * modal.
+   *
+   * @param requesterUsername username of the client requesting
+   * @param movieId movie to pull the tags from
+   * @return an ArrayList&lt;Tag&gt; in descending order based on total score
+   */
+  public List<Tag> getTagScoresForMovieModal(String requesterUsername, String movieId){
+    List<Tag> tags = getTagsWithMovieId(movieId);
+
+    HashMap<String, Integer> totalCount = new HashMap<>();
+    // for each tagName we have: Use a hashmap to count its value
+    for (Tag tag : tags){
+      String tagName = tag.getTagName();
+      // if the tag is already in the map
+      if(totalCount.containsKey(tagName)){
+        // add one to the count
+        if (tag.getState().equals("upvote")) { totalCount.put(tagName, ( totalCount.get(tagName) + 1 ) ); }
+        // subtract one from the count
+        else { totalCount.put(tagName, ( totalCount.get(tagName) - 1 ) ); }
+      }
+      // this tag is a new one
+      else{
+        // start the count at 1
+        if (tag.getState().equals("upvote")) { totalCount.put(tagName, 1); }
+        // start the count at -1
+        else { totalCount.put(tagName, -1); }
+      }
+    }
+    ArrayList<Tag> uniqueTags = new ArrayList<>();
+    // for each unique named tag create a tag
+    for(String tagName : totalCount.keySet()){
+      // create a new tag and populate its data
+      Tag tag = new Tag();
+      tag.setTagName(tagName);
+      tag.setTotalCount(totalCount.get(tagName).toString());
+      // while we are at it lets assign what the user thinks of it
+      tag.setState(getTagState(requesterUsername, movieId, tagName));
+
+      // add the tag to the list
+      uniqueTags.add(tag);
+    }
+    // order the list in reverse order by total value
+    uniqueTags.sort(Collections.reverseOrder());
+
+    return uniqueTags;
   }
 
   /*
    * Tag Update Functions
+   *
+   * upvoteTag
+   * downvoteTag
    */
+  public void upvoteTag(String requesterUsername, String tagName, String movieId){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // try to get your tag for this movie
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
+
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
+    // if you have not already made this tag for this movie
+    if(tags.isEmpty()) {
+      // make this tag in your name for this movie
+      createTag(tagName, movieId, requesterUsername, "public");
+    } else if (tags.get(0).getState().equals("downvote")){
+      // change to upvote
+      Bson upvoteUpdate = Updates.set("state", "upvote");
+      tagCollection.updateOne(tagFilter, upvoteUpdate);
+    }
+    // otherwise you already have made this tag. Why are you doing this please don't do this return nothing
+  }
+
+  public void downvoteTag(String requesterUsername, String tagName, String movieId){
+    // get the collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    Bson tagFilter = Filters.and(
+            Filters.eq("username", requesterUsername.toLowerCase()),
+            Filters.eq("tagName", tagName),
+            Filters.eq("movieId", movieId));
+    // try to get your tag for this movie
+    List<Tag> tags = getTagsWithFilter(tagCollection, tagFilter);
+
+    // if the tag exists and is currently set to upvote
+    if(!tags.isEmpty() && tags.get(0).getState().equals("upvote")){
+      // set the state to downvote
+      Bson downvoteUpdate = Updates.set("state", "downvote");
+      tagCollection.updateOne(tagFilter, downvoteUpdate);
+    }
+    // otherwise the tag does not exist
+    else {
+      // therefore create a tag for in the users name
+      createTag(tagName, movieId, requesterUsername, "public");
+
+      // set the state to downvote
+      Bson downVoteUpdate = Updates.set("state", "downvote");
+      tagCollection.updateOne(tagFilter, downVoteUpdate);
+    }
+  }
 
   /*
    * Tag Delete Functions
+   *
+   * deleteTagNameWithTagName
    */
+
+  /**
+   * Removes a tag from a database. Tags can be deleted by the creator of the tag and by anyone who is an admin.
+   * (For now everyone is an admin since this has not been fully implemented).
+   * @param tagName name of the tag to remove
+   * @param movieId MongoDB hexId of the movie to remove the tag from
+   * @param requesterUsername username of the person trying to delete the tag
+   * @return TRUE if the tag is deleted FALSE otherwise
+   */
+  public boolean deleteTagWithTagName(String tagName, String movieId, String tagOwnerUsername, String requesterUsername){
+    // get collections
+    MongoCollection<Document> tagCollection = getTagCollection();
+
+    // attempt to get the tag from the tag collection
+    Bson movieFilter = Filters.eq("movieId", movieId);
+    Bson tagNameFilter = Filters.eq("tagName", tagName);
+    Bson ownerFilter = Filters.eq("username", tagOwnerUsername.toLowerCase());
+    Bson deleteFilter = Filters.and(movieFilter, tagNameFilter, ownerFilter);
+
+    Tag tag = getTagsWithFilter(tagCollection, deleteFilter).get(0);
+    // if the tag exists, and you are the owner or you are an admin
+    if(tag!=null && (tagOwnerUsername.toLowerCase().equals(requesterUsername.toLowerCase())  || checkAdmin(requesterUsername))){
+        // remove the tag from the tags collection
+        tagCollection.deleteOne(deleteFilter);
+        return true;
+    }
+    // otherwise return false
+    return false;
+  }
 
 
   /*
@@ -337,4 +610,14 @@ public class DatabaseController {
       ObjectId movieId = new ObjectId(hexID);
       return movieCollection.find(Filters.eq("_id", movieId)).first();
     }
+
+  /**
+   * One day will be used to check if a user is an admit. For now everyone is an admin
+   * @param username username to check if they are an admin.
+   * @return TRUE always
+   */
+  public boolean checkAdmin(String username){
+      // TODO if this is ever implemented remember things need to work off of lowercase names
+      return true;
+  }
 }

@@ -91,4 +91,11 @@ export const getJSessionId = () => {
 }
 
 
+export const clearChildren = (container)=>{
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+
 

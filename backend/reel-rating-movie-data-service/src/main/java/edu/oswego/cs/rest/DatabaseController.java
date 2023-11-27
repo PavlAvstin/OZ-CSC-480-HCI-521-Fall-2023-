@@ -31,11 +31,11 @@ import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 
 public class DatabaseController {
-  String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
-  String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
+  private static String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
   public MongoDatabase getMovieDatabase() {
-    MongoClient mongoClient = MongoClients.create(mongoURL);
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
@@ -351,7 +351,8 @@ public class DatabaseController {
 
   /**
    * Users are not allowed to create a tag for a movie that does not already exist, or the same tag for the same movie.
-   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues
+   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues. All tags have the state of upvote
+   * upon creation.
    *
    * @param tagName name of tag used to access and store the information
    * @param movieIdHexString MongoDB unique identifier for the movie to attach the tag to
@@ -372,7 +373,7 @@ public class DatabaseController {
 
     // attempt to grab the tag in a few different types
     Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson tagNameFilter = Filters.eq("tagName", tagName);
 
     Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
@@ -383,12 +384,13 @@ public class DatabaseController {
     } // else the tag does not exist
     else{
       // create and add the tag
-      Document newTag = new Document("userName", username)
+      Document newTag = new Document("username", username.toLowerCase())
               .append("tagName", tagName)
               .append("movieTitle", movie.get("title"))
               .append("movieId", movieIdHexString)
               .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-              .append("privacy", privacy);
+              .append("privacy", privacy)
+              .append("state", "upvote");
       // add to the database
       tagCollection.insertOne(newTag);
 
@@ -424,17 +426,20 @@ public class DatabaseController {
       return;
 
     // attempt to get the rating if the user has already created one for this category and upperbound on the movie
-    Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
-    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
-    Bson usernameFilter = Filters.eq("username", username);
-    Bson movieFilter = Filters.eq("movieId", movieIdHexString);
-    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
+    Bson filter = Filters.and(
+            Filters.eq("upperbound", upperbound),
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("username", username),
+            Filters.eq("movieId", movieIdHexString)
+    );
+
+    Document rating = ratingCollection.find(filter).first();
     // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
     // check to see if movie exists and rating is not already created by user
     if (rating == null && movie != null) {
-      Document newRating = new Document("userName", username)
+      Document newRating = new Document("username", username.toLowerCase())
                   .append("ratingName", ratingName)
                   .append("userRating", userRating)
                   .append("upperbound", upperbound)
@@ -454,6 +459,10 @@ public class DatabaseController {
         Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
         movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
       }
+    }
+    if(rating != null){
+      Bson updateOperation = Updates.set("userRating", userRating);
+      ratingCollection.updateOne(filter, updateOperation);
     }
   }
 
@@ -538,7 +547,7 @@ public class DatabaseController {
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    Document newMovie = new Document().append("title", movieTitle).append("director", director)
+    Document newMovie = new Document().append("title", movieTitle).append("director", director).append("writers", writers)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary)
             .append("movieImageId", getRandomImageId());
     movieCollection.insertOne(newMovie);

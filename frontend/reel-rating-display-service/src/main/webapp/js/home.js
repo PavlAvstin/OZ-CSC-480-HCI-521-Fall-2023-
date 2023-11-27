@@ -2,32 +2,49 @@
 
 import * as Tools from "./tools.js";
 import * as NetworkReq from "./networkReq.js";
+import * as JSStyles from "./jsStyles.js";
 import { GlobalRef } from "./globalRef.js";
 const globals = new GlobalRef();
 
 
+
+/**
+ * Appends movies to the Recent Release Carousel.
+ * @param {object} serverData 
+ */
 export const appendRowDataToRecentRelease = async(serverData)=>{
     try{
         let movies = await serverData.json();
         appendMovies(movies, "recentReleaseCarousel");
+        appendControls("recentReleaseCarousel");
     } catch(error){
         console.log(error);
-        alert("There was an error getting data from the server");
+        JSStyles.alertAnimation("There was an error getting data from the server");
     }
 }
 
 
+/**
+ * Appends movies to the Most Reviewed Carousel.
+ * @param {object} serverData 
+ */
 export const appendRowDataToMostReviewed = async(serverData)=>{
     try{
         let movies = await serverData.json();
         appendMovies(movies, "mostReviewedCarousel");
+        appendControls("mostReviewedCarousel");
     } catch(error){
         console.log(error);
-        alert("There was an error getting data from the server");
+        JSStyles.alertAnimation("There was an error getting data from the server");
     }
 }
 
 
+/**
+ * Makes all of the network requests necessary to populate the rating page and delegates the responses to the populating functions.
+ * @param {String} movieTitle 
+ * @param {String} movieID 
+ */
 export const getRatingsPageData = (movieTitle, movieID)=>{
     document.getElementById("ratingTitle").innerText = `${movieTitle}`;
 
@@ -40,10 +57,19 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
         appendExistingCategories    
     );
 
-    appendUpDownVote();
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendUpDownVote    
+    );
+
+    progressBarForRatingUpdate();
 }
 
 
+/**
+ * Appends filters for the user to select on the hamburger search menu.
+ */
 export const appendFilterMenu = ()=>{
     var filterMenuContainer = document.getElementById("filterContainer");
     var filterRow = Tools.createElm("div", null, "class", "row");
@@ -63,6 +89,9 @@ export const appendFilterMenu = ()=>{
 }
 
 
+/**
+ * Appends filter options to the frequency filter portion of the hamburger menu.
+ */
 export const appendFreqFilterMenu = ()=>{
     var filterMenuContainer = document.getElementById("freqFilterContainer");
     var filterRow = Tools.createElm("div", null, "class", "row");
@@ -79,6 +108,199 @@ export const appendFreqFilterMenu = ()=>{
 }
 
 
+/**
+ * Update the progress bar when the user selects a new scale
+ */
+export function progressBarForRatingUpdate() {
+
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+
+    var progressBar = Tools.createElm(
+        "progress-create", null, 
+        ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor","ratingName"], 
+        ["1",`${ratingScaleEndNode.value}`,`${Math.round(ratingScaleEndNode.value / 2)}`,"#3d37bf","#00ff00", "Rating Value"]
+    );
+
+    document.getElementById("progressBarForRating").replaceChildren(progressBar);
+}
+
+
+/**
+ * Alerts the user that their rating was submitted and refreshes the Rating Modal ratings.
+ */
+export function feedbackForRatingSubmission() {
+    JSStyles.alertAnimation("Rating Created");
+    let jSessionIdStringified = Tools.getJSessionId();
+
+    const showMoreRateButton = document.getElementById("rateButton");
+    let movieID = showMoreRateButton.getAttribute("movieID");
+    //Update Ratings to include new rating
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendExistingCategories    
+    );
+}
+
+
+/**
+ * Provides the user with confirmation that their tag was submitted and refreshes the tag portion of the Rating Modal.
+ */
+export function feedbackForTagSubmission() {
+    JSStyles.alertAnimation("Tag Created");
+    let jSessionIdStringified = Tools.getJSessionId();
+
+    const showMoreRateButton = document.getElementById("rateButton");
+    let movieID = showMoreRateButton.getAttribute("movieID");
+    //Update Tags to include new rating
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        jSessionIdStringified,
+        appendUpDownVote    
+    );
+}
+
+
+/**
+ * Alerts the user that their review was submitted.
+ */
+export function feedbackForReviewSubmission() {
+    JSStyles.alertAnimation("Review Created");
+}
+
+
+/**
+ * Toggles the associated tags up and down buttons accordingly.
+ * @param {object} eventTarget 
+ */
+export function toggleUpDown(eventTarget){
+    if(eventTarget.getAttribute("icon") === "true"){
+        var upIcon = eventTarget.getAttribute("upIcon");
+        var iconIDNumber = (eventTarget.getAttribute("idNumber"));
+        if(upIcon === "true"){
+            if(eventTarget.getAttribute("voted") === "false"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-up-fill-white.png");
+                eventTarget.setAttribute("voted", "true");
+                document.getElementById(`voteID${Number(iconIDNumber) + 1}`).setAttribute("src", "../images/hand-thumbs-down-white.png");
+            }
+            else if(eventTarget.getAttribute("voted") === "true"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-up-white.png");
+                eventTarget.setAttribute("voted", "false");
+            }
+        } 
+        else if(upIcon === "false"){
+            if(eventTarget.getAttribute("voted") === "false"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-down-fill-white.png");
+                eventTarget.setAttribute("voted", "true");
+                document.getElementById(`voteID${Number(iconIDNumber) - 1}`).setAttribute("src", "../images/hand-thumbs-up-white.png");
+            }
+            else if(eventTarget.getAttribute("voted") === "true"){
+                eventTarget.setAttribute("src", "../images/hand-thumbs-down-white.png");
+                eventTarget.setAttribute("voted", "false");
+            }
+        }
+    }
+}
+
+
+/**
+ * Get the data for show more rate modal
+ * Set the ratingsScale
+ * Get movieID and movieTitle
+ */
+export function showMoreRateHandler(){
+    var movieID = document.getElementById("rateButton").getAttribute("movieID");
+    var movieTitle = document.getElementById("showMoreTitle").innerText;
+    document.getElementById("ratingScaleEnd").value = '10';
+    getRatingsPageData(movieTitle ,movieID);
+}
+
+
+/**
+ * Set this default alter to thing that are not implamented yet
+ */
+export function setNotImplemented(){
+    var notImplemented = document.getElementsByClassName("notImplemented");
+    for(let x =0; x < notImplemented.length; x++){
+        notImplemented[x].addEventListener("click",()=>{
+            JSStyles.alertAnimation("Feature is not implemented");
+        });
+    }
+}
+
+
+/**
+ * Submit rating to the end point
+ */
+export function submitRatingHandler(){
+    let jsonString = JSON.stringify({
+        "ratingName" : document.getElementById("newRatingInput").value,
+        "userRating" : document.querySelector("#progressBarForRating > progress-create").getAttribute("ratingValue"),
+        "upperbound" : document.getElementById("ratingScaleEnd").value,
+        "privacy" : "public",
+        "subtype" : "scale",
+        "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
+        "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+    });
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/rating/create`,
+        jsonString,
+        feedbackForRatingSubmission
+    );
+}
+
+
+/**
+ * Clear rating if the user wants to cancel
+ */
+export function clearRatingHandler(){
+    document.getElementById("newRatingInput").value = "";
+    document.getElementById("ratingScaleEnd").value = 10;
+    progressBarForRatingUpdate();
+}
+
+
+/**
+ * Submit a new tag
+ */
+export function submitTagHandler(){
+    var movieID = document.getElementById("rateButton").getAttribute("movieID");
+    NetworkReq.fetchPost(
+        `${globals.ratingsBase}/tag/create/${movieID}`,
+        JSON.stringify({
+            "tagName" : document.getElementById("newTagInput").value,
+            "privacy" : "public",
+            "movieId" : movieID,
+            "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+        }),
+        feedbackForTagSubmission
+    )
+}
+
+
+/**
+ * Submit review
+ */
+export function submitReviewHandler(){
+    var movieID = document.getElementById("rateButton").getAttribute("movieID");
+    NetworkReq.fetchPost(
+        `${globals.reviewBase}/review/create/${movieID}`,
+        JSON.stringify({
+            "reviewDescription" : document.getElementById("newReviewInput").value,
+            "privacy" : "public",
+            "movieId" : movieID,
+            "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+        }),
+        feedbackForReviewSubmission
+    );
+}
+
+
+/**
+ * Appends movies to the specified carouselId.
+ * @param {object[]} movies - A list of movie objects that each contain a movie title, id, summary, aggregated rating value, rating upperbound, and rating name.
+ * @param {string} carouselId - The html id of the target carousel.
+ */
 function appendMovies(movies, carouselId) {
     try{
         const carouselContainer = document.getElementById(carouselId);
@@ -98,8 +320,8 @@ function appendMovies(movies, carouselId) {
             const movieCard = Tools.createElm("div", null, "class", "movieCard bgNeutral card");
             const movieImage = Tools.createElm(
                 "img", null, 
-                ["src", "class"], 
-                [`${globals.movieImgBase}/${movies[x].id}`, "card-img-top pt-1"]
+                ["src", "class", "alt"], 
+                [`${globals.movieImgBase}/${movies[x].id}`, "card-img-top pt-1", `${movies[x].title} Movie Image`]
             );
             movieCard.appendChild(movieImage);
     
@@ -121,13 +343,16 @@ function appendMovies(movies, carouselId) {
             categoryAndRating.append(rating);
             cardBody.appendChild(categoryAndRating);
     
-            const progressBar = document.createElement('progress-bar-create-modify');
-            progressBar.setAttribute("scaleStart", "1");
-            progressBar.setAttribute("scaleEnd", movies[x].mostPopRatingUpperBound);
-            progressBar.setAttribute("ratingValue", movies[x].mostPopRatingAvg);
-            progressBar.setAttribute("lowRatingColor", '#3d37bf');
-            progressBar.setAttribute("highRatingColor", '#00ff00');
-            progressBar.loadAttributes();
+            const progressBar = Tools.createElm(
+                "progress-bar", null,
+                ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
+                [
+                    "1",
+                    movies[x].mostPopRatingUpperBound,
+                    movies[x].mostPopRatingAvg,
+                    "#3d37bf","#00ff00"
+                ]
+            )
             cardBody.appendChild(progressBar);
 
             const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
@@ -170,16 +395,23 @@ function appendMovies(movies, carouselId) {
         carouselItem.appendChild(carouselRow);
         carouselInner.appendChild(carouselItem);
         carouselContainer.appendChild(carouselInner);
+
     } catch(error){
         console.log(`There was an error appending home page cards\n${error}`);
     }
 }
 
 
+/**
+ * Setups the show more modal, appends a movietitle and loads image before making network requests to populate the modal.
+ * @param {string} movieID - A movies database id.
+ * @param {string} movieTitle - The movie title associated with the movieID.
+ */
 function getShowMoreData(movieID, movieTitle){
     //Set static elms
     document.getElementById("showMoreTitle").innerText = movieTitle;
     document.getElementById("showMoreImg").src = `${globals.movieImgBase}/${movieID}`;
+    document.getElementById("showMoreImg").setAttribute("alt", `${movieTitle} Movie Image`);
     var showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.setAttribute("movieID", movieID);
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
@@ -188,7 +420,7 @@ function getShowMoreData(movieID, movieTitle){
 
     //Get General Info
     NetworkReq.fetchPost(
-        `${globals.movieDataBase}/movie/getByTitle/${movieTitle}`,
+        `${globals.movieDataBase}/movie/getMovieWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendGeneralSection
     );
@@ -205,22 +437,28 @@ function getShowMoreData(movieID, movieTitle){
         `${globals.actorBase}/actor/getActorsWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendActors
-    )
+    );
+
+    //
 
     //Get Friends Reviews
     appendFriends();//Likely will not get this feature up and running
 }
 
 
+/**
+ * Appends the movie summary, directors, writers, release date, and runtime to the Show More Modal. 
+ * Also calls a fetch post that after recieving data appends tags to the Show More Modal.
+ * @param {object} serverRes - An object that contains a movie summary, directors, writers, release date, runtime, and id.
+ */
 async function appendGeneralSection(serverRes){
     try{
         var genData = await serverRes.json();
-        genData = genData[0];
         
         //General
         document.getElementById("showMoreSummary").innerText = genData.summary;
         document.getElementById("showMoreDirector").innerText = genData.director;
-        //document.getElementById("showMoreWriter").innerText = genData.writer;
+        document.getElementById("showMoreWriter").innerText = genData.writers;
         document.getElementById("showMoreReleaseDate").innerText = genData.releaseDate;
         document.getElementById("showMoreRuntime").innerText = genData.runtime;
 
@@ -228,7 +466,7 @@ async function appendGeneralSection(serverRes){
 
         //Get Tags
         NetworkReq.fetchPost(
-            `${globals.ratingsBase}/tag/getTagsByMovieId/${genData.id}`,
+            `${globals.ratingsBase}/tag/getTagsWithMovieId/${genData.id}`,
             jSessionIdStringified,
             appendTagsToShowMore
         )
@@ -237,6 +475,11 @@ async function appendGeneralSection(serverRes){
     }
 }
 
+
+/**
+ * Appends tags to the Show More Modal.
+ * @param {object} serverRes - The server response object is a list consiting of tag objects that have tag names.
+ */
 async function appendTagsToShowMore(serverRes) {
     //Tags
     var tagsRow = Tools.createElm("div", null, "class", "row");
@@ -247,10 +490,14 @@ async function appendTagsToShowMore(serverRes) {
         tagsRow.appendChild(currentTag);
     }
         
-    document.getElementById("showMoreTagsContainer").appendChild(tagsRow);
+    document.getElementById("showMoreTagsContainer").replaceChildren(tagsRow);
 }
 
 
+/**
+ * Appends actors to the Show More Modal.
+ * @param {object} serverRes - A list of actor objects that each contain an actors name
+ */
 async function appendActors(serverRes){
     try{
         var actors = await serverRes.json();
@@ -266,7 +513,7 @@ async function appendActors(serverRes){
                 actorsRow.appendChild(currentActor);
             }
         }
-        document.getElementById("showMoreActorsContainer").appendChild(actorsRow);
+        document.getElementById("showMoreActorsContainer").replaceChildren(actorsRow);
     }
     catch(error){
         console.log(`There was an error appending actors\n${error}`);
@@ -274,6 +521,10 @@ async function appendActors(serverRes){
 }
 
 
+/**
+ * Appends aggregated rating progress bars with associated names and values to the Show More Modal.
+ * @param {object} serverRes - The server response is a list consiting of rating objects that have rating category names, upperbounds, and rating.
+ */
 async function appendExistingRatings(serverRes){
     try{
         var ratings = await serverRes.json();
@@ -295,69 +546,74 @@ async function appendExistingRatings(serverRes){
             currentRatingContainer.appendChild(currentRatingRow);
             ratingsRow.appendChild(currentRatingContainer);
         }
-        document.getElementById("ratingsContainer").appendChild(ratingsRow);
+        document.getElementById("ratingsContainer").replaceChildren(ratingsRow);
     } catch(error){
         console.log(`There was an error in appendingExistingRatings\n${error}`);
     }
 }
 
 
+/**
+ * Appends aggregated rating progress bars with associated names and values to the Rating Modal.
+ * @param {object} serverRes - The server response is a list consiting ratings with rating category names, upperbounds, and rating.
+ */
 async function appendExistingCategories(serverRes){
     try{
         var ratings = await serverRes.json();
         var ratingsRow = Tools.createElm("div", null, "class", "row");
         for(var x =0; x < ratings.length; x++){
             var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtXSM");
-            var currentRatingRow = Tools.createElm("div", null, "class", "row");
-            var ratingName = Tools.createElm("div", ratings[x].ratingName, "class", "col-10 hideOverflow");
-            var ratingValue = Tools.createElm("div", ratings[x].userRating, "class", "col-2");
-            
             var progressBar = Tools.createElm(
-                "progress-bar", null, 
-                ["scaleStart","scaleEnd","ratingValue","lowRatingColor","highRatingColor"], 
-                ["1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00"]
+                "progress-clickable", null, 
+                ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "avgRating"], 
+                [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00", `${ratings[x]}`]
             );
-            currentRatingRow.appendChild(ratingName);
-            currentRatingRow.appendChild(ratingValue);
-            currentRatingRow.appendChild(progressBar);
-            currentRatingContainer.appendChild(currentRatingRow);
+            currentRatingContainer.appendChild(progressBar);
             ratingsRow.appendChild(currentRatingContainer);
         }
-        document.getElementById("ratingsExsistingCat").appendChild(ratingsRow);
+        document.getElementById("ratingsExsistingCat").replaceChildren(ratingsRow);
     } catch(error){
         console.log(`There was an error in appendExistingCategories\n${error}`);
     }
 }
 
 
-function appendUpDownVote(){
+/**
+ * Appends tags with the ability to be upvoted or downvoted to the Rating Modal. The users' previous upvotes/downvotes
+ * are taken into account based on a voteID.
+ * @param serverData - The server response object is a list consiting of tag objects that have tag names and an associated voteID.
+ * @type {(serverData : object[])}
+ */
+async function appendUpDownVote(serverData){
     try{
-        //Tags
+        var upDownData = await serverData.json();
+        var upDownContainer = document.getElementById("upDownContainer");
+        Tools.clearChildren(upDownContainer);
+        
         var votingRow = Tools.createElm("div", null, "class", "row");
-        var tags = [ //Need the end point random names for now
-            'apple', 'banana', 'cherry', 'dog', 'elephant',
-            'fish', 'grape', 'horse', 'iguana', 'jacket',
-            'kiwi', 'lemon', 'mango', 'noodle', 'orange',
-            'pear', 'quilt', 'rabbit', 'strawberry', 'tiger',
-            'umbrella', 'violet', 'watermelon', 'xylophone', 'zebra',
-            'carrot', 'broccoli', 'potato', 'computer', 'guitar',
-            'keyboard', 'camera', 'sunglasses', 'book', 'pencil',
-            'lamp', 'table', 'chair', 'shoe', 'hat',
-            'globe', 'clock', 'window', 'door', 'balloon'
-        ];
-        for(var x =0; x < tags.length; x++){
+        var voteID = 0
+        for(var x =0; x < upDownData.length; x++){
             var voteRowContainer = Tools.createElm("div", null, "class", "col-6");
             var voteRow = Tools.createElm("div",null,"class","upVoteRow row mtSM");
-            var upVote = Tools.createElm("img", null, ["class","src"],["upVote col-2",`../images/hand-thumbs-up-white.png`]);
-            var downVote = Tools.createElm("img", null, ["class","src"],["downVote col-2",`../images/hand-thumbs-down-white.png`]);
-            var tagName = Tools.createElm("div", tags[x], "class", "col-8 tagName");
+            var upVote = Tools.createElm(
+                "img", null, 
+                ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
+                [`voteID${voteID}`, `${voteID}`, "upVote col-2",`../images/hand-thumbs-up-white.png`,"true", "false", "true"]
+            );
+            var downVote = Tools.createElm(
+                "img", null, 
+                ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
+                [`voteID${voteID + 1}`, `${voteID + 1}`, "downVote col-2",`../images/hand-thumbs-down-white.png`,"true", "false", "false"]
+            );
+            var tagName = Tools.createElm("div", upDownData[x].tagName, ["class","icon"], ["col-8 tagName hideOverflow","false"]);
             voteRow.appendChild(upVote);
             voteRow.appendChild(downVote);
             voteRow.appendChild(tagName);
             voteRowContainer.appendChild(voteRow);
             votingRow.appendChild(voteRowContainer);
+            voteID += 2;
         }
-        document.getElementById("upDownContainer").appendChild(votingRow);
+        upDownContainer.appendChild(votingRow);
     } catch(error){
         console.log(`There was an error appendUpDownVote\n${error}`);
     }
@@ -365,6 +621,9 @@ function appendUpDownVote(){
 }
 
 
+/**
+ * Appends friends to the Show More Modal.
+ */
 function appendFriends(){
     try{
         var names = [ //Need the end point random names for now
@@ -374,7 +633,7 @@ function appendFriends(){
             'Paula Young','Quincy White','Rachel Martin','Steven Santent'
         ];
         var tempContainer = Tools.createElm("div", null, "class", "col-12");
-        for(var x=0; x < 20; x++){
+        for(var x=0; x < 19; x++){
             var friendRow = Tools.createElm("div", null, "class", "row followedReview brAll ptXXSM pbXXSM mtXSM");
             var imgContainer = Tools.createElm("div", null, "class", "col-2");
             var friendImg = Tools.createElm("img", null, ["src", "class"], ["../images/person-1.webp", "img-fluid"]);
@@ -384,10 +643,32 @@ function appendFriends(){
             friendRow.appendChild(friendName);
             tempContainer.appendChild(friendRow);
         }
-        document.getElementById("friendsContainer").appendChild(tempContainer);
+        document.getElementById("friendsContainer").replaceChildren(tempContainer);
     } catch(error){
         console.log(`There was an error in appendFriends\n${error}`);
     }
 }
 
 
+/**
+ * Adds flag controls to the specified carousel.
+ * @param carouselContainerID - The html id of the carousel container.
+ * @type {(carouselContainerID : String)}
+ */
+function appendControls(carouselContainerID){
+    var carouselContainer = document.getElementById(carouselContainerID);
+    var prevButton = Tools.createElm(
+        "button", "<", 
+        ["class","type","data-bs-target","data-bs-slide"], 
+        ["carousel-control-prev controls lgFont","button",`#${carouselContainerID}`,"prev"]
+    );
+    
+    var nextButton = Tools.createElm(
+        "button", ">", 
+        ["class","type","data-bs-target","data-bs-slide"], 
+        ["carousel-control-next controls lgFont", "button",`#${carouselContainerID}`,"next"]
+    );
+
+    carouselContainer.appendChild(prevButton);
+    carouselContainer.appendChild(nextButton);
+}
