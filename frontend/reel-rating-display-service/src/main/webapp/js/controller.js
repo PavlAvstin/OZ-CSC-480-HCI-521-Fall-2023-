@@ -88,27 +88,23 @@ function loginInit(){
 }
 
 function homeInit(){
-    //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{
         JSStyles.verticalCenterToParentHeight(parentVertCenterElms);
-    }, 32); //350 miliseconds, slightly higher than average reaction time
+    }, 32); //32 miliseconds, 30 FPS
     
-    //Vertical Center Elms that need it
     var horizontalCenterElms = document.getElementsByClassName("hcToWindow");
     setInterval(()=>{
         JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
-    }, 32); //350 miliseconds, slightly higher than average reaction time
+    }, 32); //32 miliseconds, 30 FPS
 
     let JSessionId = Tools.getJSessionId();
-    //Get data for the recent movies row
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
         JSessionId,
         Home.appendRowDataToRecentRelease
     );
 
-    //Get data for the movies with most reviews
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
         JSessionId,
@@ -148,6 +144,14 @@ function homeInit(){
     clearReviewButton.addEventListener("click", () => {
         document.getElementById("newReviewInput").value = "";
     });
+
+    const allModals = document.getElementsByClassName("modal");
+    const closeModalButtons = document.getElementsByClassName("close");
+    for(let x =0; x < closeModalButtons.length; x++){
+        closeModalButtons[x].addEventListener("click", ()=>{
+            Home.closeAllModals(allModals);
+        });
+    } 
 
     // const webSocket = NetworkReq.openWebSocket("urlForWS");
     // const searchBar = document.getElementById("searchBar");
