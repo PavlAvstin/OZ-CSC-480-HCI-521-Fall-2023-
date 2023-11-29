@@ -339,7 +339,7 @@ function appendMovies(movies, carouselId) {
             );
             categoryAndRating.appendChild(category);
 
-            const rating = Tools.createElm("div",`${movies[x].mostPopRatingAvg}`,"class", "col-2 textRight smFont")
+            const rating = Tools.createElm("div",`${parseFloat(movies[x].mostPopRatingAvg).toFixed(1)}`,"class", "col-2 textRight smFont")
             categoryAndRating.append(rating);
             cardBody.appendChild(categoryAndRating);
     
@@ -562,7 +562,7 @@ async function appendExistingCategories(serverRes){
         var ratings = await serverRes.json();
         var ratingsRow = Tools.createElm("div", null, "class", "row");
         for(var x =0; x < ratings.length; x++){
-            var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtXSM");
+            var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtSM");
             var progressBar = Tools.createElm(
                 "progress-clickable", null, 
                 ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "avgRating"], 
@@ -672,3 +672,21 @@ function appendControls(carouselContainerID){
     carouselContainer.appendChild(prevButton);
     carouselContainer.appendChild(nextButton);
 }
+
+
+/**
+ * Close all models on the x button
+ * @param {HTMLCollection} allModals
+ */
+export function closeAllModals(allModals){
+    for(var x =0; x < allModals.length; x++){
+        if(allModals[x].classList.contains("show") === true){
+            allModals[x].classList.remove("show");
+            allModals[x].setAttribute("style",""); //Remove the style attribute that bootstrap has and default back to our custom css
+        }
+    }
+    var modalBackdrops = document.getElementsByClassName("modal-backdrop");
+    for(var x =0; x < modalBackdrops.length; x++){ modalBackdrops[x].remove(); }
+    
+}
+
