@@ -38,6 +38,10 @@ public class DatabaseController {
     var tags = getTagCollection();
     tags.createIndex(Indexes.text("tagName"));  
   }
+  public void createRatingIndex() {
+    var ratings = getRatingCollection;
+    ratings.createIndex(indexes.text("ratingName"));
+  }
 
   // We could have duplicate collections with the same data each of which have a text index for each field. That sounds
   // like a bad idea since it'd make things harder to update and take up more space.
@@ -56,6 +60,7 @@ public class DatabaseController {
   public MongoCollection<Documents> getRatingCollection() {
     return getMovieCollection().getCollection ("ratings"); 
   }
+
 
   public List<Movie> searchByTagName(String tagName) {
     createTagIndex();
