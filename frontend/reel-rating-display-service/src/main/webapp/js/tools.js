@@ -20,7 +20,7 @@ export const formatJSONData = (arrayKeys, arrayData)=>{
         }
     }
     var jSessionID = sessionStorage.getItem("JSESSIONID");
-    if(jSessionID !== undefined && jSessionID !== null){ jsonString += `"JSESSIONID":"${jSessionID}"`; }
+    if(jSessionID !== undefined && jSessionID !== null){ jsonString += `,"JSESSIONID":"${jSessionID}"`; }
     
     return `{${jsonString}}`; //Add the wrapping {} to complete the json object and return it
 }

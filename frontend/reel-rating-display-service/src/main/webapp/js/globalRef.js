@@ -18,7 +18,7 @@ export class GlobalRef{
             this.indexLocation = `http://localhost:5500/frontend/reel-rating-display-service/src/main/webapp/index.html`;
             // this.logInPath = `http://127.0.0.1:${authPort}/reel-rating-auth-service/auth/login`;
             // this.regPath = `http://127.0.0.1:${authPort}/reel-rating-auth-service/auth/register`;
-            // this.movieDataBase = `http://127.0.0.1:${movieDataPort}/reel-rating-movie-data-service`;
+            //this.movieDataBase = `http://127.0.0.1:${movieDataPort}/reel-rating-movie-data-service`;
             // this.movieImgBase = `http://127.0.0.1:${movieDataPort}/reel-rating-movie-data-service/movie/getMovieImage`;
             // this.reviewBase = `http://127.0.0.1:${reviewsPort}/reel-rating-review-data-service`;
             // this.ratingsBase = `http://127.0.0.1:${ratingsPort}/reel-rating-rating-data-service`;

@@ -74,9 +74,6 @@ class TitleWithLine extends HTMLElement{
             this.verticalCenterToParentHeight(line);
         }, 200);
     }
-    setTitle(newTitle){
-        this.shadowRoot.getElementById("title").innerText = newTitle;
-    }
 
     //Make this custom element avalible to the dom
 }
