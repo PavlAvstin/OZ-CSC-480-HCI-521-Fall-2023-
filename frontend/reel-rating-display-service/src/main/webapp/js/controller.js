@@ -59,14 +59,14 @@ function loginInit(){
             emailError === false
         ){
             if(newAccount === "true"){
-                var jsonData = Tools.formatJSONData(
+                var jsonData = Tools.formatJSONDataNoJSession(
                     ["username", "email", "password"],
                     [currentAccountData.username.value, currentAccountData.email.value, currentAccountData.password.value]
                 );
                 NetworkReq.fetchPost(globals.regPath, jsonData, Tools.navToHome);
                 localStorage.setItem("userName",`${currentAccountData.username}`);
             } else {
-                var jsonData = Tools.formatJSONData(
+                var jsonData = Tools.formatJSONDataNoJSession(
                     ["username", "password"],
                     [currentAccountData.username.value, currentAccountData.password.value] 
                 );
