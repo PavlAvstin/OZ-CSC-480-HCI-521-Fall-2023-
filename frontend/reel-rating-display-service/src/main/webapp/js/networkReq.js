@@ -1,4 +1,4 @@
-
+import * as JSStyles from "./jsStyles.js";
 
 /**
  * Use fetch to send a Post request to the server
@@ -18,11 +18,44 @@ export function fetchPost(url, jsonData, callbackFunc){
         credentials: "include"
     })
     .then((serverData)=>{
-        if(serverData.status === 200){
+        if(serverData.status === 200 && callbackFunc !== null){
             callbackFunc(serverData);
         } else {
-            throw `There was an error in getting data at ${url}`
+            console.log(`There was an error in getting data at ${url}`);
         }
+    })
+    .catch((error)=>{
+        JSStyles.alertAnimation("There was an error sending your information. Please try again later.");
+        console.log(`There was an error in the fetchPost function\n${error}`);
+    });   
+}
+/**
+ * Use fetch to send a Post request to the server
+ * If the response is 200 run the callback
+ * @param {string} url 
+ * @param {object} jsonData 
+ * @param {object} callbackFunc 
+ */
+export function fetchPostNoCors(url, jsonData, callbackFunc){
+    fetch(url,{
+        mode : "no-cors",
+        method : "post",
+        headers:{
+            "Content-Type" : "application/json",
+        },
+        body : jsonData,
+        credentials: "include"
+    })
+    .then((serverData)=>{
+        if(serverData.status === 200 && callbackFunc !== null){
+            callbackFunc(serverData);
+        } else {
+            console.log(`There was an error in getting data at ${url}`);
+        }
+    })
+    .catch((error)=>{
+        JSStyles.alertAnimation("There was an error sending your information. Please try again later.");
+        console.log(`There was an error in the fetchPost function\n${error}`);
     });   
 }
 
@@ -40,12 +73,16 @@ export function fetchGet(url, callbackFunc){
         credentials: "include"
     })
     .then((serverData)=>{
-        if(serverData.status === 200){
+        if(serverData.status === 200 && callbackFunc !== null){
             callbackFunc(serverData);
         } else {
-            throw `There was an error in getting data at ${url}`
+            console.log(`There was an error in getting data at ${url}`);
         }
-    }); 
+    })
+    .catch((error)=>{
+        JSStyles.alertAnimation("There was an error getting your information. Please try again later.");
+        console.log(`There was an error in the fetchGet function\n${error}`);
+    });
 }
 
 
