@@ -1611,7 +1611,7 @@ public class PopulationData {
     }
 
     private void createMovie81(DatabaseController db) {
-        db.createMovie("The Godfather", "Francis Ford Coppola", "March 24, 1972", "2h 55min",
+        db.createMovie("The Godfather", "Francis Ford Coppola", "1972", "2h 55min",
                 "Mario Puzo, Francis Ford Coppola",
                 "\"The Godfather\" is a crime drama that explores the transformation of Michael Corleone from a reluctant family member to a powerful figure in the Corleone crime family. It delves into themes of family, loyalty, power, and the consequences of a life in the mafia");
 
@@ -1621,9 +1621,9 @@ public class PopulationData {
         db.createTag("Drama", movie81.get().getId(), "Binura", "public");
         db.createTag("Family-Friendly", movie81.get().getId(), "Binura", "public");
 
-        db.createRating("Best moustache", "10", "10", "Binura", movie81.get().getId(), "public");
-        db.createRating("Oscar Winning", "10", "10", "Binura", movie81.get().getId(), "public");
-        db.createRating("For family to watch", "10", "10", "Binura", movie81.get().getId(), "public");
+        db.createRating("Best moustache", "10", "10","scale",  "Binura", movie81.get().getId(), "public");
+        db.createRating("Oscar Winning", "10", "10","scale", "Binura", movie81.get().getId(), "public");
+        db.createRating("For family to watch", "10", "10", "scale", "Binura", movie81.get().getId(), "public");
 
         db.createReview(movie81.get().getId(), "never heard of it sadly, i'm too young", "Keith", "public");
         db.createReview(movie81.get().getId(), "I watched this movie when i was young, how am i still alive ?", "David", "public");
@@ -1640,9 +1640,9 @@ public class PopulationData {
         db.createTag("Drama", movie82.get().getId(), "Binura", "public");
         db.createTag("Family-Friendly", movie82.get().getId(), "Binura", "public");
 
-        db.createRating("Inspirational", "8", "10", "Keith", movie82.get().getId(), "public");
-        db.createRating("Jenayyyyyy", "9", "10", "Quan", movie82.get().getId(), "public");
-        db.createRating("Run Forest Fun !", "10", "10", "David", movie82.get().getId(), "public");
+        db.createRating("Inspirational", "8", "10","scale", "Keith", movie82.get().getId(), "public");
+        db.createRating("Jenayyyyyy", "9", "10","scale", "Quan", movie82.get().getId(), "public");
+        db.createRating("Run Forest Fun !", "10", "10","scale", "David", movie82.get().getId(), "public");
 
         db.createReview(movie82.get().getId(), "I have seen this movie a thousand times, its the best movie ever", "Keith", "public");
         db.createReview(movie82.get().getId(), "Its not thattt good Keith, get a life", "David", "public");
@@ -1659,9 +1659,9 @@ public class PopulationData {
         db.createTag("Crime", movie83.get().getId(), "Rando2", "public");
         db.createTag("Action", movie83.get().getId(), "Quan", "public");
 
-        db.createRating("Heath Ledger is Awesome", "10", "10", "Quan", movie83.get().getId(), "public");
-        db.createRating("Better than Iron Man", "3", "5", "Keith", movie83.get().getId(), "public");
-        db.createRating("I'm Batman", "6", "9", "Mahella", movie83.get().getId(), "public");
+        db.createRating("Heath Ledger is Awesome", "10", "10","scale", "Quan", movie83.get().getId(), "public");
+        db.createRating("Better than Iron Man", "3", "5","scale", "Keith", movie83.get().getId(), "public");
+        db.createRating("I'm Batman", "6", "9","scale", "Mahella", movie83.get().getId(), "public");
 
         db.createReview(movie83.get().getId(), "Marvel is wayyy better", "Rando1", "public");
         db.createReview(movie83.get().getId(), "The Dark Knight is the best take on Joker", "Rando2", "public");
@@ -1678,9 +1678,9 @@ public class PopulationData {
         db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
         db.createTag("Action", movie84.get().getId(), "Binura", "public");
 
-        db.createRating("Conspiracies theories alert", "10", "10", "Quan", movie84.get().getId(), "public");
-        db.createRating("Best Fight Scence Ever", "8", "10", "Binura", movie84.get().getId(), "public");
-        db.createRating("Philosophy", "6", "10", "Rando1", movie84.get().getId(), "public");
+        db.createRating("Conspiracies theories alert", "10","scale", "10", "Quan", movie84.get().getId(), "public");
+        db.createRating("Best Fight Scence Ever", "8", "10","scale", "Binura", movie84.get().getId(), "public");
+        db.createRating("Philosophy", "6", "10", "Rando1","scale", movie84.get().getId(), "public");
 
         db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
         db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
@@ -1697,9 +1697,9 @@ public class PopulationData {
         db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
         db.createTag("Action", movie84.get().getId(), "Binura", "public");
 
-        db.createRating("Best cheese burger ever", "10", "10", "Quan", movie84.get().getId(), "public");
-        db.createRating("Sumuel L. Jackson", "8", "10", "Binura", movie84.get().getId(), "public");
-        db.createRating("Violence level ?", "6", "10", "Rando1", movie84.get().getId(), "public");
+        db.createRating("Best cheese burger ever", "10", "10","scale", "Quan", movie84.get().getId(), "public");
+        db.createRating("Sumuel L. Jackson", "8", "10","scale", "Binura", movie84.get().getId(), "public");
+        db.createRating("Violence level ?", "6", "10","scale", "Rando1", movie84.get().getId(), "public");
 
         db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
         db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
