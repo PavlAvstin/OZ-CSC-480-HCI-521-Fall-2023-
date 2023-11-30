@@ -65,7 +65,8 @@ function loginInit(){
                 );
                 NetworkReq.fetchPost(globals.regPath, jsonData, Tools.navToHome);
                 localStorage.setItem("userName",`${currentAccountData.username}`);
-            } else {
+            } 
+            else {
                 var jsonData = Tools.formatJSONDataNoJSession(
                     ["username", "password"],
                     [currentAccountData.username.value, currentAccountData.password.value] 
@@ -124,7 +125,6 @@ function homeInit(){
     const showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.addEventListener("click", Home.showMoreRateHandler);
 
-    /* Getting 500 error from the server on this */
     const upDownContainer = document.getElementById("upDownContainer");
     upDownContainer.addEventListener("click", (event)=>{
         var voteRow = event.target.parentNode;
@@ -134,16 +134,15 @@ function homeInit(){
             Home.toggleUpDown(event.target);
         }
     });
-    /* Getting 500 error from the server on this */
-
+    
     const searchButton = document.getElementById("searchButton");
     const searchBar = document.getElementById("searchBar");
     const searchUI = document.getElementById("searchUI");
     searchButton.addEventListener("click", ()=>{
         const searchValue = searchBar.value.trim();
         document.getElementById("searchTitle").innerText = searchValue;
-        // NetworkReq.fetchPost(
-        //     `${globals.searchBase}/movie/getMoviesWithTitle/${searchBar.value.trim()}`,
+        // NetworkReq.fetchPostNoCors(
+        //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
         //     Tools.getJSessionId(),
         //     Home.displaySearch
         // ); 
@@ -157,8 +156,8 @@ function homeInit(){
         if(event.key === "Enter"){
             const searchValue = searchBar.value.trim();
             document.getElementById("searchTitle").innerText = searchValue;
-            // NetworkReq.fetchPost(
-            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchBar.value.trim()}`,
+            // NetworkReq.fetchPostNoCors(
+            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
             //     Tools.getJSessionId(),
             //     Home.displaySearch
             // );

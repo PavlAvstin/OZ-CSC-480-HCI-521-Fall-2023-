@@ -217,7 +217,7 @@ export function toggleUpDown(eventTarget){
 export function sendUpDownVoteUpdate(eventTarget, voteChange){
     var voteState = setVoteState(voteChange);
     var jsonString = Tools.formatJSONData(
-        ["movieID", "tagName", "state"],
+        ["movieId", "tagName", "state"],
         [eventTarget.getAttribute("movieID"), eventTarget.getAttribute("tagName"), voteState]
     );
     if(voteState === "upVote"){ 
@@ -362,7 +362,9 @@ export function closeAllModals(allModals){
         }
     }
     var modalBackdrops = document.getElementsByClassName("modal-backdrop show");
-    for(let x =0; x < modalBackdrops.length; x++){ modalBackdrops[x].remove(); }
+
+    let x = 0;
+    while(x < modalBackdrops.length){ modalBackdrops[x].remove(); }
     
 }
 
