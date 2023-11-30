@@ -18,6 +18,7 @@ window.onload = ()=>{
     }
 }
 
+
 function loginInit(){
     var submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", ()=>{
@@ -58,17 +59,20 @@ function loginInit(){
             emailError === false
         ){
             if(newAccount === "true"){
-                var jsonData = Tools.formatJSONData(
-                    [currentAccountData.username, currentAccountData.email, currentAccountData.password], 
-                    ["username", "email", "password"]
+                var jsonData = Tools.formatJSONDataNoJSession(
+                    ["username", "email", "password"],
+                    [currentAccountData.username.value, currentAccountData.email.value, currentAccountData.password.value]
                 );
                 NetworkReq.fetchPost(globals.regPath, jsonData, Tools.navToHome);
-            } else {
-                var jsonData = Tools.formatJSONData(
-                    [currentAccountData.username, currentAccountData.password], 
-                    ["username", "password"]
+                localStorage.setItem("userName",`${currentAccountData.username}`);
+            } 
+            else {
+                var jsonData = Tools.formatJSONDataNoJSession(
+                    ["username", "password"],
+                    [currentAccountData.username.value, currentAccountData.password.value] 
                 );
                 NetworkReq.fetchPost(globals.logInPath, jsonData, Tools.navToHome);
+                localStorage.setItem("userName",`${currentAccountData.username}`);
             }
         }
     });
@@ -87,28 +91,25 @@ function loginInit(){
     }, 350); //350 miliseconds, slightly higher than average reaction time
 }
 
+
 function homeInit(){
-    //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{
         JSStyles.verticalCenterToParentHeight(parentVertCenterElms);
-    }, 32); //350 miliseconds, slightly higher than average reaction time
+    }, 32); //32 miliseconds, 30 FPS
     
-    //Vertical Center Elms that need it
     var horizontalCenterElms = document.getElementsByClassName("hcToWindow");
     setInterval(()=>{
         JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
-    }, 32); //350 miliseconds, slightly higher than average reaction time
+    }, 32); //32 miliseconds, 30 FPS
 
     let JSessionId = Tools.getJSessionId();
-    //Get data for the recent movies row
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
         JSessionId,
         Home.appendRowDataToRecentRelease
     );
 
-    //Get data for the movies with most reviews
     NetworkReq.fetchPost(
         `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
         JSessionId,
@@ -126,7 +127,46 @@ function homeInit(){
 
     const upDownContainer = document.getElementById("upDownContainer");
     upDownContainer.addEventListener("click", (event)=>{
-        Home.toggleUpDown(event.target);
+        var voteRow = event.target.parentNode;
+        var voteChange = Home.checkVoteChanged(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
+        if(voteChange !== 0){
+            Home.sendUpDownVoteUpdate(event.target, voteChange);
+            Home.toggleUpDown(event.target);
+        }
+    });
+    
+    const searchButton = document.getElementById("searchButton");
+    const searchBar = document.getElementById("searchBar");
+    const searchUI = document.getElementById("searchUI");
+    searchButton.addEventListener("click", ()=>{
+        const searchValue = searchBar.value.trim();
+        document.getElementById("searchTitle").innerText = searchValue;
+        // NetworkReq.fetchPostNoCors(
+        //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
+        //     Tools.getJSessionId(),
+        //     Home.displaySearch
+        // ); 
+        NetworkReq.fetchPost(
+            `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+            Tools.getJSessionId(),
+            Home.displaySearch
+        ); 
+    });
+    searchUI.addEventListener("keyup", (event)=>{
+        if(event.key === "Enter"){
+            const searchValue = searchBar.value.trim();
+            document.getElementById("searchTitle").innerText = searchValue;
+            // NetworkReq.fetchPostNoCors(
+            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
+            //     Tools.getJSessionId(),
+            //     Home.displaySearch
+            // );
+            NetworkReq.fetchPost(
+                `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+                Tools.getJSessionId(),
+                Home.displaySearch
+            );
+        }
     });
 
     const submitRatingButton = document.getElementById("submitRating");
@@ -148,6 +188,14 @@ function homeInit(){
     clearReviewButton.addEventListener("click", () => {
         document.getElementById("newReviewInput").value = "";
     });
+
+    const allModals = document.getElementsByClassName("modal");
+    const closeModalButtons = document.getElementsByClassName("close");
+    for(let x =0; x < closeModalButtons.length; x++){
+        closeModalButtons[x].addEventListener("click", ()=>{
+            Home.closeAllModals(allModals);
+        });
+    } 
 
     // const webSocket = NetworkReq.openWebSocket("urlForWS");
     // const searchBar = document.getElementById("searchBar");

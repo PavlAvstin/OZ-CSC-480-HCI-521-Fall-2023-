@@ -1,7 +1,7 @@
 "using strict;"
 
-
 class ProgressBarClickable extends HTMLElement{
+
     constructor(){
         super();
         this.attachShadow({ mode : "open" });//Append the shadow root
@@ -15,21 +15,38 @@ class ProgressBarClickable extends HTMLElement{
         
         var ratingName = document.createElement("div");
         ratingName.setAttribute('id','ratingName');
-        ratingName.innerText = this.getAttribute("ratingName");
+        var ratingNameText = this.getAttribute("ratingName");
+        if(ratingNameText === "" || ratingNameText === undefined || ratingNameText === null){ ratingName.innerText = "None"; }
+        else { ratingName.innerText = ratingNameText; }
+        
         progressBarContainer.appendChild(ratingName);
         
         //Get the attributes that where passed in and create the component
         var ratingsContainer = document.createElement("div");
         ratingsContainer.setAttribute("id", "ratingsContainer");
-        var userRating = document.createElement("div");
+
+        var userRatingText = document.createElement("span");
+        userRatingText.innerText = "Your Rating : ";
+        ratingsContainer.appendChild(userRatingText);
+
+        var userRating = document.createElement("span");
         userRating.setAttribute("class","hideOverflow");
-        userRating.innerText = `Your Rating : ${this.getAttribute("userRating")}`;
+        userRating.setAttribute("id","userRating");
+        var userRatingNum = Number(this.getAttribute("userRating"));
+        if(this.getAttribute("userRating") !== "undefined"){ userRating.innerText = Math.round(userRatingNum); }
+        else{ userRating.innerText = "0"; }
         ratingsContainer.appendChild(userRating);
 
+        var averageRatingText = document.createElement("span");
+        averageRatingText.innerText = "Avg Rating : ";
+        averageRatingText.setAttribute("id", "averageRatingText");
+        ratingsContainer.appendChild(averageRatingText);
         
-        var averageRating = document.createElement("div");
-        averageRating.setAttribute("id","ratingValue");
-        averageRating.innerText = `Avg Rating : ${this.getAttribute("ratingValue")}`;
+        var averageRating = document.createElement("span");
+        var averageRatingNum = Number(this.getAttribute("ratingValue"));
+        if(this.getAttribute("ratingValue") !== "undefined"){ averageRating.innerText = parseFloat(averageRatingNum).toFixed(1); }
+        else{ averageRating.innerText = "0"; }
+        averageRating.setAttribute("id","averageRating");
         ratingsContainer.appendChild(averageRating);
         progressBarContainer.appendChild(ratingsContainer);
 
@@ -40,7 +57,7 @@ class ProgressBarClickable extends HTMLElement{
         progressBar.addEventListener("click", (event)=>{ 
             var spanNumber = event.target.getAttribute("spanNumber");
             this.changeRating(spanNumber, scaleEnd, lowRatingColor, highRatingColor); 
-            averageRating.innerText = `${spanNumber}`;
+            userRating.innerText = `${spanNumber}`;
         });
         
         
@@ -51,8 +68,16 @@ class ProgressBarClickable extends HTMLElement{
         lowRatingColor = this.hexToRgb(lowRatingColor);
         highRatingColor = this.hexToRgb(highRatingColor);
         progressBar = this.createBlocks(progressBar, scaleStart, scaleEnd);
-        var barColor = this.createBarColor(Number(ratingValue), scaleEnd, lowRatingColor, highRatingColor);
-        this.fillProgressBar(progressBar, barColor, Number(ratingValue));
+      
+        let ratingValue;
+        if (this.getAttribute("userRating") == "undefined") {
+            ratingValue = this.getAttribute("ratingValue");
+        } else {
+            ratingValue = this.getAttribute("userRating");
+        }
+        var barColor = this.createBarColor(ratingValue, scaleEnd, lowRatingColor, highRatingColor);
+        this.fillProgressBar(progressBar, barColor, ratingValue);
+      
         var styleTag = this.setProgressBarStyle(scaleEnd);
         progressBarContainer.appendChild(styleTag);
         
@@ -74,8 +99,8 @@ class ProgressBarClickable extends HTMLElement{
         var styleTag = document.createElement("style");
         styleTag.innerHTML += `
             #ratingName { display:grid; }
-            #ratingsContainer{ display:grid; grid-template-columns: 1fr 1fr; color:white; }
-            #averageRating{ text-align: right; }
+            #ratingsContainer{ display:grid; grid-template-columns: 3fr 1fr 3fr 1fr; color:white; }
+            #averageRating, #averageRatingText{ text-align: right;}
             #progressBar{ 
                 display : grid;
                 grid-template-columns: repeat(${scaleEnd}, 1fr);
