@@ -25,6 +25,26 @@ export const formatJSONData = (arrayKeys, arrayData)=>{
     return `{${jsonString}}`; //Add the wrapping {} to complete the json object and return it
 }
 
+/**
+ * 
+ * @param {object[]} arrayData 
+ * @param {object[]} arrayKeys 
+ * @returns {JSON}
+ */
+export const formatJSONDataNoJSession = (arrayKeys, arrayData)=>{
+    var jsonString = "";
+    for(var x=0; x < arrayData.length; x++){
+        if((x+1) !== arrayData.length){
+            jsonString += `"${arrayKeys[x]}":"${arrayData[x]}",`;
+        }
+        else{
+            jsonString += `"${arrayKeys[x]}":"${arrayData[x]}"`;
+        }
+    }
+    
+    return `{${jsonString}}`; //Add the wrapping {} to complete the json object and return it
+}
+
 
 export const clearErrors = ()=>{
     var allErrors = document.getElementsByClassName("error");
