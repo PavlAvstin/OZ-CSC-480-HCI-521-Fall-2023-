@@ -33,7 +33,7 @@ class ProgressBarClickable extends HTMLElement{
         userRating.setAttribute("class","hideOverflow");
         userRating.setAttribute("id","userRating");
         var userRatingNum = Number(this.getAttribute("userRating"));
-        if(typeof userRatingNum === "number"){ userRating.innerText = parseFloat(userRatingNum).toFixed(1); }
+        if(typeof userRatingNum === "number"){ userRating.innerText = userRatingNum; }
         else{ userRating.innerText = "0"; }
         ratingsContainer.appendChild(userRating);
 
@@ -68,8 +68,8 @@ class ProgressBarClickable extends HTMLElement{
         lowRatingColor = this.hexToRgb(lowRatingColor);
         highRatingColor = this.hexToRgb(highRatingColor);
         progressBar = this.createBlocks(progressBar, scaleStart, scaleEnd);
-        var barColor = this.createBarColor(Number(ratingValue), scaleEnd, lowRatingColor, highRatingColor);
-        this.fillProgressBar(progressBar, barColor, Number(ratingValue));
+        var barColor = this.createBarColor(userRatingNum, scaleEnd, lowRatingColor, highRatingColor);
+        this.fillProgressBar(progressBar, barColor, userRatingNum);
         var styleTag = this.setProgressBarStyle(scaleEnd);
         progressBarContainer.appendChild(styleTag);
         

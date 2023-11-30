@@ -18,6 +18,7 @@ window.onload = ()=>{
     }
 }
 
+
 function loginInit(){
     var submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", ()=>{
@@ -59,16 +60,18 @@ function loginInit(){
         ){
             if(newAccount === "true"){
                 var jsonData = Tools.formatJSONData(
-                    [currentAccountData.username, currentAccountData.email, currentAccountData.password], 
-                    ["username", "email", "password"]
+                    ["username", "email", "password"],
+                    [currentAccountData.username.value, currentAccountData.email.value, currentAccountData.password.value]
                 );
                 NetworkReq.fetchPost(globals.regPath, jsonData, Tools.navToHome);
+                localStorage.setItem("userName",`${currentAccountData.username}`);
             } else {
                 var jsonData = Tools.formatJSONData(
-                    [currentAccountData.username, currentAccountData.password], 
-                    ["username", "password"]
+                    ["username", "password"],
+                    [currentAccountData.username.value, currentAccountData.password.value] 
                 );
                 NetworkReq.fetchPost(globals.logInPath, jsonData, Tools.navToHome);
+                localStorage.setItem("userName",`${currentAccountData.username}`);
             }
         }
     });
@@ -86,6 +89,7 @@ function loginInit(){
         JSStyles.verticalCenterToWindowHeight(windowVertCenterElms);
     }, 350); //350 miliseconds, slightly higher than average reaction time
 }
+
 
 function homeInit(){
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
@@ -120,9 +124,50 @@ function homeInit(){
     const showMoreRateButton = document.getElementById("rateButton");
     showMoreRateButton.addEventListener("click", Home.showMoreRateHandler);
 
+    /* Getting 500 error from the server on this */
     const upDownContainer = document.getElementById("upDownContainer");
     upDownContainer.addEventListener("click", (event)=>{
-        Home.toggleUpDown(event.target);
+        var voteRow = event.target.parentNode;
+        var voteChange = Home.checkVoteChanged(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
+        if(voteChange !== 0){
+            Home.sendUpDownVoteUpdate(event.target, voteChange);
+            Home.toggleUpDown(event.target);
+        }
+    });
+    /* Getting 500 error from the server on this */
+
+    const searchButton = document.getElementById("searchButton");
+    const searchBar = document.getElementById("searchBar");
+    const searchUI = document.getElementById("searchUI");
+    searchButton.addEventListener("click", ()=>{
+        const searchValue = searchBar.value.trim();
+        document.getElementById("searchTitle").innerText = searchValue;
+        // NetworkReq.fetchPost(
+        //     `${globals.searchBase}/movie/getMoviesWithTitle/${searchBar.value.trim()}`,
+        //     Tools.getJSessionId(),
+        //     Home.displaySearch
+        // ); 
+        NetworkReq.fetchPost(
+            `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+            Tools.getJSessionId(),
+            Home.displaySearch
+        ); 
+    });
+    searchUI.addEventListener("keyup", (event)=>{
+        if(event.key === "Enter"){
+            const searchValue = searchBar.value.trim();
+            document.getElementById("searchTitle").innerText = searchValue;
+            // NetworkReq.fetchPost(
+            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchBar.value.trim()}`,
+            //     Tools.getJSessionId(),
+            //     Home.displaySearch
+            // );
+            NetworkReq.fetchPost(
+                `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+                Tools.getJSessionId(),
+                Home.displaySearch
+            );
+        }
     });
 
     const submitRatingButton = document.getElementById("submitRating");

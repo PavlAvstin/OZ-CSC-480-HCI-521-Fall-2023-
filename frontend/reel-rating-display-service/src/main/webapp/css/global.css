@@ -156,13 +156,19 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     top : 10%;
     left : 70%;
     width : 30%;
-    z-index: 1060;
+    z-index: 1070;
 }
 .alertMessage{ 
     position: absolute; 
     background: var(--purpleGrad); 
-    z-index: 1061;
+    z-index: 1071;
 }
+
+#searchModal{ z-index: 1060; }
+#showMoreModal{ z-index: 1061; }
+#rateModal{ z-index: 1062; }
+
+
 @keyframes fadeIn {
     0% {
         opacity: 0;

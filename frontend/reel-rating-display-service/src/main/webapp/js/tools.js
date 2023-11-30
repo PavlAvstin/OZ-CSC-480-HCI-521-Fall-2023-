@@ -3,18 +3,25 @@
 import { GlobalRef } from "./globalRef.js";
 const globals = new GlobalRef();
 
-
-export const formatJSONData = (arrayData, arrayKeys)=>{
+/**
+ * 
+ * @param {object[]} arrayData 
+ * @param {object[]} arrayKeys 
+ * @returns {JSON}
+ */
+export const formatJSONData = (arrayKeys, arrayData)=>{
     var jsonString = "";
     for(var x=0; x < arrayData.length; x++){
         if((x+1) !== arrayData.length){
-            jsonString += `"${arrayKeys[x]}":"${arrayData[x].value}",`;
+            jsonString += `"${arrayKeys[x]}":"${arrayData[x]}",`;
         }
         else{
-            jsonString += `"${arrayKeys[x]}":"${arrayData[x].value}"`;
+            jsonString += `"${arrayKeys[x]}":"${arrayData[x]}"`;
         }
     }
-     
+    var jSessionID = sessionStorage.getItem("JSESSIONID");
+    if(jSessionID !== undefined && jSessionID !== null){ jsonString += `"JSESSIONID":"${jSessionID}"`; }
+    
     return `{${jsonString}}`; //Add the wrapping {} to complete the json object and return it
 }
 
@@ -26,11 +33,13 @@ export const clearErrors = ()=>{
     }
 }
 
+
 export const getEndOfURL = ()=>{
     var currentURL = window.location.pathname;
     var pathSegs = currentURL.split("/");
     return pathSegs[pathSegs.length - 1];
 }
+
 
 export const navToHome = async(serverRes)=>{
     if(serverRes.status === 200){
@@ -80,7 +89,10 @@ export const randomNum = ()=>{
     return Math.random() * (10 - 0) + 0;
 }
 
-
+/**
+ * 
+ * @returns {JSON}
+ */
 export const getJSessionId = () => {
     let JSESSIONID = sessionStorage.getItem("JSESSIONID");
     if (JSESSIONID === null) {

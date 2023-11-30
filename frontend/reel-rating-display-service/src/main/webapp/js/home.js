@@ -171,7 +171,7 @@ export function feedbackForReviewSubmission() {
 
 /**
  * Toggles the associated tags up and down buttons accordingly.
- * @param {object} eventTarget 
+ * @param {eventTarget} eventTarget 
  */
 export function toggleUpDown(eventTarget){
     if(eventTarget.getAttribute("icon") === "true"){
@@ -201,6 +201,53 @@ export function toggleUpDown(eventTarget){
         }
     }
 }
+
+
+/**
+ * Send the new up down vote state
+ * @param {eventTarget} eventTarget
+ */
+export function sendUpDownVoteUpdate(eventTarget, voteChange){
+    var voteState = setVoteState(voteChange);
+    var jsonString = Tools.formatJSONData(
+        ["movieID", "tagName", "state"],
+        [eventTarget.getAttribute("movieID"), eventTarget.getAttribute("tagName"), voteState]
+    );
+    if(voteState === "upVote"){ 
+        NetworkReq.fetchPost(
+            `${globals.ratingsBase}/tag/upvoteTag`,
+            jsonString,
+            displayVoteMessage
+        )
+    }
+    else if(voteState === "downVote"){ 
+        NetworkReq.fetchPost(
+            `${globals.ratingsBase}/tag/downvoteTag`,
+            jsonString,
+            displayVoteMessage
+        )
+    }
+    
+    
+}
+
+/**
+ * Check if the up / down vote changed
+ * This is to protect the system from repeat voting
+ * @param {eventTarget} eventTarget
+ * @returns {Number}
+ */
+export function checkVoteChanged(eventTarget, upVoteIcon, downVoteIcon){
+    var voteChange = 0;
+    if(eventTarget.getAttribute("icon") === "true"){
+        if(upVoteIcon.getAttribute("voted") === "false"){ voteChange++; }
+        else if(upVoteIcon.getAttribute("voted") === "true"){ voteChange--; }
+        if(downVoteIcon.getAttribute("voted") === "false"){ voteChange--; }
+        else if(downVoteIcon.getAttribute("voted") === "true"){ voteChange++ }
+    }
+    return voteChange;
+}
+
 
 
 /**
@@ -295,6 +342,128 @@ export function submitReviewHandler(){
     );
 }
 
+
+/**
+ * Close all models on the x button
+ * @param {HTMLCollection} allModals
+ */
+export function closeAllModals(allModals){
+    for(let x =0; x < allModals.length; x++){
+        if(allModals[x].classList.contains("show") === true){
+            allModals[x].classList.remove("show");
+            allModals[x].setAttribute("style",""); //Remove the style attribute that bootstrap has and default back to our custom css
+        }
+    }
+    var modalBackdrops = document.getElementsByClassName("modal-backdrop show");
+    for(let x =0; x < modalBackdrops.length; x++){ modalBackdrops[x].remove(); }
+    
+}
+
+
+export async function displaySearch(serverData){
+    var searchContainer = document.getElementById("searchResults");
+    Tools.clearChildren(searchContainer);
+    var searchResults = await serverData.json();
+    if(searchResults.length !== 0){
+        try{
+            var searchRow = Tools.createElm("div", null, "class", "row");
+            for(let x = 0; x < searchResults.length; x++){
+                var movieCard = Tools.createElm("div", null, "class", "movieCard bgNeutral card col-4");
+                var movieImage = Tools.createElm(
+                    "img", null, 
+                    ["src", "class", "alt"], 
+                    [`${globals.movieImgBase}/${searchResults[x].id}`, "card-img-top pt-1", `${searchResults[x].title} Movie Image`]
+                );
+                movieCard.appendChild(movieImage);
+                
+                const cardBody = Tools.createElm("div", null, "class", "card-body pb-2 pt-0 px-2");
+                const title = Tools.createElm(
+                    "div", `${searchResults[x].title}`, "class", 
+                    "col-12 card-title mdFont mb-0 hideOverflow"
+                );
+                cardBody.appendChild(title);
+                
+                // const categoryAndRating = Tools.createElm("div", null, "class", "row g-0");
+                // const category = Tools.createElm(
+                //     "div", `${searchResults[x].mostPopularRatingCategory}`, 
+                //     "class", "col-10 smFont hideOverflow"
+                // );
+                // categoryAndRating.appendChild(category);
+
+                // const rating = Tools.createElm("div",`${parseFloat(searchResults[x].mostPopRatingAvg).toFixed(1)}`,"class", "col-2 textRight smFont")
+                // categoryAndRating.append(rating);
+                // cardBody.appendChild(categoryAndRating);
+                
+                // const progressBar = Tools.createElm(
+                //     "progress-bar", null,
+                //     ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
+                //     [
+                //         "1",
+                //         searchResults[x].mostPopRatingUpperBound,
+                //         searchResults[x].mostPopRatingAvg,
+                //         "#3d37bf","#00ff00"
+                //     ]
+                // )
+                // cardBody.appendChild(progressBar);
+
+                // const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
+                // const tagsText = searchResults[x].attachedTags;
+                // for (let x = 0; x < tagsText.length; x++) {
+                //     const tag = Tools.createElm(
+                //         "div", `${tagsText[x]}`, "class", 
+                //         "brAll pXXSM ptXSM pbXSM col-4 textCenter fontWhite bgSecondary xsFont"
+                //     );
+                //     tagsRow.appendChild(tag);
+                // }
+                // cardBody.appendChild(tagsRow);
+            
+                const cardTextDiv = Tools.createElm("div", null, "class", "card-text");
+                const summary = Tools.createElm("div", `${searchResults[x].summary}`);
+                const fadeAway = Tools.createElm("div",null,"class","fadeAwayNeutral fullWidth");
+                cardTextDiv.appendChild(fadeAway);
+                cardTextDiv.appendChild(summary);
+                cardBody.appendChild(cardTextDiv);
+            
+                const showMoreButton = Tools.createElm(
+                    "div", "Show More", 
+                    ["class","data-bs-toggle","data-bs-target","movieID","movieTitle",], 
+                    [
+                        "bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow showMore",
+                        "modal","#showMoreModal",`${searchResults[x].id}`,`${searchResults[x].title}`
+                    ]
+                );
+                showMoreButton.addEventListener("click", (event)=>{ 
+                    getShowMoreData(
+                        event.target.getAttribute("movieID"), 
+                        event.target.getAttribute("movieTitle")
+                    )
+                });
+                cardBody.appendChild(showMoreButton);
+                movieCard.appendChild(cardBody);
+                searchRow.appendChild(movieCard);
+                searchContainer.appendChild(searchRow);
+                openSearchModal();
+            }
+        } catch(error){
+            console.log(`There was an error appending search results cards\n${error}`);
+            JSStyles.alertAnimation("Error showing results. Please try again");
+        }
+    }
+    else{
+        JSStyles.alertAnimation("No results found");
+    }
+}
+
+/**
+ * Open the search modal after the network request has been made
+ */
+function openSearchModal(){
+    var searchModal = document.getElementById("searchModal");
+    var modalBackDrop = Tools.createElm("div", null, "class", "modal-backdrop show");
+    document.getElementById("mainContent").appendChild(modalBackDrop);
+    searchModal.classList.add("show");
+    searchModal.style.display = "block";
+}
 
 /**
  * Appends movies to the specified carouselId.
@@ -579,7 +748,7 @@ async function appendExistingCategories(serverRes){
 
 
 /**
- * Appends tags with the ability to be upvoted or downvoted to the Rating Modal. The users' previous upvotes/downvotes
+ * Appends tags with the ability to be upvoted or downvoted to the Rating Modal. The userurs' previous upvotes/downvotes
  * are taken into account based on a voteID.
  * @param serverData - The server response object is a list consiting of tag objects that have tag names and an associated voteID.
  * @type {(serverData : object[])}
@@ -595,16 +764,102 @@ async function appendUpDownVote(serverData){
         for(var x =0; x < upDownData.length; x++){
             var voteRowContainer = Tools.createElm("div", null, "class", "col-6");
             var voteRow = Tools.createElm("div",null,"class","upVoteRow row mtSM");
-            var upVote = Tools.createElm(
-                "img", null, 
-                ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
-                [`voteID${voteID}`, `${voteID}`, "upVote col-2",`../images/hand-thumbs-up-white.png`,"true", "false", "true"]
-            );
-            var downVote = Tools.createElm(
-                "img", null, 
-                ["id", "idNumber", "class", "src", "icon", "voted", "upIcon"],
-                [`voteID${voteID + 1}`, `${voteID + 1}`, "downVote col-2",`../images/hand-thumbs-down-white.png`,"true", "false", "false"]
-            );
+            if(upDownData[x].state === "upvote"){
+                var upVote = Tools.createElm(
+                    "img", null, 
+                    ["id", "idNumber", "movieID", "tagName", "class", "src", "icon", "voted", "upIcon"],
+                    [
+                        `voteID${voteID}`,
+                        `${voteID}`, 
+                        `${upDownData[x].movieID}`, 
+                        `${upDownData[x].tagName}`, 
+                        "upVote col-2",
+                        `../images/hand-thumbs-up-fill-white.png`, 
+                        "true", //icon 
+                        "true", //voted 
+                        "true" //upIcon
+                    ]
+                );
+                var downVote = Tools.createElm(
+                    "img", null, 
+                    ["id", "idNumber",  "movieID", "tagName", "class", "src", "icon", "voted", "upIcon"],
+                    [
+                        `voteID${voteID + 1}`, 
+                        `${voteID + 1}`, 
+                        `${upDownData[x].movieId}`, 
+                        `${upDownData[x].tagName}`, 
+                        "downVote col-2",
+                        `../images/hand-thumbs-down-white.png`, 
+                        "true",  //icon
+                        "false", //voted 
+                        "false" //upIcon
+                    ]
+                );
+            }
+            else if(upDownData[x].state === "downvote"){
+                var upVote = Tools.createElm(
+                    "img", null, 
+                    ["id", "idNumber", "movieID", "tagName", "class", "src", "icon", "voted", "upIcon"],
+                    [
+                        `voteID${voteID}`, 
+                        `${voteID}`, 
+                        `${upDownData[x].movieId}`, 
+                        `${upDownData[x].tagName}`, 
+                        "upVote col-2",
+                        `../images/hand-thumbs-up-white.png`, 
+                        "true",  //icon
+                        "false", //voted
+                        "true" //upIcon
+                    ]
+                );
+                var downVote = Tools.createElm(
+                    "img", null, 
+                    ["id", "idNumber", "movieID", "tagName", "class", "src", "icon", "voted", "upIcon"],
+                    [
+                        `voteID${voteID + 1}`, 
+                        `${voteID + 1}`, 
+                        `${upDownData[x].movieId}`, 
+                        `${upDownData[x].tagName}`, 
+                        "downVote col-2",
+                        `../images/hand-thumbs-down-fill-white.png`, 
+                        "true", //icon
+                        "true", //voted
+                        "false" //upIcon
+                    ]
+                );
+            }
+            else{ //If no vote
+                var upVote = Tools.createElm(
+                    "img", null, 
+                    ["id", "idNumber", "movieID", "tagName", "class", "src", "icon", "voted", "upIcon"],
+                    [
+                        `voteID${voteID}`, 
+                        `${voteID}`, 
+                        `${upDownData[x].movieId}`, 
+                        `${upDownData[x].tagName}`, 
+                        "upVote col-2",
+                        `../images/hand-thumbs-up-white.png`, 
+                        "true", //icon
+                        "false", //voted
+                        "true" //upIcon
+                    ]
+                );
+                var downVote = Tools.createElm(
+                    "img", null, 
+                    ["id", "idNumber", "movieID", "tagName", "class", "src", "icon", "voted", "upIcon"],
+                    [
+                        `voteID${voteID + 1}`, 
+                        `${voteID + 1}`, 
+                        `${upDownData[x].movieId}`, 
+                        `${upDownData[x].tagName}`, 
+                        "downVote col-2",
+                        `../images/hand-thumbs-down-white.png`, 
+                        "true", //icon
+                        "false", //voted
+                        "false" //upIcon
+                    ]
+                );
+            }
             var tagName = Tools.createElm("div", upDownData[x].tagName, ["class","icon"], ["col-8 tagName hideOverflow","false"]);
             voteRow.appendChild(upVote);
             voteRow.appendChild(downVote);
@@ -675,18 +930,17 @@ function appendControls(carouselContainerID){
 
 
 /**
- * Close all models on the x button
- * @param {HTMLCollection} allModals
+ * set vote state to upVote or downVote
+ * @returns {string}
  */
-export function closeAllModals(allModals){
-    for(var x =0; x < allModals.length; x++){
-        if(allModals[x].classList.contains("show") === true){
-            allModals[x].classList.remove("show");
-            allModals[x].setAttribute("style",""); //Remove the style attribute that bootstrap has and default back to our custom css
-        }
-    }
-    var modalBackdrops = document.getElementsByClassName("modal-backdrop");
-    for(var x =0; x < modalBackdrops.length; x++){ modalBackdrops[x].remove(); }
-    
+function setVoteState(voteChange){
+    var voteState = "";
+    if(voteChange > 0){ voteState = "upVote"; }
+    else if(voteChange < 0){ voteState = "downVote"; }
+    return voteState;
+}
+
+function displayVoteMessage(){
+    JSStyles.alertAnimation("Vote Changed");
 }
 
