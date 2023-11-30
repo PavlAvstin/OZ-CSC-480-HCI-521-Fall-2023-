@@ -68,6 +68,7 @@ class ProgressBarClickable extends HTMLElement{
         lowRatingColor = this.hexToRgb(lowRatingColor);
         highRatingColor = this.hexToRgb(highRatingColor);
         progressBar = this.createBlocks(progressBar, scaleStart, scaleEnd);
+      
         let ratingValue;
         if (this.getAttribute("userRating") == "undefined") {
             ratingValue = this.getAttribute("ratingValue");
@@ -76,6 +77,7 @@ class ProgressBarClickable extends HTMLElement{
         }
         var barColor = this.createBarColor(ratingValue, scaleEnd, lowRatingColor, highRatingColor);
         this.fillProgressBar(progressBar, barColor, ratingValue);
+      
         var styleTag = this.setProgressBarStyle(scaleEnd);
         progressBarContainer.appendChild(styleTag);
         
