@@ -1,7 +1,7 @@
 "using strict;"
 
-
 class ProgressBarClickable extends HTMLElement{
+
     constructor(){
         super();
         this.attachShadow({ mode : "open" });//Append the shadow root
@@ -33,7 +33,7 @@ class ProgressBarClickable extends HTMLElement{
         userRating.setAttribute("class","hideOverflow");
         userRating.setAttribute("id","userRating");
         var userRatingNum = Number(this.getAttribute("userRating"));
-        if(typeof userRatingNum === "number"){ userRating.innerText = userRatingNum; }
+        if(this.getAttribute("userRating") != "undefined"){ userRating.innerText = parseFloat(userRatingNum).toFixed(1); }
         else{ userRating.innerText = "0"; }
         ratingsContainer.appendChild(userRating);
 
@@ -44,7 +44,7 @@ class ProgressBarClickable extends HTMLElement{
         
         var averageRating = document.createElement("span");
         var averageRatingNum = Number(this.getAttribute("ratingValue"));
-        if(typeof averageRatingNum === "number"){ averageRating.innerText = parseFloat(averageRatingNum).toFixed(1); }
+        if(this.getAttribute("ratingValue") != "undefined"){ averageRating.innerText = parseFloat(averageRatingNum).toFixed(1); }
         else{ averageRating.innerText = "0"; }
         averageRating.setAttribute("id","averageRating");
         ratingsContainer.appendChild(averageRating);
@@ -68,8 +68,16 @@ class ProgressBarClickable extends HTMLElement{
         lowRatingColor = this.hexToRgb(lowRatingColor);
         highRatingColor = this.hexToRgb(highRatingColor);
         progressBar = this.createBlocks(progressBar, scaleStart, scaleEnd);
-        var barColor = this.createBarColor(userRatingNum, scaleEnd, lowRatingColor, highRatingColor);
-        this.fillProgressBar(progressBar, barColor, userRatingNum);
+      
+        let ratingValue;
+        if (this.getAttribute("userRating") == "undefined") {
+            ratingValue = this.getAttribute("ratingValue");
+        } else {
+            ratingValue = this.getAttribute("userRating");
+        }
+        var barColor = this.createBarColor(ratingValue, scaleEnd, lowRatingColor, highRatingColor);
+        this.fillProgressBar(progressBar, barColor, ratingValue);
+      
         var styleTag = this.setProgressBarStyle(scaleEnd);
         progressBarContainer.appendChild(styleTag);
         

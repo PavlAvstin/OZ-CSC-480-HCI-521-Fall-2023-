@@ -52,7 +52,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
 
     //Get Existing Ratings
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendExistingCategories    
     );
@@ -140,6 +140,13 @@ export function feedbackForRatingSubmission() {
         jSessionIdStringified,
         appendExistingCategories    
     );
+}
+
+/**
+ * Alerts the user that their clicked rating was submitted
+ */
+export function feedbackForExistingRatingClick() {
+    JSStyles.alertAnimation("Rating Created");
 }
 
 
@@ -730,13 +737,29 @@ async function appendExistingCategories(serverRes){
     try{
         var ratings = await serverRes.json();
         var ratingsRow = Tools.createElm("div", null, "class", "row");
-        for(var x =0; x < ratings.length; x++){
+        for (var x = 0; x < ratings.length; x++) {
             var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtSM");
-            var progressBar = Tools.createElm(
+            let progressBar = Tools.createElm(
                 "progress-clickable", null, 
-                ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "avgRating"], 
-                [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00", `${ratings[x]}`]
+                ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "ratingValue"], 
+                [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00", `${ratings[x].avgRating}`]
             );
+            progressBar.addEventListener("click", () => {
+                let jsonString = JSON.stringify({
+                    "ratingName" : progressBar.getAttribute("ratingName"),
+                    "userRating" : progressBar.getAttribute("ratingValue"),
+                    "upperbound" : progressBar.getAttribute("scaleEnd"),
+                    "privacy" : "public",
+                    "subtype" : "scale",
+                    "movieId" : document.getElementById("rateButton").getAttribute("movieID"),
+                    "JSESSIONID" : sessionStorage.getItem("JSESSIONID")
+                });
+                NetworkReq.fetchPost(
+                    `${globals.ratingsBase}/rating/create`,
+                    jsonString,
+                    feedbackForExistingRatingClick
+                );
+            });
             currentRatingContainer.appendChild(progressBar);
             ratingsRow.appendChild(currentRatingContainer);
         }
