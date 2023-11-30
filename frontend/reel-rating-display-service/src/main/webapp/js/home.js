@@ -568,9 +568,9 @@ async function appendExistingCategories(serverRes){
     try{
         var ratings = await serverRes.json();
         var ratingsRow = Tools.createElm("div", null, "class", "row");
-
+        for (var x = 0; x < ratings.length; x++) {
             var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtSM");
-            var progressBar = Tools.createElm(
+            let progressBar = Tools.createElm(
                 "progress-clickable", null, 
                 ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "avgRating"], 
                 [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00", `${ratings[x].avgRating}`]
