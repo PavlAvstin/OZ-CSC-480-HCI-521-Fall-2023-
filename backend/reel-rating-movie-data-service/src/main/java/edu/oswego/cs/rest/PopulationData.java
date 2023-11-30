@@ -101,7 +101,10 @@ public class PopulationData {
         createMovie78(db);
         createMovie79(db);
         createMovie80(db);
-
+        createMovie81(db);
+        createMovie82(db);
+        createMovie83(db);
+        createMovie84(db);
     }
 
     /*
@@ -1605,6 +1608,102 @@ public class PopulationData {
         db.createReview(movie80.get().getId(), "BOOOOOOO. WHYY?? Why kill the dynosours?????", "Raisin", "public");
         db.createReview(movie80.get().getId(), "As a vegan this movie is a crime. 1/5", "Pineapple", "public");
         db.createReview(movie80.get().getId(), "As a carniovore this movie is a menace to society. Where would my meat go if dynosaurs were here?? 1/7", "Apple", "public");
+    }
+
+    private void createMovie81(DatabaseController db) {
+        db.createMovie("The Godfather", "Francis Ford Coppola", "1972", "2h 55min",
+                "Mario Puzo, Francis Ford Coppola",
+                "\"The Godfather\" is a crime drama that explores the transformation of Michael Corleone from a reluctant family member to a powerful figure in the Corleone crime family. It delves into themes of family, loyalty, power, and the consequences of a life in the mafia");
+
+        var movie81 = db.getMovieWithTitle("The Godfather");
+        db.createTag("Mafia", movie81.get().getId(), "Binura", "public");
+        db.createTag("Crime", movie81.get().getId(), "Binura", "public");
+        db.createTag("Drama", movie81.get().getId(), "Binura", "public");
+        db.createTag("Family-Friendly", movie81.get().getId(), "Binura", "public");
+
+        db.createRating("Best moustache", "10", "10","scale",  "Binura", movie81.get().getId(), "public");
+        db.createRating("Oscar Winning", "10", "10","scale", "Binura", movie81.get().getId(), "public");
+        db.createRating("For family to watch", "10", "10", "scale", "Binura", movie81.get().getId(), "public");
+
+        db.createReview(movie81.get().getId(), "never heard of it sadly, i'm too young", "Keith", "public");
+        db.createReview(movie81.get().getId(), "I watched this movie when i was young, how am i still alive ?", "David", "public");
+        db.createReview(movie81.get().getId(), "Best movie ever, the start of something great !!!!!", "Apple", "public");
+    }
+
+    private void createMovie82(DatabaseController db) {
+        db.createMovie("Forest Gump", "Robert Zemeckis", "1994", "2h 22min",
+                "Eric Roth, Winston Groom",
+                "\"Forest Gump\"  is a heartwarming and whimsical film that follows the extraordinary life of Forrest Gump (Tom Hanks), a man with a low IQ. Despite his limitations, Forrest finds himself at the center of several pivotal moments in American history, meeting iconic figures, and achieving remarkable feats. His journey is intertwined with his unwavering love for his childhood friend, Jenny. The film explores themes of love, destiny, and the unique perspective of a man who approaches life with simplicity and honesty.");
+
+        var movie82 = db.getMovieWithTitle("Forest Gump");
+        db.createTag("Romance", movie82.get().getId(), "Binura", "public");
+        db.createTag("Drama", movie82.get().getId(), "Binura", "public");
+        db.createTag("Family-Friendly", movie82.get().getId(), "Binura", "public");
+
+        db.createRating("Inspirational", "8", "10","scale", "Keith", movie82.get().getId(), "public");
+        db.createRating("Jenayyyyyy", "9", "10","scale", "Quan", movie82.get().getId(), "public");
+        db.createRating("Run Forest Fun !", "10", "10","scale", "David", movie82.get().getId(), "public");
+
+        db.createReview(movie82.get().getId(), "I have seen this movie a thousand times, its the best movie ever", "Keith", "public");
+        db.createReview(movie82.get().getId(), "Its not thattt good Keith, get a life", "David", "public");
+        db.createReview(movie82.get().getId(), "i find the beauty of the film is how Forrest Gump manages to retains innocence and purity even in trying time", "Apple", "public");
+    }
+
+    private void createMovie83(DatabaseController db) {
+        db.createMovie("The Dark Knight", "Christopher Nolan", "2008", "152 minutes",
+                "Christopher Nolan, Jonathan Nolan",
+                "\"The Dark Knight\"  is a gripping superhero film in which Batman confronts the chaos and anarchy unleashed by the Joker in Gotham City, leading to a moral and psychological battle of good versus evil.");
+
+        var movie83 = db.getMovieWithTitle("The Dark Knight");
+        db.createTag("Superheroes", movie83.get().getId(), "Rando1", "public");
+        db.createTag("Crime", movie83.get().getId(), "Rando2", "public");
+        db.createTag("Action", movie83.get().getId(), "Quan", "public");
+
+        db.createRating("Heath Ledger is Awesome", "10", "10","scale", "Quan", movie83.get().getId(), "public");
+        db.createRating("Better than Iron Man", "3", "5","scale", "Keith", movie83.get().getId(), "public");
+        db.createRating("I'm Batman", "6", "9","scale", "Mahella", movie83.get().getId(), "public");
+
+        db.createReview(movie83.get().getId(), "Marvel is wayyy better", "Rando1", "public");
+        db.createReview(movie83.get().getId(), "The Dark Knight is the best take on Joker", "Rando2", "public");
+        db.createReview(movie83.get().getId(), "A master piece of a Hero movie", "Apple", "public");
+    }
+
+    private void createMovie84(DatabaseController db) {
+        db.createMovie("The Matrix", "The Wachowskis", "1999", "136 minutes",
+                "The Wachowskis",
+                "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
+
+        var movie84 = db.getMovieWithTitle("THe Matrix");
+        db.createTag("Science Fiction", movie84.get().getId(), "Rando1", "public");
+        db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
+        db.createTag("Action", movie84.get().getId(), "Binura", "public");
+
+        db.createRating("Conspiracies theories alert", "10","scale", "10", "Quan", movie84.get().getId(), "public");
+        db.createRating("Best Fight Scence Ever", "8", "10","scale", "Binura", movie84.get().getId(), "public");
+        db.createRating("Philosophy", "6", "10", "Rando1","scale", movie84.get().getId(), "public");
+
+        db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
+        db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
+        db.createReview(movie84.get().getId(), "A dark dystopian world is sooo 2009", "Apple", "public");
+    }
+
+    private void createMovie85(DatabaseController db) {
+        db.createMovie("Pulp Fiction", "Quentin Taratino", "1994", "154 minutes",
+                "Quentin Taratino, Roger Avery",
+                "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
+
+        var movie84 = db.getMovieWithTitle("The Matrix");
+        db.createTag("Science Fiction", movie84.get().getId(), "Rando1", "public");
+        db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
+        db.createTag("Action", movie84.get().getId(), "Binura", "public");
+
+        db.createRating("Best cheese burger ever", "10", "10","scale", "Quan", movie84.get().getId(), "public");
+        db.createRating("Sumuel L. Jackson", "8", "10","scale", "Binura", movie84.get().getId(), "public");
+        db.createRating("Violence level ?", "6", "10","scale", "Rando1", movie84.get().getId(), "public");
+
+        db.createReview(movie84.get().getId(), "Could this be a warning to our real world ?", "Rando1", "public");
+        db.createReview(movie84.get().getId(), "Very complex storyline but satisfying fight scene", "Rando2", "public");
+        db.createReview(movie84.get().getId(), "A dark dystopian world is sooo 2009", "Apple", "public");
     }
 }
 

@@ -151,4 +151,32 @@ public class SearchService {
     return Response.ok(movies).build();
   }
 
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/searchByRatingName/{ratingName}")
+  public Response manualSearchByMovieCast(@Context HttpServletRequest request, @PathParam("ratingName") String actorName, JSession jsession) throws Exception {
+//    String sessionId = request.getRequestedSessionId();
+//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+//    String requesterUsername = getUsername(sessionId);
+//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.searchbyRatingName(ratingName);
+    return Response.ok(movies).build();
+  }
+
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/movie/searchByTagName/{tagName}")
+  public Response manualSearchByMovieCast(@Context HttpServletRequest request, @PathParam("TagName") String actorName, JSession jsession) throws Exception {
+//    String sessionId = request.getRequestedSessionId();
+//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+//    String requesterUsername = getUsername(sessionId);
+//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+    DatabaseController dbc = new DatabaseController();
+    List<Movie> movies = dbc.searchbyTagName(TagName);
+    return Response.ok(movies).build();
+  }
+
 }

@@ -34,6 +34,15 @@ public class DatabaseController {
     movies.createIndex(Indexes.text("name"));
   }
 
+  public void createTagIndex() {
+    var tags = getTagCollection();
+    tags.createIndex(Indexes.text("tagName"));  
+  }
+  public void createRatingIndex() {
+    var ratings = getRatingCollection;
+    ratings.createIndex(indexes.text("ratingName"));
+  }
+
   // We could have duplicate collections with the same data each of which have a text index for each field. That sounds
   // like a bad idea since it'd make things harder to update and take up more space.
   public MongoCollection<Document> getMovieCollection() {
@@ -44,6 +53,55 @@ public class DatabaseController {
     return getMovieDatabase().getCollection("actors");
   }
 
+  public MongoCollection<Documents> getTagCollection() {
+    return getMovieCollection().getCollection("tags");
+  }
+
+  public MongoCollection<Documents> getRatingCollection() {
+    return getMovieCollection().getCollection ("ratings"); 
+  }
+
+
+  public List<Movie> searchByTagName(String tagName) {
+    createTagIndex();
+    var moviesToReturn = new ArrayList<Movie>();
+    TextSearchOptions options = new TextSearchOptions().caseSensitive(false);
+    //Return iterable of documents for tag name with search name
+    //Since Tags name only contains one movie but one movie contains multiple tagnames (possibly of the same name), it return the tagNames then compares the attached tags collection in Movies collection
+    Bson filter = Filters.text(tagName, options);
+    var tags = getTagCollection();
+    tags.find(filter).forEach(document -> {
+      String name = Document.getString("tagName");
+      var movies = getMovieCollection;
+      Bson filters = elemMatch("AttachedTags", eq("tagName", name));
+      movies.find(filters).forEach(document -> {
+        Movies m = documentToMovie(document);
+        moviesToReturn.add(m);
+      });
+    });
+    return moviesToReturn;
+  }
+
+  public Lsit<Movie> searchbyRatingName(String ratingName) {
+    createRatingIndex();
+    var moviesToReturn = new ArrayList<Movie>();
+    TextSearchOptions options = new TextSearchOptions().caseSensitive(false);
+    //Return iterable of documents for Rating name with search name
+    Bson filter = Filters.text(ratingName, options);
+    var ratings = getRatingsCollection();
+    ratings.find(filter).forEach(document -> {
+      String name = Document.getString("ratingName");
+      var movies = getMovieCollection;
+      Bson filters = elemMatch("ratings", eq("ratingName", name));
+      movies.find(filters).forEach(document -> {
+        Movies m = documentToMovie(document);
+        moviesToReturn.add(m);
+      });
+    });
+    return moviesToReturn;
+  }
+
+  
   //Takes each individual word and searches for the word and if
   //The partial search automatimally works-Using this as an example
   //"and" will not work. "the" does not work.
@@ -66,6 +124,7 @@ public class DatabaseController {
     });
     return moviesToReturn;
   }
+  
   //get a list of words to search
   //for each word in the list, we search for the movie.
   //We would search each word individually
@@ -229,5 +288,16 @@ public class DatabaseController {
     m.setReleaseDate(document.getString("releaseDate"));
     m.setId(document.getObjectId("_id").toHexString());
     return m;
+  }
+
+  private static Tag documentToTag(Document document) {
+    var m = new Tag();
+    m.setTagName(document.getString("tagname"));
+    m.setMovieId(document.getString("movieId"));
+    m.setMovieTitle(document.getString("movieTitle"));
+    m.setPrivacy(document.getString("Privacy"));
+    m.setDateTimeCreated(document.getString("dateTimeCreated"));
+    m.setUsername(document.getString("username"));
+    m.setState(document.getString("state"));
   }
 }
