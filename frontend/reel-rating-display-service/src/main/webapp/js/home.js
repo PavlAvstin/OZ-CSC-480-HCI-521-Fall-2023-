@@ -572,7 +572,7 @@ async function appendExistingCategories(serverRes){
             var currentRatingContainer = Tools.createElm("div", null, "class", "col-6 mtSM");
             let progressBar = Tools.createElm(
                 "progress-clickable", null, 
-                ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "avgRating"], 
+                ["ratingName","scaleStart","scaleEnd","userRating","lowRatingColor","highRatingColor", "ratingValue"], 
                 [`${ratings[x].ratingName}`,"1",`${ratings[x].upperbound}`,`${ratings[x].userRating}`,"#3d37bf","#00ff00", `${ratings[x].avgRating}`]
             );
             progressBar.addEventListener("click", () => {

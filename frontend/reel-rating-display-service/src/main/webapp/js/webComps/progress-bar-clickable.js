@@ -33,7 +33,7 @@ class ProgressBarClickable extends HTMLElement{
         userRating.setAttribute("class","hideOverflow");
         userRating.setAttribute("id","userRating");
         var userRatingNum = Number(this.getAttribute("userRating"));
-        if(typeof userRatingNum === "number"){ userRating.innerText = parseFloat(userRatingNum).toFixed(1); }
+        if(this.getAttribute("userRating") != "undefined"){ userRating.innerText = parseFloat(userRatingNum).toFixed(1); }
         else{ userRating.innerText = "0"; }
         ratingsContainer.appendChild(userRating);
 
@@ -44,7 +44,7 @@ class ProgressBarClickable extends HTMLElement{
         
         var averageRating = document.createElement("span");
         var averageRatingNum = Number(this.getAttribute("ratingValue"));
-        if(typeof averageRatingNum === "number"){ averageRating.innerText = parseFloat(averageRatingNum).toFixed(1); }
+        if(this.getAttribute("ratingValue") != "undefined"){ averageRating.innerText = parseFloat(averageRatingNum).toFixed(1); }
         else{ averageRating.innerText = "0"; }
         averageRating.setAttribute("id","averageRating");
         ratingsContainer.appendChild(averageRating);
@@ -70,7 +70,7 @@ class ProgressBarClickable extends HTMLElement{
         progressBar = this.createBlocks(progressBar, scaleStart, scaleEnd);
         let ratingValue;
         if (this.getAttribute("userRating") == "undefined") {
-            ratingValue = this.getAttribute("avgRating");
+            ratingValue = this.getAttribute("ratingValue");
         } else {
             ratingValue = this.getAttribute("userRating");
         }
