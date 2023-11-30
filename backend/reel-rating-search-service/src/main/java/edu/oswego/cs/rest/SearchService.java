@@ -72,10 +72,10 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/searchByMovieNameIndex/{name}")
   public Response searchByMovieName(@Context HttpServletRequest request, @PathParam("name") String name, JSession jsession) throws Exception {
-//    String sessionId = request.getRequestedSessionId();
-//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-//    String requesterUsername = getUsername(sessionId);
-//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+   String sessionId = request.getRequestedSessionId();
+   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String requesterUsername = getUsername(sessionId);
+   if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.searchByMovieNameIndex(name);
     return Response.ok(movies).build();
@@ -86,10 +86,10 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieName/{name}")
   public Response manualSearchByMovieName(@Context HttpServletRequest request, @PathParam("name") String name, JSession jsession) throws Exception {
-//    String sessionId = request.getRequestedSessionId();
-//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-//    String requesterUsername = getUsername(sessionId);
-//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+   String sessionId = request.getRequestedSessionId();
+   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String requesterUsername = getUsername(sessionId);
+   if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.manualSearchByMovieName(name);
     return Response.ok(movies).build();
@@ -100,10 +100,10 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieReleaseDate/{releaseDate}")
   public Response manualSearchByMovieReleaseDate(@Context HttpServletRequest request, @PathParam("releaseDate") String releaseDate, JSession jsession) throws Exception {
-//    String sessionId = request.getRequestedSessionId();
-//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-//    String requesterUsername = getUsername(sessionId);
-//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+   String sessionId = request.getRequestedSessionId();
+   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String requesterUsername = getUsername(sessionId);
+   if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.manualSearchByMovieReleaseDate(releaseDate);
     return Response.ok(movies).build();
@@ -114,10 +114,10 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieDirector/{director}")
   public Response manualSearchByMovieDirector(@Context HttpServletRequest request, @PathParam("director") String director, JSession jsession) throws Exception {
-//    String sessionId = request.getRequestedSessionId();
-//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-//    String requesterUsername = getUsername(sessionId);
-//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+   String sessionId = request.getRequestedSessionId();
+   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String requesterUsername = getUsername(sessionId);
+   if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.manualSearchByMovieDirector(director);
     return Response.ok(movies).build();
@@ -128,10 +128,10 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieCast/{actorName}")
   public Response manualSearchByMovieCast(@Context HttpServletRequest request, @PathParam("actorName") String actorName, JSession jsession) throws Exception {
-//    String sessionId = request.getRequestedSessionId();
-//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-//    String requesterUsername = getUsername(sessionId);
-//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+   String sessionId = request.getRequestedSessionId();
+   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String requesterUsername = getUsername(sessionId);
+   if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.manualSearchByMovieCast(actorName);
     return Response.ok(movies).build();
@@ -142,10 +142,10 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/searchByActorNameIndex/{actorName}")
   public Response searchByActorNameIndex(@Context HttpServletRequest request, @PathParam("actorName") String actorName, JSession jsession) throws Exception {
-//    String sessionId = request.getRequestedSessionId();
-//    if (sessionId == null) sessionId = jsession.getJSESSIONID();
-//    String requesterUsername = getUsername(sessionId);
-//    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
+   String sessionId = request.getRequestedSessionId();
+   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String requesterUsername = getUsername(sessionId);
+   if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
     List<Movie> movies = dbc.searchByMovieCastIndex(actorName);
     return Response.ok(movies).build();
