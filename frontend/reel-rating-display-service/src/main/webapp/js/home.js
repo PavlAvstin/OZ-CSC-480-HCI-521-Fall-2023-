@@ -58,7 +58,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${movieID}`,
         jSessionIdStringified,
         appendUpDownVote    
     );
