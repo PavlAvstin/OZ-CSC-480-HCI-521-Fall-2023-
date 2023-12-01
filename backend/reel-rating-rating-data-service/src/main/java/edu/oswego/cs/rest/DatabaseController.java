@@ -490,6 +490,7 @@ public class DatabaseController {
       Tag tag = new Tag();
       tag.setTagName(tagName);
       tag.setTotalCount(totalCount.get(tagName).toString());
+      tag.setMovieId(movieId);
       // while we are at it lets assign what the user thinks of it
       tag.setState(getTagState(requesterUsername, movieId, tagName));
 
