@@ -13,12 +13,15 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import static com.mongodb.client.model.Filters.elemMatch;
+import static com.mongodb.client.model.Filters.eq;
+
 public class DatabaseController {
   private static String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
   private static String mongoURL = System.getenv("MONGO_MOVIE_URL");
   private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
-  public MongoDatabase getMovieDatabase() {
+  public static MongoDatabase getMovieDatabase() {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
@@ -39,8 +42,8 @@ public class DatabaseController {
     tags.createIndex(Indexes.text("tagName"));  
   }
   public void createRatingIndex() {
-    var ratings = getRatingCollection;
-    ratings.createIndex(indexes.text("ratingName"));
+    var ratings = getRatingCollection();
+    ratings.createIndex(Indexes.text("ratingName"));
   }
 
   // We could have duplicate collections with the same data each of which have a text index for each field. That sounds
@@ -53,12 +56,12 @@ public class DatabaseController {
     return getMovieDatabase().getCollection("actors");
   }
 
-  public MongoCollection<Documents> getTagCollection() {
-    return getMovieCollection().getCollection("tags");
+  public MongoCollection<Document> getTagCollection() {
+    return getMovieDatabase().getCollection("tags");
   }
 
-  public MongoCollection<Documents> getRatingCollection() {
-    return getMovieCollection().getCollection ("ratings"); 
+  public MongoCollection<Document> getRatingCollection() {
+    return getMovieDatabase().getCollection ("ratings");
   }
 
 
@@ -71,30 +74,30 @@ public class DatabaseController {
     Bson filter = Filters.text(tagName, options);
     var tags = getTagCollection();
     tags.find(filter).forEach(document -> {
-      String name = Document.getString("tagName");
-      var movies = getMovieCollection;
+      String name = document.getString("tagName");
+      var movies = getMovieCollection();
       Bson filters = elemMatch("AttachedTags", eq("tagName", name));
-      movies.find(filters).forEach(document -> {
-        Movies m = documentToMovie(document);
+      movies.find(filters).forEach(document1 -> {
+        Movie m = documentToMoviePreview(document1);
         moviesToReturn.add(m);
       });
     });
     return moviesToReturn;
   }
 
-  public Lsit<Movie> searchbyRatingName(String ratingName) {
+  public List<Movie> searchbyRatingName(String ratingName) {
     createRatingIndex();
     var moviesToReturn = new ArrayList<Movie>();
     TextSearchOptions options = new TextSearchOptions().caseSensitive(false);
     //Return iterable of documents for Rating name with search name
     Bson filter = Filters.text(ratingName, options);
-    var ratings = getRatingsCollection();
+    var ratings = getRatingCollection();
     ratings.find(filter).forEach(document -> {
-      String name = Document.getString("ratingName");
-      var movies = getMovieCollection;
+      String name = document.getString("ratingName");
+      var movies = getMovieCollection();
       Bson filters = elemMatch("ratings", eq("ratingName", name));
-      movies.find(filters).forEach(document -> {
-        Movies m = documentToMovie(document);
+      movies.find(filters).forEach(document1 -> {
+        Movie m = documentToMoviePreview(document1);
         moviesToReturn.add(m);
       });
     });
@@ -119,7 +122,7 @@ public class DatabaseController {
     var movies = getMovieCollection();
     //turning documents into movie objects
     movies.find(filter).forEach(document -> {
-      Movie m = documentToMovie(document);
+      Movie m = documentToMoviePreview(document);
       moviesToReturn.add(m);
     });
     return moviesToReturn;
@@ -143,7 +146,7 @@ public class DatabaseController {
       var movieTitle = doc.getString("title").toLowerCase();
       for (String word : words) {
         if (movieTitle.toLowerCase().contains(word)) {
-          var m = documentToMovie(doc);
+          var m = documentToMoviePreview(doc);
           moviesToReturn.add(m);
           break; //No duplicates
         }
@@ -186,7 +189,7 @@ public class DatabaseController {
       var movieDate = doc.getString("releaseDate");
       for (String word : words) {
         if (movieDate.toLowerCase().contains(word)) {
-          var m = documentToMovie(doc);
+          var m = documentToMoviePreview(doc);
           moviesToReturn.add(m);
           break; //No duplicates
         }
@@ -206,7 +209,7 @@ public class DatabaseController {
       var movieDirector = doc.getString("director");
       for (String word : words) {
         if (movieDirector.toLowerCase().contains(word)) {
-          var m = documentToMovie(doc);
+          var m = documentToMoviePreview(doc);
           moviesToReturn.add(m);
           break; //No duplicates
         }
@@ -235,10 +238,10 @@ public class DatabaseController {
           var actorMovies = a.getList("movies", String.class);
           actorMovies.forEach(id->{
             var objectId = new ObjectId(id);
-            var filter = Filters.eq("_id", objectId);
+            var filter = eq("_id", objectId);
             //movieIds to movie objects
             moviesCollection.find(filter).forEach(m->{
-              var movie = documentToMovie(m);
+              var movie = documentToMoviePreview(m);
               moviesToReturn.add(movie);
             });
           });
@@ -265,9 +268,9 @@ public class DatabaseController {
       var actorMovies = a.getList("movies", String.class);
       actorMovies.forEach(id -> {
         var objectId = new ObjectId(id);
-        var eqFilter = Filters.eq("_id", objectId);
+        var eqFilter = eq("_id", objectId);
         moviesCollection.find(eqFilter).forEach(m -> {
-          var movie = documentToMovie(m);
+          var movie = documentToMoviePreview(m);
           moviesToReturn.add(movie);
         });
       });
@@ -292,12 +295,117 @@ public class DatabaseController {
 
   private static Tag documentToTag(Document document) {
     var m = new Tag();
-    m.setTagName(document.getString("tagname"));
+    m.setTagName(document.getString("tagName"));
     m.setMovieId(document.getString("movieId"));
     m.setMovieTitle(document.getString("movieTitle"));
     m.setPrivacy(document.getString("Privacy"));
     m.setDateTimeCreated(document.getString("dateTimeCreated"));
     m.setUsername(document.getString("username"));
     m.setState(document.getString("state"));
+    return m;
+  }
+
+  private static Movie documentToMoviePreview(Document document) {
+    var m = new Movie();
+    // movie attributes
+    m.setId(document.getObjectId("_id").toHexString());
+    m.setSummary(document.getString("plotSummary"));
+    m.setTitle(document.getString("title"));
+    // get tags
+    ArrayList<String> tagNameList = new ArrayList<>();
+    for(Tag tag : getThreeTags(m.getId())) {
+      tagNameList.add(tag.getTagName());
+    }
+    m.setAttachedTags(tagNameList);
+    // mostPopAvgRating
+    // mostPopRatingUpperbound
+    // mostPopularRatingCategoryName
+    // get the most popular rating and average for each movie
+    Rating r = getMostPopularAggregatedRatingForMovie(m.getId());
+
+    // set the appropriate fields for each movie
+    //Do this if not null, do nothing if null.
+    if (r != null) {
+      m.setMostPopularRatingCategory(r.getRatingName());
+      m.setMostPopRatingUpperBound(r.getUpperbound());
+      m.setMostPopRatingAvg(r.getUserRating());
+    }
+
+    return m;
+  }
+
+  /*
+   * Methods to return those pesky little full movie cards
+   */
+
+  // tags
+  public static List<Tag> getThreeTags(String movieId) {
+    List<Tag> tags = getTagsByMovieId(movieId);
+    return tags.subList(0, tags.size() < 3 ? tags.size() : 3);
+  }
+
+  public static List<Tag> getTagsByMovieId(String movieId) {
+    var reviews = getMovieDatabase().getCollection("tags");
+    var filter = eq("movieId", movieId);
+    return getTagsWithFilter(reviews, filter);
+  }
+
+  private static ArrayList<Tag> getTagsWithFilter(MongoCollection<Document> tagCollection, Bson filter) {
+    var tags = tagCollection.find(filter).map(document -> {
+      var tag = new Tag();
+      tag.setTagName(document.getString("tagName"));
+      return tag;
+    });
+    var list = new ArrayList<Tag>();
+    tags.forEach(list::add);
+    return list;
+  }
+
+  // ratings
+  public static Rating getMostPopularAggregatedRatingForMovie(String movieId) {
+    MongoCollection<Document> ratingCollection = getMovieDatabase().getCollection("ratings");
+    // get the most popular rating category name for the movie
+    Document ratingNameDoc = ratingCollection.aggregate(
+            Arrays.asList(
+                    Aggregates.match(eq("movieId", movieId)),
+                    Aggregates.group("$ratingName", Accumulators.sum("count", 1)),
+                    Aggregates.sort(Sorts.descending("count"))
+            )
+    ).first();
+
+    // return null immediately if ratingNameDoc is null
+    if (ratingNameDoc == null) {
+      return null;
+    }
+
+    // gets the most popular upperbound for the category
+    String mostPopularCategoryName = ratingNameDoc.getString("_id");
+    Document ratingScaleDoc = ratingCollection.aggregate(
+            Arrays.asList(
+                    Aggregates.match(Filters.and(eq("movieId", movieId), eq("ratingName", mostPopularCategoryName))),
+                    Aggregates.group("$upperbound", Accumulators.sum("count", 1)),
+                    Aggregates.sort(Sorts.descending("count"))
+            )
+    ).first();
+
+    String mostPopularCategoryUpperbound = ratingScaleDoc.getString("_id");
+
+    int userRatingSum = 0;
+    // using the most popular name and most popular upperbound go through and collect the sum of all the user ratings
+    // gets the most popular upperbound for the category
+    for (Document doc : ratingCollection.find(Filters.and(eq("movieId", movieId), eq("ratingName", mostPopularCategoryName), eq("upperbound", mostPopularCategoryUpperbound)))) {
+      userRatingSum = userRatingSum + Integer.parseInt(doc.getString("userRating"));
+    }
+    int count = ratingScaleDoc.getInteger("count");
+    double average = ((double) userRatingSum ) / count;
+//
+//    // create a rating object that has the most popular name, upperbound, and a userRating of the average of all
+//    //  the ratings of that name with that upperbound.
+//    //  TODO consider collecting for all ratings of this name which would take some normalizing. Is this worth it?
+    Rating rating = new Rating();
+    rating.setRatingName(mostPopularCategoryName);
+    rating.setUpperbound(mostPopularCategoryUpperbound);
+    rating.setUserRating(Double.toString(average));
+    return rating;
   }
 }
