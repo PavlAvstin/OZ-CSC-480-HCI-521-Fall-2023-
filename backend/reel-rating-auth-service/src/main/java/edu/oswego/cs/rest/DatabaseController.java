@@ -14,11 +14,11 @@ import org.bson.conversions.Bson;
 
 public class DatabaseController {
   
-  String mongoDatabaseName = System.getenv("MONGO_CRED_DATABASE_NAME");
-  String mongoURL = System.getenv("MONGO_CRED_URL");
+  private static String mongoDatabaseName = System.getenv("MONGO_CRED_DATABASE_NAME");
+  private static String mongoURL = System.getenv("MONGO_CRED_URL");
+  private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
   public MongoDatabase getUserCredentialsDatabase() {
-      MongoClient mongoClient = MongoClients.create(mongoURL);
       return mongoClient.getDatabase(mongoDatabaseName);
   }
 
@@ -26,7 +26,7 @@ public class DatabaseController {
     return getUserCredentialsDatabase().getCollection("users");
   }
 
-  public void createUser(String username, String password, String sessionId, String dateTime) {
+  public void createUser(String username, String password, String sessionId, String dateTime, String email) {
       var users = getUserCollection();
       var userDocument = new Document();
       userDocument.put("username", username);
@@ -34,6 +34,7 @@ public class DatabaseController {
       userDocument.put("sessionId", sessionId);
       userDocument.put("dateTime", dateTime);
       userDocument.put("isValidSession", "true");
+      userDocument.put("email", email);
       invalidateAnySharedSessions(sessionId);
       users.insertOne(userDocument);
   }

@@ -18,13 +18,16 @@ window.onload = ()=>{
     }
 }
 
+
 function loginInit(){
     var submitButton = document.getElementById("submit");
     submitButton.addEventListener("click", ()=>{
         var passwordMatch = true;
         var emptyError = false;
         var validError = false;
+        var emailError = false;
         var usernameError = false;
+
         var newAccount = submitButton.getAttribute("newAccount");
         var currentAccountData = Login.getAccountData(newAccount);
         var currentEmptyErrorMessages = Login.getEmptyErrorMessages(newAccount);
@@ -36,6 +39,10 @@ function loginInit(){
         }
         else if(newAccount === "true"){
             emptyError = Login.checkForEmptyInputs(currentAccountData, currentEmptyErrorMessages, true);
+            emailError = Login.checkValidEmail(
+                currentAccountData.email.value, 
+                globals.regExEmail
+            )
             validError = Login.checkVaildPassword(
                 currentAccountData.password.value, 
                 globals.regExSpecChar,
@@ -46,23 +53,26 @@ function loginInit(){
 
         }
 
-        if(emptyError === false && validError === false && passwordMatch === true && usernameError === false){
-            var jsonData = Tools.formatJSONData(
-                [currentAccountData.username, currentAccountData.password], 
-                ["username", "password"]
-            );
+        if(
+            emptyError === false && validError === false && 
+            passwordMatch === true && usernameError === false &&
+            emailError === false
+        ){
             if(newAccount === "true"){
-                NetworkReq.fetchPost(
-                    globals.regPath, 
-                    jsonData,
-                    Tools.navToHome
+                var jsonData = Tools.formatJSONDataNoJSession(
+                    ["username", "email", "password"],
+                    [currentAccountData.username.value, currentAccountData.email.value, currentAccountData.password.value]
                 );
-            } else {
-                NetworkReq.fetchPost(
-                    globals.logInPath, 
-                    jsonData,
-                    Tools.navToHome
+                NetworkReq.fetchPost(globals.regPath, jsonData, Tools.navToHome);
+                localStorage.setItem("userName",`${currentAccountData.username}`);
+            } 
+            else {
+                var jsonData = Tools.formatJSONDataNoJSession(
+                    ["username", "password"],
+                    [currentAccountData.username.value, currentAccountData.password.value] 
                 );
+                NetworkReq.fetchPost(globals.logInPath, jsonData, Tools.navToHome);
+                localStorage.setItem("userName",`${currentAccountData.username}`);
             }
         }
     });
@@ -70,7 +80,7 @@ function loginInit(){
 
     var newAccountButton = document.getElementById("newAccount");
     newAccountButton.addEventListener("click", ()=>{
-        Login.toggleCreateAccount(submitButton);
+        Login.toggleCreateAccount(submitButton, newAccountButton);
     });
 
 
@@ -81,21 +91,119 @@ function loginInit(){
     }, 350); //350 miliseconds, slightly higher than average reaction time
 }
 
+
 function homeInit(){
-    NetworkReq.fetchGet(
-        `${globals.baseDataPath}/movie/getRecentReleaseMovies`,
-        Home.appendRowDataToRecentRelease
-    );
-
-    NetworkReq.fetchGet(
-        `${globals.baseDataPath}/movie/getMoviesWithMostReviews`,
-        Home.appendRowDataToMostReviewed
-    );
-
-
-    //Vertical Center Elms that need it
     var parentVertCenterElms = document.getElementsByClassName("vcToParent");
     setInterval(()=>{
         JSStyles.verticalCenterToParentHeight(parentVertCenterElms);
-    }, 350); //350 miliseconds, slightly higher than average reaction time
+    }, 32); //32 miliseconds, 30 FPS
+    
+    var horizontalCenterElms = document.getElementsByClassName("hcToWindow");
+    setInterval(()=>{
+        JSStyles.horizontalCenterToWindowWidth(horizontalCenterElms);
+    }, 32); //32 miliseconds, 30 FPS
+
+    let JSessionId = Tools.getJSessionId();
+    NetworkReq.fetchPost(
+        `${globals.movieDataBase}/movie/getRecentReleaseMovies`,
+        JSessionId,
+        Home.appendRowDataToRecentRelease
+    );
+
+    NetworkReq.fetchPost(
+        `${globals.movieDataBase}/movie/getMoviesWithMostReviews`,
+        JSessionId,
+        Home.appendRowDataToMostReviewed
+    );
+    
+    //Append the filter menu with dynamic id's to avoid all the id errors
+    Home.appendFilterMenu();
+    Home.appendFreqFilterMenu();
+    Home.setNotImplemented();
+    
+    //Setting listeners for the home page
+    const showMoreRateButton = document.getElementById("rateButton");
+    showMoreRateButton.addEventListener("click", Home.showMoreRateHandler);
+
+    const upDownContainer = document.getElementById("upDownContainer");
+    upDownContainer.addEventListener("click", (event)=>{
+        var voteRow = event.target.parentNode;
+        var voteChange = Home.checkVoteChanged(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
+        if(voteChange !== 0){
+            Home.sendUpDownVoteUpdate(event.target, voteChange);
+            Home.toggleUpDown(event.target);
+        }
+    });
+    
+    const searchButton = document.getElementById("searchButton");
+    const searchBar = document.getElementById("searchBar");
+    const searchUI = document.getElementById("searchUI");
+    searchButton.addEventListener("click", ()=>{
+        const searchValue = searchBar.value.trim();
+        document.getElementById("searchTitle").innerText = searchValue;
+        // NetworkReq.fetchPostNoCors(
+        //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
+        //     Tools.getJSessionId(),
+        //     Home.displaySearch
+        // ); 
+        NetworkReq.fetchPost(
+            `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+            Tools.getJSessionId(),
+            Home.displaySearch
+        ); 
+    });
+    searchUI.addEventListener("keyup", (event)=>{
+        if(event.key === "Enter"){
+            const searchValue = searchBar.value.trim();
+            document.getElementById("searchTitle").innerText = searchValue;
+            // NetworkReq.fetchPostNoCors(
+            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
+            //     Tools.getJSessionId(),
+            //     Home.displaySearch
+            // );
+            NetworkReq.fetchPost(
+                `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+                Tools.getJSessionId(),
+                Home.displaySearch
+            );
+        }
+    });
+
+    const submitRatingButton = document.getElementById("submitRating");
+    submitRatingButton.addEventListener("click", Home.submitRatingHandler);
+
+    const clearRatingButton = document.getElementById("cancelRating");
+    clearRatingButton.addEventListener("click", Home.clearRatingHandler);
+
+    const submitTagButton = document.getElementById("submitTag");
+    submitTagButton.addEventListener("click", Home.submitTagHandler);
+
+    const clearTagButton = document.getElementById("cancelTag");
+    clearTagButton.addEventListener("click", () => {document.getElementById("newTagInput").value = "";});
+
+    const submitReviewButton = document.getElementById("submitReview");
+    submitReviewButton.addEventListener("click", Home.submitReviewHandler);
+
+    const clearReviewButton = document.getElementById("cancelReview");
+    clearReviewButton.addEventListener("click", () => {
+        document.getElementById("newReviewInput").value = "";
+    });
+
+    const allModals = document.getElementsByClassName("modal");
+    const closeModalButtons = document.getElementsByClassName("close");
+    for(let x =0; x < closeModalButtons.length; x++){
+        closeModalButtons[x].addEventListener("click", ()=>{
+            Home.closeAllModals(allModals);
+        });
+    } 
+
+    // const webSocket = NetworkReq.openWebSocket("urlForWS");
+    // const searchBar = document.getElementById("searchBar");
+    // searchBar.addEventListener("input", ()=>{
+    //     NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
+    // });
+
+    const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
+    ratingScaleEndNode.addEventListener("change", Home.progressBarForRatingUpdate);
+   
 }

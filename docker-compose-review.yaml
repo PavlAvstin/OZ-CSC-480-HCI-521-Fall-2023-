@@ -1,0 +1,58 @@
+version: '3.8'
+services:
+  mongodbusercredentials:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    container_name: reel-rating-mongo-user-credentials
+    restart: unless-stopped
+
+  mongodb-movie:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    container_name: reel-rating-mongo-movie
+    restart: unless-stopped
+
+  reel-rating-auth-service:
+    build:
+      context: ./backend/reel-rating-auth-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-auth-service
+    restart: unless-stopped
+    environment:
+      - MONGO_CRED_URL=mongodb://mongodbusercredentials:27017
+      - MONGO_CRED_DATABASE_NAME=${MONGO_CRED_DATABASE_NAME}
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+
+  reel-rating-review-data-service:
+    build:
+      context: ./backend/reel-rating-review-data-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-review-data-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
+
+  reel-rating-movie-data-service:
+    build:
+      context: ./backend/reel-rating-movie-data-service/
+      dockerfile: Dockerfile
+    container_name: reel-rating-movie-data-service
+    restart: unless-stopped
+    environment:
+      - MONGO_MOVIE_URL=mongodb://mongodb-movie:27017
+      - MONGO_MOVIE_DATABASE_NAME=${MONGO_MOVIE_DATABASE_NAME}
+      - AUTH_SERVICE_URL=http://reel-rating-auth-service:30500
+      - JWK_URI=http://reel-rating-auth-service:30500/jwt/ibm/api/reel_rating_token/jwk 
+
+  reel-rating-reverse-proxy:
+    build:
+      context: ./nginx/
+      dockerfile: review.Dockerfile
+    container_name: reel-rating-reverse-proxy
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:30500:30500"
+      - "127.0.0.1:30501:30501"
+      - "127.0.0.1:30502:30502"

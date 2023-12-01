@@ -30,10 +30,16 @@
                     </div>
                 </div>
                 <div class="mb-3 col-12"><!-- User Name Container -->
-                    <label for="username" class="lgFont fontWhite">Username</label>
+                    <label for="username" class="lgFont fontWhite" id="userNameLabel">Username</label>
                     <input type="text" id="username" placeholder="your username" value="student22" class="fullWidth ptXSM pbXSM brAll"/>
                     <div class="fontWhite textCenter bgPrimary brBottom hidden error" id="userNameError">Please enter a user name</div>
                     <div class="fontWhite textCenter bgPrimary brBottom hidden error" id="userNameNotValid"></div>
+                </div>
+                <div class="mb-3 col-12 hidden" id="emailContainer"><!-- User Name Container -->
+                    <label for="email" class="lgFont fontWhite">Email</label>
+                    <input type="text" id="email" placeholder="your username" value="briggsja@alfredstate.edu" class="fullWidth ptXSM pbXSM brAll"/>
+                    <div class="fontWhite textCenter bgPrimary brBottom hidden error" id="emailError">Please enter a email</div>
+                    <div class="fontWhite textCenter bgPrimary brBottom hidden error" id="emailNotValid"></div>
                 </div>
                 <div class="mb-3 col-12"> <!-- Password Container-->
                     <label for="password" class="lgFont fontWhite">Password</label>

@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
+import edu.oswego.cs.rest.JsonClasses.*;
 import org.bson.BsonDateTime;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -29,23 +31,18 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 
-import edu.oswego.cs.rest.JsonClasses.Actor;
-import edu.oswego.cs.rest.JsonClasses.Movie;
-import edu.oswego.cs.rest.JsonClasses.Rating;
-import edu.oswego.cs.rest.JsonClasses.Review;
-
 public class DatabaseController {
-  String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
-  String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static String mongoDatabaseName = System.getenv("MONGO_MOVIE_DATABASE_NAME");
+  private static String mongoURL = System.getenv("MONGO_MOVIE_URL");
+  private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
   public MongoDatabase getMovieDatabase() {
-    MongoClient mongoClient = MongoClients.create(mongoURL);
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
   /**
    * <p>get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
-   * be queried and updated by the other CRUD operations. Currently there are
+   * be queried and updated by the other CRUD operations.
    */
   public MongoCollection<Document> getTagCollection() {
     return getMovieDatabase().getCollection("tags");
@@ -73,7 +70,7 @@ public class DatabaseController {
 
   /**
    * Image methods are used to store, edit, and retrieve images to display within the application. Due to MongoDB's
-   * approach to storing images collections cannot be used. Instead GridFSBuckets are used and Mongo handles the
+   * approach to storing images collections cannot be used. Instead, GridFSBuckets are used and Mongo handles the
    * underlying splitting and storing of data.
    *
    */
@@ -92,7 +89,7 @@ public class DatabaseController {
     GridFSBucket gridFSBucket = getStockImageBucket();
     for (int i = 1; i <= numMovieImages; i++) {
       // create a name to store the image
-      String movieFileName = "stockImage" + i + ".jpg";
+      String movieFileName = "stockImage" + i + ".webp";
       String movieImagePath = "images/" + movieFileName;
       // attempt to grab and upload the image
       try {
@@ -115,7 +112,7 @@ public class DatabaseController {
 
     // Account for movieImages starting at an index of 1.
     int movieNumber = random.nextInt(numMovieImages) + 1;
-    String movieFileName = "stockImage" + movieNumber + ".jpg";
+    String movieFileName = "stockImage" + movieNumber + ".webp";
     GridFSBucket gridFSBucket = getStockImageBucket();
     Bson query = Filters.eq("filename", movieFileName);
     return gridFSBucket.find(query).first().getObjectId().toHexString();
@@ -145,13 +142,15 @@ public class DatabaseController {
    * @return String hexId of the image related to the provided movie
    */
   public String getMovieImageId(String movieId) {
-    return getMovieDocumentWithHexId(movieId).getString("movieImageId");
+    Document movieDocument = getMovieDocumentWithHexId(movieId);
+    if (movieDocument == null) return null;
+    return movieDocument.getString("movieImageId");
   }
 
 
   //DataBase Population for movies:
 
-  /**
+  /*
    * update operations are used to change individual fields within database entities. For example
    * <code>updateMovieTitle</code> goes through all parts of the database that contain a movies title and updates them
    * to the new provided title. The unique MongoDB ids are crucial for these methods so that we do not lose track of
@@ -196,6 +195,7 @@ public class DatabaseController {
     Bson updateMovieTitleForReviews = Updates.set("movieTitle", movieTitle);
     reviews.updateMany(movieTitleFilterForReviews, updateMovieTitleForReviews);
   }
+
 
   public void updateMovieDocument(String hexId, Document movieDocument) {
     var movieCollection = getMovieCollection();
@@ -344,16 +344,16 @@ public class DatabaseController {
     updateReviewDescription(movieTitle, username, reviewDescription);
   }
 
-  /**
+  /*
    * Create CRUD operations
-   *
    * The following methods can be called by endpoints or internally to create and add to the database. Methods check
    * for and do not permit duplicated. Many items are identified by their unique hex id to prevent double entries.
    */
 
   /**
    * Users are not allowed to create a tag for a movie that does not already exist, or the same tag for the same movie.
-   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues
+   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues. All tags have the state of upvote
+   * upon creation.
    *
    * @param tagName name of tag used to access and store the information
    * @param movieIdHexString MongoDB unique identifier for the movie to attach the tag to
@@ -374,7 +374,7 @@ public class DatabaseController {
 
     // attempt to grab the tag in a few different types
     Bson movieTitleFilter = Filters.eq("movieTitle", movie.get("title"));
-    Bson usernameFilter = Filters.eq("username", username);
+    Bson usernameFilter = Filters.eq("username", username.toLowerCase());
     Bson tagNameFilter = Filters.eq("tagName", tagName);
 
     Document taggedWithMovieByUser = tagCollection.find(Filters.and(movieTitleFilter,usernameFilter, tagNameFilter)).first();
@@ -385,12 +385,13 @@ public class DatabaseController {
     } // else the tag does not exist
     else{
       // create and add the tag
-      Document newTag = new Document("userName", username)
+      Document newTag = new Document("username", username.toLowerCase())
               .append("tagName", tagName)
               .append("movieTitle", movie.get("title"))
               .append("movieId", movieIdHexString)
               .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-              .append("privacy", privacy);
+              .append("privacy", privacy)
+              .append("state", "upvote");
       // add to the database
       tagCollection.insertOne(newTag);
 
@@ -415,7 +416,7 @@ public class DatabaseController {
    * @param userRating value assigned by the user
    * @param upperbound upperbound of the rating scale. 0 < upperbound < 11
    */
-  public void createRating(String ratingName, String userRating, String upperbound, String username,
+  public void createRating(String ratingName, String userRating, String upperbound, String subtype, String username,
                            String movieIdHexString, String privacy){
     // get collections
     MongoCollection<Document> ratingCollection = getRatingCollection();
@@ -426,24 +427,28 @@ public class DatabaseController {
       return;
 
     // attempt to get the rating if the user has already created one for this category and upperbound on the movie
-    Bson upperBoundFilter = Filters.eq("upperbound", upperbound);
-    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
-    Bson usernameFilter = Filters.eq("username", username);
-    Bson movieFilter = Filters.eq("movieId", movieIdHexString);
-    Document rating = ratingCollection.find(Filters.and(usernameFilter, ratingNameFilter, upperBoundFilter, movieFilter)).first();
+    Bson filter = Filters.and(
+            Filters.eq("upperbound", upperbound),
+            Filters.eq("ratingName", ratingName),
+            Filters.eq("username", username),
+            Filters.eq("movieId", movieIdHexString)
+    );
+
+    Document rating = ratingCollection.find(filter).first();
     // attempt to get the corresponding movie
     Document movie = getMovieDocumentWithHexId(movieIdHexString);
 
     // check to see if movie exists and rating is not already created by user
     if (rating == null && movie != null) {
-      Document newRating = new Document("userName", username)
+      Document newRating = new Document("username", username.toLowerCase())
                   .append("ratingName", ratingName)
                   .append("userRating", userRating)
                   .append("upperbound", upperbound)
                   .append("movieTitle", movie.get("title"))
                   .append("movieId", movieIdHexString)
                   .append("dateTimeCreated", new BsonDateTime(System.currentTimeMillis()))
-                  .append("privacy", privacy);
+                  .append("privacy", privacy)
+                  .append("subtype", subtype);
       ratingCollection.insertOne(newRating);
 
       Bson ratingCategoryMovieFilter = Filters.eq("ratingCategoryNames", ratingName);
@@ -455,6 +460,10 @@ public class DatabaseController {
         Bson movieRatingCategoryUpdateOperation = Updates.push("ratingCategoryNames", ratingName);
         movieCollection.updateOne(movie, movieRatingCategoryUpdateOperation);
       }
+    }
+    if(rating != null){
+      Bson updateOperation = Updates.set("userRating", userRating);
+      ratingCollection.updateOne(filter, updateOperation);
     }
   }
 
@@ -482,7 +491,7 @@ public class DatabaseController {
       BsonDateTime dateTimeCreated = new BsonDateTime(System.currentTimeMillis());
       // create a new review
       Document newReview = new Document("movieId", movieIdString).append("reviewDescription", reviewDescription)
-              .append("username", username).append("dateTimeCreated", dateTimeCreated)
+              .append("username", username.toLowerCase()).append("dateTimeCreated", dateTimeCreated)
               .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
@@ -539,7 +548,7 @@ public class DatabaseController {
     // get collections
     MongoCollection<Document> movieCollection = getMovieCollection();
 
-    Document newMovie = new Document().append("title", movieTitle).append("director", director)
+    Document newMovie = new Document().append("title", movieTitle).append("director", director).append("writers", writers)
             .append("releaseDate", releaseDate).append("runtime", runtime).append("plotSummary", plotSummary)
             .append("movieImageId", getRandomImageId());
     movieCollection.insertOne(newMovie);
@@ -569,48 +578,18 @@ public class DatabaseController {
     return list;
   }
 
-  private static ArrayList<Actor> getActorsWithFilter(MongoCollection<Document> actorsCollection, Bson filter) {
-    var actors = actorsCollection.find(filter).map(document -> {
-      var a = new Actor();
-      a.setName(document.getString("name"));
-      a.setDateOfBirth(document.getString("dob"));
-      a.setId(document.getObjectId("_id").toHexString());
-      a.setMovies(document.getList("movies", String.class));
-      return a;
+  private static ArrayList<Tag> getTagsWithFilter(MongoCollection<Document> tagCollection, Bson filter) {
+    var ratings = tagCollection.find(filter).map(document -> {
+      var tag = new Tag();
+      tag.setTagName(document.getString("tagName"));
+      tag.setMovieTitle(document.getString("movieTitle"));
+      tag.setMovieId(document.getString("movieId"));
+      tag.setUsername(document.getString("username"));
+      tag.setPrivacy(document.getString("privacy"));
+      tag.setDateTimeCreated(document.get("dateTimeCreated").toString());
+      return tag;
     });
-    var list = new ArrayList<Actor>();
-    actors.forEach(list::add);
-    return list;
-  }
-
-  private static ArrayList<Review> getReviewsWithFilter(MongoCollection<Document> reviewsCollection, Bson filter) {
-    var reviews = reviewsCollection.find(filter).map(document -> {
-      var re = new Review();
-      re.setUsername(document.getString("username"));
-      re.setReviewDescription(document.getString("reviewDescription"));
-      re.setMovieId(document.getString("movieId"));
-      re.setDateTimeCreated(document.get("dateTimeCreated").toString());
-      re.setPrivacy(document.getString("privacy"));
-      return re;
-    });
-    var list = new ArrayList<Review>();
-    reviews.forEach(list::add);
-    return list;
-  }
-
-  private static ArrayList<Rating> getRatingsWithFilter(MongoCollection<Document> ratingsCollection, Bson filter) {
-    var ratings = ratingsCollection.find(filter).map(document -> {
-      var ra = new Rating();
-      ra.setRatingName(document.getString("ratingName"));
-      ra.setUserRating(document.getString("userRating"));
-      ra.setMovieTitle(document.getString("movieTitle"));
-      ra.setDateTimeCreated(document.get("dateTimeCreated").toString());
-      ra.setPrivacy(document.getString("privacy"));
-      ra.setMovieId(document.getString("movieId"));
-      ra.setUpperbound(document.getString("upperbound"));
-      return ra;
-    });
-    var list = new ArrayList<Rating>();
+    var list = new ArrayList<Tag>();
     ratings.forEach(list::add);
     return list;
   }
@@ -669,14 +648,15 @@ public class DatabaseController {
     return getMoviesWithFilter(moviesCollection, filter);
   }
 
-  public Optional<Movie> getMovieWithTitle(String title){
-    return getMoviesWithTitle(title).stream().findFirst();
+  public Optional<Movie> getMovieWithMovieId(String hexID) {
+    var moviesCollection = getMovieCollection();
+    ObjectId movieId = new ObjectId(hexID);
+    var filter = Filters.eq("_id", movieId);
+    return getMoviesWithFilter(moviesCollection, filter).stream().findFirst();
   }
 
-  public Document getMovieDocumentWithTitle(String title) {
-    var movieCollections = getMovieCollection();
-    var filter = Filters.eq("title", title);
-    return movieCollections.find(filter).first();
+  public Optional<Movie> getMovieWithTitle(String title){
+    return getMoviesWithTitle(title).stream().findFirst();
   }
 
   /**
@@ -707,6 +687,9 @@ public class DatabaseController {
     return recentReleaseMovies;
   }
 
+  /*
+   * Helper gets
+   */
   /**
    * retrieves movie using MongoDB unique hex identifier. Creates a ObjectID object to return the movie Document.
    * @param hexID String representation of the hex id.
@@ -716,38 +699,6 @@ public class DatabaseController {
     MongoCollection<Document> movieCollection = getMovieCollection();
     ObjectId movieId = new ObjectId(hexID);
     return movieCollection.find(Filters.eq("_id", movieId)).first();
-  }
-
-  public List<Actor> getActorByName(String name) {
-    var actorsCollection = getActorCollection();
-    var filter = Filters.eq("name", name);
-    return getActorsWithFilter(actorsCollection, filter);
-  }
-
-  public List<Rating> getUserAssociatedRatings(String userName) {
-    var ratings = getRatingCollection();
-    var filter = Filters.eq("user", userName);
-    return getRatingsWithFilter(ratings, filter);
-  }
-
-  public List<Rating> getRatingsInRatingsCategory(String ratingName, String upperbound) {
-    var ratings = getRatingCollection();
-    var ratingNameFilter = Filters.eq("ratingName", ratingName);
-    var upperboundFilter = Filters.eq("upperbound", upperbound);
-    var filter = Filters.and(ratingNameFilter, upperboundFilter);
-    return getRatingsWithFilter(ratings, filter);
-  }
-
-  public List<Review> getReviewsByMovieId(String movieId) {
-    var reviews = getReviewCollection();
-    var filter = Filters.eq("movieId", movieId);
-    return getReviewsWithFilter(reviews, filter);
-  }
-
-  public List<Review> getReviewsByUser(String username) {
-    var reviews = getReviewCollection();
-    var filter = Filters.eq("username", username);
-    return getReviewsWithFilter(reviews, filter);
   }
 
   /**
@@ -782,6 +733,7 @@ public class DatabaseController {
 
   public Rating getMostPopularAggregatedRatingForMovie(String movieId) {
     MongoCollection<Document> ratingCollection = getRatingCollection();
+    // get the most popular rating category name for the movie
     Document ratingNameDoc = ratingCollection.aggregate(
       Arrays.asList(
         Aggregates.match(Filters.eq("movieId", movieId)),
@@ -789,6 +741,13 @@ public class DatabaseController {
         Aggregates.sort(Sorts.descending("count"))
       )
     ).first();
+
+    // return null immediately if ratingNameDoc is null
+    if (ratingNameDoc == null) {
+      return null;
+    }
+
+    // gets the most popular upperbound for the category
     String mostPopularCategoryName = ratingNameDoc.getString("_id");
     Document ratingScaleDoc = ratingCollection.aggregate(
       Arrays.asList(
@@ -797,11 +756,48 @@ public class DatabaseController {
         Aggregates.sort(Sorts.descending("count"))
       )
     ).first();
+
     String mostPopularCategoryUpperbound = ratingScaleDoc.getString("_id");
+
+    int userRatingSum = 0;
+    // using the most popular name and most popular upperbound go through and collect the sum of all the user ratings
+    // gets the most popular upperbound for the category
+    for (Document doc : ratingCollection.find(Filters.and(Filters.eq("movieId", movieId), Filters.eq("ratingName", mostPopularCategoryName), Filters.eq("upperbound", mostPopularCategoryUpperbound)))) {
+      userRatingSum = userRatingSum + Integer.parseInt(doc.getString("userRating"));
+    }
+    int count = ratingScaleDoc.getInteger("count");
+    double average = ((double) userRatingSum ) / count;
+//
+//    // create a rating object that has the most popular name, upperbound, and a userRating of the average of all
+//    //  the ratings of that name with that upperbound.
+//    //  TODO consider collecting for all ratings of this name which would take some normalizing. Is this worth it?
     Rating rating = new Rating();
     rating.setRatingName(mostPopularCategoryName);
     rating.setUpperbound(mostPopularCategoryUpperbound);
+    rating.setUserRating(Double.toString(average));
     return rating;
+  }
+
+  /**
+   * Grabs three tags from the specified movie. Used in the getRecentReleaseMovies and in a larger sense for getting
+   * the information needed to display the movie preview (movie title, movie summary, name of three tags, and
+   * aggregated most popular rating.
+   * TODO decide if we want to create a function that gets the a movie preview object. Give it a movie ID and it returns
+   * TODO   a movie with all of the needed preview fields filled in. That way for search we can search our movies by
+   * TODO   the given criteria then create a list of all the movie preview objects to return.
+   *
+   * @param movieId MongoDB unique hex id of the movie to get the tags from
+   * @return a list of tags length three
+   */
+  public List<Tag> getThreeTags(String movieId) {
+    List<Tag> tags = getTagsByMovieId(movieId);
+    return tags.subList(0, tags.size() < 3 ? tags.size() : 3);
+  }
+
+  public List<Tag> getTagsByMovieId(String movieId) {
+    var reviews = getTagCollection();
+    var filter = Filters.eq("movieId", movieId);
+    return getTagsWithFilter(reviews, filter);
   }
 
   /**
@@ -950,14 +946,9 @@ public void deleteUserRatingbyTime(String ratingName, String dateTimeCreated, St
     if(document.get("dateTimeCreated") == dateTimeCreated){
       ratingCollection.updateOne(document, movieRemovalF);
       userAssociatedRating.updateOne(document, movieRemovalF);
-    }else{
+    } else{
       //Do nothing for now
     }
-  });
-  
+    });
+  }
 }
-
-
-
-}
- 
