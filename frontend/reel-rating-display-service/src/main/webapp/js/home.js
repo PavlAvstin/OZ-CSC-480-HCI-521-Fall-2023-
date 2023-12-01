@@ -255,6 +255,15 @@ export function checkVoteChanged(eventTarget, upVoteIcon, downVoteIcon){
     return voteChange;
 }
 
+export function getCurrentVote(eventTarget, upVoteIcon, downVoteIcon) {
+    var voteChange = 0;
+    if(eventTarget.getAttribute("icon") === "true"){
+        if(upVoteIcon.getAttribute("voted") === "true"){ voteChange++; }
+        else if(downVoteIcon.getAttribute("voted") === "true"){ voteChange-- }
+    }
+    return voteChange; 
+}
+
 
 
 /**
@@ -796,7 +805,7 @@ async function appendUpDownVote(serverData){
                     [
                         `voteID${voteID}`,
                         `${voteID}`, 
-                        `${upDownData[x].movieID}`, 
+                        `${upDownData[x].movieId}`, 
                         `${upDownData[x].tagName}`, 
                         "upVote col-2",
                         `../images/hand-thumbs-up-fill-white.png`, 
