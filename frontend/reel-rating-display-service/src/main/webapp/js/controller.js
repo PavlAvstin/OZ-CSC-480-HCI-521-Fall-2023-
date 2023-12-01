@@ -131,7 +131,6 @@ function homeInit(){
         Home.toggleUpDown(event.target);
         var voteChange = Home.getCurrentVote(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
         if(voteChange != 0){
-            alert(voteChange);
             Home.sendUpDownVoteUpdate(event.target, voteChange);
         }
     });
