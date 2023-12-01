@@ -128,10 +128,10 @@ function homeInit(){
     const upDownContainer = document.getElementById("upDownContainer");
     upDownContainer.addEventListener("click", (event)=>{
         var voteRow = event.target.parentNode;
-        var voteChange = Home.checkVoteChanged(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
-        if(voteChange !== 0){
+        Home.toggleUpDown(event.target);
+        var voteChange = Home.getCurrentVote(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
+        if(voteChange != 0){
             Home.sendUpDownVoteUpdate(event.target, voteChange);
-            Home.toggleUpDown(event.target);
         }
     });
     
