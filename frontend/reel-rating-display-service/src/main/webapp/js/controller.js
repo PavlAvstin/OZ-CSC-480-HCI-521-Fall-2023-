@@ -147,7 +147,7 @@ function homeInit(){
         //     Home.displaySearch
         // ); 
         NetworkReq.fetchPost(
-            `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+            `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
             Tools.getJSessionId(),
             Home.displaySearch
         ); 
@@ -162,7 +162,7 @@ function homeInit(){
             //     Home.displaySearch
             // );
             NetworkReq.fetchPost(
-                `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+                `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
                 Tools.getJSessionId(),
                 Home.displaySearch
             );

@@ -414,3 +414,18 @@ body{ font-family: Arial, Helvetica, sans-serif; background-color: var(--backgro
     height: 60px;
     width: 49%;
 }
+
+/* Search Modal */
+#searchResults {
+    height: calc(var(--modalHeight) - 100px);
+    overflow-y: scroll;
+}
+
+/* Target the search cards*/
+#searchResults > div > div {
+    flex: 0 0 auto;
+    width: 30%;
+    margin: 16px;
+}
+
+

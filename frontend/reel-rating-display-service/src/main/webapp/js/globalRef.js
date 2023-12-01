@@ -23,7 +23,7 @@ export class GlobalRef{
             // this.reviewBase = `http://127.0.0.1:${reviewsPort}/reel-rating-review-data-service`;
             // this.ratingsBase = `http://127.0.0.1:${ratingsPort}/reel-rating-rating-data-service`;
             // this.actorBase = `http://127.0.0.1:${actorPort}/reel-rating-actor-data-service`;
-            this.searchBase = `http://127.0.0.1:${searchPort}/reel-rating-search-service`;
+            //this.searchBase = `http://127.0.0.1:${searchPort}/reel-rating-search-service`;
         }
 
         this.logInPath = `http://moxie.cs.oswego.edu:${authPort}/reel-rating-auth-service/auth/login`;
@@ -33,7 +33,7 @@ export class GlobalRef{
         this.reviewBase = `http://moxie.cs.oswego.edu:${reviewsPort}/reel-rating-review-data-service`;
         this.ratingsBase = `http://moxie.cs.oswego.edu:${ratingsPort}/reel-rating-rating-data-service`;
         this.actorBase = `http://moxie.cs.oswego.edu:${actorPort}/reel-rating-actor-data-service`;
-        //this.searchBase = `http://moxie.cs.oswego.edu:${searchPort}/reel-rating-search-service`;
+        this.searchBase = `http://moxie.cs.oswego.edu:${searchPort}/reel-rating-search-service`;
         
         
         this.regExSpecChar = /\W/; //Is not word char nor digit
