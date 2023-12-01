@@ -136,7 +136,7 @@ export function feedbackForRatingSubmission() {
     let movieID = showMoreRateButton.getAttribute("movieID");
     //Update Ratings to include new rating
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendExistingCategories    
     );
