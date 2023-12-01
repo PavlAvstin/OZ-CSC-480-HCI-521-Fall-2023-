@@ -58,7 +58,7 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${movieID}`,
         jSessionIdStringified,
         appendUpDownVote    
     );
@@ -136,7 +136,7 @@ export function feedbackForRatingSubmission() {
     let movieID = showMoreRateButton.getAttribute("movieID");
     //Update Ratings to include new rating
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendExistingCategories    
     );
