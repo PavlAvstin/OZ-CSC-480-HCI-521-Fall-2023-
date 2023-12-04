@@ -653,7 +653,7 @@ async function appendGeneralSection(serverRes){
 
         //Get Tags
         NetworkReq.fetchPost(
-            `${globals.ratingsBase}/tag/getTagsWithMovieId/${genData.id}`,
+            `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${genData.id}`,
             jSessionIdStringified,
             appendTagsToShowMore
         )
