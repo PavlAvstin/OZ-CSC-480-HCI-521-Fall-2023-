@@ -137,6 +137,7 @@ public class DatabaseController {
   //flaw 4:Plurals can't be taken -supposedly solved
   //manual search has the one-up on the ONE regard where a word doesn't have to be accurate
 
+
   public List<Movie> manualSearchByMovieName(String title) {
     var moviesToReturn = new ArrayList<Movie>();
     var movies = getMovieCollection();
@@ -153,8 +154,39 @@ public class DatabaseController {
       }
     });
 
+    moviesToReturn.sort((o1, o2) -> {
+      int o1Score = stringSimilarity(title, o1.getTitle());
+      int o2Score = stringSimilarity(title, o2.getTitle());
+
+      return Integer.compare(o2Score, o1Score);
+
+    });
+
     return moviesToReturn;
   }
+
+  private static int stringSimilarity(String title, String o1) {
+    //The amount of characters starting from left to right that match the input string.
+    var inputLowerCase = title.toLowerCase();
+    var o1LowerCase = o1.toLowerCase();
+    int maxIndex = Math.min(inputLowerCase.length(), o1LowerCase.length());
+
+    int score = 0;
+    for (int i = 0; i < maxIndex; i++) {
+
+      //input character
+      var inputC = inputLowerCase.charAt(i);
+      var o1C = o1LowerCase.charAt(i);
+
+      if (inputC == o1C) {
+        score++;
+      }
+    }
+    return score;
+  }
+
+  //Looks to see if it matches by letter.
+
 
   private static String[] filterString(String input) {
     String[] notWords = input.toLowerCase().split(" ");
@@ -196,6 +228,14 @@ public class DatabaseController {
       }
     });
 
+    moviesToReturn.sort((o1, o2) -> {
+      int o1Score = stringSimilarity(releaseDate, o1.getReleaseDate());
+      int o2Score = stringSimilarity(releaseDate, o2.getReleaseDate());
+
+      return Integer.compare(o2Score, o1Score);
+
+    });
+
     return moviesToReturn;
   }
 
@@ -214,6 +254,14 @@ public class DatabaseController {
           break; //No duplicates
         }
       }
+    });
+
+    moviesToReturn.sort((o1, o2) -> {
+      int o1Score = stringSimilarity(director, o1.getDirector());
+      int o2Score = stringSimilarity(director, o2.getDirector());
+
+      return Integer.compare(o2Score, o1Score);
+
     });
 
     return moviesToReturn;
@@ -249,11 +297,21 @@ public class DatabaseController {
       }
     });
 
+    moviesToReturn.sort((o1, o2) -> {
+      int o1Score = stringSimilarity(cast, o1.getPrincipleCast());
+      int o2Score = stringSimilarity(cast, o2.getPrincipleCast());
+
+      return Integer.compare(o2Score, o1Score);
+
+    });
+
     return moviesToReturn;
   }
 
 
   //Index for actors
+  //Another check to specialize it.
+  //Auto-complete stuff.
   public List<Movie> searchByMovieCastIndex(String cast) {
 
     var moviesToReturn = new ArrayList<Movie>();
