@@ -197,11 +197,29 @@ function homeInit(){
         });
     } 
 
-    // const webSocket = NetworkReq.openWebSocket("urlForWS");
-    // const searchBar = document.getElementById("searchBar");
-    // searchBar.addEventListener("input", ()=>{
-    //     NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
-    // });
+    let webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
+    searchBar.addEventListener("input", ()=>{
+        NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
+    });
+
+    // webSocket.onclose = (exception) => {
+    //     console.log(`Connection websocket closed because ${exception.reason}`);
+    //     setTimeout(() => {
+    //         webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
+    //     }, 1000);
+    // }
+
+    const searchAutoCompleteList = document.getElementById("searchAutoComplete");
+
+    webSocket.onmessage = (response) => {
+        let movieNames = JSON.parse(response.data).results;
+        searchAutoCompleteList.replaceChildren();
+        for (let movieName of movieNames) {
+            let option = document.createElement("option");
+            option.value = movieName;
+            searchAutoCompleteList.appendChild(option);
+        }
+    }
 
     const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
     ratingScaleEndNode.addEventListener("change", Home.progressBarForRatingUpdate);
