@@ -23,6 +23,9 @@ import java.util.Optional;
 
 import com.ibm.websphere.security.jwt.JwtConsumer;
 
+/**
+ * This class contains the search service endpoints exposed as an API.
+ */
 @Path("/")
 @RequestScoped
 public class SearchService {
@@ -57,7 +60,7 @@ public class SearchService {
    * Movie Get Endpoints
    *
    * searchMovieByName
-   *searchMovieByReleaseDate
+   * searchMovieByReleaseDate
    * searchMovieByDirector
    * searchMovieByCast
    *
