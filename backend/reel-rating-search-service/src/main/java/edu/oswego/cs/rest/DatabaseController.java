@@ -26,21 +26,33 @@ public class DatabaseController {
   }
 
 
-  //***********Index for movie title. Repeated call of createIndex multiple times doesn't do anything.
+  /**
+   * Creates text index for the movie title field. Repeated calls of this method don't do anything.
+   */
   public void createTitleIndex() {
     var movies = getMovieCollection();
     movies.createIndex(Indexes.text("title"));
   }
 
+  /**
+   * Creates text index for actor name field. Repeated calls of this method don't do anything.
+   */
   public void createActorNameIndex() {
     var movies = getActorCollection();
     movies.createIndex(Indexes.text("name"));
   }
 
+  /**
+   * Creates text index for tag name field. Repeated calls of this method don't do anything.
+   */
   public void createTagIndex() {
     var tags = getTagCollection();
     tags.createIndex(Indexes.text("tagName"));  
   }
+
+  /**
+   * Creates text index for rating name field. Repeated calls of this method don't do anything.
+   */
   public void createRatingIndex() {
     var ratings = getRatingCollection();
     ratings.createIndex(Indexes.text("ratingName"));
@@ -48,23 +60,49 @@ public class DatabaseController {
 
   // We could have duplicate collections with the same data each of which have a text index for each field. That sounds
   // like a bad idea since it'd make things harder to update and take up more space.
+
+  /**
+   * Get the movie collection from the database.
+   *
+   * @return Movie collection.
+   */
   public MongoCollection<Document> getMovieCollection() {
     return getMovieDatabase().getCollection("movies");
   }
 
+  /**
+   * Get the actor collection from the database.
+   *
+   * @return Actors collection.
+   */
   public MongoCollection<Document> getActorCollection() {
     return getMovieDatabase().getCollection("actors");
   }
 
+  /**
+   * Get the tag collection from the database.
+   *
+   * @return Tag collection.
+   */
   public MongoCollection<Document> getTagCollection() {
     return getMovieDatabase().getCollection("tags");
   }
 
+  /**
+   * Get the rating collection from the database.
+   *
+   * @return Ratings collection.
+   */
   public MongoCollection<Document> getRatingCollection() {
     return getMovieDatabase().getCollection ("ratings");
   }
 
-
+  /**
+   * Search movies by tag names.
+   *
+   * @param tagName The tag name to search by.
+   * @return Movies with the tag.
+   */
   public List<Movie> searchByTagName(String tagName) {
     createTagIndex();
     var moviesToReturn = new ArrayList<Movie>();
@@ -85,6 +123,12 @@ public class DatabaseController {
     return moviesToReturn;
   }
 
+  /**
+   * Search movies by rating name.
+   *
+   * @param ratingName The rating name to search by.
+   * @return Movies with the rating name.
+   */
   public List<Movie> searchbyRatingName(String ratingName) {
     createRatingIndex();
     var moviesToReturn = new ArrayList<Movie>();
@@ -112,6 +156,15 @@ public class DatabaseController {
   // for each word in the string, search it up.
   //searched each individual if, if nothing comes up then it returns nothing.
   //searched by words with the exception of "and" and "the" (lowecase a or uppercase a)
+
+  /**
+   * Search movies by name. Titles don't need to be exact but similar.
+   * <p>
+   * This method uses Mongo's built in text search feature.
+   *
+   * @param title The title to search by.
+   * @return The movies with similar titles
+   */
   public List<Movie> searchByMovieNameIndex(String title){
     //Must create a text index before running a text search
     createTitleIndex();
@@ -137,7 +190,12 @@ public class DatabaseController {
   //flaw 4:Plurals can't be taken -supposedly solved
   //manual search has the one-up on the ONE regard where a word doesn't have to be accurate
 
-
+  /**
+   * Search movies by name. This method's implementation of search is not as good as Mongo's text search.
+   *
+   * @param title Movie title to search by.
+   * @return Movies with similar titles.
+   */
   public List<Movie> manualSearchByMovieName(String title) {
     var moviesToReturn = new ArrayList<Movie>();
     var movies = getMovieCollection();
@@ -211,6 +269,13 @@ public class DatabaseController {
   //enable partial search
   // Then: 2030s = 2031, 2032, 2033..etc (maybe later). idk if requirement
   //Should it take words??
+
+  /**
+   * Search movies by release date. The search algorithm is not done by Mongo's text search.
+   *
+   * @param releaseDate Release date to search by.
+   * @return Movies with the release date.
+   */
   public List<Movie> manualSearchByMovieReleaseDate(String releaseDate) {
     var moviesToReturn = new ArrayList<Movie>();
     var movies = getMovieCollection();
@@ -239,6 +304,12 @@ public class DatabaseController {
     return moviesToReturn;
   }
 
+  /**
+   * Search for movies by movie directors. This method does not use Mongo's text search.
+   *
+   * @param director The director to search by.
+   * @return Movies with similar director names.
+   */
   public List<Movie> manualSearchByMovieDirector(String director) {
     var moviesToReturn = new ArrayList<Movie>();
     var movies = getMovieCollection();
@@ -269,6 +340,13 @@ public class DatabaseController {
 
   //Get actor name ->actorid -> list of movies
   //actor name (anything) ->List of actor names ->list of actor ids -> a list of movies
+
+  /**
+   * Search movies by cast. This method doesn't use Mongo's text search.
+   *
+   * @param cast The cast to search for.
+   * @return Movies with the cast members given.
+   */
   public List<Movie> manualSearchByMovieCast(String cast) {
 
     var moviesToReturn = new ArrayList<Movie>();
@@ -312,6 +390,13 @@ public class DatabaseController {
   //Index for actors
   //Another check to specialize it.
   //Auto-complete stuff.
+
+  /**
+   * Search movies by cast. This method uses Mongo's text search index.
+   *
+   * @param cast The cast to search for.
+   * @return Movies with similar cast members.
+   */
   public List<Movie> searchByMovieCastIndex(String cast) {
 
     var moviesToReturn = new ArrayList<Movie>();
@@ -338,7 +423,6 @@ public class DatabaseController {
   }
 
 
-//Partial search.
   private static Movie documentToMovie(Document document) {
     var m = new Movie();
     m.setDirector(document.getString("director"));
@@ -396,7 +480,6 @@ public class DatabaseController {
    * Methods to return those pesky little full movie cards
    */
 
-  // tags
   public static List<Tag> getThreeTags(String movieId) {
     List<Tag> tags = getTagsByMovieId(movieId);
     return tags.subList(0, tags.size() < 3 ? tags.size() : 3);
