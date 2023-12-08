@@ -141,11 +141,6 @@ function homeInit(){
     searchButton.addEventListener("click", ()=>{
         const searchValue = searchBar.value.trim();
         document.getElementById("searchTitle").innerText = searchValue;
-        // NetworkReq.fetchPostNoCors(
-        //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
-        //     Tools.getJSessionId(),
-        //     Home.displaySearch
-        // ); 
         NetworkReq.fetchPost(
             `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
             Tools.getJSessionId(),
@@ -156,11 +151,6 @@ function homeInit(){
         if(event.key === "Enter"){
             const searchValue = searchBar.value.trim();
             document.getElementById("searchTitle").innerText = searchValue;
-            // NetworkReq.fetchPostNoCors(
-            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
-            //     Tools.getJSessionId(),
-            //     Home.displaySearch
-            // );
             NetworkReq.fetchPost(
                 `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
                 Tools.getJSessionId(),
@@ -193,7 +183,7 @@ function homeInit(){
     const closeModalButtons = document.getElementsByClassName("close");
     for(let x =0; x < closeModalButtons.length; x++){
         closeModalButtons[x].addEventListener("click", ()=>{
-            Home.closeAllModals(allModals);
+            allModals[x].click();
         });
     } 
 
@@ -202,15 +192,14 @@ function homeInit(){
         NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
     });
 
-    // webSocket.onclose = (exception) => {
-    //     console.log(`Connection websocket closed because ${exception.reason}`);
-    //     setTimeout(() => {
-    //         webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
-    //     }, 1000);
-    // }
+    webSocket.onclose = (exception) => {
+        console.log(`Connection websocket closed because ${exception.reason}`);
+        setTimeout(() => {
+            webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
+        }, 1000);
+    }
 
     const searchAutoCompleteList = document.getElementById("searchAutoComplete");
-
     webSocket.onmessage = (response) => {
         let movieNames = JSON.parse(response.data).results;
         searchAutoCompleteList.replaceChildren();
