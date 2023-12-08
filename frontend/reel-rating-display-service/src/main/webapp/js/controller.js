@@ -214,10 +214,15 @@ function homeInit(){
     webSocket.onmessage = (response) => {
         let movieNames = JSON.parse(response.data).results;
         searchAutoCompleteList.replaceChildren();
+        // Constrains the amount of auto complete results.
+        let autoCompleteLimit = 5;
+        let autoCompleteCurrentCount = 0;
         for (let movieName of movieNames) {
+            if (autoCompleteCurrentCount >= autoCompleteLimit) break;
             let option = document.createElement("option");
             option.value = movieName;
             searchAutoCompleteList.appendChild(option);
+            autoCompleteCurrentCount++;
         }
     }
 
