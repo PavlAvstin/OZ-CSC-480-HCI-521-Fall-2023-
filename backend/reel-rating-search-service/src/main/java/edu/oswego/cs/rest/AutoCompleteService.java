@@ -17,8 +17,7 @@ public class AutoCompleteService {
 
     @OnOpen
     public void onOpen(Session session) {
-        // Ensures the websocket stays open
-        session.setMaxIdleTimeout(0);
+       
     }
 
     @OnMessage
