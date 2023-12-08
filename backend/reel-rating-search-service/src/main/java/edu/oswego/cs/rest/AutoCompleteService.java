@@ -17,7 +17,7 @@ public class AutoCompleteService {
 
     @OnOpen
     public void onOpen(Session session) {
-
+       
     }
 
     @OnMessage
