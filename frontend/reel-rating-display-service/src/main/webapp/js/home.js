@@ -359,6 +359,23 @@ export function submitReviewHandler(){
 }
 
 
+/**
+ * Close all models on the x button
+ * @param {HTMLCollection} allModals
+ */
+export function closeAllModals(allModals){
+    var backdrops = document.getElementsByClassName("modal-backdrop show");
+    for(let x =0; x < allModals.length; x++){
+        if(allModals[x].classList.contains("show") === true){
+            allModals[x].click(); //Use the bootstrap function to close the modal
+            allModals[x].setAttribute("style","display:none");
+        }
+    }
+
+    for(let y=0; y < backdrops.length; y++){ backdrops[y].remove(); }
+}
+
+
 export async function displaySearch(serverData){
     var searchContainer = document.getElementById("searchResults");
     Tools.clearChildren(searchContainer);
