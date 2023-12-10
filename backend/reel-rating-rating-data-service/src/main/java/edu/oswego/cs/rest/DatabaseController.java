@@ -13,8 +13,6 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import javax.print.Doc;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class DatabaseController {
@@ -22,15 +20,17 @@ public class DatabaseController {
   private static String mongoURL = System.getenv("MONGO_MOVIE_URL");
   private static MongoClient mongoClient = MongoClients.create(mongoURL);
 
-  /*
-   *
-   */
   public MongoDatabase getMovieDatabase() {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
   /*
-   * Database get collection methods
+   * Database get collection methods:
+   *  Return the specified collection of items from the database
+   *
+   * getMovieCollection
+   * getRatingCollection
+   * getTagCollection
    */
   public MongoCollection<Document> getMovieCollection() {
     return getMovieDatabase().getCollection("movies");
@@ -118,15 +118,18 @@ public class DatabaseController {
    * getRatingsWithSameName
    * getRatingsWithMovieId
    * getRatingsWithUpperbound
+   *
    * getMostPopularAggregatedRatingForMovie
+   * getAverageRatingWithRatingCategoryList
+   * getUniqueRatingCategoriesAndUserRatingWithMovieId
    */
 
   /**
    * Creates and returns a list of ratings that match the given filter. This is called by many of the
    * other get functions.
-   * @param ratingsCollection
-   * @param filter
-   * @return
+   * @param ratingsCollection Mongo collection of all Ratings
+   * @param filter Bson filter to perform the find action over the collection
+   * @return ArrayList&ltRating&gt containing all Ratings that match the filter
    */
   private static ArrayList<Rating> getRatingsWithFilter(MongoCollection<Document> ratingsCollection, Bson filter) {
     var ratings = ratingsCollection.find(filter).map(document -> {
@@ -147,6 +150,12 @@ public class DatabaseController {
     return list;
   }
 
+  /**
+   * Returns all Ratings that share a ratingName and upperbound, also referred to as a rating category.
+   * @param ratingName Name of rating to search for
+   * @param upperbound Upperbound of rating to search for
+   * @return ArrayList&ltRating&gt containing all Ratings that match both the given ratingName and upperbound.
+   */
   public List<Rating> getRatingsWithSameNameAndUpperbound(String ratingName, String upperbound) {
     var ratings = getRatingCollection();
     Bson filter = Filters.and(
@@ -155,18 +164,34 @@ public class DatabaseController {
     return getRatingsWithFilter(ratings, filter);
   }
 
+  /**
+   * Returns all Ratings that share a ratingName
+   * @param ratingName Name of rating to search for
+   * @return ArrayList&ltRating&gt containing all Ratings that match both the given ratingName.
+   */
   public List<Rating> getRatingsWithSameName(String ratingName) {
     var ratings = getRatingCollection();
     var ratingNameFilter = Filters.eq("ratingName", ratingName);
     return getRatingsWithFilter(ratings, ratingNameFilter);
   }
 
+  /**
+   * Returns all Ratings associated with the given MongoBD movie hexId
+   * @param movieId MongoDB hexId of movie to get all Ratings from
+   * @return ArrayList&ltRating&gt containing all Ratings associated with the given hexId
+   */
   public List<Rating> getRatingsWithMovieId(String movieId){
     var ratings = getRatingCollection();
     var movieIdFilter = Filters.eq("movieId", movieId);
     return getRatingsWithFilter(ratings, movieIdFilter);
   }
 
+  /**
+   * Returns all Ratings that have the given upperbound
+   * @param upperbound Rating upperbound to search by
+   * @return ArrayList&ltRating&gt containing all Ratings with the upperbound.
+   */
+  // TODO consider for removal along with corresponding endpoint.
   public List<Rating> getRatingsWithUpperbound(String upperbound){
     var ratings = getRatingCollection();
     var upperboundFilter = Filters.eq("upperbound", upperbound);
@@ -213,7 +238,6 @@ public class DatabaseController {
 
     // create a rating object that has the most popular name, upperbound, and a userRating of the average of all
     //  the ratings of that name with that upperbound.
-    //  TODO consider collecting for all ratings of this name which would take some normalizing. Is this worth it?
     Rating rating = new Rating();
     rating.setRatingName(mostPopularCategoryName);
     rating.setUpperbound(mostPopularCategoryUpperbound);
@@ -305,11 +329,10 @@ public class DatabaseController {
 
 
 
-
   /*
    * Tag Create functions
    *
-   * createTags
+   * createTag
    */
   /**
    * Users are not allowed to create a tag for a movie that does not already exist, or the same tag for the same movie.
@@ -371,19 +394,21 @@ public class DatabaseController {
    * Tag Get functions
    *
    * getTagsWithFilter
+   *
    * getTagsByMovieId
    * getTagsWithTagName
    * getTagsWithUsername
    * getTagState
+   *
    * getTagScoresForMovieModal
    */
 
   /**
    * Creates and returns a list of ratings that match the given filter. This is called by many of the other
    * get methods for tags.
-   * @param tagCollection
-   * @param filter
-   * @return
+   * @param tagCollection Mongo collection of all Tags
+   * @param filter Bson filter to perform the find action over the collection
+   * @return ArrayList&ltTag&gt containing all Tags that match the filter
    */
   private static ArrayList<Tag> getTagsWithFilter(MongoCollection<Document> tagCollection, Bson filter) {
     var ratings = tagCollection.find(filter).map(document -> {
@@ -402,18 +427,33 @@ public class DatabaseController {
     return list;
   }
 
+  /**
+   * Returns all Tags associated with the given MongoDB movie hexId
+   * @param movieId MongoDB hexId of movie to search for
+   * @return ArrayList&ltTag&gt containing all Tags from the given movie
+   */
   public List<Tag> getTagsWithMovieId(String movieId) {
     var tags = getTagCollection();
     var filter = Filters.eq("movieId", movieId);
     return getTagsWithFilter(tags, filter);
   }
 
+  /**
+   * Returns all Tags with the associated name
+   * @param tagName name of tags to search for
+   * @return ArrayList&ltTag&gt containing all Tags with the name
+   */
   public List<Tag> getTagsWithTagName(String tagName) {
     MongoCollection<Document> tags = getTagCollection();
     Bson filter = Filters.eq("tagName", tagName);
     return getTagsWithFilter(tags, filter);
   }
 
+  /**
+   * Returns all Tags created by the given user
+   * @param username username of Tag creator
+   * @return ArrayList&ltTag&gt containing all Tags created by the given username
+   */
   public List<Tag> getTagsWithUsername(String username) {
     MongoCollection<Document> tags = getTagCollection();
     Bson filter = Filters.eq("username", username.toLowerCase());
@@ -509,6 +549,14 @@ public class DatabaseController {
    * upvoteTag
    * downvoteTag
    */
+
+  /**
+   * Changes the state of an already made Tag from downvote to upvote. If the tag does not exist makes the tag with the
+   * provided username. If the Tag already exists and is upvoted nothing is returned.
+   * @param requesterUsername username the Tag is associated with
+   * @param tagName tagName being changed
+   * @param movieId MongoDB hexId of movie the tag is associated with
+   */
   public void upvoteTag(String requesterUsername, String tagName, String movieId){
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
@@ -532,6 +580,13 @@ public class DatabaseController {
     // otherwise you already have made this tag. Why are you doing this please don't do this return nothing
   }
 
+  /**
+   * Changes the state of an already made Tag from upvote to downvote. If the tag does not exist makes the tag with the
+   * provided username and sets the status to downvote. If the Tag already exists and is downvoted nothing is returned.
+   * @param requesterUsername username the Tag is associated with
+   * @param tagName tagName being changed
+   * @param movieId MongoDB hexId of movie the tag is associated with
+   */
   public void downvoteTag(String requesterUsername, String tagName, String movieId){
     // get the collections
     MongoCollection<Document> tagCollection = getTagCollection();
@@ -562,44 +617,14 @@ public class DatabaseController {
 
   /*
    * Tag Delete Functions
-   *
-   * deleteTagNameWithTagName
    */
-
-  /**
-   * Removes a tag from a database. Tags can be deleted by the creator of the tag and by anyone who is an admin.
-   * (For now everyone is an admin since this has not been fully implemented).
-   * @param tagName name of the tag to remove
-   * @param movieId MongoDB hexId of the movie to remove the tag from
-   * @param requesterUsername username of the person trying to delete the tag
-   * @return TRUE if the tag is deleted FALSE otherwise
-   */
-  public boolean deleteTagWithTagName(String tagName, String movieId, String tagOwnerUsername, String requesterUsername){
-    // get collections
-    MongoCollection<Document> tagCollection = getTagCollection();
-
-    // attempt to get the tag from the tag collection
-    Bson movieFilter = Filters.eq("movieId", movieId);
-    Bson tagNameFilter = Filters.eq("tagName", tagName);
-    Bson ownerFilter = Filters.eq("username", tagOwnerUsername.toLowerCase());
-    Bson deleteFilter = Filters.and(movieFilter, tagNameFilter, ownerFilter);
-
-    Tag tag = getTagsWithFilter(tagCollection, deleteFilter).get(0);
-    // if the tag exists, and you are the owner or you are an admin
-    if(tag!=null && (tagOwnerUsername.toLowerCase().equals(requesterUsername.toLowerCase())  || checkAdmin(requesterUsername))){
-        // remove the tag from the tags collection
-        tagCollection.deleteOne(deleteFilter);
-        return true;
-    }
-    // otherwise return false
-    return false;
-  }
 
 
   /*
    * Other helper functions. These are used to support the base CRUD functions for each database object
    *
    * getMovieDocumentWithHexId
+   * checkAdmin
    */
   /**
    * retrieves movie using MongoDB unique hex identifier. Creates a ObjectID object to return the movie Document.
@@ -613,7 +638,8 @@ public class DatabaseController {
     }
 
   /**
-   * One day will be used to check if a user is an admit. For now everyone is an admin
+   * One day will be used to check if a user is an admit. For now everyone is an admin.
+   * TODO This has been left in as a next step would have been to implement an admin role
    * @param username username to check if they are an admin.
    * @return TRUE always
    */
