@@ -161,7 +161,7 @@ export function feedbackForTagSubmission() {
     let movieID = showMoreRateButton.getAttribute("movieID");
     //Update Tags to include new rating
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${movieID}`,
         jSessionIdStringified,
         appendUpDownVote    
     );
