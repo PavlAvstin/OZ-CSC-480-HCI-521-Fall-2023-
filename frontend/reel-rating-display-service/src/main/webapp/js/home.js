@@ -372,7 +372,8 @@ export function closeAllModals(allModals){
         }
     }
 
-    for(let y=0; y < backdrops.length; y++){ backdrops[y].remove(); }
+    var y = 0;
+    while(y != backdrops.length){ backdrops[y].remove(); }
 }
 
 
@@ -399,39 +400,39 @@ export async function displaySearch(serverData){
                 );
                 cardBody.appendChild(title);
                 
-                // const categoryAndRating = Tools.createElm("div", null, "class", "row g-0");
-                // const category = Tools.createElm(
-                //     "div", `${searchResults[x].mostPopularRatingCategory}`, 
-                //     "class", "col-10 smFont hideOverflow"
-                // );
-                // categoryAndRating.appendChild(category);
+                const categoryAndRating = Tools.createElm("div", null, "class", "row g-0");
+                const category = Tools.createElm(
+                    "div", `${searchResults[x].mostPopularRatingCategory}`, 
+                    "class", "col-10 smFont hideOverflow"
+                );
+                categoryAndRating.appendChild(category);
 
-                // const rating = Tools.createElm("div",`${parseFloat(searchResults[x].mostPopRatingAvg).toFixed(1)}`,"class", "col-2 textRight smFont")
-                // categoryAndRating.append(rating);
-                // cardBody.appendChild(categoryAndRating);
+                const rating = Tools.createElm("div",`${parseFloat(searchResults[x].mostPopRatingAvg).toFixed(1)}`,"class", "col-2 textRight smFont")
+                categoryAndRating.append(rating);
+                cardBody.appendChild(categoryAndRating);
                 
-                // const progressBar = Tools.createElm(
-                //     "progress-bar", null,
-                //     ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
-                //     [
-                //         "1",
-                //         searchResults[x].mostPopRatingUpperBound,
-                //         searchResults[x].mostPopRatingAvg,
-                //         "#3d37bf","#00ff00"
-                //     ]
-                // )
-                // cardBody.appendChild(progressBar);
+                const progressBar = Tools.createElm(
+                    "progress-bar", null,
+                    ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
+                    [
+                        "1",
+                        searchResults[x].mostPopRatingUpperBound,
+                        searchResults[x].mostPopRatingAvg,
+                        "#3d37bf","#00ff00"
+                    ]
+                )
+                cardBody.appendChild(progressBar);
 
-                // const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
-                // const tagsText = searchResults[x].attachedTags;
-                // for (let x = 0; x < tagsText.length; x++) {
-                //     const tag = Tools.createElm(
-                //         "div", `${tagsText[x]}`, "class", 
-                //         "brAll pXXSM ptXSM pbXSM col-4 textCenter fontWhite bgSecondary xsFont"
-                //     );
-                //     tagsRow.appendChild(tag);
-                // }
-                // cardBody.appendChild(tagsRow);
+                const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
+                const tagsText = searchResults[x].attachedTags;
+                for (let x = 0; x < tagsText.length; x++) {
+                    const tag = Tools.createElm(
+                        "div", `${tagsText[x]}`, "class", 
+                        "brAll pXXSM ptXSM pbXSM col-4 textCenter fontWhite bgSecondary xsFont"
+                    );
+                    tagsRow.appendChild(tag);
+                }
+                cardBody.appendChild(tagsRow);
             
                 const cardTextDiv = Tools.createElm("div", null, "class", "card-text");
                 const summary = Tools.createElm("div", `${searchResults[x].summary}`);
