@@ -55,8 +55,7 @@ public class RatingDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/rating/create")
   public Response createRating(@Context HttpServletRequest request, Rating rating) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = rating.getJSESSIONID();
+    String sessionId = rating.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -78,8 +77,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/rating/getMostPopularAggregatedRatingForMovie/{movieId}")
   public Response getMostPopularAggregatedRatingForMovie(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -92,8 +90,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/rating/getRatingsWithSameNameAndUpperbound/")
   public Response getRatingsWithSameNameAndUpperbound(@Context HttpServletRequest request, Rating rating) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = rating.getJSESSIONID();
+    String sessionId = rating.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -106,8 +103,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/rating/getRatingsWithSameName/{ratingName}")
   public Response getRatingsWithSameName(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -120,8 +116,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/rating/getRatingsWithMovieId/{movieId}")
   public Response getRatingsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -134,8 +129,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/rating/getRatingsWithUpperbound/{upperbound}")
   public Response getRatingsWithUpperbound(@Context HttpServletRequest request, @PathParam("upperbound") String upperbound , JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -148,8 +142,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/{movieId}")
   public Response getUniqueRatingCategoriesAndUserRatingWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId , JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -167,8 +160,7 @@ public class RatingDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/tag/create/{movieId}")
   public Response createTag(@Context HttpServletRequest request, Tag tag, @PathParam("movieId") String movieId) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = tag.getJSESSIONID();
+    String sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
@@ -190,8 +182,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/getTagsWithMovieId/{movieId}")
   public Response getTagsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -204,8 +195,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/getTagsWithTagName/{tagName}")
   public Response getTagsWithTagName(@Context HttpServletRequest request, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
 
@@ -219,8 +209,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/getTagsWithUsername/{username}")
   public Response getTagsWithUsername(@Context HttpServletRequest request, @PathParam("username") String username, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
 
@@ -234,8 +223,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/getTagState/")
   public Response getTagState(@Context HttpServletRequest request, Tag tag) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = tag.getJSESSIONID();
+    String sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
 
@@ -251,8 +239,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/getTagScoresForMovieModal/{movieId}")
   public Response getTagScoresForMovieModal(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
 
@@ -272,8 +259,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/upvoteTag/")
   public Response upvoteTag(@Context HttpServletRequest request, Tag tag) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = tag.getJSESSIONID();
+    String sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) {
       return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -289,8 +275,7 @@ public class RatingDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/tag/downvoteTag/")
   public Response downvoteTag(@Context HttpServletRequest request, Tag tag) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = tag.getJSESSIONID();
+    String sessionId = tag.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) {
       return Response.status(Response.Status.UNAUTHORIZED).build();

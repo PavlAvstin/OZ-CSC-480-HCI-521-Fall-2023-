@@ -75,8 +75,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/searchByMovieNameIndex/{name}")
   public Response searchByMovieName(@Context HttpServletRequest request, @PathParam("name") String name, JSession jsession) throws Exception {
-   String sessionId = request.getRequestedSessionId();
-   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String sessionId = jsession.getJSESSIONID();
    String requesterUsername = getUsername(sessionId);
    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -89,8 +88,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieName/{name}")
   public Response manualSearchByMovieName(@Context HttpServletRequest request, @PathParam("name") String name, JSession jsession) throws Exception {
-   String sessionId = request.getRequestedSessionId();
-   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String sessionId = jsession.getJSESSIONID();
    String requesterUsername = getUsername(sessionId);
    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -103,8 +101,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieReleaseDate/{releaseDate}")
   public Response manualSearchByMovieReleaseDate(@Context HttpServletRequest request, @PathParam("releaseDate") String releaseDate, JSession jsession) throws Exception {
-   String sessionId = request.getRequestedSessionId();
-   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String sessionId = jsession.getJSESSIONID();
    String requesterUsername = getUsername(sessionId);
    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -117,8 +114,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieDirector/{director}")
   public Response manualSearchByMovieDirector(@Context HttpServletRequest request, @PathParam("director") String director, JSession jsession) throws Exception {
-   String sessionId = request.getRequestedSessionId();
-   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String sessionId = jsession.getJSESSIONID();
    String requesterUsername = getUsername(sessionId);
    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -131,8 +127,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/manualSearchByMovieCast/{actorName}")
   public Response manualSearchByMovieCast(@Context HttpServletRequest request, @PathParam("actorName") String actorName, JSession jsession) throws Exception {
-   String sessionId = request.getRequestedSessionId();
-   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String sessionId = jsession.getJSESSIONID();
    String requesterUsername = getUsername(sessionId);
    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -145,8 +140,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/searchByActorNameIndex/{actorName}")
   public Response searchByActorNameIndex(@Context HttpServletRequest request, @PathParam("actorName") String actorName, JSession jsession) throws Exception {
-   String sessionId = request.getRequestedSessionId();
-   if (sessionId == null) sessionId = jsession.getJSESSIONID();
+   String sessionId = jsession.getJSESSIONID();
    String requesterUsername = getUsername(sessionId);
    if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -159,8 +153,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/searchByRatingName/{ratingName}")
   public Response searchByRatingName(@Context HttpServletRequest request, @PathParam("ratingName") String ratingName, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -173,8 +166,7 @@ public class SearchService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/movie/searchByTagName/{tagName}")
   public Response searchByTagName(@Context HttpServletRequest request, @PathParam("tagName") String tagName, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
