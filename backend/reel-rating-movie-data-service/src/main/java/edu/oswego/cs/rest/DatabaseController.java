@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.mongodb.client.model.Sorts.ascending;
 import static com.mongodb.client.model.Sorts.descending;
 
 import edu.oswego.cs.rest.JsonClasses.*;
@@ -19,7 +18,6 @@ import org.bson.types.ObjectId;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.gridfs.GridFSBucket;
@@ -40,8 +38,8 @@ public class DatabaseController {
     return mongoClient.getDatabase(mongoDatabaseName);
   }
 
-  /**
-   * <p>get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
+  /*
+   * get[DatabaseEntity]Collection methods return the specified collection of entities. These collections can then
    * be queried and updated by the other CRUD operations.
    */
   public MongoCollection<Document> getTagCollection() {
@@ -60,22 +58,26 @@ public class DatabaseController {
     return getMovieDatabase().getCollection("ratings");
   }
 
-  public MongoCollection<Document> getUserAssociatedRatingCollection() {
-    return getMovieDatabase().getCollection("userAssociatedRatings");
-  }
 
   public MongoCollection<Document> getReviewCollection() {
     return getMovieDatabase().getCollection("reviews");
   }
 
-  /**
-   * Image methods are used to store, edit, and retrieve images to display within the application. Due to MongoDB's
+  /*
+   * Image methods
+   *
+   * These are used to store, edit, and retrieve images to display within the application. Due to MongoDB's
    * approach to storing images collections cannot be used. Instead, GridFSBuckets are used and Mongo handles the
    * underlying splitting and storing of data.
    *
+   * getStockImageBucket
+   * storeStockImages
+   * getRandomImageId
+   * getStockImage
+   * getMovieImageId
    */
 
-  // total number of stock images being stored. Used to grab at random.
+  // total number of stock images being stored. Used to grab an image at random.
   int numMovieImages = 3;
 
   public GridFSBucket getStockImageBucket() {
@@ -83,7 +85,7 @@ public class DatabaseController {
   }
 
   /**
-   * Called by the MovieDataService generateStockImages() to load the pre-selected images into the database.
+   * Stores pre-selected stock images in the database to be displayed for movies
    */
   public void storeStockImages() {
     GridFSBucket gridFSBucket = getStockImageBucket();
@@ -105,7 +107,7 @@ public class DatabaseController {
 
   /**
    * Selects and returns an image id at random from the established image database.
-   * @return the HexString representation of an image from the gridSFBucket
+   * @return the hex String representation of an image from the gridSFBucket
    */
   public String getRandomImageId() {
     ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -147,213 +149,21 @@ public class DatabaseController {
     return movieDocument.getString("movieImageId");
   }
 
-
-  //DataBase Population for movies:
-
   /*
-   * update operations are used to change individual fields within database entities. For example
-   * <code>updateMovieTitle</code> goes through all parts of the database that contain a movies title and updates them
-   * to the new provided title. The unique MongoDB ids are crucial for these methods so that we do not lose track of
-   * which item we are editing.
-   */
-
-  /**
-   * Updates the movie title in the movies collection, tag collection, actor collection,
-   * ratings collection, userAssociatedRatings collections, and reviews collection
-   * @param id movie objects unique identification number
-   * @param movieTitle String of new movie title to update to
-   */
-  public void updateMovieTitle(String id, String movieTitle) {
-    MongoCollection<Document> movies = getMovieCollection();
-    Bson idFilter = Filters.eq("id", id);
-    String oldMovieTitle = movies.find(idFilter).first().getString("title");
-    Bson updateTitle = Updates.set("title", movieTitle);
-    movies.updateOne(idFilter, updateTitle);
-
-    MongoCollection<Document> tags = getTagCollection();
-    Bson movieTitleFilter = Filters.eq("movieTitle", oldMovieTitle);
-    Bson updateMovieTitle = Updates.set("movieTitle", movieTitle);
-    tags.updateMany(movieTitleFilter, updateMovieTitle);
-
-    MongoCollection<Document> actors = getActorCollection();
-    Bson movieTitleFilterForActor = Filters.eq("movies", oldMovieTitle);
-    Bson updateMovieTitleForActor = Updates.set("movies", movieTitle);
-    actors.updateMany(movieTitleFilterForActor, updateMovieTitleForActor);
-
-    MongoCollection<Document> ratings = getRatingCollection();
-    Bson movieTitleFilterForRatings = Filters.eq("movieTitle", oldMovieTitle);
-    Bson updateMovieTitleForRatings = Updates.set("movieTitle", movieTitle);
-    ratings.updateMany(movieTitleFilterForRatings, updateMovieTitleForRatings);
-
-    MongoCollection<Document> userAssocRatings = getUserAssociatedRatingCollection();
-    Bson movieTitleFilterForUserAssocRatings = Filters.eq("movieTitle", oldMovieTitle);
-    Bson updateMovieTitleForUserAssocRatings = Updates.set("movieTitle", movieTitle);
-    userAssocRatings.updateMany(movieTitleFilterForUserAssocRatings, updateMovieTitleForUserAssocRatings);
-
-    MongoCollection<Document> reviews = getReviewCollection();
-    Bson movieTitleFilterForReviews = Filters.eq("movieTitle", oldMovieTitle);
-    Bson updateMovieTitleForReviews = Updates.set("movieTitle", movieTitle);
-    reviews.updateMany(movieTitleFilterForReviews, updateMovieTitleForReviews);
-  }
-
-
-  public void updateMovieDocument(String hexId, Document movieDocument) {
-    var movieCollection = getMovieCollection();
-    ObjectId movieId = new ObjectId(hexId);
-    var filter = Filters.eq("_id", movieId);
-    movieCollection.updateOne(filter, movieDocument);
-  }
-
-  public void updateDirector(String id, String director) {
-    MongoCollection<Document> movies = getMovieCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updateDirector = Updates.set("director", director);
-    movies.updateOne(idFilter, updateDirector);
-  }
-
-  public void updateReleaseDate(String id, String releaseDate) {
-    MongoCollection<Document> movies = getMovieCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updateReleaseDate = Updates.set("releaseDate", releaseDate);
-    movies.updateOne(idFilter, updateReleaseDate);
-  }
-
-  public void updateRunTime(String id, String runTime) {
-    MongoCollection<Document> movies = getMovieCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updateRunTime = Updates.set("runTime", runTime);
-    movies.updateOne(idFilter, updateRunTime);
-  }
-
-  public void updatePlotSummary(String id, String plotSummary) {
-    MongoCollection<Document> movies = getMovieCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updatePlotSummary = Updates.set("plotSummary", plotSummary);
-    movies.updateOne(idFilter, updatePlotSummary);
-  }
-
-  public void updateActor(String id, String name, String dob, List<String> movies) {
-    MongoCollection<Document> actors = getActorCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updateName = Updates.set("name", name);
-    actors.updateOne(idFilter, updateName);
-    Bson updateDOB = Updates.set("dob", dob);
-    actors.updateOne(idFilter, updateDOB);
-    Bson removeMovies = Updates.unset("movies");
-    actors.updateOne(idFilter, removeMovies);
-    Bson addMovies = Updates.pushEach("movies", movies);
-    actors.updateOne(idFilter, addMovies);
-  }
-
-  public void updateActorName(String id, String name) {
-    MongoCollection<Document> actors = getActorCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updateName = Updates.set("name", name);
-    actors.updateOne(idFilter, updateName);
-  }
-
-  public void updateActorDob(String id, String dob) {
-    MongoCollection<Document> actors = getActorCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson updateDOB = Updates.set("dob", dob);
-    actors.updateOne(idFilter, updateDOB);
-  }
-
-  // Allows bulk change of movies
-  public void updateActorMovies(String id, List<String> movies) {
-    MongoCollection<Document> actors = getActorCollection();
-    Bson idFilter = Filters.eq("id", id);
-    Bson removeMovies = Updates.unset("movies");
-    actors.updateOne(idFilter, removeMovies);
-    Bson addMovies = Updates.pushEach("movies", movies);
-    actors.updateOne(idFilter, addMovies);
-  }
-
-  public void updateRatingCategoryName(String ratingCategoryId, String ratingName) {
-    MongoCollection<Document> ratings = getRatingCollection();
-    Bson idFilter = Filters.eq("ratingCategoryId", ratingCategoryId);
-    Bson updateRatingName = Updates.set("ratingName", ratingName);
-    String oldRatingName = ratings.find(idFilter).first().getString("ratingName");
-    ratings.updateOne(idFilter, updateRatingName);
-
-    MongoCollection<Document> userAssocRatings = getUserAssociatedRatingCollection();
-    Bson ratingNameFilter = Filters.eq("ratingName", oldRatingName);
-    userAssocRatings.updateOne(ratingNameFilter, updateRatingName);
-  }
-
-  // Could just call deleteUserRating then createUserRating
-  public void updateUserRating(String ratingCategoryId, String ratingName, String movieTitle, String userName, String userRating) {
-    MongoCollection<Document> ratings = getRatingCollection();
-    Bson idFilter = Filters.eq("ratingCategoryId", ratingCategoryId);
-    Bson userNameFilter = Filters.eq("userName", userName);
-    Bson idAndUserName = Filters.and(idFilter, userNameFilter);
-    Document oldRating = ratings.find(idAndUserName).first();
-    String oldRatingName = oldRating.getString("ratingName");
-    String oldMovieTitle = oldRating.getString("movieTitle");
-    String oldUserRating = oldRating.getString("userRating");
-
-    Bson movieTitleAndUserRatingAndUserName = Filters.and(userNameFilter, Filters.eq("movieTitle", oldMovieTitle), Filters.eq("userRating", oldUserRating));
-    ratings.deleteOne(movieTitleAndUserRatingAndUserName);
-  }
-
-  public void updateCategoryRatingName(String ratingCategoryId, String ratingName) {
-    MongoCollection<Document> ratings = getRatingCollection();
-    Bson idFilter = Filters.eq("ratingCategoryId", ratingCategoryId);
-    String oldRatingName = ratings.find(idFilter).first().getString("ratingName");
-    Bson updateRatingName = Updates.set("ratingName", ratingName);
-    ratings.updateOne(idFilter, updateRatingName);
-
-    MongoCollection<Document> userAssocRatings = getUserAssociatedRatingCollection();
-    Bson oldNameFilter = Filters.eq("ratingName", oldRatingName);
-    userAssocRatings.updateMany(oldNameFilter, updateRatingName);
-  }
-
-  public void updateUserRating(String username, String ratingName, String movieTitle, String userRating) {
-    MongoCollection<Document> ratings = getRatingCollection();
-    Bson userNameFilter = Filters.eq("userName", username);
-    Bson ratingNameFilter = Filters.eq("ratingName", ratingName);
-    Bson movieTitleFilter = Filters.eq("movieTitle", movieTitle);
-    Bson userNameAndRatingNameAndMovieTitleFilter = Filters.and(userNameFilter, ratingNameFilter, movieTitleFilter);
-    Bson updateUserRating = Updates.set("userRating", userRating);
-    ratings.updateOne(userNameAndRatingNameAndMovieTitleFilter, updateUserRating);
-
-    MongoCollection<Document> userAssocRatings = getUserAssociatedRatingCollection();
-    userAssocRatings.updateOne(userNameAndRatingNameAndMovieTitleFilter, updateUserRating);
-  }
-
-  public void updateReviewTitle(String movieTitle, String username, String reviewTitle) {
-    MongoCollection<Document> reviews = getReviewCollection();
-    Bson userNameFilter = Filters.eq("userName", username);
-    Bson movieTitleFilter = Filters.eq("movieTitle", movieTitle);
-    Bson userNameAndMovieTitleFilter = Filters.and(userNameFilter, movieTitleFilter);
-    Bson updateReviewTitle = Updates.set("reviewTitle", reviewTitle);
-    reviews.updateOne(userNameAndMovieTitleFilter, updateReviewTitle);
-  }
-
-  public void updateReviewDescription(String movieTitle, String username, String reviewDescription) {
-    MongoCollection<Document> reviews = getReviewCollection();
-    Bson userNameFilter = Filters.eq("userName", username);
-    Bson movieTitleFilter = Filters.eq("movieTitle", movieTitle);
-    Bson userNameAndMovieTitleFilter = Filters.and(userNameFilter, movieTitleFilter);
-    Bson updateReviewDesc = Updates.set("reviewDescription", reviewDescription);
-    reviews.updateOne(userNameAndMovieTitleFilter, updateReviewDesc);
-  }
-
-  public void updateReview(String movieTitle, String username, String reviewTitle, String reviewDescription) {
-    updateReviewTitle(movieTitle, username, reviewTitle);
-    updateReviewDescription(movieTitle, username, reviewDescription);
-  }
-
-  /*
-   * Create CRUD operations
-   * The following methods can be called by endpoints or internally to create and add to the database. Methods check
-   * for and do not permit duplicated. Many items are identified by their unique hex id to prevent double entries.
+   * Create Operations
+   *
+   * The following methods are used in the initial database population and also exist in their respective microservice.
+   *
+   * createTag
+   * createRating
+   * createReview
+   * createActor
+   * createMovie
    */
 
   /**
    * Users are not allowed to create a tag for a movie that does not already exist, or the same tag for the same movie.
-   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues. All tags have the state of upvote
-   * upon creation.
+   * Otherwise, duplicate tags are allowed by multiple users due to privacy issues
    *
    * @param tagName name of tag used to access and store the information
    * @param movieIdHexString MongoDB unique identifier for the movie to attach the tag to
@@ -467,13 +277,12 @@ public class DatabaseController {
     }
   }
 
-
   /**
    * Creates and stores a review in the database. Reviews are the freeform text user generated data. Users are not
    * allowed to add a review for a movie that does not exist. Users are currently allowed to make multiple reviews
    * for the same movie.
    *
-   * @param reviewDescription Freeform text from the user. No limits in size.
+   * @param reviewDescription freeform text from the user. No limits in size.
    * @param username the user who created the review
    */
   public void createReview(String movieIdString, String reviewDescription, String username, String privacy){
@@ -495,8 +304,6 @@ public class DatabaseController {
               .append("privacy", privacy);
       reviewCollection.insertOne(newReview);
     }
-    // if the movie does not exist
-    else{ }
   }
 
   /**
@@ -529,8 +336,6 @@ public class DatabaseController {
       Bson movieUpdateOperation = Updates.push("principalCast", actorId);
       movieCollection.updateOne(movie, movieUpdateOperation);
     }
-    // if the movie does not exist
-    else{ }
   }
 
   /**
@@ -554,6 +359,28 @@ public class DatabaseController {
     movieCollection.insertOne(newMovie);
   }
 
+  /*
+   * Get functions
+   *
+   * getMoviesWithFilter
+   * getTagsWithFilter
+   *
+   * getMoviesWithTag
+   * getMoviesWithRatingCategory
+   * getMoviesWithRatingCategory
+   * getMoviesWithActor
+   * getMoviesWithTitle
+   * getMoviesWithMovieId
+   * getMovieWithTitle
+   * getMovieDocumentWithHexId
+   *
+   * getMoviesWithMostReviews
+   * getRecentReleaseMovies
+   * getMostPopularAggregatedRatingForMovie
+   *
+   * getThreeTags
+   * getTagsByMovieId
+   */
   /**
    * <p>Get with filter operations allow for mutable searches within the database. These functions are called internally
    * by the <code>getXWithY</code> where X is a database entity and Y is a another database entity or field. </p>
@@ -578,6 +405,13 @@ public class DatabaseController {
     return list;
   }
 
+  /**
+   * <p>Get tags with filter operations allow for mutable searches within the database. These functions are called
+   * internally by the <code>getXWithY</code> where X is a database entity and Y is a another database entity or field. </p>
+   *
+   * <p>For example the <code>getMoviesWithFilter()</code> method is used by the <code>getMoviesWithTag()</code>
+   * method</p> to return all the movies that have the specified tag.
+   */
   private static ArrayList<Tag> getTagsWithFilter(MongoCollection<Document> tagCollection, Bson filter) {
     var ratings = tagCollection.find(filter).map(document -> {
       var tag = new Tag();
@@ -660,6 +494,16 @@ public class DatabaseController {
   }
 
   /**
+   * retrieves movie using MongoDB unique hex identifier. Creates a ObjectID object to return the movie Document.
+   * @param hexID String representation of the hex id.
+   * @return Document of the movie matching the id, null if id is not found
+   */
+  public Document getMovieDocumentWithHexId(String hexID){
+    MongoCollection<Document> movieCollection = getMovieCollection();
+    ObjectId movieId = new ObjectId(hexID);
+    return movieCollection.find(Filters.eq("_id", movieId)).first();
+  }
+  /**
    * returns to numMovies most recent movies based on the year of their release. This is done by sorting the
    * ordering the collection by date and returning the first numMovies.
    */
@@ -687,19 +531,6 @@ public class DatabaseController {
     return recentReleaseMovies;
   }
 
-  /*
-   * Helper gets
-   */
-  /**
-   * retrieves movie using MongoDB unique hex identifier. Creates a ObjectID object to return the movie Document.
-   * @param hexID String representation of the hex id.
-   * @return Document of the movie matching the id, null if id is not found
-   */
-  public Document getMovieDocumentWithHexId(String hexID){
-    MongoCollection<Document> movieCollection = getMovieCollection();
-    ObjectId movieId = new ObjectId(hexID);
-    return movieCollection.find(Filters.eq("_id", movieId)).first();
-  }
 
   /**
    * Gets the first numMovies movies that have the most reviews from the database.
@@ -731,6 +562,12 @@ public class DatabaseController {
     return movies;
   }
 
+  /**
+   * Finds the rating category with the most ratings, and returns the most popular upperbound of this subset, for the
+   * provided movieId. It also calculates the average rating for the rating cateogyr found to be most popular.
+   * @param movieId MongoDB hexId of the movie to search the ratings of
+   * @return a Rating object with the most popular rating name and upperbound and its average.
+   */
   public Rating getMostPopularAggregatedRatingForMovie(String movieId) {
     MongoCollection<Document> ratingCollection = getRatingCollection();
     // get the most popular rating category name for the movie
@@ -781,10 +618,7 @@ public class DatabaseController {
   /**
    * Grabs three tags from the specified movie. Used in the getRecentReleaseMovies and in a larger sense for getting
    * the information needed to display the movie preview (movie title, movie summary, name of three tags, and
-   * aggregated most popular rating.
-   * TODO decide if we want to create a function that gets the a movie preview object. Give it a movie ID and it returns
-   * TODO   a movie with all of the needed preview fields filled in. That way for search we can search our movies by
-   * TODO   the given criteria then create a list of all the movie preview objects to return.
+   * aggregated most popular rating).
    *
    * @param movieId MongoDB unique hex id of the movie to get the tags from
    * @return a list of tags length three
@@ -794,161 +628,14 @@ public class DatabaseController {
     return tags.subList(0, tags.size() < 3 ? tags.size() : 3);
   }
 
+  /**
+   * Returns all tags containing the provided movie hexId
+   * @param movieId MongoDB hexId of movie to get tags from
+   * @return List tag objects associated with the movie
+   */
   public List<Tag> getTagsByMovieId(String movieId) {
     var reviews = getTagCollection();
     var filter = Filters.eq("movieId", movieId);
     return getTagsWithFilter(reviews, filter);
-  }
-
-  /**
-   * <p>Delete methods are used to remove entities from the database. These are usually referenced using their unique
-   * MongoDB id. This helps prevent deleting movies that share names. </p> <p></p>
-   *
-   * Deletes the given tag from the given movie
-   *
-   * @param tagName name of tag to delete
-   * @param movieId unique MongoDB id of the movie to delete the tag from
-   * @param movieTitle title of movie to delete tag from
-   */
-  //remove a tag from a specific movie
-  public void deleteTag(String tagName, String movieId, String movieTitle){
-    //get tags and movie collections
-    MongoCollection<Document> tagCollection = getTagCollection();
-    MongoCollection<Document> movieCollection = getMovieCollection();
-
-    //filters movie with the input movie ID
-    Bson movieQuery = Filters.eq("id", movieId);
-    Document movieWithId = movieCollection.find(movieQuery).first();
-    if(movieWithId != null){
-    //remove tag from movie with the corresponding ID
-    Bson tagRemoveOp = Updates.pull(" tagNames", tagName);
-    movieCollection.updateOne(movieWithId, tagRemoveOp);
-
-    //find the tag needed to be deleted
-    Bson titleQuery = Filters.eq("tagName", tagName);
-    Document existingTag = tagCollection.find(titleQuery).first();
-    //remove movie title from the tag
-    Bson tagRemoveOP2 = Updates.pull("movieTitle", movieTitle);
-    tagCollection.updateOne(existingTag, tagRemoveOP2);
-  }
-  else if(movieWithId == null){}
-}
-
-/**
- * Deletes every instance of the provided tags
- *
- * @param tagName name of tag to delete
- */
-public void deleteTags(String tagName){
-  //get tags and movie collection
-  MongoCollection<Document> tagCollection = getTagCollection();
-  MongoCollection<Document> movieCollection = getMovieCollection();
-
-  //Filters movies with tagName
-  Bson tagQuery = Filters.eq("tagNames", tagName);
-  MongoCursor<Document> movies = movieCollection.find(tagQuery).iterator();
-
-  //iterate through each filtered movie and remove the tag name
-  Bson tagRemoveOP = Updates.pull("tagNames", tagName);
-  movies.forEachRemaining(document -> {
-    tagCollection.updateOne(document, tagRemoveOP);
-  });
-
-  //set movieTitle array into an emptied one
-  Bson removeAll = Updates.set("movieTitle", "");
-  Document tag = tagCollection.find(Filters.eq("tagName", tagName)).first();
-  tagCollection.updateOne(tag, removeAll);
-}
-
-/**
- * Deletes the provided movie
- *
- * @param movieTitle name of movie to delete
- * @param movieId unique MongoDB id of the movie to delete
- */
-public void deleteMovie(String movieTitle, String movieId){
-  //delete the movie's document
-  //get collections
-  MongoCollection<Document> movieCollection = getMovieCollection();
-  MongoCollection<Document> actorCollection = getActorCollection();
-  MongoCollection<Document> reviewCollection = getReviewCollection();
-  MongoCollection<Document> tagCollection = getTagCollection();
-  //delete the movie's document
-  movieCollection.deleteOne(Filters.eq("id", movieId));
-  //filters all actors with the listed movie
-  MongoCursor<Document> actors = actorCollection.find(Filters.eq("movies", movieTitle)).iterator();
-  Bson movieRemoval = Updates.pull("movies", movieTitle);
-  actors.forEachRemaining(document -> {
-    // Delete each movie correspond with movieTitle in each qualified actor
-    actorCollection.updateOne(document, movieRemoval);
-  });
-  //delete movie within tags
- 
-
-  //delete all reviews related to the movie
-  reviewCollection.deleteMany(Filters.eq("movieTitle", movieTitle));
-}
-
-public void deleteActor(String id){
-  MongoCollection<Document> actorCollection = getActorCollection();
-  actorCollection.deleteOne(Filters.eq("id", id));
-}
-
-public void deleteReview(String title, String userName){
-  MongoCollection<Document> reviewCollection = getReviewCollection();
-  //get all reviews which has the required movie title and userName
-  Bson reviewFilter = Filters.and(Filters.eq("movieTitle", title), Filters.eq("userName", userName));
-  reviewCollection.deleteMany(reviewFilter);
-}
-
-/**
- * delete user rating from User categories and user associated rating with user name and upperBounds created.
- * Attemps to check if the ratings with that names exist then find the rating with the upperBounds specified.
- * @param ratingName
- * @param upperBounds
- * @param movieIdString
- */
-public void deleteUserRatingbyScore(String ratingName, String upperBounds, String movieIdString){
-  //get rating colletions
-  MongoCollection<Document> ratingCollection = getRatingCollection();
-  MongoCollection<Document> userAssociatedRating = getUserAssociatedRatingCollection();
-  //Filters out all ratings with the corresponding name
-  MongoCursor<Document> ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).iterator();
-  //check if the rating exist
-  Bson movieRemovalF = Updates.pull("ratingName", ratingName);
-  ratingFilter.forEachRemaining(document -> {
-    // Delete each movie correspond with movieTitle in each qualified actor
-    if(document.get("upperBound") == upperBounds){
-      ratingCollection.updateOne(document, movieRemovalF);
-      userAssociatedRating.updateOne(document, movieRemovalF);
-    }else{
-      //Do nothing for now
-    }
-  });
-  
-}
-/**
- * delete user rating from User categories and user associated rating with user name and date time created.
- * Attemps to check if the ratings with that names exist then find the rating with the date time specified.
- * @param ratingName
- * @param dateTimeCreated
- * @param movieIdString
- */
-public void deleteUserRatingbyTime(String ratingName, String dateTimeCreated, String movieIdString){
-  //get rating colletions
-  MongoCollection<Document> ratingCollection = getRatingCollection();
-  MongoCollection<Document> userAssociatedRating = getUserAssociatedRatingCollection();
-  //Filters out all ratings with the corresponding name
-  MongoCursor<Document> ratingFilter = ratingCollection.find(Filters.eq("ratingName", ratingName)).iterator();
-  //check if the rating exist
-  Bson movieRemovalF = Updates.pull("ratingName", ratingName);
-  ratingFilter.forEachRemaining(document -> {
-    if(document.get("dateTimeCreated") == dateTimeCreated){
-      ratingCollection.updateOne(document, movieRemovalF);
-      userAssociatedRating.updateOne(document, movieRemovalF);
-    } else{
-      //Do nothing for now
-    }
-    });
   }
 }
