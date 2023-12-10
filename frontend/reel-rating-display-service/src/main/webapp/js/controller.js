@@ -141,31 +141,23 @@ function homeInit(){
     searchButton.addEventListener("click", ()=>{
         const searchValue = searchBar.value.trim();
         document.getElementById("searchTitle").innerText = searchValue;
-        // NetworkReq.fetchPostNoCors(
-        //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
-        //     Tools.getJSessionId(),
-        //     Home.displaySearch
-        // ); 
         NetworkReq.fetchPost(
             `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
             Tools.getJSessionId(),
             Home.displaySearch
         ); 
+        searchBar.value = "";
     });
     searchUI.addEventListener("keyup", (event)=>{
         if(event.key === "Enter"){
             const searchValue = searchBar.value.trim();
             document.getElementById("searchTitle").innerText = searchValue;
-            // NetworkReq.fetchPostNoCors(
-            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
-            //     Tools.getJSessionId(),
-            //     Home.displaySearch
-            // );
             NetworkReq.fetchPost(
                 `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
                 Tools.getJSessionId(),
                 Home.displaySearch
             );
+            searchBar.value = "";
         }
     });
 
@@ -192,25 +184,29 @@ function homeInit(){
     const allModals = document.getElementsByClassName("modal");
     const closeModalButtons = document.getElementsByClassName("close");
     for(let x =0; x < closeModalButtons.length; x++){
-        closeModalButtons[x].addEventListener("click", ()=>{
+        closeModalButtons[x].addEventListener("click", (event)=>{
+            event.stopPropagation(); 
             Home.closeAllModals(allModals);
         });
     } 
 
     let webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
-    searchBar.addEventListener("input", ()=>{
+    searchBar.addEventListener("input", ()=>{ 
         NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
     });
 
-    // webSocket.onclose = (exception) => {
-    //     console.log(`Connection websocket closed because ${exception.reason}`);
-    //     setTimeout(() => {
-    //         webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
-    //     }, 1000);
-    // }
+    setInterval(()=>{ //Need this to keep the connection open
+        NetworkReq.sendWebSocketMessage(webSocket, "heartbeat");
+    },5000)
+
+    webSocket.onclose = (exception) => {
+        console.log(`Connection websocket closed because ${exception.reason}`);
+        setTimeout(() => {
+            webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
+        }, 1000);
+    }
 
     const searchAutoCompleteList = document.getElementById("searchAutoComplete");
-
     webSocket.onmessage = (response) => {
         let movieNames = JSON.parse(response.data).results;
         searchAutoCompleteList.replaceChildren();

@@ -364,17 +364,15 @@ export function submitReviewHandler(){
  * @param {HTMLCollection} allModals
  */
 export function closeAllModals(allModals){
+    var backdrops = document.getElementsByClassName("modal-backdrop show");
     for(let x =0; x < allModals.length; x++){
         if(allModals[x].classList.contains("show") === true){
-            allModals[x].classList.remove("show");
-            allModals[x].setAttribute("style",""); //Remove the style attribute that bootstrap has and default back to our custom css
+            allModals[x].click(); //Use the bootstrap function to close the modal
+            allModals[x].setAttribute("style","display:none");
         }
     }
-    var modalBackdrops = document.getElementsByClassName("modal-backdrop show");
 
-    let x = 0;
-    while(x < modalBackdrops.length){ modalBackdrops[x].remove(); }
-    
+    for(let y=0; y < backdrops.length; y++){ backdrops[y].remove(); }
 }
 
 
@@ -555,14 +553,14 @@ function appendMovies(movies, carouselId) {
     
             const cardTextDiv = Tools.createElm("div", null, "class", "card-text");
             const summary = Tools.createElm("div", `${movies[x].summary}`);
-            const fadeAway = Tools.createElm("div",null,"class","fadeAwayNeutral fullWidth");
+            const fadeAway = Tools.createElm("div", null, "class", "fadeAwayNeutral fullWidth");
             cardTextDiv.appendChild(fadeAway);
             cardTextDiv.appendChild(summary);
             cardBody.appendChild(cardTextDiv);
     
             const showMoreButton = Tools.createElm(
                 "div", "Show More", 
-                ["class","data-bs-toggle","data-bs-target","movieID","movieTitle",], 
+                ["class","data-bs-toggle","data-bs-target","movieID","movieTitle"], 
                 [
                     "bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow showMore",
                     "modal","#showMoreModal",`${movies[x].id}`,`${movies[x].title}`
