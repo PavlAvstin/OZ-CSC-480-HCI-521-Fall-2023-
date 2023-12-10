@@ -26,6 +26,9 @@ public class DatabaseController {
 
   /*
    * Database get collection methods
+   *
+   * getMovieCollection
+   * getActorCollection
    */
   public MongoCollection<Document> getMovieCollection() {
     return getMovieDatabase().getCollection("movies");
@@ -71,8 +74,6 @@ public class DatabaseController {
       Bson movieUpdateOperation = Updates.push("principalCast", actorId);
       movieCollection.updateOne(movie, movieUpdateOperation);
     }
-    // if the movie does not exist
-    else{ }
   }
 
   /*
