@@ -208,17 +208,20 @@ function homeInit(){
 
     const searchAutoCompleteList = document.getElementById("searchAutoComplete");
     webSocket.onmessage = (response) => {
-        let movieNames = JSON.parse(response.data).results;
-        searchAutoCompleteList.replaceChildren();
-        // Constrains the amount of auto complete results.
-        let autoCompleteLimit = 5;
-        let autoCompleteCurrentCount = 0;
-        for (let movieName of movieNames) {
-            if (autoCompleteCurrentCount >= autoCompleteLimit) break;
-            let option = document.createElement("option");
-            option.value = movieName;
-            searchAutoCompleteList.appendChild(option);
-            autoCompleteCurrentCount++;
+        let dataObject = JSON.parse(response.data);
+        if ('results' in dataObject) {
+            let movieNames = dataObject.results;
+            searchAutoCompleteList.replaceChildren();
+            // Constrains the amount of auto complete results.
+            let autoCompleteLimit = 5;
+            let autoCompleteCurrentCount = 0;
+            for (let movieName of movieNames) {
+                if (autoCompleteCurrentCount >= autoCompleteLimit) break;
+                let option = document.createElement("option");
+                option.value = movieName;
+                searchAutoCompleteList.appendChild(option);
+                autoCompleteCurrentCount++;
+            }
         }
     }
 
