@@ -459,8 +459,8 @@ export async function displaySearch(serverData){
                 movieCard.appendChild(cardBody);
                 searchRow.appendChild(movieCard);
                 searchContainer.appendChild(searchRow);
-                openSearchModal();
             }
+            openSearchModal();
         } catch(error){
             console.log(`There was an error appending search results cards\n${error}`);
             JSStyles.alertAnimation("Error showing results. Please try again");
