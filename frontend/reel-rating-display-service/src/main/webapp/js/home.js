@@ -50,6 +50,11 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
 
     let jSessionIdStringified = Tools.getJSessionId();
 
+    // Clear out old Ratings and Tags preemptively in case of network error
+    clearOldRatingsAndTagsFromRatingModal();
+
+    clearOldUserInputsFromRatingModal();
+
     //Get Existing Ratings
     NetworkReq.fetchPost(
         `${globals.ratingsBase}/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/${movieID}`,
@@ -64,6 +69,28 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     progressBarForRatingUpdate();
+}
+
+/**
+ * Clears out old ratings and tags from the rating modal, used to prevent data from other movies appearing inside
+ * a different movies rating modal.
+ */
+function clearOldRatingsAndTagsFromRatingModal() {
+    // clear tags
+    const upDownContainer = document.getElementById("upDownContainer");
+    Tools.clearChildren(upDownContainer);
+
+    // clear existing ratings
+    document.getElementById("ratingsExsistingCat").replaceChildren();
+}
+
+/**
+ * Clears stale user inputs from creating a rating and tag.
+ */
+function clearOldUserInputsFromRatingModal() {
+    document.getElementById("newTagInput").value = "";
+    document.getElementById("newReviewInput").value = "";
+    clearRatingHandler();
 }
 
 
@@ -603,6 +630,9 @@ function getShowMoreData(movieID, movieTitle){
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
     
     let jSessionIdStringified = Tools.getJSessionId();
+
+    // Clear Existing Ratings, Ensures that ratings for other movies don't show if the rating micro service goes down
+    document.getElementById("ratingsContainer").replaceChildren();
 
     //Get General Info
     NetworkReq.fetchPost(
