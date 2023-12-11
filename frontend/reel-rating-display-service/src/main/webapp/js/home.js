@@ -50,6 +50,11 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
 
     let jSessionIdStringified = Tools.getJSessionId();
 
+    // Clear out old Ratings and Tags preemptively in case of network error
+    clearOldRatingsAndTagsFromRatingModal();
+
+    clearOldUserInputsFromRatingModal();
+
     //Get Existing Ratings
     NetworkReq.fetchPost(
         `${globals.ratingsBase}/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/${movieID}`,
@@ -58,12 +63,34 @@ export const getRatingsPageData = (movieTitle, movieID)=>{
     );
 
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${movieID}`,
         jSessionIdStringified,
         appendUpDownVote    
     );
 
     progressBarForRatingUpdate();
+}
+
+/**
+ * Clears out old ratings and tags from the rating modal, used to prevent data from other movies appearing inside
+ * a different movies rating modal.
+ */
+function clearOldRatingsAndTagsFromRatingModal() {
+    // clear tags
+    const upDownContainer = document.getElementById("upDownContainer");
+    Tools.clearChildren(upDownContainer);
+
+    // clear existing ratings
+    document.getElementById("ratingsExsistingCat").replaceChildren();
+}
+
+/**
+ * Clears stale user inputs from creating a rating and tag.
+ */
+function clearOldUserInputsFromRatingModal() {
+    document.getElementById("newTagInput").value = "";
+    document.getElementById("newReviewInput").value = "";
+    clearRatingHandler();
 }
 
 
@@ -136,7 +163,7 @@ export function feedbackForRatingSubmission() {
     let movieID = showMoreRateButton.getAttribute("movieID");
     //Update Ratings to include new rating
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/rating/getRatingsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/rating/getUniqueRatingCategoriesAndUserRatingWithMovieId/${movieID}`,
         jSessionIdStringified,
         appendExistingCategories    
     );
@@ -161,7 +188,7 @@ export function feedbackForTagSubmission() {
     let movieID = showMoreRateButton.getAttribute("movieID");
     //Update Tags to include new rating
     NetworkReq.fetchPost(
-        `${globals.ratingsBase}/tag/getTagsWithMovieId/${movieID}`,
+        `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${movieID}`,
         jSessionIdStringified,
         appendUpDownVote    
     );
@@ -253,6 +280,15 @@ export function checkVoteChanged(eventTarget, upVoteIcon, downVoteIcon){
         else if(downVoteIcon.getAttribute("voted") === "true"){ voteChange++ }
     }
     return voteChange;
+}
+
+export function getCurrentVote(eventTarget, upVoteIcon, downVoteIcon) {
+    var voteChange = 0;
+    if(eventTarget.getAttribute("icon") === "true"){
+        if(upVoteIcon.getAttribute("voted") === "true"){ voteChange++; }
+        else if(downVoteIcon.getAttribute("voted") === "true"){ voteChange-- }
+    }
+    return voteChange; 
 }
 
 
@@ -355,17 +391,16 @@ export function submitReviewHandler(){
  * @param {HTMLCollection} allModals
  */
 export function closeAllModals(allModals){
+    var backdrops = document.getElementsByClassName("modal-backdrop show");
     for(let x =0; x < allModals.length; x++){
         if(allModals[x].classList.contains("show") === true){
-            allModals[x].classList.remove("show");
-            allModals[x].setAttribute("style",""); //Remove the style attribute that bootstrap has and default back to our custom css
+            allModals[x].click(); //Use the bootstrap function to close the modal
+            allModals[x].setAttribute("style","display:none");
         }
     }
-    var modalBackdrops = document.getElementsByClassName("modal-backdrop show");
 
-    let x = 0;
-    while(x < modalBackdrops.length){ modalBackdrops[x].remove(); }
-    
+    var y = 0;
+    while(y != backdrops.length){ backdrops[y].remove(); }
 }
 
 
@@ -392,39 +427,39 @@ export async function displaySearch(serverData){
                 );
                 cardBody.appendChild(title);
                 
-                // const categoryAndRating = Tools.createElm("div", null, "class", "row g-0");
-                // const category = Tools.createElm(
-                //     "div", `${searchResults[x].mostPopularRatingCategory}`, 
-                //     "class", "col-10 smFont hideOverflow"
-                // );
-                // categoryAndRating.appendChild(category);
+                const categoryAndRating = Tools.createElm("div", null, "class", "row g-0");
+                const category = Tools.createElm(
+                    "div", `${searchResults[x].mostPopularRatingCategory}`, 
+                    "class", "col-10 smFont hideOverflow"
+                );
+                categoryAndRating.appendChild(category);
 
-                // const rating = Tools.createElm("div",`${parseFloat(searchResults[x].mostPopRatingAvg).toFixed(1)}`,"class", "col-2 textRight smFont")
-                // categoryAndRating.append(rating);
-                // cardBody.appendChild(categoryAndRating);
+                const rating = Tools.createElm("div",`${parseFloat(searchResults[x].mostPopRatingAvg).toFixed(1)}`,"class", "col-2 textRight smFont")
+                categoryAndRating.append(rating);
+                cardBody.appendChild(categoryAndRating);
                 
-                // const progressBar = Tools.createElm(
-                //     "progress-bar", null,
-                //     ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
-                //     [
-                //         "1",
-                //         searchResults[x].mostPopRatingUpperBound,
-                //         searchResults[x].mostPopRatingAvg,
-                //         "#3d37bf","#00ff00"
-                //     ]
-                // )
-                // cardBody.appendChild(progressBar);
+                const progressBar = Tools.createElm(
+                    "progress-bar", null,
+                    ["scaleStart", "scaleEnd", "ratingValue", "lowRatingColor", "highRatingColor"],
+                    [
+                        "1",
+                        searchResults[x].mostPopRatingUpperBound,
+                        searchResults[x].mostPopRatingAvg,
+                        "#3d37bf","#00ff00"
+                    ]
+                )
+                cardBody.appendChild(progressBar);
 
-                // const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
-                // const tagsText = searchResults[x].attachedTags;
-                // for (let x = 0; x < tagsText.length; x++) {
-                //     const tag = Tools.createElm(
-                //         "div", `${tagsText[x]}`, "class", 
-                //         "brAll pXXSM ptXSM pbXSM col-4 textCenter fontWhite bgSecondary xsFont"
-                //     );
-                //     tagsRow.appendChild(tag);
-                // }
-                // cardBody.appendChild(tagsRow);
+                const tagsRow = Tools.createElm("div", null, "class", "row g-0 mtXSM mbXSM");
+                const tagsText = searchResults[x].attachedTags;
+                for (let x = 0; x < tagsText.length; x++) {
+                    const tag = Tools.createElm(
+                        "div", `${tagsText[x]}`, "class", 
+                        "brAll pXXSM ptXSM pbXSM col-4 textCenter fontWhite bgSecondary xsFont"
+                    );
+                    tagsRow.appendChild(tag);
+                }
+                cardBody.appendChild(tagsRow);
             
                 const cardTextDiv = Tools.createElm("div", null, "class", "card-text");
                 const summary = Tools.createElm("div", `${searchResults[x].summary}`);
@@ -451,8 +486,8 @@ export async function displaySearch(serverData){
                 movieCard.appendChild(cardBody);
                 searchRow.appendChild(movieCard);
                 searchContainer.appendChild(searchRow);
-                openSearchModal();
             }
+            openSearchModal();
         } catch(error){
             console.log(`There was an error appending search results cards\n${error}`);
             JSStyles.alertAnimation("Error showing results. Please try again");
@@ -546,14 +581,14 @@ function appendMovies(movies, carouselId) {
     
             const cardTextDiv = Tools.createElm("div", null, "class", "card-text");
             const summary = Tools.createElm("div", `${movies[x].summary}`);
-            const fadeAway = Tools.createElm("div",null,"class","fadeAwayNeutral fullWidth");
+            const fadeAway = Tools.createElm("div", null, "class", "fadeAwayNeutral fullWidth");
             cardTextDiv.appendChild(fadeAway);
             cardTextDiv.appendChild(summary);
             cardBody.appendChild(cardTextDiv);
     
             const showMoreButton = Tools.createElm(
                 "div", "Show More", 
-                ["class","data-bs-toggle","data-bs-target","movieID","movieTitle",], 
+                ["class","data-bs-toggle","data-bs-target","movieID","movieTitle"], 
                 [
                     "bgPrimary fontWhite fullWidth btPrimaryStyle textCenter ptXSM pbXSM brAll customShadow showMore",
                     "modal","#showMoreModal",`${movies[x].id}`,`${movies[x].title}`
@@ -595,6 +630,9 @@ function getShowMoreData(movieID, movieTitle){
     showMoreRateButton.innerText = `Rate ${movieTitle}`;
     
     let jSessionIdStringified = Tools.getJSessionId();
+
+    // Clear Existing Ratings, Ensures that ratings for other movies don't show if the rating micro service goes down
+    document.getElementById("ratingsContainer").replaceChildren();
 
     //Get General Info
     NetworkReq.fetchPost(
@@ -644,7 +682,7 @@ async function appendGeneralSection(serverRes){
 
         //Get Tags
         NetworkReq.fetchPost(
-            `${globals.ratingsBase}/tag/getTagsWithMovieId/${genData.id}`,
+            `${globals.ratingsBase}/tag/getTagScoresForMovieModal/${genData.id}`,
             jSessionIdStringified,
             appendTagsToShowMore
         )
@@ -796,7 +834,7 @@ async function appendUpDownVote(serverData){
                     [
                         `voteID${voteID}`,
                         `${voteID}`, 
-                        `${upDownData[x].movieID}`, 
+                        `${upDownData[x].movieId}`, 
                         `${upDownData[x].tagName}`, 
                         "upVote col-2",
                         `../images/hand-thumbs-up-fill-white.png`, 

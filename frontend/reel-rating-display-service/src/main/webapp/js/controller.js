@@ -128,10 +128,10 @@ function homeInit(){
     const upDownContainer = document.getElementById("upDownContainer");
     upDownContainer.addEventListener("click", (event)=>{
         var voteRow = event.target.parentNode;
-        var voteChange = Home.checkVoteChanged(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
-        if(voteChange !== 0){
+        Home.toggleUpDown(event.target);
+        var voteChange = Home.getCurrentVote(event.target, voteRow.childNodes[0], voteRow.childNodes[1]);
+        if(voteChange != 0){
             Home.sendUpDownVoteUpdate(event.target, voteChange);
-            Home.toggleUpDown(event.target);
         }
     });
     
@@ -141,31 +141,23 @@ function homeInit(){
     searchButton.addEventListener("click", ()=>{
         const searchValue = searchBar.value.trim();
         document.getElementById("searchTitle").innerText = searchValue;
-        // NetworkReq.fetchPostNoCors(
-        //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
-        //     Tools.getJSessionId(),
-        //     Home.displaySearch
-        // ); 
         NetworkReq.fetchPost(
-            `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+            `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
             Tools.getJSessionId(),
             Home.displaySearch
         ); 
+        searchBar.value = "";
     });
     searchUI.addEventListener("keyup", (event)=>{
         if(event.key === "Enter"){
             const searchValue = searchBar.value.trim();
             document.getElementById("searchTitle").innerText = searchValue;
-            // NetworkReq.fetchPostNoCors(
-            //     `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
-            //     Tools.getJSessionId(),
-            //     Home.displaySearch
-            // );
             NetworkReq.fetchPost(
-                `${globals.movieDataBase}/movie/getMoviesWithTitle/${searchValue}`,
+                `${globals.searchBase}/movie/searchByMovieNameIndex/${searchValue}`,
                 Tools.getJSessionId(),
                 Home.displaySearch
             );
+            searchBar.value = "";
         }
     });
 
@@ -192,16 +184,46 @@ function homeInit(){
     const allModals = document.getElementsByClassName("modal");
     const closeModalButtons = document.getElementsByClassName("close");
     for(let x =0; x < closeModalButtons.length; x++){
-        closeModalButtons[x].addEventListener("click", ()=>{
+        closeModalButtons[x].addEventListener("click", (event)=>{
+            event.stopPropagation(); 
             Home.closeAllModals(allModals);
         });
     } 
 
-    // const webSocket = NetworkReq.openWebSocket("urlForWS");
-    // const searchBar = document.getElementById("searchBar");
-    // searchBar.addEventListener("input", ()=>{
-    //     NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
-    // });
+    let webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
+    searchBar.addEventListener("input", ()=>{ 
+        NetworkReq.sendWebSocketMessage(webSocket, searchBar.value);
+    });
+
+    setInterval(()=>{ //Need this to keep the connection open
+        NetworkReq.sendWebSocketMessage(webSocket, "heartbeat");
+    },5000)
+
+    webSocket.onclose = (exception) => {
+        console.log(`Connection websocket closed because ${exception.reason}`);
+        setTimeout(() => {
+            webSocket = NetworkReq.openWebSocket("ws://moxie.cs.oswego.edu:30505/reel-rating-search-service/autocomplete");
+        }, 1000);
+    }
+
+    const searchAutoCompleteList = document.getElementById("searchAutoComplete");
+    webSocket.onmessage = (response) => {
+        let dataObject = JSON.parse(response.data);
+        if ('results' in dataObject) {
+            let movieNames = dataObject.results;
+            searchAutoCompleteList.replaceChildren();
+            // Constrains the amount of auto complete results.
+            let autoCompleteLimit = 5;
+            let autoCompleteCurrentCount = 0;
+            for (let movieName of movieNames) {
+                if (autoCompleteCurrentCount >= autoCompleteLimit) break;
+                let option = document.createElement("option");
+                option.value = movieName;
+                searchAutoCompleteList.appendChild(option);
+                autoCompleteCurrentCount++;
+            }
+        }
+    }
 
     const ratingScaleEndNode = document.getElementById("ratingScaleEnd");
     ratingScaleEndNode.addEventListener("change", Home.progressBarForRatingUpdate);

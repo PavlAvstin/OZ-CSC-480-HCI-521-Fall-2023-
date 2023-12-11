@@ -104,7 +104,6 @@ public class PopulationData {
         createMovie81(db);
         createMovie82(db);
         createMovie83(db);
-        createMovie84(db);
     }
 
     /*
@@ -1673,7 +1672,7 @@ public class PopulationData {
                 "The Wachowskis",
                 "\"The Matrix\" is about a computer hacker Neo discovers that the world as he knows it is a simulated reality controlled by machines. With the guidance of rebel leader Morpheus, he joins the fight for human freedom against the machines.\"");
 
-        var movie84 = db.getMovieWithTitle("THe Matrix");
+        var movie84 = db.getMovieWithTitle("The Matrix");
         db.createTag("Science Fiction", movie84.get().getId(), "Rando1", "public");
         db.createTag("Reality", movie84.get().getId(), "Rando2", "public");
         db.createTag("Action", movie84.get().getId(), "Binura", "public");

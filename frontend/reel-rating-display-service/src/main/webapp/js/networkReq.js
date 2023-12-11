@@ -122,8 +122,8 @@ export function openWebSocket(url){
  * @param {string} message 
  */
 export function sendWebSocketMessage(currentWebSocket, message){
-    if (currentWebSocket && currentWebSocket.readyState === WebSocket.OPEN) {
-        currentWebSocket.send(message);
+    if (currentWebSocket.readyState === WebSocket.OPEN) {
+        currentWebSocket.send("title:" + message);
     } else {
         console.error('WebSocket is not open');
     }

@@ -38,7 +38,8 @@
         <div class="col-3 offset-4">
             <div class="row g-0 vcToParent" id="searchUI">
                 <div class="input-group" id="searchContainer">
-                    <input class="form-control brAll" type="search" placeholder="Search" aria-label="Search" id="searchBar" value="Barbie">
+                    <input class="form-control brAll" list="searchAutoComplete" type="search" placeholder="Search" aria-label="Search" id="searchBar" value="">
+                    <datalist id="searchAutoComplete"></datalist>
                     <div class="input-group-append">
                         <div class="btPrimaryStyle iconWidth pXL prXXL plXXL brRight" type="submit">
                             <img src="../images/search-white.png" alt="search bar logo" class="img-fluid" id="searchButton">
@@ -81,7 +82,7 @@
 
 
     <!-- Show More Modals -->
-    <div class="modal hidden" id="showMoreModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+    <div class="modal" id="showMoreModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
         <div class="modal-dialog fontWhite hcToWindow">
             <div class="modal-content darkFG">
                 <div class="modal-body"><!-- Modal Body -->
@@ -175,7 +176,7 @@
     
 
     <!-- Rate Modal -->
-    <div class="modal hidden" id="rateModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+    <div class="modal" id="rateModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
         <div class="modal-dialog fontWhite hcToWindow">
             <div class="modal-content darkFG">
                 <div class="modal-body"><!-- Modal Body -->
@@ -325,7 +326,7 @@
 
 
     <!-- Search Modal -->
-    <div class="modal hidden" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog fontWhite hcToWindow">
             <div class="modal-content darkFG">
                 <div class="modal-body"><!-- Modal Body -->

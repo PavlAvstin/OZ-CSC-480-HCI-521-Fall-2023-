@@ -54,8 +54,7 @@ public class ReviewDataService {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/review/create/{movieId}")
   public Response createReview(@Context HttpServletRequest request, Review review, @PathParam("movieId") String movieId) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = review.getJSESSIONID();
+    String sessionId = review.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController db = new DatabaseController();
@@ -74,8 +73,7 @@ public class ReviewDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/reviews/getReviewsWithUsername/{username}")
   public Response getReviewsWithUsername(@Context HttpServletRequest request, @PathParam("username") String username, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
@@ -88,8 +86,7 @@ public class ReviewDataService {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("/reviews/getReviewsWithMovieId/{movieId}")
   public Response getReviewsWithMovieId(@Context HttpServletRequest request, @PathParam("movieId") String movieId, JSession jsession) throws Exception {
-    String sessionId = request.getRequestedSessionId();
-    if (sessionId == null) sessionId = jsession.getJSESSIONID();
+    String sessionId = jsession.getJSESSIONID();
     String requesterUsername = getUsername(sessionId);
     if (requesterUsername == null) { return Response.status(Response.Status.UNAUTHORIZED).build(); }
     DatabaseController dbc = new DatabaseController();
